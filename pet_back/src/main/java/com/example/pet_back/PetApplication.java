@@ -1,4 +1,4 @@
-package com.example.pet;
+package com.example.pet_back;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
