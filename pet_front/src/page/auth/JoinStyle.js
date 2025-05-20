@@ -4,10 +4,12 @@ const JoinComp = styled.div`
   height: 1000px;
   margin-top: 140px;
   width: 100%;
+  /* background-color: #f8e776; */
   .join_inner {
     width: 700px;
     height: 100%;
     margin: 0 auto;
+    /* background-color: #fff; */
     .join_container {
       padding: 150px 50px 50px;
       h2 {
@@ -20,6 +22,7 @@ const JoinComp = styled.div`
           flex-direction: column;
           gap: 40px;
           tr {
+            position: relative;
             th {
               width: 150px;
               text-align: left;
@@ -34,6 +37,13 @@ const JoinComp = styled.div`
                 display: flex;
                 flex-direction: column;
                 gap: 10px;
+                #post {
+                  display: flex;
+                  justify-content: space-between;
+                  input {
+                    width: 240px;
+                  }
+                }
               }
               .error_message {
                 color: red;
@@ -41,11 +51,45 @@ const JoinComp = styled.div`
                 font-weight: bold;
                 position: absolute;
               }
-            } //th
+              #email_btn {
+                position: absolute;
+                right: 3px;
+                height: 42px;
+                width: 90px;
+                background-color: #f8e776;
+                border: none;
+                cursor: pointer;
+                color: #fff;
+                font-weight: bold;
+                border-radius: 10px;
+                box-shadow: 3px 3px 3px #aaa;
+              }
+            } //td
+            #email {
+              width: 250px;
+            }
+            #td_email {
+            }
           } //tr
+          #tr_btn {
+            display: flex;
+            gap: 20px;
+            .btn {
+              width: 250px;
+              height: 40px;
+              border: none;
+              border-radius: 10px;
+              cursor: pointer;
+            }
+          }
         } //tdody
       } //table
-      margin: 0 auto;
+      #sub_btn {
+        background-color: #f8e776;
+      }
+      #post_btn {
+        padding: 0 10px;
+      }
     } //join_container
   } //join_inner
 `;
