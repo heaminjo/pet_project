@@ -1,6 +1,6 @@
 package com.example.pet_back.controller;
 
-import com.example.pet.service.MemberService;
+import com.example.pet_back.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

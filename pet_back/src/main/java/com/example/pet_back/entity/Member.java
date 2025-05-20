@@ -1,7 +1,8 @@
 package com.example.pet_back.entity;
 
-import com.example.pet.constant.MEMBERSTATE;
-import com.example.pet.constant.ROLE;
+
+import com.example.pet_back.constant.MEMBERSTATE;
+import com.example.pet_back.constant.ROLE;
 import jakarta.persistence.*;
 import lombok.*;
 

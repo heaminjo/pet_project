@@ -1,7 +1,8 @@
 package com.example.pet_back.controller;
 
-import com.example.pet.domain.login.member.MemberRequestDTO;
-import com.example.pet.service.MemberService;
+import com.example.pet_back.domain.login.LoginRequestDTO;
+import com.example.pet_back.domain.login.member.MemberRequestDTO;
+import com.example.pet_back.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
