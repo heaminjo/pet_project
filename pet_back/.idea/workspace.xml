@@ -4,7 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="e538ab45-0dd9-4b70-9c81-b140948b1b16" name="변경" comment="" />
+=======
+    <list default="true" id="e538ab45-0dd9-4b70-9c81-b140948b1b16" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet/PetApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet/config/test" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet/constant/test" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet/controller/test" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet/domain/test" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet/entity/Member.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet/entity/test" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet/repository/test" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet/service/test" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/example/pet/PetApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pet_front/src/api/AddressApi.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pet_front/test" beforeDir="false" />
+    </list>
+>>>>>>> 조해민-branch
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -23,7 +43,11 @@
             <expand>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+<<<<<<< HEAD
                 <item name="pet" type="f1a62948:ProjectNode" />
+=======
+                <item name="pet_back" type="f1a62948:ProjectNode" />
+>>>>>>> 조해민-branch
               </path>
             </expand>
             <select />
