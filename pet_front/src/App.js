@@ -16,7 +16,7 @@ function App() {
   const [isLogin, setIsLogin] = useState(false);
   return (
     //Context로 감싸주기
-    <PetContext.Provider value={(isLogin, setIsLogin)}>
+    <PetContext.Provider value={{ isLogin, setIsLogin }}>
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
