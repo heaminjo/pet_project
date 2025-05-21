@@ -1,5 +1,7 @@
 package com.example.pet_back.mapper;
 
+import com.example.pet_back.domain.login.LoginResponseDTO;
+import com.example.pet_back.domain.login.LoginResponseDTO.LoginResponseDTOBuilder;
 import com.example.pet_back.domain.login.member.MemberRequestDTO;
 import com.example.pet_back.domain.login.member.MemberResponseDTO;
 import com.example.pet_back.domain.login.member.MemberResponseDTO.MemberResponseDTOBuilder;
@@ -11,8 +13,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-05-20T23:49:10+0900",
-    comments = "version: 1.4.2.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.13.jar, environment: Java 17.0.13 (Amazon.com Inc.)"
+    date = "2025-05-21T17:47:46+0900",
+    comments = "version: 1.4.2.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.13.jar, environment: Java 17.0.12 (Azul Systems, Inc.)"
 )
 @Component
 public class MemberMapperImpl implements MemberMapper {
@@ -51,5 +53,19 @@ public class MemberMapperImpl implements MemberMapper {
         memberResponseDTO.image_file( member.getImage_file() );
 
         return memberResponseDTO.build();
+    }
+
+    @Override
+    public LoginResponseDTO toLoginDto(Member member) {
+        if ( member == null ) {
+            return null;
+        }
+
+        LoginResponseDTOBuilder loginResponseDTO = LoginResponseDTO.builder();
+
+        loginResponseDTO.id( member.getId() );
+        loginResponseDTO.name( member.getName() );
+
+        return loginResponseDTO.build();
     }
 }
