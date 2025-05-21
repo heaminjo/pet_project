@@ -40,6 +40,10 @@ export default function Login() {
     const result = await MemberApi.login(watch("email"), watch("password"));
     if (result) {
       alert("로그인 성공!");
+
+      //로그인 성공 시 localStorage에 id와 name이 담깁니다.
+      localStorage.setItem("loginId", result.data.id);
+      localStorage.setItem("loginName", result.data.name);
       navigate("/");
     } else {
       alert("로그인 실패");
@@ -73,9 +77,7 @@ export default function Login() {
                 )}
               </li>
             </ul>
-            <button type="submit" onClick={() => clickLogin()}>
-              로그인
-            </button>
+            <button type="submit">로그인</button>
           </form>
         </div>
       </div>

@@ -8,7 +8,8 @@ const MemberApi = {
       email: email,
       password: password,
     };
-    return await axios.post(`${KH_DOMAIN}/auth/login`, login);
+    const result = await axios.post(`${KH_DOMAIN}/auth/login`, login);
+    return result.data;
   },
   //이메일 중복 체크
   dupEmail: async (email) => {
