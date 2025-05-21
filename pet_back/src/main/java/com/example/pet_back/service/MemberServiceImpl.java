@@ -42,9 +42,8 @@ public class MemberServiceImpl implements MemberService{
             return ResponseEntity.ok(new ApiResponse<LoginResponseDTO>(true,mapper.toLoginDto(member.get()),"로그인에 성공하였습니다."));
         }else{
             log.info("로그인 실패");
-            ResponseEntity.ok(new ApiResponse<LoginRequestDTO>(true,dto,"로그인에 실패하였습니다."));
+            return ResponseEntity.ok(new ApiResponse<LoginRequestDTO>(true,dto,"로그인에 실패하였습니다."));
         }
-        return null;
     }
 
     //회원가입
