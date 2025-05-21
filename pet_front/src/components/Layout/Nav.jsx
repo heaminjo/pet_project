@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import NavComp from "./NavStyle";
 import { PetContext, QuizContext } from "../../App";
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 
 export default function Nav() {
   const { isLogin } = useContext(PetContext);
@@ -26,6 +27,7 @@ export default function Nav() {
           <li>메뉴</li>
           <li>메뉴</li>
           <li onClick={() => navigate("/boardList")}>게시판</li>
+          {/* <li><Link to="/boardList">게시판</Link></li> */}
         </ul>
       </div>
     </NavComp>
