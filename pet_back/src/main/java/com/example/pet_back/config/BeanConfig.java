@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class BeanConfig {
+    //ss
     //BCryptPasswordEncoder 객체를 Bean으로 생성해둔다.
     @Bean
     public PasswordEncoder getPasswordEncoder(){
