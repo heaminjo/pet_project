@@ -35,8 +35,8 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public ResponseEntity<?> login(LoginRequestDTO dto) {
         Optional<Member> member =  memberRepository.findByEmail(dto.getEmail());
-
-        if(member.isPresent() && member.get().getPassword().equals(dto.getPassword())){
+            log.info("이메일 있음 => "+member.get().getEmail());
+        if(member.isPresent() && passwordEncoder.matches(dto.getPassword(),member.get().getPassword())){
             log.info("로그인 성공! email => "+member.get().getEmail());
             LoginResponseDTO responseDTO = new LoginResponseDTO();
             return ResponseEntity.ok(new ApiResponse<LoginResponseDTO>(true,mapper.toLoginDto(member.get()),"로그인에 성공하였습니다."));
