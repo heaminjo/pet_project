@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.pet_back.mapper.GoodsMapper">
+
+  <insert id="insertGoods">
+    INSERT INTO goods (
+      category_id, goods_name, price, desctiption, image_file, quantity, reg_date
+    ) VALUES (
+      #{categoryId}, #{goodsName}, #{price}, #{desctiption}, #{imageFile}, #{quantity}, NOW()
+    )
+  </insert>
+
+  <select id="getAllGoods" resultType="com.example.pet_back.domain.goods.GoodsResponseDTO">
+    SELECT goods_id AS goodsId, goods_name AS goodsName, price, image_file AS imageFile, desctiption
+    FROM goods
+    ORDER BY reg_date DESC
+  </select>
+
+  <select id="getGoodsById" resultType="com.example.pet_back.entity.Goods">
+    SELECT * FROM goods WHERE goods_id = #{goodsId}
+  </select>
+
+  <select id="searchGoodsByKeyword" resultType="com.example.pet_back.domain.goods.GoodsResponseDTO">
+    SELECT goods_id AS goodsId, goods_name AS goodsName, price, image_file AS imageFile, desctiption
+    FROM goods
+    WHERE goods_name LIKE CONCAT('%', #{keyword}, '%')
+    ORDER BY reg_date DESC
+  </select>
+
+</mapper>

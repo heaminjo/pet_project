@@ -50,6 +50,8 @@ dependencies {
 
 	//유효성 검사
 	implementation 'jakarta.validation:jakarta.validation-api'
+	implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
+	
 }
 
 tasks.named('test') {
