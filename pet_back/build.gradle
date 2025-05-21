@@ -1,9 +1,24 @@
 plugins {
 	id 'java'
+	id 'eclipse' 
 	id 'org.springframework.boot' version '3.4.5'
 	id 'io.spring.dependency-management' version '1.1.7'
 }
-
+eclipse {
+    jdt {
+        apt {
+            enabled = true
+            genSrcDir = file('build/generated/sources/annotationProcessor/java/main')
+        }
+    }
+    classpath {
+        file {
+            whenMerged {
+                entries.findAll { it.kind == 'src' && it.path.contains('generated') }*.entryAttributes['optional'] = 'true'
+            }
+        }
+    }
+}
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 

@@ -38,8 +38,6 @@ public class MemberServiceImpl implements MemberService{
 
         if(member.isPresent() && member.get().getPassword().equals(dto.getPassword())){
             LoginResponseDTO responseDTO = new LoginResponseDTO();
-//            responseDTO.setId(member.get().getMemberId());
-//            responseDTO.setName(member.get().getNickname());
             return ResponseEntity.ok(responseDTO);
         }else{
             ResponseEntity.status(HttpStatus.NOT_FOUND).body("회원을 못찾음");

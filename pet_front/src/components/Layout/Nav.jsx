@@ -25,7 +25,7 @@ export default function Nav() {
           <li>메뉴</li>
           <li>메뉴</li>
           <li>메뉴</li>
-          <li>메뉴</li>
+          <li onClick={() => navigate("/boardList")}>게시판</li>
         </ul>
       </div>
     </NavComp>
