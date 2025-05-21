@@ -1,10 +1,10 @@
 import { act, useReducer, useRef, useState } from "react";
 import JoinComp from "./JoinStyle";
-import AddressApi from "../../components/modal/AddressModal";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import MemberApi from "../../api/MemberApi";
+import AddressModal from "../../modal/AddressModal";
 export default function Join() {
   const [isEmailCheck, setIsEmailCheck] = useState(false); //이메일 중복 체크
   const emailRef = useRef(null);
@@ -286,11 +286,11 @@ export default function Join() {
                       </li>
                       {/* 주소 Api */}
                       {popup && (
-                        <AddressApi
+                        <AddressModal
                           watch={watch}
                           setValue={setValue}
                           setPopup={setPopup}
-                        ></AddressApi>
+                        ></AddressModal>
                       )}
                     </ul>
                   </td>

@@ -26,7 +26,7 @@ const AddressComp = styled.div`
     }
   }
 `;
-export default function AddressApi({ watch, setValue, setPopup }) {
+export default function AddressModal({ watch, setValue, setPopup }) {
   const completeHandler = (data) => {
     // {} 이 끝난 후 = 는 문법상 에러
     //구조 분해 하기 위해 괄호로 감싼다.
