@@ -11,7 +11,7 @@ import Join from "./page/auth/Join";
 export const PetContext = React.createContext();
 
 //로그인 상태 변수
-
+//dd
 function App() {
   const [isLogin, setIsLogin] = useState(false);
   return (
