@@ -1,0 +1,74 @@
+.detail-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 48px;
+  padding: 40px;
+  background-color: #f9f9f9;
+}
+
+.detail-left {
+  flex: 0 0 auto;
+  
+}
+
+.detail-left img {
+  width: 400px;
+  border-radius: 8px;
+  margin-right: 40px;
+}
+
+.detail-right {
+  flex: 1;
+  min-width: 300px;
+}
+
+.price {
+  font-size: 22px;
+  color: #e60023;
+  margin: 12px 0;
+  font-weight: bold;
+}
+
+.description {
+  margin: 12px 0;
+  color: #444;
+}
+
+.quantity-box {
+  margin: 16px 0;
+}
+
+.quantity-box input {
+  width: 80px;
+  padding: 4px;
+  margin-left: 8px;
+}
+
+.button-box {
+  margin-top: 12px;
+}
+
+.button-box button {
+  margin-right: 12px;
+  padding: 10px 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.review-section {
+  width: 100%;
+  margin-top: 48px;
+  padding: 0 80px;
+}
+
+.review-section form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.review-section textarea {
+  resize: vertical;
+  min-height: 100px;
+}

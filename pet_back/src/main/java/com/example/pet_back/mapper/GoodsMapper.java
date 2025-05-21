@@ -4,6 +4,7 @@ import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.domain.goods.GoodsResponseDTO;
 import com.example.pet_back.entity.Goods;
 import org.apache.ibatis.annotations.Mapper;
+import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 

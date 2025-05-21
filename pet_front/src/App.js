@@ -1,29 +1,39 @@
 import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import React, { useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./page/layout/Layout";
 import Main from "./page/main/Main";
-import React, { useState } from "react";
 import Login from "./page/auth/Login";
 import Join from "./page/auth/Join";
+import RegisterPage from "./page/auth/RegisterPage";
+import SearchPage from "./page/main/SearchPage";
+import DetailPage from "./page/main/DetailPage";
+import CategoryRegisterPage from "./page/main/CategoryRegisterPage";
 
-//컨텍스트(useContext)
-//로그인 여부부를 전역변수로 뿌리기 위한것
 export const PetContext = React.createContext();
 
-//로그인 상태 변수
-//dd
 function App() {
   const [isLogin, setIsLogin] = useState(false);
+
   return (
-    //Context로 감싸주기
-    <PetContext.Provider value={(isLogin, setIsLogin)}>
+    <PetContext.Provider value={{ isLogin, setIsLogin }}>
       <BrowserRouter>
         <Routes>
+          {/* ✅ 기본 경로로 진입하면 /search로 리디렉션 */}
+          <Route path="/" element={<Navigate to="/search" />} />
+
+          {/* ✅ Layout 안에서 동작하는 페이지들 */}
           <Route element={<Layout />}>
-            <Route path="/" element={<Main />} />
             <Route path="/login" element={<Login />} />
             <Route path="/join" element={<Join />} />
+            <Route path="/main" element={<Main />} />
           </Route>
+
+          {/* ✅ 단독 페이지들 */}
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="/detail/:id" element={<DetailPage />} />
+          <Route path="/category/register" element={<CategoryRegisterPage />} />
         </Routes>
       </BrowserRouter>
     </PetContext.Provider>
