@@ -4,7 +4,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import MemberApi from "../../api/MemberApi";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { PetContext } from "../../App";
 export default function Login() {
+  const { setIsLogin } = useContext(PetContext);
   const navigate = useNavigate();
 
   //유효성 조건(yup)
@@ -44,6 +47,8 @@ export default function Login() {
       //로그인 성공 시 localStorage에 id와 name이 담깁니다.
       localStorage.setItem("loginId", result.data.id);
       localStorage.setItem("loginName", result.data.name);
+      //전역변수에 로그인 여부 저장
+      setIsLogin(true);
       navigate("/");
     } else {
       alert("로그인 실패");

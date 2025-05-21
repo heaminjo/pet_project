@@ -4,7 +4,8 @@ const NavComp = styled.nav`
   width: 100%;
   height: 50px;
   border-bottom: 2px solid #000;
-  background-color: #aaa;
+  background-color: #f8e776;
+  margin-top: px;
   .nav_inner {
     width: 1200px;
     margin: 0 auto;
