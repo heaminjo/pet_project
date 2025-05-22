@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import Login from "./page/auth/Login";
 import Join from "./page/auth/Join";
 import BoardList from "./components/Board/BoardList";
+import BoardInsertForm from "./components/Board/BoardInsertForm";
 
 //컨텍스트(useContext)
 //로그인 여부부를 전역변수로 뿌리기 위한것
@@ -24,6 +25,7 @@ function App() {
             <Route path="/" element={<Main />} />
             <Route path="/login" element={<Login />} />
             <Route path="/join" element={<Join />} />
+            <Route path="/boardList" element={<BoardList />} />
             <Route path="/boardList" element={<BoardList />} />
           </Route>
         </Routes>

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import BoardListStyle from "./BoardListStyle";
+import { Navigate } from "react-router-dom";
 
-export default function BoardList({ isLogin }) {
+export default function BoardList({ isLogin }) {  // 나중에 login 여부에 따라 글쓰기 버튼을 보여줄지 말지 결정할 수 있음
   const [listData, setListData] = useState([]);
   const [error, setError] = useState(null);
 
@@ -20,44 +22,45 @@ export default function BoardList({ isLogin }) {
   }
 
   return (
-    
-    <table style={{ width: "60%", marginLeft: "auto", marginRight: "auto" }}>
-      <thead>
-        <tr>
-          <td colSpan={5} height={30}>게시판</td>
-        </tr>
-        <tr style={{ backgroundColor: "gray" }}>
-          <th>NO</th>
-          <th>제목</th>
-          <th>작성자</th>
-          <th>조회수</th>
-          <th>작성일</th>
-        </tr>
-      </thead>
-      <tbody>
-        {listData.map((b) => (
-          <tr key={b.board_id}>
-            <td>{b.board_id}</td>
-            <td>{b.title}</td>
-            <td>{b.name}</td>
-            <td>{b.views}</td>
-            <td>{b.reg_date}</td>
-          </tr>
-        ))}
-        <tr>
-          <td colSpan={5} align="right">
-            <button
-              type="button"
-              style={{ width: 80, height: 30, fontSize: 18 }}
-              // onClick={() => ...} // 글쓰기 이동 기능 추가 가능
-            >
-              글쓰기
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    
+    <BoardListStyle>
+      <div className="boardListContainer">
+        <table>                                 
+          <thead>
+            <tr>
+              <td colSpan={5} height={50}>게시판</td>
+            </tr>
+            <tr style={{ backgroundColor: " #f8e776" }}>
+              <th>NO</th>
+              <th>제목</th>
+              <th>작성자</th>
+              <th>조회수</th>
+              <th>작성일</th>
+            </tr>
+          </thead>
+          <tbody>
+            {listData.map((b) => (
+              <tr key={b.board_id}>
+                <td className="center">{b.board_id}</td>
+                <td className="center">{b.title}</td>
+                <td className="center">{b.name}</td>
+                <td className="center">{b.views}</td>
+                <td className="center">{b.reg_date}</td>
+              </tr>
+            ))}
+            <tr>
+              <td colSpan={5} align="right">
+                <button 
+                  type="button"
+                  onClick={() => Navigate("/BoardInsertForm")} // 글쓰기 이동 기능 추가 가능
+                >
+                  글쓰기
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </BoardListStyle>
   );
 }
 
