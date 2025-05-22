@@ -17,7 +17,7 @@ export default function BoardDetail() {
   if (error) {
     return <div>게시글을 불러오지 못했습니다. {error.message}</div>;
   }
-
+  
   if (!post) {
     return <div>로딩 중...</div>;
   }
