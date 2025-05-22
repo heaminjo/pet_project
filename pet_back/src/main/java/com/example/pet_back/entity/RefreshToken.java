@@ -18,5 +18,7 @@ public class RefreshToken {
 
     @Column(nullable = false)
     private String token;
+    private Long expiration; //만료 시간
+
 
 }

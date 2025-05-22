@@ -45,10 +45,16 @@ public class AuthServiceImpl implements  AuthService{
 
     public TokenDTO login(LoginRequestDTO dto) {
         try {
+
+            Member member = memberRepository.findByEmail(dto.getEmail()).orElseThrow();
+            log.info("DB 조회 멤버"+member.getEmail());
+            if(passwordEncoder.matches(dto.getPassword(), member.getPassword())){
+                log.info("비밀번호도 일치");
+            }
             //email과 pw기반으로 AuthenticationToken 생성
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(
-                            dto.getEmail(), passwordEncoder.encode(dto.getPassword())
+                            dto.getEmail(), dto.getPassword()
                     );
             log.info("AuthServiceImple : email => " + authenticationToken.getName());
             //실제 검증(비밀번호 체크)
@@ -70,6 +76,7 @@ public class AuthServiceImpl implements  AuthService{
             RefreshToken refreshToken = RefreshToken.builder()
                     .userId(authentication.getName())
                     .token(tokenDTO.getRefreshToken())
+                    .expiration(tokenDTO.getAccessTokenExpiresln())
                     .build();
 
             refreshTokenRepository.save((refreshToken));

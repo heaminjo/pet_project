@@ -25,7 +25,7 @@ import java.util.Map;
 public class TokenProvider {
     //암호화 된 SECRETKEY 객체 생성
     //보안 강도가 높다.
-    private final SecretKey SECRET_KEY = Keys.hmacShaKeyFor("petSecuritySecretkey0702_superkey!".getBytes());
+    private final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     private static final String BEARER_TYPE = "Bearer"; // 토큰이 어떤 방식으로 발급되었는지
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;            // 30분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
@@ -40,7 +40,7 @@ public class TokenProvider {
                 .orElse(null); //없을 경우 null
 
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long userId = userDetails.getId();
+        Long userId = userDetails.getMember().getId();
 
         log.info("userId => " +userId);
 
@@ -88,7 +88,7 @@ public class TokenProvider {
 
         //유저 아이디를 꺼내온다.
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long userId = userDetails.getId();
+        Long userId = userDetails.getMember().getId();
 
         log.info("userId => " +userId);
 

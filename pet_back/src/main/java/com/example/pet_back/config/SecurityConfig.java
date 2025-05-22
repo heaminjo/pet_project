@@ -1,12 +1,15 @@
 package com.example.pet_back.config;
 
 
+import com.example.pet_back.jwt.CustomUserDetailsService;
 import com.example.pet_back.jwt.JwtAuthenticationFilter;
 import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -29,6 +32,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    private final CustomUserDetailsService customUserDetailsService;
+
+
 
     //필터를 받아 권한에 따른 페이지 허용
     //HttpSecurity는 웹 보안 설정을 구성하는데 사용되며 여러 보안필터,권한설정,인증방식등을 설정
@@ -83,5 +90,14 @@ public class SecurityConfig {
     public PasswordEncoder getPasswordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
+    
+    //회원 DB조회를 위한 설정
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                .userDetailsService(customUserDetailsService)
+                .passwordEncoder(passwordEncoder)
+                .and()
+                .build();
+    }
 }
