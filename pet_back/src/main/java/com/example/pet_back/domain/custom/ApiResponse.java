@@ -1,4 +1,4 @@
-package com.example.pet_back.domain.login.custom;
+package com.example.pet_back.domain.custom;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
