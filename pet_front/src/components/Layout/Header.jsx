@@ -11,7 +11,7 @@ export default function Header() {
 
   //로그아웃 클릭
   const clickLogout = () => {
-    sessionStorage.clear();
+    localStorage.clear();
     alert("로그아웃 됩니다.");
     setIsLogin(false);
     navigate("/");
@@ -26,13 +26,21 @@ export default function Header() {
         <ul className="member_menu">
           {isLogin ? (
             <>
-              <li>님 환영합니다.</li>
-              <li onClick={() => clickLogout()}>로그아웃</li>
+              <li>
+                <span>{localStorage.getItem("loginName")}님 환영합니다</span>
+              </li>
+              <li>
+                <span onClick={() => clickLogout()}>로그이웃</span>
+              </li>
             </>
           ) : (
             <>
-              <li onClick={() => navigate("/login")}>로그인</li>
-              <li onClick={() => navigate("/join")}>회원가입</li>
+              <li>
+                <span onClick={() => navigate("/login")}>로그인</span>
+              </li>
+              <li>
+                <span onClick={() => navigate("/join")}>회원가입</span>
+              </li>
             </>
           )}
         </ul>
