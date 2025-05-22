@@ -83,6 +83,11 @@ public class TokenProvider {
                 .map(GrantedAuthority::getAuthority)
                 .orElse(null); //없을 경우 null
 
+        //유저 아이디를 꺼내온다.
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        Long userId = userDetails.getId();
+
+        log.info("userId => " +userId);
 
         long now = (new Date()).getTime();
 
@@ -92,7 +97,7 @@ public class TokenProvider {
         String accessToken =  Jwts.builder()
                 .signWith(SECRET_KEY,SignatureAlgorithm.HS512)
                 .claim("role",role)  //payload에 권한 저장
-                .setSubject(authentication.getName()) // payload에 이메일 저장
+                .setSubject(String.valueOf(userId)) // payload에 id 를 꺼내기 위해 principal
                 .setIssuer("몽냥마켓")
                 .setIssuedAt(new Date())
                 .setExpiration(accessTokenExpiresIn)

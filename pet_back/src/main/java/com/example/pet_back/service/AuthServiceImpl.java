@@ -55,7 +55,11 @@ public class AuthServiceImpl implements  AuthService{
 
         //인증 정보 기반으로 토큰 생성
         //로그인 직후 이므로 refreshToken과  AccessToken 모두 생성해서 발급한다.
-//        TokenDTO tokenDTO =
+        TokenDTO tokenDTO = tokenProvider.generateTokenDto(authentication);
+
+        log.info("토큰 발급 => " + tokenDTO);
+
+
         return null;
     }
 
