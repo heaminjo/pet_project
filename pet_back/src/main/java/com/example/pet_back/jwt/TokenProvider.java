@@ -1,8 +1,10 @@
 package com.example.pet_back.jwt;
 
+import com.example.pet_back.domain.login.TokenDTO;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +18,15 @@ import java.util.Map;
 //JWT 토큰을 생성 , 파싱 ,검증하는 클래스
 // JWT관련 모든 기능을 담당한다.
 @Service
+@Log4j2
 public class TokenProvider {
     //암호화 된 SECRETKEY 객체 생성
     //보안 강도가 높다.
     private final SecretKey SECRET_KEY = Keys.hmacShaKeyFor("petSecuritySecretkey0702_superkey!".getBytes());
-
+    private static final String BEARER_TYPE = "Bearer"; // 토큰이 어떤 방식으로 발급되었는지
 
     //토큰 생성
-    public String createToken(Map<String,Object> claimsList){
+    public TokenDTO createToken(Map<String,Object> claimsList){
         //유효 시간 설정
         //토큰의 유효시간은 생성된 시점에서 1일로 한다
         Date expiryDate = Date.from(
@@ -33,8 +36,8 @@ public class TokenProvider {
         //Jwts는 토큰 생성 보관을 지원하는 클래스이다.
         //Json 생성,서명,인코딩,디코딩,파싱등  토큰 관리 기능 제공
 
-        //JWT 토큰 생성 과정
-        return Jwts.builder()
+        //accessToken(사용자 정보,권한 정보,만료시간)
+        String accessToken =  Jwts.builder()
                 //header에 들어갈 내용 및 서명을 위한 비밀키
                 //HS512 알고리즘으로 서명한다.
                 .signWith(SECRET_KEY,SignatureAlgorithm.HS512)
@@ -46,6 +49,15 @@ public class TokenProvider {
                 //토큰 만료 시간
                 .setExpiration(expiryDate)
                 .compact();
+
+        log.info("accessToken 생성 => ",accessToken);
+
+        return TokenDTO.builder()
+                .grantType(BEARER_TYPE)
+                .accessToken(accessToken)
+                .accessTokenExpiresln(expiryDate.getTime()) //만료시간
+                .refreshToken(null)
+                .build();
     }
 
     //전달 받은 토큰 검증

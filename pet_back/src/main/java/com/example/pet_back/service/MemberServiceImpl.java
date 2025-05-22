@@ -8,11 +8,13 @@ import com.example.pet_back.domain.login.LoginResponseDTO;
 import com.example.pet_back.domain.member.MemberRequestDTO;
 import com.example.pet_back.entity.Address;
 import com.example.pet_back.entity.Member;
+import com.example.pet_back.jwt.TokenProvider;
 import com.example.pet_back.mapper.MemberMapper;
 import com.example.pet_back.repository.AddressRepository;
 import com.example.pet_back.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.antlr.v4.runtime.Token;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,14 +33,16 @@ public class MemberServiceImpl implements MemberService{
     private final PasswordEncoder passwordEncoder;
     private final MemberMapper mapper;
     private final AddressRepository addressRepository;
+    private final TokenProvider tokenProvider;
+
     //로그인
     @Override
     public ResponseEntity<?> login(LoginRequestDTO dto) {
         Optional<Member> member =  memberRepository.findByEmail(dto.getEmail());
-            log.info("이메일 있음 => "+member.get().getEmail());
         if(member.isPresent() && passwordEncoder.matches(dto.getPassword(),member.get().getPassword())){
-            log.info("로그인 성공! email => "+member.get().getEmail());
-            LoginResponseDTO responseDTO = new LoginResponseDTO();
+
+            //비밀번호까지 전부 성공 시 토큰 생성
+
             //로그인 시 반환
             return null;
         }else{
