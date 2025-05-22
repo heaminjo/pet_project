@@ -26,7 +26,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/join" element={<Join />} />
             <Route path="/boardList" element={<BoardList />} />
-            <Route path="/boardList" element={<BoardList />} />
+            <Route path="/boardInsertForm" element={<BoardInsertForm />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BoardListStyle from "./BoardListStyle";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function BoardList({ isLogin }) {  // 나중에 login 여부에 따라 글쓰기 버튼을 보여줄지 말지 결정할 수 있음
   const [listData, setListData] = useState([]);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get("/board/boardList")
@@ -51,7 +52,7 @@ export default function BoardList({ isLogin }) {  // 나중에 login 여부에 �
               <td colSpan={5} align="right">
                 <button 
                   type="button"
-                  onClick={() => Navigate("/BoardInsertForm")} // 글쓰기 이동 기능 추가 가능
+                  onClick={() => navigate("/boardInsertForm")} // 글쓰기 이동 기능 추가 가능
                 >
                   글쓰기
                 </button>

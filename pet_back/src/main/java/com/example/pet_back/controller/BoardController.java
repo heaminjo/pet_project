@@ -35,8 +35,5 @@ public class BoardController {
 
 	} //selectList()
 	
-	//=> insertForm 출력
-	@GetMapping("/boardInsert")
-	public void boardInsert() {}
 
 }
