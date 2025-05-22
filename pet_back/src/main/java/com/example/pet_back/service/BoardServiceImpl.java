@@ -14,12 +14,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
 	
-	private final BoardMapper mapper;
+	private final BoardMapper boardMapper;
 	
 	@Override
 	public List<BoardDTO> selectList() {
 		//return mapper.selectList();
-		List<BoardDTO> list = mapper.selectList();
+		List<BoardDTO> list = boardMapper.selectList();
 		return list;
 	}
 

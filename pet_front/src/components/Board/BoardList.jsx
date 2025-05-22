@@ -1,7 +1,5 @@
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-
 
 export default function BoardList({ isLogin }) {
   const [listData, setListData] = useState([]);
@@ -14,19 +12,30 @@ export default function BoardList({ isLogin }) {
   }, []);
 
   if (error) {
+    // 서버 에러 코드에 따라 메시지 분기
+    if (error.response && error.response.status === 502) {
+      return <div>{error.response.data}</div>;
+    }
     return <div>게시판을 불러오지 못했습니다. =&gt; {error.message}</div>;
   }
 
   return (
-    <table style={{ width: "60%", margin: "0 auto" }}>
+    
+    <table style={{ width: "60%", marginLeft: "auto", marginRight: "auto" }}>
       <thead>
-        <tr><td colSpan={5} height={30}>게시판</td></tr>
-        <tr style={{ background: "gray" }}>
-          <th>NO</th><th>제목</th><th>작성자</th><th>조회수</th><th>작성일</th>
+        <tr>
+          <td colSpan={5} height={30}>게시판</td>
+        </tr>
+        <tr style={{ backgroundColor: "gray" }}>
+          <th>NO</th>
+          <th>제목</th>
+          <th>작성자</th>
+          <th>조회수</th>
+          <th>작성일</th>
         </tr>
       </thead>
       <tbody>
-        {listData.map(b => (
+        {listData.map((b) => (
           <tr key={b.board_id}>
             <td>{b.board_id}</td>
             <td>{b.title}</td>
@@ -37,13 +46,18 @@ export default function BoardList({ isLogin }) {
         ))}
         <tr>
           <td colSpan={5} align="right">
-            <Link to="/boardInsertForm">
-              <button type="button" style={{ width: 80, height: 30, fontSize: 18 }}>글쓰기</button>
-            </Link>
+            <button
+              type="button"
+              style={{ width: 80, height: 30, fontSize: 18 }}
+              // onClick={() => ...} // 글쓰기 이동 기능 추가 가능
+            >
+              글쓰기
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
+    
   );
 }
 

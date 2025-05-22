@@ -15,5 +15,6 @@ public class BoardDTO {
 	private String content;
 	private int views;
 	private String reg_date;
+	private String name;
 	
 }
