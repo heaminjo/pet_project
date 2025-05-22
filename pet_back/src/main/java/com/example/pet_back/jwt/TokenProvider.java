@@ -2,6 +2,7 @@ package com.example.pet_back.jwt;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -14,7 +15,7 @@ import java.util.Map;
 public class TokenProvider {
     //암호화 된 SECRETKEY 객체 생성
     //보안 강도가 높다.
-    private final SecretKey SECRET_KEY = Keys.hmacShaKeyFor("petSecuritySecretkey0702!".getBytes());
+    private final SecretKey SECRET_KEY = Keys.hmacShaKeyFor("petSecuritySecretkey0702_superkey!".getBytes());
 
 
     //토큰 생성
