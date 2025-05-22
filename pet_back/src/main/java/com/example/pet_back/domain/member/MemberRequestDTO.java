@@ -1,4 +1,4 @@
-package com.example.pet_back.domain.login.member;
+package com.example.pet_back.domain.member;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

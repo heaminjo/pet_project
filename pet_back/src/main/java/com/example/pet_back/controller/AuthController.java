@@ -1,7 +1,7 @@
 package com.example.pet_back.controller;
 
 import com.example.pet_back.domain.login.LoginRequestDTO;
-import com.example.pet_back.domain.login.member.MemberRequestDTO;
+import com.example.pet_back.domain.member.MemberRequestDTO;
 import com.example.pet_back.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

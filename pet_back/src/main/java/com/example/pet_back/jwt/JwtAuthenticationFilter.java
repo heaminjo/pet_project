@@ -84,7 +84,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }catch (Exception e){
             log.info("사용자 인증 과정 중 에러 발생 => "+e.toString());
         }
-
+        //최종 서블릿으로 요청과 응답을 넘김
         filterChain.doFilter(request,response);
     }
 

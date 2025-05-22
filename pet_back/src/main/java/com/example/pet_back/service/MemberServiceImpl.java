@@ -1,11 +1,11 @@
 package com.example.pet_back.service;
 
 
+import com.example.pet_back.domain.custom.ApiResponse;
+import com.example.pet_back.domain.custom.ErrorResponse;
 import com.example.pet_back.domain.login.LoginRequestDTO;
 import com.example.pet_back.domain.login.LoginResponseDTO;
-import com.example.pet_back.domain.login.custom.ApiResponse;
-import com.example.pet_back.domain.login.custom.ErrorResponse;
-import com.example.pet_back.domain.login.member.MemberRequestDTO;
+import com.example.pet_back.domain.member.MemberRequestDTO;
 import com.example.pet_back.entity.Address;
 import com.example.pet_back.entity.Member;
 import com.example.pet_back.mapper.MemberMapper;
@@ -39,7 +39,8 @@ public class MemberServiceImpl implements MemberService{
         if(member.isPresent() && passwordEncoder.matches(dto.getPassword(),member.get().getPassword())){
             log.info("로그인 성공! email => "+member.get().getEmail());
             LoginResponseDTO responseDTO = new LoginResponseDTO();
-            return ResponseEntity.ok(new ApiResponse<LoginResponseDTO>(true,mapper.toLoginDto(member.get()),"로그인에 성공하였습니다."));
+            //로그인 시 반환
+            return null;
         }else{
             log.info("로그인 실패");
             return ResponseEntity.ok(new ApiResponse<LoginRequestDTO>(false,dto,"로그인에 실패하였습니다."));

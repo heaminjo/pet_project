@@ -1,8 +1,8 @@
 package com.example.pet_back.mapper;
 
 import com.example.pet_back.domain.login.LoginResponseDTO;
-import com.example.pet_back.domain.login.member.MemberRequestDTO;
-import com.example.pet_back.domain.login.member.MemberResponseDTO;
+import com.example.pet_back.domain.member.MemberRequestDTO;
+import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.entity.Member;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -14,5 +14,5 @@ public interface MemberMapper {
 
     //entity -> dto
     public MemberResponseDTO toDto(Member member);
-    public LoginResponseDTO toLoginDto(Member member);
+
 }
