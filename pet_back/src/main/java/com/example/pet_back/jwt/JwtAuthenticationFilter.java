@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Map;
 
 @Component
 @Log4j2
@@ -31,6 +32,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //request에서 토큰 가져오기
         String token = getToken(request);
 
+        log.info("토큰 정보 확인 => "+token);
+
+        //토큰이 존재할 경우
+        if(token != null  && !token.equalsIgnoreCase("null")){
+
+            //토큰 검증 , claims 가져오기
+
+        }
     }
 
     //요청 시 request로 부터 토큰을 가져오는 메서드
@@ -47,6 +56,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             //전부 만족한다면 "Bearer "를 제외한 실제 토큰 문자열만 추출한다.
             return bearerToken.substring(7);
         }
+
+        //없다면 현재 아무런 정보가 없는 상태 (새 토큰 발행 필요)
         return null;
     }
 }
