@@ -7,6 +7,7 @@ import Login from "./page/auth/Login";
 import Join from "./page/auth/Join";
 import BoardList from "./components/Board/BoardList";
 import BoardInsertForm from "./components/Board/BoardInsertForm";
+import BoardDetail from "./components/Board/BoardDetail";
 
 //컨텍스트(useContext)
 //로그인 여부부를 전역변수로 뿌리기 위한것
@@ -27,6 +28,7 @@ function App() {
             <Route path="/join" element={<Join />} />
             <Route path="/boardList" element={<BoardList />} />
             <Route path="/boardInsertForm" element={<BoardInsertForm />} />
+            <Route path="/boardDetail/:board_Id" element={<BoardDetail />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -9,4 +9,6 @@ public interface BoardService {
 	//** selectList
 	List<BoardDTO> selectList();
 
+	//** selectOne
+	BoardDTO selectOne(int id);
 }

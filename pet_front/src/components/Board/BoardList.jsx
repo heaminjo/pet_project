@@ -42,7 +42,7 @@ export default function BoardList({ isLogin }) {  // 나중에 login 여부에 �
             {listData.map((b) => (
               <tr key={b.board_id}>
                 <td className="center">{b.board_id}</td>
-                <td className="center">{b.title}</td>
+                <td className="center" onClick={() => navigate(`/boardDetail/${b.board_id}`)}>{b.title}</td>
                 <td className="center">{b.name}</td>
                 <td className="center">{b.views}</td>
                 <td className="center">{b.reg_date}</td>

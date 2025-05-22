@@ -4,6 +4,7 @@ const { default: styled } = require("styled-components");
 
 const boardListContainer = styled.div`
   margin-top: 150px;
+  height: 1000px;
     table {
       width: 60%; 
       margin-Left: auto;
@@ -19,7 +20,7 @@ const boardListContainer = styled.div`
         }
       } //thead
       tbody {
-        tr {
+        tr{
           td {
             font-size: 18px;
             font-family: "GmarketSansMedium";
@@ -42,9 +43,13 @@ const boardListContainer = styled.div`
               border-radius: 10px;
               cursor: pointer;
               background-color: #f8e776;
+              border-bottom: none;
             }
           }
-        }    
+        }
+        tr:last-child td {
+        border-bottom: none;
+        }      
       } //tbody 
     } //table
   .center {

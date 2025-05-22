@@ -4,15 +4,12 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.pet_back.domain.login.BoardDTO;
 import com.example.pet_back.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/board")
@@ -32,8 +29,18 @@ public class BoardController {
 		} else {
 			return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("BoardList NotFound");
 		}
-
 	} //selectList()
-	
+
+	//** BoardDetail
+	@GetMapping("/boardDetail/{id}")
+	public ResponseEntity<?> selectOne(@PathVariable("id") int id) {
+		BoardDTO dto = boardService.selectOne(id);
+		if(dto!=null){
+			return ResponseEntity.ok(dto);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("게시글을 찾을 수 없습니다");
+		}
+	}
+
 
 }

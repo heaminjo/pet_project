@@ -12,4 +12,8 @@ public interface BoardMapper {
 	//** selectList
 		List<BoardDTO> selectList();
 
+	//** selectOne
+	BoardDTO selectOne(int id);
+
+
 }
