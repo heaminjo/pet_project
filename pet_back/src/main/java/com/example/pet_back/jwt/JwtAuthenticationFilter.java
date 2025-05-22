@@ -26,6 +26,9 @@ import java.util.Objects;
 @Component
 @Log4j2
 @RequiredArgsConstructor
+//login요청 메서드 보다 먼저 실행되서
+//우선 토큰이 있는지 확인한다 .
+//있다면 인증을 실행 없다면 인증 실행할 필요없이 바로 넘긴다.
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenProvider tokenProvider;
@@ -36,6 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     // HttpServletRequest request : 클라이언트가 보낸 HTTP 요청
     // HttpServletResponse response : 서버가 클라이언트에 반환할 응답
     // FilterChain filterChain :
+    //
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 

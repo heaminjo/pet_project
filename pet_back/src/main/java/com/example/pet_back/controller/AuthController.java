@@ -21,12 +21,12 @@ public class AuthController {
     //회원 가입
     @PostMapping("/join")
     public ResponseEntity<?> join(@Validated @RequestBody MemberRequestDTO memberRequestDTO) {
-        return authService.join(memberRequestDTO);
+        return ResponseEntity.ok(authService.join(memberRequestDTO));
     }
 
     //로그인
     @PostMapping("/login")
-    public ResponseEntity<TokenDTO> login(@RequestBody LoginRequestDTO loginRequestDTO){
+    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO){
         return ResponseEntity.ok(authService.login(loginRequestDTO));
     }
 }
