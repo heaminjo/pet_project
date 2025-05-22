@@ -44,35 +44,40 @@ public class AuthServiceImpl implements  AuthService{
     @Override
 
     public TokenDTO login(LoginRequestDTO dto) {
-        //email과 pw기반으로 AuthenticationToken 생성
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(
-                        dto.getEmail(),dto.getPassword()
-                );
+        try {
+            //email과 pw기반으로 AuthenticationToken 생성
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(
+                            dto.getEmail(), passwordEncoder.encode(dto.getPassword())
+                    );
+            log.info("AuthServiceImple : email => " + authenticationToken.getName());
+            //실제 검증(비밀번호 체크)
+            //사용자의 ID/비밀번호(authenticationToken)를 받아 인증 절차 실행 후 인증객체(Authentication) 생성
+            //여기에서 DB조회가 이루어지며 권한(role)을 포함한 Authentication객체 반환
+            Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+            log.info("Authentication => " + authentication);
 
-        //실제 검증(비밀번호 체크)
-        //사용자의 ID/비밀번호(authenticationToken)를 받아 인증 절차 실행 후 인증객체(Authentication) 생성
-        //여기에서 DB조회가 이루어지며 권한(role)을 포함한 Authentication객체 반환
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        log.info("Authentication => " + authentication);
+            //인증 정보 기반으로 토큰 생성
+            //로그인 직후 이므로 refreshToken과  AccessToken 모두 생성해서 발급한다.
+            TokenDTO tokenDTO = tokenProvider.generateTokenDto(authentication);
 
-        //인증 정보 기반으로 토큰 생성
-        //로그인 직후 이므로 refreshToken과  AccessToken 모두 생성해서 발급한다.
-        TokenDTO tokenDTO = tokenProvider.generateTokenDto(authentication);
+            log.info("토큰 발급 => " + tokenDTO);
 
-        log.info("토큰 발급 => " + tokenDTO);
-
-        //payload에서 userId 꺼내오기
+            //payload에서 userId 꺼내오기
 
 
-        //RefreshToken 저장하기
-        RefreshToken refreshToken = RefreshToken.builder()
-                .userId(authentication.getName())
-                .token(tokenDTO.getRefreshToken())
-                .build();
+            //RefreshToken 저장하기
+            RefreshToken refreshToken = RefreshToken.builder()
+                    .userId(authentication.getName())
+                    .token(tokenDTO.getRefreshToken())
+                    .build();
 
-        refreshTokenRepository.save((refreshToken));
-        return tokenDTO;
+            refreshTokenRepository.save((refreshToken));
+            return tokenDTO;
+        } catch (Exception e) {
+            log.info("로그인 중 에러 발생 =>"+e.getMessage());
+        }
+        return null;
     }
 
     //회원가입

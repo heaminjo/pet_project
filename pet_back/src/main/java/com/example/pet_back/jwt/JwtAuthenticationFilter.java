@@ -104,6 +104,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         //없다면 현재 아무런 정보가 없는 상태 (새 토큰 발행 필요)
+        //따라서 null이 반환 되고 null일 경우 인증 할 필요가 없으니 바로 filterChain.doFilter(request,response);로 건너간다
         return null;
     }
 }
