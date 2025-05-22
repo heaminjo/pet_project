@@ -45,12 +45,6 @@ public class AuthServiceImpl implements  AuthService{
 
     public ApiResponse<?> login(LoginRequestDTO dto) {
         try {
-
-            Member member = memberRepository.findByEmail(dto.getEmail()).orElseThrow();
-            log.info("DB 조회 멤버"+member.getEmail());
-            if(passwordEncoder.matches(dto.getPassword(), member.getPassword())){
-                log.info("비밀번호도 일치");
-            }
             //email과 pw기반으로 AuthenticationToken 생성
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(
@@ -69,7 +63,6 @@ public class AuthServiceImpl implements  AuthService{
 
             log.info("토큰 발급 => " + tokenDTO);
 
-            //payload에서 userId 꺼내오기
 
             //RefreshToken DB 저장하기
             RefreshToken refreshToken = RefreshToken.builder()

@@ -41,12 +41,8 @@ export default function Login() {
   //로그인 버튼 클릭
   const clickLogin = async () => {
     const result = await MemberApi.login(watch("email"), watch("password"));
-    if (result) {
+    if (result.success) {
       alert("로그인 성공!");
-
-      //로그인 성공 시 localStorage에 id와 name이 담깁니다.
-      localStorage.setItem("loginId", result.data.id);
-      localStorage.setItem("loginName", result.data.name);
       //전역변수에 로그인 여부 저장
       setIsLogin(true);
       navigate("/");
