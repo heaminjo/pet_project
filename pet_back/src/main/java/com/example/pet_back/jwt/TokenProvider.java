@@ -1,6 +1,7 @@
 package com.example.pet_back.jwt;
 
 import com.example.pet_back.domain.login.TokenDTO;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -38,8 +39,10 @@ public class TokenProvider {
                 .map(GrantedAuthority::getAuthority)
                 .orElse(null); //없을 경우 null
 
-        //유효 시간 설정
-        //Acc토큰의 유효시간은 생성된 시점에서 30qns로 한다
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        Long userId = userDetails.getId();
+
+        log.info("userId => " +userId);
 
 
         //Jwts는 토큰 생성 보관을 지원하는 클래스이다.
@@ -55,7 +58,7 @@ public class TokenProvider {
                 //HS512 알고리즘으로 서명한다.
                 .signWith(SECRET_KEY,SignatureAlgorithm.HS512)
                 .claim("role",role)  //payload에 권한 저장
-                .setSubject(authentication.getName()) // payload에 이메일 저장
+                .setSubject(String.valueOf(userId)) // payload에 이메일 저장
                 //토큰을 발급한 주체
                 .setIssuer("몽냥마켓")
                 //토큰 발급시간
@@ -134,4 +137,13 @@ public class TokenProvider {
                 //JWT에 Claims영역을 가져온다. 반환타입은 Map
                 .getBody();
     }
+
+//    //
+//    public Claims getClaims(String token) {
+//        return Jwts.parserBuilder()
+//                .setSigningKey(SECRET_KEY)
+//                .build()
+//                .parseClaimsJws(token)
+//                .getBody();
+//    }
 }

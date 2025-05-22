@@ -1,9 +1,9 @@
 package com.example.pet_back.controller;
 
 import com.example.pet_back.domain.login.LoginRequestDTO;
+import com.example.pet_back.domain.login.TokenDTO;
 import com.example.pet_back.domain.member.MemberRequestDTO;
 import com.example.pet_back.service.AuthService;
-import com.example.pet_back.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -26,7 +26,7 @@ public class AuthController {
 
     //로그인
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO){
-        return authService.login(loginRequestDTO);
+    public ResponseEntity<TokenDTO> login(@RequestBody LoginRequestDTO loginRequestDTO){
+        return ResponseEntity.ok(authService.login(loginRequestDTO));
     }
 }

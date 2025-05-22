@@ -7,10 +7,12 @@ import com.example.pet_back.domain.login.TokenDTO;
 import com.example.pet_back.domain.member.MemberRequestDTO;
 import com.example.pet_back.entity.Address;
 import com.example.pet_back.entity.Member;
+import com.example.pet_back.entity.RefreshToken;
 import com.example.pet_back.jwt.TokenProvider;
 import com.example.pet_back.mapper.MemberMapper;
 import com.example.pet_back.repository.AddressRepository;
 import com.example.pet_back.repository.MemberRepository;
+import com.example.pet_back.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -34,13 +36,14 @@ public class AuthServiceImpl implements  AuthService{
     private final MemberRepository memberRepository;
     private final AddressRepository addressRepository;
     private final MemberMapper mapper;
+    private final RefreshTokenRepository refreshTokenRepository;
     //인증 관련 설정을 구성하기 위한 클래스이며 Authentication을 반환
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     //로그인
     @Override
 
-    public ResponseEntity<?> login(LoginRequestDTO dto) {
+    public TokenDTO login(LoginRequestDTO dto) {
         //email과 pw기반으로 AuthenticationToken 생성
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(
@@ -59,8 +62,17 @@ public class AuthServiceImpl implements  AuthService{
 
         log.info("토큰 발급 => " + tokenDTO);
 
+        //payload에서 userId 꺼내오기
 
-        return null;
+
+        //RefreshToken 저장하기
+        RefreshToken refreshToken = RefreshToken.builder()
+                .userId(authentication.getName())
+                .token(tokenDTO.getRefreshToken())
+                .build();
+
+        refreshTokenRepository.save((refreshToken));
+        return tokenDTO;
     }
 
     //회원가입
