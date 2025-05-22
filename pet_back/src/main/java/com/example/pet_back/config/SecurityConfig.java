@@ -46,7 +46,12 @@ public class SecurityConfig {
         //1. jwtAuthenticationFilter(jwt 인증 필터)가 먼저 실행 후 요청 헤더의 JWT 토큰 검사 후 인증 객체 생성 혹은 실패 처리
         //2. 그 다음 UsernamePasswordAuthenticationFilter 가 실행 되어 로그인을 처리
         //3. 만약 JWT 토큰이 유효할 경우 이 후 필터는 이미 인증된 상태로 요청 처리(로그인 유지의 경우)
+        //dd
 
+        //http의 기본 설정들 비활성화
+        // httpBasic: 요청마다 사용자 아이디와 비밀번호를 헤더에 담아 보내느 방식. jwt는 해당 방식을 안쓴다.
+        // formLogin : 기본 로그인 폼을 비활성화 jwt는 토큰을 헤더에 담아 보내므로 스프링이 제공하는 폼 로그인 UI가 필요없다.
+        // logout : d
         return http.httpBasic(httpBasic -> httpBasic.disable()) // HTTP 기본 인증 비활성화
                 .formLogin(formLogin -> formLogin.disable()) // formLogin 비활성화
                 .logout(logout -> logout.disable()) // logout 비활성화
