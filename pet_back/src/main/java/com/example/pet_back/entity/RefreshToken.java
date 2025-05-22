@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor @AllArgsConstructor
 public class RefreshToken {
     @Id
-    private String userId;
+    private Long userId;
 
     @Column(nullable = false)
     private String token;

@@ -138,12 +138,25 @@ public class TokenProvider {
                 .getBody();
     }
 
-//    //
-//    public Claims getClaims(String token) {
-//        return Jwts.parserBuilder()
-//                .setSigningKey(SECRET_KEY)
-//                .build()
-//                .parseClaimsJws(token)
-//                .getBody();
-//    }
+    //토큰에서 id 추출
+    public Long getUserId(String token){
+        Claims claims = parseClaims(token);
+        //userId를 Long 타입으로 변환하여 반환
+        return Long.parseLong(claims.getSubject());
+    }
+    
+    public String getRole(String token){
+        Claims claims = parseClaims(token);
+        //권한 반환
+        return claims.get("role",String.class);
+    }
+
+    //Claims 파싱 분석
+    private Claims parseClaims(String token){
+        return Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
 }

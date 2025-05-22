@@ -71,10 +71,9 @@ public class AuthServiceImpl implements  AuthService{
 
             //payload에서 userId 꺼내오기
 
-
-            //RefreshToken 저장하기
+            //RefreshToken DB 저장하기
             RefreshToken refreshToken = RefreshToken.builder()
-                    .userId(authentication.getName())
+                    .userId(tokenProvider.getUserId(tokenDTO.getAccessToken()))
                     .token(tokenDTO.getRefreshToken())
                     .expiration(tokenDTO.getAccessTokenExpiresln())
                     .build();
