@@ -13,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -33,7 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenProvider tokenProvider;
     private final MemberRepository memberRepository;
-
+    private final CustomUserDetailsService customUserDetailsService;
 
     //필터의 핵심 로직 구현
     // HttpServletRequest request : 클라이언트가 보낸 HTTP 요청
@@ -57,16 +58,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             log.info("토큰 Claims 사용자정보 만료시간 => " + claims);
 
             //토큰에 사용자 정보에서 userId를 가져온다
-            String userId = (String) claims.get("userId");
+            Long userId = (Long) claims.get("userId");
 
             //유저 권한 가져오기(USER or ADMIN)
             String role = (String) claims.get("role");
+
+            //유저 정보를 가져온다.
+            UserDetails userDetails = customUserDetailsService.loadUserById(userId);
 
             //인증 객체 수동 생성
             //AbstractAuthenticationToken 인증을 구현한 클래스
             //유저의 정보와 권한이 들어간다.
             AbstractAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    userId,  //요청한 주체 (Principal)
+                    userDetails,  //요청한 주체 (Principal)
                     null,  //일반적으로 비밀번호가 들어가지만 JWT은 토큰 자체가 인증 수단이므로 null로 처리한다.
                     Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role)) //role은 단일값
             );
@@ -75,6 +79,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             //단순히 사용자ID와 권한정보 이외에도 접속 IP 주소 , 세션Id등을 저장할 수 있다.
             //setDetails에 저장
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+            log.info("인증객체 =>" ,authenticationToken);
 
             // 빈 SecurityContext 객체를 생성한다
             //SecurityContextHolder 로 부터 생성

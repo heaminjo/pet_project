@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,8 +46,8 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public ResponseEntity<?> selectOne(CustomUserDetails userDetails) {
-        Member member = memberRepository.findById(userDetails.getMember().getId()).orElseThrow(()-> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+    public ResponseEntity<?> selectOne(UserDetails userDetails) {
+        Member member = memberRepository.findById().orElseThrow(()-> new UsernameNotFoundException("존재하지 않는 회원입니다."));
         return ResponseEntity.ok(mapper.toDto(member));
     }
 }
