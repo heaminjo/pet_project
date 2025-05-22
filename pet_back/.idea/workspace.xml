@@ -4,115 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-<<<<<<< HEAD
-    <list default="true" id="e538ab45-0dd9-4b70-9c81-b140948b1b16" name="변경" comment="" />
-=======
-    <list default="true" id="e538ab45-0dd9-4b70-9c81-b140948b1b16" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet/PetApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet/config/test" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet/constant/test" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet/controller/test" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet/domain/test" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet/entity/Member.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet/entity/test" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet/repository/test" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet/service/test" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/example/pet/PetApplicationTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/src/api/AddressApi.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/test" beforeDir="false" />
-    </list>
->>>>>>> 조해민-branch
+    <list default="true" id="ce94af43-ae82-4e55-bb2b-6016175262a9" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExternalProjectsData">
-    <projectState path="$PROJECT_DIR$">
-      <ProjectState />
-    </projectState>
-  </component>
-  <component name="ExternalProjectsManager">
-    <system id="GRADLE">
-      <state>
-        <projects_view>
-          <tree_state>
-            <expand>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-<<<<<<< HEAD
-                <item name="pet" type="f1a62948:ProjectNode" />
-=======
-                <item name="pet_back" type="f1a62948:ProjectNode" />
->>>>>>> 조해민-branch
-              </path>
-            </expand>
-            <select />
-          </tree_state>
-        </projects_view>
-      </state>
-    </system>
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-        <option value="Interface" />
-        <option value="Enum" />
-      </list>
-    </option>
-  </component>
-  <component name="Git.Settings">
-    <option name="PUSH_AUTO_UPDATE" value="true" />
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
-  </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 3
-}</component>
-  <component name="ProjectId" id="2xMXz54cPeVc4bS09G9MfRE5PO8" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Gradle.pet_back [:com.example.pet_back.PetApplication.main()].executor": "Run",
-    "Gradle.pet_back [:com.example.pet_back.PetBackApplication.main()].executor": "Run",
-    "Gradle.pet_back 빌드.executor": "Run",
+    "Application.PetBackApplication.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/devv/pet_back",
-    "project.structure.last.edited": "프로젝트",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "vcs.Git",
-    "애플리케이션.PetApplication.executor": "Run",
-    "애플리케이션.PetBackApplication.executor": "Run",
-    "애플리케이션.Pet_backApplication.executor": "Run"
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "정서영-branch",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
   }
 }]]></component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\devv\pet_back" />
-      <recent name="C:\devv\pet_back\src\main\java\com\example\pet_back" />
-      <recent name="C:\devv\pet_back\src\main\java\com\example\pet_back\entity" />
-      <recent name="C:\devv\pet_back\src\main\java\com\example\pet_back\domain" />
-      <recent name="C:\devv\pet_back\src\main\java\com\example\pet_back\controller" />
-    </key>
-  </component>
   <component name="RunManager">
     <configuration name="PetBackApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.example.pet_back.PetBackApplication" />
       <module name="pet_back.main" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.example.pet_back.PetBackApplication" />
+          <option name="PATTERN" value="com.example.pet_back.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -122,30 +39,18 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="애플리케이션.PetBackApplication" />
+        <item itemvalue="Application.PetBackApplication" />
       </list>
     </recent_temporary>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="애플리케이션 수준" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
-    <task active="true" id="Default" summary="디폴트 작업">
-      <changelist id="e538ab45-0dd9-4b70-9c81-b140948b1b16" name="변경" comment="" />
-      <created>1747749175476</created>
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ce94af43-ae82-4e55-bb2b-6016175262a9" name="Changes" comment="" />
+      <created>1747878240836</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1747749175476</updated>
+      <updated>1747878240836</updated>
     </task>
     <servers />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
   </component>
 </project>
