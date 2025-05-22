@@ -25,6 +25,14 @@ export default function BoardList({ isLogin }) {  // 나중에 login 여부에 �
   return (
     <BoardListStyle>
       <div className="boardListContainer">
+        <div className="boardListMenuContainer">
+          <ul className="boardListMenu">
+            <li>공지사항</li>
+            <li>커뮤니티</li>
+            <li>문의/FAQ</li>
+            <li onClick={() => navigate("/boardList")}>게시판</li>
+          </ul>
+        </div>
         <table>                                 
           <thead>
             <tr>

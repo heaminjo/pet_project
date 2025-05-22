@@ -5,6 +5,34 @@ const { default: styled } = require("styled-components");
 const boardListContainer = styled.div`
   margin-top: 150px;
   height: 1000px;
+    .boardListMenuContainer {
+      width: 100%;
+      height: 100px;
+      margin: 20px 0;
+      .boardListMenu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;          
+        justify-content: center; 
+        align-items: center;  
+        height: 100%;           
+        li {
+          margin: 0 20px;
+          font-size: 20px;
+          font-family: "GmarketSansMedium";
+          cursor: pointer;
+          padding: 8px 12px;
+          transition: background-color 0.3s;
+        }
+        li:hover {
+        background-color: #f8e776;
+        border-radius: 4px;
+        }
+      }  //boardListMenu
+    } //boardListMenuContainer
+      
+    }
     table {
       width: 60%; 
       margin-Left: auto;
