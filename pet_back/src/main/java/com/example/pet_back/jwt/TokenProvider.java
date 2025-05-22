@@ -1,12 +1,16 @@
 package com.example.pet_back.jwt;
 
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.Map;
 
 //JWT 토큰을 생성 , 파싱 ,검증하는 클래스
@@ -19,7 +23,30 @@ public class TokenProvider {
 
 
     //토큰 생성
+    public String createToken(Map<String,Object> claimsList){
+        //유효 시간 설정
+        //토큰의 유효시간은 생성된 시점에서 1일로 한다
+        Date expiryDate = Date.from(
+                Instant.now().plus(1, ChronoUnit.DAYS));
 
+
+        //Jwts는 토큰 생성 보관을 지원하는 클래스이다.
+        //Json 생성,서명,인코딩,디코딩,파싱등  토큰 관리 기능 제공
+
+        //JWT 토큰 생성 과정
+        return Jwts.builder()
+                //header에 들어갈 내용 및 서명을 위한 비밀키
+                //HS512 알고리즘으로 서명한다.
+                .signWith(SECRET_KEY,SignatureAlgorithm.HS512)
+                .setClaims(claimsList)
+                //토큰을 발급한 주체
+                .setIssuer("몽냥마켓")
+                //토큰 발급시간
+                .setIssuedAt(new Date())
+                //토큰 만료 시간
+                .setExpiration(expiryDate)
+                .compact();
+    }
 
     //전달 받은 토큰 검증
     //Claim 정보 (사용자 정보, 만료 시간 등)을 추출해서 Map<String,Object> 형태로 반환
