@@ -30,7 +30,7 @@ export default function Cart() {
           <h2> 장바구니 </h2>
         </div>
         <div className='body'>
-          {goods.map((item, index) => (
+          {/* {goods.map((item, index) => (
             <div className='left' key={index}>
               <div className='prodleft'>
                 <img src={cartImage1} alt='상품1이미지' className='cartimage' onClick={() => navigate('/purchase')} />
@@ -42,7 +42,7 @@ export default function Cart() {
                 <img src={seller} className='seller' alt='판매자' /> ROYAL CANIN
               </div>
             </div>
-          ))}
+          ))} */}
           <div className='right'>
             <table>
               <tr>

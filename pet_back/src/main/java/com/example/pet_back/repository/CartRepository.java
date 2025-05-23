@@ -25,7 +25,7 @@ public interface CartRepository extends JpaRepository<Cart, CartId> {
             " FROM Goods g" +
             " JOIN Cart c ON g.goods_id = c.goods_id" +
             " JOIN Member m ON m.member_id = c.member_id" +
-            " WHERE m.name = :name") // JPQL - DTO 사용시
-    List<GoodsDTO> findAllByName(@Param("name") String name);
+            " WHERE m.member_id = :id") // JPQL - DTO 사용시
+    List<GoodsDTO> findAllById(@Param("id") Long id);
 
 }
