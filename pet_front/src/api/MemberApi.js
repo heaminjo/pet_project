@@ -8,7 +8,8 @@ const MemberApi = {
       email: email,
       password: password,
     };
-    return await axios.post(`${KH_DOMAIN}/auth/login`, login);
+    const result = await axios.post(`${KH_DOMAIN}/auth/login`, login);
+    return result.data;
   },
   //이메일 중복 체크
   dupEmail: async (email) => {
@@ -21,6 +22,18 @@ const MemberApi = {
   //회원가입
   join: async (newUser) => {
     const result = await axios.post(`${KH_DOMAIN}/auth/join`, newUser);
+    return result.data.body;
+  },
+
+  //회원 조회
+  detail: async () => {
+    const result = await axios.get(`${KH_DOMAIN}/member/detail`, {
+      headers: {
+        Authorization: `${localStorage.getItem(
+          "grantType"
+        )} ${localStorage.getItem("accessToken")}`,
+      },
+    });
     return result.data;
   },
 };

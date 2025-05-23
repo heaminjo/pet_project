@@ -1,6 +1,7 @@
 package com.example.pet_back.entity;
 
 
+import com.example.pet_back.constant.GRADE;
 import com.example.pet_back.constant.MEMBERSTATE;
 import com.example.pet_back.constant.ROLE;
 import jakarta.persistence.*;
@@ -37,6 +38,11 @@ import lombok.*;
     private String birth; //생년월일
 
     private String image_file; //프로필 이미지
+
+    //등급(첫 회원 가입 시 NUEBIE)
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private GRADE grade = GRADE.NEWBIE;
 
     //회원 권한(ADMIN,USER,)
     //String으로 테이블에 저장하며 Builder.Default로 처음 생성 시 USER 로 초기화
