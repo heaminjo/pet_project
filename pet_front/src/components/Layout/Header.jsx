@@ -30,6 +30,9 @@ export default function Header() {
                 <span>{localStorage.getItem("loginName")}님 환영합니다</span>
               </li>
               <li>
+                <span>마이페이지</span>
+              </li>
+              <li>
                 <span onClick={() => clickLogout()}>로그이웃</span>
               </li>
             </>
