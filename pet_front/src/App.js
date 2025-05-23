@@ -1,10 +1,16 @@
-import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Layout from "./page/layout/Layout";
-import Main from "./page/main/Main";
-import React, { useState } from "react";
-import Login from "./page/auth/Login";
-import Join from "./page/auth/Join";
+import './App.css';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Layout from './page/layout/Layout';
+import Main from './page/main/Main';
+import React, { useState } from 'react';
+import Login from './page/auth/Login';
+import Join from './page/auth/Join';
+import Cart from './components/Layout/cart/Cart';
+import Order from './components/Layout/order/Order';
+import OrderDetail from './components/Layout/orderdetail/OrderDetail';
+import Pay from './components/Layout/pay/Pay';
+
+import Delivery from './components/Layout/delivery/Delivery';
 
 //컨텍스트(useContext)
 //로그인 여부부를 전역변수로 뿌리기 위한것
@@ -20,9 +26,15 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
-            <Route path="/" element={<Main />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/join" element={<Join />} />
+            <Route path='/' element={<Main />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/join' element={<Join />} />
+            <Route path='/cart' element={<Cart />} />
+            <Route path='/order' element={<Order />} />
+            <Route path='/orderdetail' element={<OrderDetail />} />
+            <Route path='/pay' element={<Pay />} />
+
+            <Route path='/delivery' element={<Delivery />} />
           </Route>
         </Routes>
       </BrowserRouter>
