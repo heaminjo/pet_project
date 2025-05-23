@@ -30,11 +30,10 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/join' element={<Join />} />
             <Route path='/cart' element={<Cart />} />
+            <Route path='/delivery' element={<Delivery />} />
             <Route path='/order' element={<Order />} />
             <Route path='/orderdetail' element={<OrderDetail />} />
             <Route path='/pay' element={<Pay />} />
-
-            <Route path='/delivery' element={<Delivery />} />
           </Route>
         </Routes>
       </BrowserRouter>
