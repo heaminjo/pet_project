@@ -14,8 +14,5 @@ public class MemberResponseDTO {
     private String name;
     private String phone;
     private String birth;
-    private String address1;
-    private String address2;
-    private String addressZip;
     private String image_file;
 }
