@@ -24,5 +24,17 @@ const MemberApi = {
     const result = await axios.post(`${KH_DOMAIN}/auth/join`, newUser);
     return result.data;
   },
+
+  //회원 조회
+  detail: async () => {
+    const result = await axios.get(`${KH_DOMAIN}/member/detail`, {
+      headers: {
+        Authorization: `${localStorage.getItem(
+          "grantType"
+        )} ${localStorage.getItem("accessToken")}`,
+      },
+    });
+    return result.data;
+  },
 };
 export default MemberApi;

@@ -44,6 +44,8 @@ export default function Login() {
     if (result.success) {
       alert("로그인 성공!");
       localStorage.setItem("loginName", result.data.memberName);
+      localStorage.setItem("grantType", result.data.grantType);
+      localStorage.setItem("accessToken", result.data.accessToken);
 
       //전역변수에 로그인 여부 저장
       setIsLogin(true);
