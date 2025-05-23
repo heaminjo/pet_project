@@ -9,7 +9,7 @@ import Cart from './components/Layout/cart/Cart';
 import Order from './components/Layout/order/Order';
 import OrderDetail from './components/Layout/orderdetail/OrderDetail';
 import Pay from './components/Layout/pay/Pay';
-
+import MyPage from './page/mypage/MyPage';
 import Delivery from './components/Layout/delivery/Delivery';
 
 //컨텍스트(useContext)
@@ -34,6 +34,7 @@ function App() {
             <Route path='/order' element={<Order />} />
             <Route path='/orderdetail' element={<OrderDetail />} />
             <Route path='/pay' element={<Pay />} />
+            <Route path='/mypage' element={<MyPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
