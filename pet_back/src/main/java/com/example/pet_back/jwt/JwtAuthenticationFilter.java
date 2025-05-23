@@ -52,20 +52,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         //토큰이 존재할 경우
         if(token != null  && !token.equalsIgnoreCase("null")) {
-
+            
+            log.info("토큰 있음");
+            
             //토큰 검증 , claims 가져오기
             Map<String, Object> claims = tokenProvider.validateToken(token);
             log.info("토큰 Claims 사용자정보 만료시간 => " + claims);
 
-            //토큰에 사용자 정보에서 userId를 가져온다
-            Long userId = (Long) claims.get("userId");
-
+            //토큰에 사용자 정보(claims)에서 userId를 가져온다
+            Object idStr =  claims.get("sub");
+            Long userId = Long.parseLong((String) idStr);
+            log.info("재발급 userId " + userId);
             //유저 권한 가져오기(USER or ADMIN)
             String role = (String) claims.get("role");
 
             //유저 정보를 가져온다.
-            UserDetails userDetails = customUserDetailsService.loadUserById(userId);
+            CustomUserDetails userDetails = customUserDetailsService.loadUserById(userId);
 
+            log.info("userDetails"+userDetails.getMember().getId());
             //인증 객체 수동 생성
             //AbstractAuthenticationToken 인증을 구현한 클래스
             //유저의 정보와 권한이 들어간다.
@@ -80,13 +84,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             //setDetails에 저장
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-            log.info("인증객체 =>" ,authenticationToken);
+
 
             // 빈 SecurityContext 객체를 생성한다
             //SecurityContextHolder 로 부터 생성
             SecurityContext context = SecurityContextHolder.createEmptyContext();
             //검증 결과로 생성된 인증 정보를 저장
             context.setAuthentication(authenticationToken);
+            log.info("context =>" ,context);
             //최종적으로 현재 요청에 Context를 설정
             // 이후 컨트롤러나 서비스에서 인증된 사용자로 인식
             SecurityContextHolder.setContext(context);

@@ -8,5 +8,5 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public interface MemberService {
     public ResponseEntity<Boolean> emailCheck(String email);
-    public ResponseEntity<?> selectOne(UserDetails userDetails );
+    public ResponseEntity<?> selectOne(CustomUserDetails userDetails );
 }

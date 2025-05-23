@@ -25,7 +25,7 @@ public class MemberController {
     }
 
     @GetMapping("/detail")
-    public ResponseEntity<?> memberDetail(@AuthenticationPrincipal UserDetails userDetails){
+    public ResponseEntity<?> memberDetail(@AuthenticationPrincipal CustomUserDetails userDetails){
         return memberService.selectOne(userDetails);
     }
 }

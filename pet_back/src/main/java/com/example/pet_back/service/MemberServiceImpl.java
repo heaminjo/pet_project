@@ -46,8 +46,8 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public ResponseEntity<?> selectOne(UserDetails userDetails) {
-        Member member = memberRepository.findById().orElseThrow(()-> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+    public ResponseEntity<?> selectOne(CustomUserDetails userDetails) {
+        Member member = memberRepository.findById(userDetails.getMember().getId()).orElseThrow(()-> new UsernameNotFoundException("존재하지 않는 회원입니다."));
         return ResponseEntity.ok(mapper.toDto(member));
     }
 }
