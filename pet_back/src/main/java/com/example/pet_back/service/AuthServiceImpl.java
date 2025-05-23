@@ -43,14 +43,8 @@ public class AuthServiceImpl implements  AuthService{
     //로그인
     @Override
 
-    public TokenDTO login(LoginRequestDTO dto) {
+    public ApiResponse<?> login(LoginRequestDTO dto) {
         try {
-
-            Member member = memberRepository.findByEmail(dto.getEmail()).orElseThrow();
-            log.info("DB 조회 멤버"+member.getEmail());
-            if(passwordEncoder.matches(dto.getPassword(), member.getPassword())){
-                log.info("비밀번호도 일치");
-            }
             //email과 pw기반으로 AuthenticationToken 생성
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(
@@ -69,7 +63,6 @@ public class AuthServiceImpl implements  AuthService{
 
             log.info("토큰 발급 => " + tokenDTO);
 
-            //payload에서 userId 꺼내오기
 
             //RefreshToken DB 저장하기
             RefreshToken refreshToken = RefreshToken.builder()
@@ -79,11 +72,12 @@ public class AuthServiceImpl implements  AuthService{
                     .build();
 
             refreshTokenRepository.save((refreshToken));
-            return tokenDTO;
+            //커스텀 응답 객체에 token을 담아 반환
+            return new ApiResponse<TokenDTO>(true,tokenDTO,"로그인에 성공하였습니다.");
         } catch (Exception e) {
             log.info("로그인 중 에러 발생 =>"+e.getMessage());
+            return new ApiResponse<>(false,"아이디 또는 비밀번호가 일치하지 않습니다.");
         }
-        return null;
     }
 
     //회원가입
