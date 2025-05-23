@@ -50,7 +50,7 @@ export default function BoardList({ isLogin }) {  // 나중에 login 여부에 �
             {listData.map((b) => (
               <tr key={b.board_id}>
                 <td className="center">{b.board_id}</td>
-                <td className="center" onClick={() => navigate(`/boardDetail/${b.board_id}`)}>{b.title}</td>
+                <td className="center" onClick={() => navigate(`/boardDetail/${b.board_id}`)} style={{ cursor: "pointer" }}>{b.title}</td>
                 <td className="center">{b.name}</td>
                 <td className="center">{b.views}</td>
                 <td className="center">{b.reg_date}</td>
@@ -73,38 +73,3 @@ export default function BoardList({ isLogin }) {  // 나중에 login 여부에 �
   );
 }
 
-
-
-// 자유게시판 ajax 함수
-// export default function boardList(isLogin){
-
-   
-
-//     let url="/board/boardList"; 
-//     axios.get(url
-//     ).then(response=>{
-//         let listData=response.data;
-//         let resultHtml=
-//         `<table style="width:60%; margin-left: auto; margin-right: auto;">
-//         <tr><td colspan=5 height=30 >게시판</td></tr>
-// 		<tr bgcolor="Gray" >
-// 			<th>NO</th><th>제목</th><th>작성자</th><th>조회수</th><th>작성일</th>
-// 	  	</tr>`
-//         for(let b of listData){
-//             resultHtml+=
-//             `<tr><td>${b.board_id}</td><td>${b.title}</td><td>${b.name}</td>
-// 				<td>${b.views}</td><td>${b.reg_date}</td></tr>`
-//         }
-//         resultHtml+=`<tr><td colspan=5 align="right">
-//                      <button type="button" style="width: 80px; height: 30px; font-size: 18px;">글쓰기</button>
-//                      </td></tr></table>`;
-//         document.getElementById("mainArea").innerHTML=resultHtml;
-//     }).catch(error=>{
-//         if(error.response.status===502){
-//             document.getElementById("mainArea").innerHTML=error.response.data;
-//         }else{
-//             document.getElementById("mainArea").innerHTML
-//             =`게시판을 불러오지 못했습니다. => ${error.message}`;
-//         }
-//     });    
-// }

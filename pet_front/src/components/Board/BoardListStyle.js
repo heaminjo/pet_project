@@ -46,6 +46,7 @@ const boardListContainer = styled.div`
             font-family: "GmarketSansMedium";
           }
         }
+       
       } //thead
       tbody {
         tr{

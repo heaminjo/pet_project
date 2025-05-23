@@ -15,6 +15,12 @@
         select * from board where board_id=#{board_id}
     </select>
 
+    <!-- ** insert-->
+    <insert id="insertBoard" parameterType="com.example.pet_back.domain.login.BoardDTO"
+            useGeneratedKeys="true" keyProperty="board_id">
+        INSERT INTO board (member_id, title, content, views, reg_date)
+        VALUES (1, #{title}, #{content}, 0, NOW())
+    </insert>
 
 
 

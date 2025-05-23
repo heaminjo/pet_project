@@ -15,5 +15,8 @@ public interface BoardMapper {
 	//** selectOne
 	BoardDTO selectOne(int id);
 
+	//** insert
+	int insertBoard(BoardDTO dto);
+
 
 }
