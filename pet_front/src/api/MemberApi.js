@@ -22,7 +22,7 @@ const MemberApi = {
   //회원가입
   join: async (newUser) => {
     const result = await axios.post(`${KH_DOMAIN}/auth/join`, newUser);
-    return result.data;
+    return result.data.body;
   },
 
   //회원 조회

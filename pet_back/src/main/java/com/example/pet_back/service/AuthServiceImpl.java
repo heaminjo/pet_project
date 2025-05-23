@@ -96,9 +96,9 @@ public class AuthServiceImpl implements  AuthService{
             //address 생성 후 저장
             addressRepository.save(new Address(member, dto.getAddress1(), dto.getAddress2(), dto.getAddressZip()));
             log.info("저장된 회원의 식별자 => " + member.getId());
-            return ResponseEntity.ok(new ApiResponse<>(true, "회원가입에 성공하였습니다."));
+            return ResponseEntity.ok().body(new ApiResponse<>(true, "회원가입에 성공하였습니다."));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST,"회원가입에 실패하였습니다.","400"));
+            return ResponseEntity.ok().body(new ApiResponse<>(false,"회원가입에 실패하였습니다."));
         }
     }
 }

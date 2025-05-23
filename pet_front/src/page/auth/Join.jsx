@@ -109,7 +109,8 @@ export default function Join() {
     };
 
     const result = await MemberApi.join(newUser);
-    if (result.success == true) {
+    console.log(result.success);
+    if (result.success) {
       alert("회원가입 성공");
     } else {
       alert("회원가입 실패");
