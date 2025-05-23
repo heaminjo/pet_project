@@ -115,6 +115,7 @@ public class TokenProvider {
                 .compact();
 
         return TokenDTO.builder()
+                .memberName(userDetails.getMember().getName())
                 .grantType(BEARER_TYPE)
                 .accessToken(accessToken)
                 .accessTokenExpiresln(accessTokenExpiresIn.getTime())
