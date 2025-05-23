@@ -1,7 +1,7 @@
 const { default: styled } = require("styled-components");
 
 const boardInsertFormContainer = styled.div`
-  margin-top: 150px;
+  margin-top: 200px;
   min-height: 600px;
   width: 100%;
   height: 1000px;
@@ -60,7 +60,8 @@ const boardInsertFormContainer = styled.div`
       resize: vertical;
       transition: border-color 0.2s;
       &:focus {
-        border-color: #f8e776;
+        border-color :  #f8e776;
+        outline: none;
       }
     }
 

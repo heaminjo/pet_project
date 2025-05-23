@@ -44,8 +44,8 @@ export default function BoardInsertForm() {
               className="contentTextarea"
               value={content}
               onChange={e => setContent(e.target.value)}
-              required
-            ></textarea>
+              required>
+            </textarea>
           </div>
           <div className="buttonRow">
             <button type="submit" className="submitBtn">등록하기</button>
