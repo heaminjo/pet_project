@@ -32,7 +32,6 @@ function App() {
             <Route path="/boardList" element={<BoardList />} />
             <Route path="/boardInsertForm" element={<BoardInsertForm />} />
             <Route path="/boardDetail/:board_Id" element={<BoardDetail />} />
-
             <Route path="/mypage" element={<MyPage />} />
           </Route>
         </Routes>

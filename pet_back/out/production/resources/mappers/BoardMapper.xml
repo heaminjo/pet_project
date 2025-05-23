@@ -20,6 +20,7 @@
             useGeneratedKeys="true" keyProperty="board_id">
         INSERT INTO board (member_id, title, content, views, reg_date)
         VALUES (1, #{title}, #{content}, 0, NOW())
+    <!-- 추후에 로그인 기능 합친 후 #{member_id}로 변경 -->
     </insert>
 
 

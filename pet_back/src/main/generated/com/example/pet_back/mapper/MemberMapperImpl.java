@@ -1,17 +1,16 @@
 package com.example.pet_back.mapper;
 
-import com.example.pet_back.domain.login.member.MemberRequestDTO;
-import com.example.pet_back.domain.login.member.MemberResponseDTO;
-import com.example.pet_back.domain.login.member.MemberResponseDTO.MemberResponseDTOBuilder;
+import com.example.pet_back.domain.member.MemberRequestDTO;
+import com.example.pet_back.domain.member.MemberResponseDTO;
+import com.example.pet_back.domain.member.MemberResponseDTO.MemberResponseDTOBuilder;
 import com.example.pet_back.entity.Member;
 import com.example.pet_back.entity.Member.MemberBuilder;
-import java.time.LocalDateTime;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-05-21T17:08:22+0900",
+    date = "2025-05-23T16:44:07+0900",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 17.0.12 (Oracle Corporation)"
 )
 @Component
@@ -45,9 +44,7 @@ public class MemberMapperImpl implements MemberMapper {
         memberResponseDTO.email( member.getEmail() );
         memberResponseDTO.name( member.getName() );
         memberResponseDTO.phone( member.getPhone() );
-        if ( member.getBirth() != null ) {
-            memberResponseDTO.birth( LocalDateTime.parse( member.getBirth() ) );
-        }
+        memberResponseDTO.birth( member.getBirth() );
         memberResponseDTO.image_file( member.getImage_file() );
 
         return memberResponseDTO.build();

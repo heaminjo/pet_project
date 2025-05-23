@@ -60,7 +60,14 @@ export default function BoardList({ isLogin }) {  // 나중에 login 여부에 �
               <td colSpan={5} align="right">
                 <button 
                   type="button"
-                  onClick={() => navigate("/boardInsertForm")} // 글쓰기 이동 기능 추가 가능
+                  onClick={() => {
+                    if (!isLogin) {
+                      alert("로그인 해주세요");
+                      navigate("/login");
+                    } else {
+                      navigate("/boardInsertForm");
+                    }
+                  }}
                 >
                   글쓰기
                 </button>
