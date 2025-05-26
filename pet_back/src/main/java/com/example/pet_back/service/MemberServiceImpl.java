@@ -66,6 +66,6 @@ public class MemberServiceImpl implements MemberService{
         m.setName(dto.getName());
         m.setBirth(dto.getBirth());
         m.setPhone(dto.getPhone());
-        return ResponseEntity.ok(new ApiResponse<>(true,"회원수정이 완료되었습니다."));
+        return ResponseEntity.ok(new ApiResponse<String>(true,m.getName(),"회원수정이 완료되었습니다."));
     }
 }

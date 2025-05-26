@@ -5,9 +5,10 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import MemberApi from "../../api/MemberApi";
+import { useNavigate } from "react-router-dom";
 //회원 수정 페이지
 export default function MyEdit() {
-  const [user, setUser] = useState([]);
+  const navigate = useNavigate();
 
   //로드 시 회원 정보 불러오기
   useEffect(() => {
@@ -21,8 +22,6 @@ export default function MyEdit() {
       birth: result.birth,
       phone: result.phone,
     });
-
-    console.log(user.name);
   };
 
   //회원 수정 처리
@@ -33,6 +32,11 @@ export default function MyEdit() {
       phone: watch("phone"),
     };
     const result = await MemberApi.update(user);
+    if (result.success) {
+      alert("회원 수정이 완료되었습니다.");
+      localStorage.setItem("loginName", result.data);
+      navigate("/mypage");
+    }
   };
   const schema = yup.object({
     name: yup
@@ -62,11 +66,6 @@ export default function MyEdit() {
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onBlur", // 실시간 검사
-    defaultValues: {
-      name: user.name,
-      birth: user.birth,
-      phone: user.phone,
-    },
   });
   return (
     <MyEditComp>

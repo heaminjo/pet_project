@@ -37,8 +37,16 @@ const MemberApi = {
     return result.data;
   },
 
-  update: async () => {
-    const result = await axios.patch(`${KH_DOMAIN}/member/detail`);
+  //회원 수정정
+  update: async (user) => {
+    const result = await axios.patch(`${KH_DOMAIN}/member/update`, user, {
+      headers: {
+        Authorization: `${localStorage.getItem(
+          "grantType"
+        )} ${localStorage.getItem("accessToken")}`,
+      },
+    });
+    return result.data;
   },
 };
 export default MemberApi;

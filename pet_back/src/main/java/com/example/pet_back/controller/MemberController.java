@@ -32,6 +32,7 @@ public class MemberController {
     //회원 수정(이름,생일,번호)
     @PatchMapping("/update")
     public ResponseEntity<?> memberUpdate(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody UpdateMemberRequestDTO dto){
+        log.info("member update 실행");
         return memberService.memberUpdate(userDetails,dto);
     }
 }
