@@ -1,6 +1,7 @@
 package com.example.pet_back.controller;
 
 import com.example.pet_back.domain.member.MemberResponseDTO;
+import com.example.pet_back.domain.member.UpdateMemberRequestDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -27,5 +28,11 @@ public class MemberController {
     @GetMapping("/detail")
     public ResponseEntity<?> memberDetail(@AuthenticationPrincipal CustomUserDetails userDetails){
         return memberService.selectOne(userDetails);
+    }
+    //회원 수정(이름,생일,번호)
+    @PatchMapping("/update")
+    public ResponseEntity<?> memberUpdate(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody UpdateMemberRequestDTO dto){
+        log.info("member update 실행");
+        return memberService.memberUpdate(userDetails,dto);
     }
 }
