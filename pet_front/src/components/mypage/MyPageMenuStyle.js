@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const MyPageMenuComp = styled.div`
   .side_menu {
-    width: 300px;
+    width: 200px;
     padding: 15px 10px;
     background-color: rgb(255, 251, 195);
     display: flex;

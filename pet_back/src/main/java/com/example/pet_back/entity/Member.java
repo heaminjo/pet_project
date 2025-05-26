@@ -37,6 +37,8 @@ import lombok.*;
     @Column(nullable = false,length = 8)
     private String birth; //생년월일
 
+    private double point;
+
     private String image_file; //프로필 이미지
 
     //등급(첫 회원 가입 시 NUEBIE)

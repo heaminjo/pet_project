@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import MypageMenu from "../../components/MyPageMenu";
+import MypageMenu from "../../components/mypage/MyPageMenu";
 import MyEditComp from "./MyEditStyle";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";

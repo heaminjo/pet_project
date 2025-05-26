@@ -1,15 +1,18 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import MemberApi from "../../api/MemberApi";
 import MyPageComp from "./MyPageStyle";
-import MypageMenu from "../../components/MyPageMenu";
+import MypageMenu from "../../components/mypage/MyPageMenu";
 
 export default function MyPage() {
+  const [user, setUser] = useState([]);
+
   useEffect(() => {
     getLoginUser();
   }, []);
 
   const getLoginUser = async () => {
-    const result = MemberApi.detail();
+    const result = await MemberApi.detail();
+    setUser(result);
     console.log(result);
   };
   return (
@@ -27,7 +30,18 @@ export default function MyPage() {
                 />
               </div>
               <div className="data">
-                <h3>[회원정보]님</h3>
+                <p className="user_name">
+                  <span>{user.name}</span>님
+                </p>
+                <p className="user_email">{user.email}</p>
+              </div>
+              <div className="point">
+                <div className="point_name">
+                  <span>멍코인</span>
+                </div>
+                <div className="print_point">
+                  <span>{user.point}</span>
+                </div>
               </div>
             </div>
             <div className="user_grade">
@@ -39,8 +53,8 @@ export default function MyPage() {
                 />
               </div>
               <div className="grade_text">
-                <p>새싹 등급</p>
-                <p>등급표 알아보기</p>
+                <p className="grade_name">{user.grade}</p>
+                <p>등급 ▶</p>
               </div>
             </div>
           </div>

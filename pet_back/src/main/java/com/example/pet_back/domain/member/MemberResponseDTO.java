@@ -1,5 +1,6 @@
 package com.example.pet_back.domain.member;
 
+import com.example.pet_back.constant.GRADE;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,5 +15,7 @@ public class MemberResponseDTO {
     private String name;
     private String phone;
     private String birth;
+    private double point;
+    private String grade;
     private String image_file;
 }

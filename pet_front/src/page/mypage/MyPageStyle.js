@@ -10,7 +10,7 @@ const MyPageComp = styled.div`
     padding: 40px 0;
     gap: 40px;
     .main_container {
-      width: 950px;
+      width: 100%;
       border: 1px solid #000;
       padding: 20px;
       border: 1px solid #eee;
@@ -19,7 +19,7 @@ const MyPageComp = styled.div`
       flex-direction: column;
       gap: 30px;
       .user_info {
-        height: 300px;
+        height: 250px;
         width: 100%;
         display: flex;
         gap: 20px;
@@ -31,19 +31,50 @@ const MyPageComp = styled.div`
           display: flex;
           gap: 20px;
           .image {
-            width: 250px;
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
             img {
-              width: 200px;
-              height: 200px;
+              width: 150px;
+              height: 150px;
               border-radius: 100%;
             }
           }
           .data {
-            width: 410px;
-            padding: 30px 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            .user_name {
+              font-size: 18px;
+              span {
+                font-size: 20px;
+                font-weight: bold;
+              }
+            }
+            .user_email {
+              font-size: 12px;
+            }
+          }
+          .point {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-left: 1px dashed #ccc;
+
+            .point_name {
+              flex: 1;
+              display: flex;
+              align-items: center;
+            }
+            .print_point {
+              flex: 2;
+              span {
+                font-size: 40px;
+              }
+            }
           }
         }
         .user_grade {
@@ -51,6 +82,7 @@ const MyPageComp = styled.div`
           border: 1px solid rgb(240, 240, 240);
           box-shadow: 3px 3px 3px #ccc;
           .grade_image {
+            padding-top: 20px;
             width: 100%;
             height: 50%;
             display: flex;
@@ -62,8 +94,12 @@ const MyPageComp = styled.div`
             }
           }
           .grade_text {
-            padding: 20px;
+            padding: 10px;
             text-align: center;
+            .grade_name {
+              font-size: 20px;
+              font-weight: bold;
+            }
           }
         }
       }

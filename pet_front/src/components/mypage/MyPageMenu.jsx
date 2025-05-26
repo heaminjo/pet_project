@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import MyPageMenuComp from "./mypage/MyPageMenuStyle";
+import MyPageMenuComp from "./MyPageMenuStyle";
 
 export default function MypageMenu() {
   const navigate = useNavigate();

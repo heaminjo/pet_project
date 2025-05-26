@@ -52,6 +52,9 @@ public class MemberServiceImpl implements MemberService{
     public ResponseEntity<?> selectOne(CustomUserDetails userDetails) {
         //유저 details에서 id 가져와 회원을 가져온다.
         Member member = memberRepository.findById(userDetails.getMember().getId()).orElseThrow(()-> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+
+
+        String grade = member.getGrade().getGradeName();
         return ResponseEntity.ok(mapper.toDto(member));
     }
 
