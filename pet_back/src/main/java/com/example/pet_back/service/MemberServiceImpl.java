@@ -25,6 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -46,6 +47,7 @@ public class MemberServiceImpl implements MemberService{
         return member.isPresent() ? ResponseEntity.ok(true) : ResponseEntity.ok(false);
     }
 
+    //회원 조회
     @Override
     public ResponseEntity<?> selectOne(CustomUserDetails userDetails) {
         //유저 details에서 id 가져와 회원을 가져온다.
@@ -54,7 +56,16 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
+    @Transactional
     public ResponseEntity<?> memberUpdate(CustomUserDetails userDetails, UpdateMemberRequestDTO dto) {
-        return null;
+        Optional<Member> member = memberRepository.findById(userDetails.getMember().getId());
+
+        if(member.isEmpty()) return ResponseEntity.status((HttpStatus.NOT_FOUND)).body("존재하지 않는 회원 입니다.");
+        Member m = member.get();
+
+        m.setName(dto.getName());
+        m.setBirth(dto.getBirth());
+        m.setPhone(dto.getPhone());
+        return ResponseEntity.ok(new ApiResponse<>(true,"회원수정이 완료되었습니다."));
     }
 }

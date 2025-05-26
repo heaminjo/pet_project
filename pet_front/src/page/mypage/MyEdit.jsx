@@ -93,10 +93,10 @@ export default function MyEdit() {
                       id="name"
                       name="name"
                     />
-                    {errors.name && (
-                      <p className="error_message">{errors.name.message}</p>
-                    )}
                   </td>
+                  {errors.name && (
+                    <p className="error_message">{errors.name.message}</p>
+                  )}
                 </tr>
                 <tr>
                   <th>
@@ -110,10 +110,10 @@ export default function MyEdit() {
                       name="birth"
                       placeholder="ex) 20001010"
                     />
-                    {errors.birth && (
-                      <p className="error_message">{errors.birth.message}</p>
-                    )}
                   </td>
+                  {errors.birth && (
+                    <p className="error_message">{errors.birth.message}</p>
+                  )}
                 </tr>
                 <tr>
                   <th>
@@ -127,10 +127,10 @@ export default function MyEdit() {
                       name="phone"
                       placeholder="(-) 빼고 입력"
                     />
-                    {errors.phone && (
-                      <p className="error_message">{errors.phone.message}</p>
-                    )}
                   </td>
+                  {errors.phone && (
+                    <p className="error_message">{errors.phone.message}</p>
+                  )}
                 </tr>
               </tbody>
             </table>
