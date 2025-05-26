@@ -53,5 +53,15 @@ public class BoardController {
 		}
 	}
 
+	@PutMapping("/update/{id}")
+	public ResponseEntity<?> updateBoard(@PathVariable("id") int id, @RequestBody BoardDTO dto) {
+		dto.setBoard_id(id);
+		if (boardService.updateBoard(dto)>0) {
+			return ResponseEntity.ok("수정 성공");
+		} else {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
+		}
+	}
+
 
 }

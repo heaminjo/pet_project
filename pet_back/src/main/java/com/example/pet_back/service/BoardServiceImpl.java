@@ -33,4 +33,9 @@ public class BoardServiceImpl implements BoardService {
 		return boardMapper.insertBoard(dto);
 	}
 
+	@Override
+	public int updateBoard(BoardDTO dto){
+		return boardMapper.updateBoard(dto);
+	}
+
 } //class

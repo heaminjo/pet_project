@@ -27,7 +27,7 @@ export default function BoardEditForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`/board/update/${board_id}`, { title, content });
+      await axios.put(`/board/update/${board_id}`, {board_id, title, content });
       alert("게시글이 수정되었습니다.");
       navigate(`/boardDetail/${board_id}`);
     } catch (err) {
