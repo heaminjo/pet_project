@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import MemberApi from "../../api/MemberApi";
 import { useNavigate } from "react-router-dom";
+
 export default function UpdatePw() {
   const navigate = useNavigate();
   const schema = yup.object({
@@ -18,7 +19,7 @@ export default function UpdatePw() {
       ),
     newPw2: yup
       .string()
-      .oneOf([yup.ref("password")], "비밀번호가 일치하지 않습니다.")
+      .oneOf([yup.ref("newPw1")], "비밀번호가 일치하지 않습니다.")
       .required("비밀번호 확인은 필수 입니다."),
   });
 
@@ -64,7 +65,7 @@ export default function UpdatePw() {
           <hr />
           <form
             className="form_container"
-            onSubmit={handleSubmit(() => UpdatePw())}
+            onSubmit={handleSubmit(() => updatePw())}
           >
             <table>
               <tbody>
