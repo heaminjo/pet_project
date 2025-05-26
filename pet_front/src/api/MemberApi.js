@@ -48,5 +48,17 @@ const MemberApi = {
     });
     return result.data;
   },
+
+  //비밀번호 변경
+  updatePw: async (passwords) => {
+    const result = await axios.patch(`${KH_DOMAIN}/member/update`, passwords, {
+      headers: {
+        Authorization: `${localStorage.getItem(
+          "grantType"
+        )} ${localStorage.getItem("accessToken")}`,
+      },
+    });
+    return result.data;
+  },
 };
 export default MemberApi;
