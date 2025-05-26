@@ -14,19 +14,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @Log4j2
 @RequiredArgsConstructor // private final만
 @RequestMapping(value = "/cart")
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 public class CartController {
 
     private final CartService cartService;
     private final GoodsService goodsService;
     private final MemberService memberService;
 
-    @GetMapping(value = "/cart") // @PathVariable 시 {name} 필수
+    @GetMapping(value = "/list") // @PathVariable 시 {name} 필수
     public ResponseEntity<?> cartList(@AuthenticationPrincipal CustomUserDetails userDetails){ // Cart entity
+        log.info("** CartController => cartList() 실행됨 **");
         return cartService.selectList(userDetails);
     }
 

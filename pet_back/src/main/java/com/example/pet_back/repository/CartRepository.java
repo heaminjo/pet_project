@@ -13,9 +13,8 @@ import java.util.List;
 
 public interface CartRepository extends JpaRepository<Cart, CartId> {
 
-    @Modifying
     @Transactional
-    @Query("SELECT c FROM Cart c WHERE member_id=:userId")
+    @Query("SELECT c FROM Cart c WHERE c.member_id=:userId")
     List<Cart> findCartListByUserId (Long userId);
 
 

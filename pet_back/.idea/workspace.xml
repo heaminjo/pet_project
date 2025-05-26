@@ -20,8 +20,8 @@
       <list>
         <option value="Kotlin Enum" />
         <option value="Enum" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>

@@ -9,6 +9,7 @@ import Cart from './components/Layout/cart/Cart';
 import Order from './components/Layout/order/Order';
 import OrderDetail from './components/Layout/orderdetail/OrderDetail';
 import Pay from './components/Layout/pay/Pay';
+import WithDraw from './components/Layout/withdraw/WithDraw';
 import MyPage from './page/mypage/MyPage';
 import Delivery from './components/Layout/delivery/Delivery';
 
@@ -29,12 +30,13 @@ function App() {
             <Route path='/' element={<Main />} />
             <Route path='/login' element={<Login />} />
             <Route path='/join' element={<Join />} />
-            <Route path='/cart' element={<Cart />} />
+            <Route path='/mypage' element={<MyPage />} />
+            <Route path='/cart/list' element={<Cart />} />
             <Route path='/delivery' element={<Delivery />} />
             <Route path='/order' element={<Order />} />
             <Route path='/orderdetail' element={<OrderDetail />} />
+            <Route path='/withdraw' element={<WithDraw />} />
             <Route path='/pay' element={<Pay />} />
-            <Route path='/mypage' element={<MyPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

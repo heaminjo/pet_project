@@ -7,7 +7,7 @@ export default function Delivery() {
   return (
     <DeliveryComp>
       <div className='container'>
-        <div class='title'>배송조회</div>
+        <div className='title'>배송조회</div>
         <div className='box1'>
           배송이 시작 되었습니다 <br />
         </div>

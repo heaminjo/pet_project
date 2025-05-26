@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 // Cart 엔티티 클래스
 @Entity
-@Table(name="goods")
+@Table(name="cart")
 @IdClass(CartId.class) // 복합키 클래스 지정
 
 @Builder
@@ -21,11 +21,11 @@ public class Cart implements Serializable { // Serializable 상속
 
     @Id
     @Column(nullable = false)
-    private int member_id;
+    private Long member_id;
 
     @Id
     @Column(nullable = false)
-    private int goods_id;
+    private Long goods_id;
     @Column(nullable = false)
     private int quantity;
 
