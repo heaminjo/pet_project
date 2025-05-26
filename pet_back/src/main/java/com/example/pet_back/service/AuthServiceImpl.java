@@ -8,6 +8,7 @@ import com.example.pet_back.domain.member.MemberRequestDTO;
 import com.example.pet_back.entity.Address;
 import com.example.pet_back.entity.Member;
 import com.example.pet_back.entity.RefreshToken;
+import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.jwt.TokenProvider;
 import com.example.pet_back.mapper.MemberMapper;
 import com.example.pet_back.repository.AddressRepository;
@@ -57,9 +58,13 @@ public class AuthServiceImpl implements  AuthService{
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
             log.info("Authentication => " + authentication);
 
+
+
+
             //인증 정보 기반으로 토큰 생성
             //로그인 직후 이므로 refreshToken과  AccessToken 모두 생성해서 발급한다.
             TokenDTO tokenDTO = tokenProvider.generateTokenDto(authentication);
+
 
             log.info("토큰 발급 => " + tokenDTO);
 

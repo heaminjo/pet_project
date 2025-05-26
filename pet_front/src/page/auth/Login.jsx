@@ -41,11 +41,13 @@ export default function Login() {
   //로그인 버튼 클릭
   const clickLogin = async () => {
     const result = await MemberApi.login(watch("email"), watch("password"));
+    console.log(result);
     if (result.success) {
       alert("로그인 성공!");
       localStorage.setItem("loginName", result.data.memberName);
       localStorage.setItem("grantType", result.data.grantType);
       localStorage.setItem("accessToken", result.data.accessToken);
+      localStorage.setItem("member_id", result.data.member_id);
 
       //전역변수에 로그인 여부 저장
       setIsLogin(true);
