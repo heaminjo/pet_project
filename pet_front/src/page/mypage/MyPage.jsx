@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import MemberApi from "../../api/MemberApi";
 import MyPageComp from "./MyPageStyle";
+import MypageMenu from "../../components/MyPageMenu";
 
 export default function MyPage() {
   useEffect(() => {
@@ -14,65 +15,56 @@ export default function MyPage() {
   return (
     <MyPageComp>
       <div className="mypage_inner">
-        <div className="side_menu">
-          <div className="sub_menu" id="user_menu">
-            <p className="menu_title">내 정보</p>
-            <ul>
-              <li>
-                <span>회원 수정</span>
-              </li>
-              <li>
-                <span>비밀번호 변경</span>
-              </li>
-            </ul>
+        <MypageMenu />
+        <div className="main_container">
+          <div className="user_info">
+            <div className="user_profile">
+              {/* 프로필 이미지 ,이름, 이메일 ,  */}
+              <div className="image">
+                <img
+                  src="https://images.mypetlife.co.kr/content/uploads/2023/01/13160523/AdobeStock_405843911-scaled.jpeg"
+                  alt=""
+                />
+              </div>
+              <div className="data">
+                <h3>[회원정보]님</h3>
+              </div>
+            </div>
+            <div className="user_grade">
+              {/* 등급별 이미지,등급 */}
+              <div className="grade_image">
+                <img
+                  src="https://th.bing.com/th/id/OIP.BMhVnqzc_evd72p3eiropAHaHa?w=698&h=698&rs=1&pid=ImgDetMain"
+                  alt=""
+                />
+              </div>
+              <div className="grade_text">
+                <p>새싹 등급</p>
+                <p>등급표 알아보기</p>
+              </div>
+            </div>
           </div>
-          <div className="sub_menu" id="goods_menu">
-            <p className="menu_title">상품</p>
+          <div className="order_state">
             <ul>
               <li>
-                <span>찜</span>
+                <big>최근 주문 내역</big>
+                <span>0</span>
               </li>
               <li>
-                <span>장바구니</span>
+                <big>현재 배송중</big>
+                <span>2</span>
               </li>
               <li>
-                <span>최근 본 목록</span>
+                <big>배송 완료</big>
+                <span>0</span>
               </li>
               <li>
-                <span>내 후기</span>
-              </li>
-              <li>
-                <span>배송지 관리</span>
-              </li>
-            </ul>
-          </div>
-          <div className="sub_menu" id="order_menu">
-            <p className="menu_title">주문 / 배송</p>
-            <ul>
-              <li>
-                <span>주문 / 배송 내역</span>
-              </li>
-              <li>
-                <span>취소 내역</span>
-              </li>
-            </ul>
-          </div>
-          <div className="sub_menu" id="border_menu">
-            <p className="menu_title">내 게시물</p>
-            <ul>
-              <li>
-                <span>내 게시물 목록</span>
-              </li>
-              <li>
-                <span>북마크</span>
-              </li>
-              <li>
-                <span></span>
+                <big>장바구니</big>
+                <span>0</span>
               </li>
             </ul>
           </div>
         </div>
-        <div className="main_container">메인</div>
       </div>
     </MyPageComp>
   );

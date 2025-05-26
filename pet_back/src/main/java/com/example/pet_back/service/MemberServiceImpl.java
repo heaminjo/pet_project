@@ -6,6 +6,7 @@ import com.example.pet_back.domain.custom.ErrorResponse;
 import com.example.pet_back.domain.login.LoginRequestDTO;
 import com.example.pet_back.domain.login.LoginResponseDTO;
 import com.example.pet_back.domain.member.MemberRequestDTO;
+import com.example.pet_back.domain.member.UpdateMemberRequestDTO;
 import com.example.pet_back.entity.Address;
 import com.example.pet_back.entity.Member;
 import com.example.pet_back.jwt.CustomUserDetails;
@@ -50,5 +51,10 @@ public class MemberServiceImpl implements MemberService{
         //유저 details에서 id 가져와 회원을 가져온다.
         Member member = memberRepository.findById(userDetails.getMember().getId()).orElseThrow(()-> new UsernameNotFoundException("존재하지 않는 회원입니다."));
         return ResponseEntity.ok(mapper.toDto(member));
+    }
+
+    @Override
+    public ResponseEntity<?> memberUpdate(CustomUserDetails userDetails, UpdateMemberRequestDTO dto) {
+        return null;
     }
 }

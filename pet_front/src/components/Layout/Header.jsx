@@ -24,7 +24,7 @@ export default function Header() {
         </div>
 
         <ul className="member_menu">
-          {isLogin ? (
+          {localStorage.getItem("loginName") != null ? (
             <>
               <li>
                 <span>{localStorage.getItem("loginName")}님 환영합니다</span>

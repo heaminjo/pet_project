@@ -36,5 +36,9 @@ const MemberApi = {
     });
     return result.data;
   },
+
+  update: async () => {
+    const result = await axios.patch(`${KH_DOMAIN}/member/detail`);
+  },
 };
 export default MemberApi;
