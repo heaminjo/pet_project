@@ -25,25 +25,8 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 public class GoodsController {
 
-    private final CartService cartService;
     private final GoodsService goodsService;
     private final MemberService memberService;
-
-    @GetMapping(value = "/cart") // @PathVariable 시 {name} 필수
-    public ResponseEntity<?> cartList(@AuthenticationPrincipal CustomUserDetails userDetails){ // Cart entity
-        ResponseEntity<?> result = null;
-
-        goodsService.findAllByUserId(userDetails);
-
-        if(list != null){
-            result = ResponseEntity.ok(list);
-            log.info("** HttpStatus.OK => " + HttpStatus.OK);
-        }else{
-            result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("장바구니 목록이 존재하지 않습니다.");
-            log.error("** HttpStatus.BAD_GATEWAY => " + HttpStatus.BAD_GATEWAY);
-        }
-        return result;
-    }
 
 
 

@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface GoodsService {
 
-    ResponseEntity<?> findAllByUserId(CustomUserDetails userDetails);
+
 
 }

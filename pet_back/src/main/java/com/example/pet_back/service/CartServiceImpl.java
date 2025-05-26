@@ -2,25 +2,41 @@ package com.example.pet_back.service;
 
 import com.example.pet_back.domain.login.GoodsDTO;
 import com.example.pet_back.entity.Cart;
+import com.example.pet_back.entity.Member;
+import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.repository.CartRepository;
 import com.example.pet_back.repository.GoodsRepository;
+import com.example.pet_back.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService{
-    private final CartRepository crepository;
-
-//    @Override
-//    public List<Cart> findById(Long id){
-//        return crepository.findById(id);
-//    }
+    private final CartRepository cartRepository;
+    private final MemberRepository memberRepository;
 
     @Override
-    public List<GoodsDTO> findAllByName(String name) {
-        return crepository.findAllByName(name);
+    public ResponseEntity<?> selectList(CustomUserDetails userDetails){
+        //유저 details에서 id 가져와 회원을 가져온다.
+        Member member = memberRepository.findById( //
+                        userDetails.getMember().getId()) //
+                .orElseThrow(() //
+                        -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+       List<Cart> cartList = cartRepository.findCartListByUserId(member.getId()); // 매개변수 CartId
+       if(cartList!=null){
+           return ResponseEntity.status(HttpStatus.OK).body(cartList);
+       }else{
+           return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("null");
+       }
     }
+
+
 }
