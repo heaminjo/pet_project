@@ -8,6 +8,7 @@ import Join from "./page/auth/Join";
 import BoardList from "./components/Board/BoardList";
 import BoardInsertForm from "./components/Board/BoardInsertForm";
 import BoardDetail from "./components/Board/BoardDetail";
+import BoardEditForm from "./components/Board/BoardEditForm";
 import MyPage from "./page/mypage/MyPage";
 
 //컨텍스트(useContext)
@@ -29,9 +30,10 @@ function App() {
             <Route path="/" element={<Main />} />
             <Route path="/login" element={<Login />} />
             <Route path="/join" element={<Join />} />
-            <Route path="/boardList" element={<BoardList />} />
+            <Route path="/boardList" element={<BoardList isLogin={isLogin} />} />
             <Route path="/boardInsertForm" element={<BoardInsertForm />} />
             <Route path="/boardDetail/:board_Id" element={<BoardDetail />} />
+            <Route path="/boardEditForm/:board_id" element={<BoardEditForm />} />
             <Route path="/mypage" element={<MyPage />} />
           </Route>
         </Routes>
