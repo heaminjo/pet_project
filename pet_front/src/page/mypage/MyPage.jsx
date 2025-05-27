@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import MemberApi from "../../api/MemberApi";
 import MyPageComp from "./MyPageStyle";
 import MypageMenu from "../../components/mypage/MyPageMenu";
+import fetchData from "../../services/UserService";
 
 export default function MyPage() {
   const [user, setUser] = useState([]);
@@ -11,9 +12,16 @@ export default function MyPage() {
   }, []);
 
   const getLoginUser = async () => {
-    const result = await MemberApi.detail();
-    setUser(result);
-    console.log(result);
+    try {
+      const result = await MemberApi.detail();
+      setUser(result);
+      console.log(result);
+    } catch (e) {
+      if (e.response.status == 401) {
+        alert("토큰이 만료되었습니다.");
+        // fetchData();
+      }
+    }
   };
   return (
     <MyPageComp>

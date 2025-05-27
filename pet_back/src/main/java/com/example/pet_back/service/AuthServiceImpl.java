@@ -8,6 +8,7 @@ import com.example.pet_back.domain.member.MemberRequestDTO;
 import com.example.pet_back.entity.Address;
 import com.example.pet_back.entity.Member;
 import com.example.pet_back.entity.RefreshToken;
+import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.jwt.TokenProvider;
 import com.example.pet_back.mapper.MemberMapper;
 import com.example.pet_back.repository.AddressRepository;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.beans.Transient;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -100,5 +102,13 @@ public class AuthServiceImpl implements  AuthService{
         } catch (Exception e) {
             return ResponseEntity.ok().body(new ApiResponse<>(false,"회원가입에 실패하였습니다."));
         }
+    }
+
+    //리프레쉬 토큰
+
+    @Override
+    public ResponseEntity<?> getRefresh(CustomUserDetails userDetails) {
+        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByUserId(userDetails.getMember().getId());
+        return ResponseEntity.ok(refreshToken.get());
     }
 }

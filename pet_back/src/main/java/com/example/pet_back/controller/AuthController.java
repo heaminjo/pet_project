@@ -3,9 +3,11 @@ package com.example.pet_back.controller;
 import com.example.pet_back.domain.login.LoginRequestDTO;
 import com.example.pet_back.domain.login.TokenDTO;
 import com.example.pet_back.domain.member.MemberRequestDTO;
+import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,5 +30,11 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequestDTO){
         return ResponseEntity.ok(authService.login(loginRequestDTO));
+    }
+
+    //리프레쉬 토큰
+    @GetMapping("/getrefresh")
+    public ResponseEntity<?>getRefresh(@AuthenticationPrincipal CustomUserDetails userDetails){
+        return authService.getRefresh(userDetails);
     }
 }
