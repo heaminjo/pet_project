@@ -12,6 +12,7 @@ import Pay from './components/Layout/pay/Pay';
 import WithDraw from './components/Layout/withdraw/WithDraw';
 import MyPage from './page/mypage/MyPage';
 import Delivery from './components/Layout/delivery/Delivery';
+import Goods from './components/Layout/goods/Goods';
 
 //컨텍스트(useContext)
 //로그인 여부부를 전역변수로 뿌리기 위한것
@@ -37,6 +38,7 @@ function App() {
             <Route path='/orderdetail' element={<OrderDetail />} />
             <Route path='/withdraw' element={<WithDraw />} />
             <Route path='/pay' element={<Pay />} />
+            <Route path='/goods' element={<Goods />} />
           </Route>
         </Routes>
       </BrowserRouter>

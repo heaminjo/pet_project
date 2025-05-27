@@ -11,7 +11,6 @@ export default function Cart() {
 
   const cart = async () => {
     // const userName = localStorage.getItem('loginName');
-    alert('GoodsApi.cartList 호출전');
     GoodsApi.cartList()
       .then((response) => {
         setGoods(response);
