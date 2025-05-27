@@ -20,8 +20,9 @@ public class CartResponseDTO extends GoodsDTO {
     // userID: member.getId()
     // JOIN 사용 ( c.member_id = userId )
     public CartResponseDTO( //
-                            String goods_name, int price, String description, String image_file, //
+                            Long goods_id, String goods_name, int price, String description, String image_file, //
                             double rating, int views, int review_num, Long member_id, int quantity) {
+        this.goods_id = goods_id;
         super.setGoods_name(goods_name);
         super.setPrice(price);
         super.setDescription(description);

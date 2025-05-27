@@ -7,10 +7,11 @@ export default function Cart() {
   const navigate = useNavigate();
   const cartImage1 = process.env.PUBLIC_URL + '/images/pic1.png';
   const seller = process.env.PUBLIC_URL + '/images/avatar.png';
-  const [goods, setGoods] = useState(null);
+  const [goods, setGoods] = useState([]);
 
-  const cartList = async () => {
+  const cart = async () => {
     // const userName = localStorage.getItem('loginName');
+    alert('GoodsApi.cartList 호출전');
     GoodsApi.cartList()
       .then((response) => {
         setGoods(response);
@@ -19,7 +20,7 @@ export default function Cart() {
   };
 
   useEffect(() => {
-    cartList(); // 호출
+    cart(); // 호출
   }, []);
 
   return (
@@ -30,19 +31,20 @@ export default function Cart() {
         </div>
         <div className='body'>
           <div className='left'>
-            {/* {goods.map((item, index) => (
-              <div key={index}>
+            {goods.map((item, index) => (
+              <div className='prod' key={index}>
                 <div className='prodleft'>
                   <img src={cartImage1} alt='상품1이미지' className='cartimage' onClick={() => navigate('/purchase')} />
                 </div>
                 <div className='prodright'>
                   <div>{item.goods_name}</div>
-                  <div>내일 7시 도착보장&nbsp;{item.description}</div>
+                  <div>{item.description}</div>
+                  <div>내일 7시 도착</div>
                   <div>{item.price}</div>
                   <img src={seller} className='seller' alt='판매자' /> ROYAL CANIN
                 </div>
               </div>
-            ))} */}
+            ))}
           </div>
           <div className='right'>
             <table>

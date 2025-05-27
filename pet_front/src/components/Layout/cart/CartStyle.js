@@ -23,36 +23,38 @@ const CartComp = styled.div`
       display: flex;
       flex-direction: row;
       border: 1px solid rgb(230, 230, 230);
-
       .left {
-        width: 500px;
-        height: 200px;
-        padding: 10px;
-        border: 1px solid rgb(230, 230, 230);
         display: flex;
-        flex-direction: row;
-        justify-content: center;
+        flex-direction: column;
 
-        .prodleft {
-          width: 200px;
-          height: 200px;
-          overflow: hidden;
+        .prod {
+          padding: 10px;
+          border: 1px solid rgb(230, 230, 230);
           display: flex;
+          flex-direction: row;
           justify-content: center;
-          align-items: center;
-          flex-direction: column;
 
-          .cartimage {
-            width: 120px;
-            height: 150px;
+          .prodleft {
+            width: 300px;
+            height: 200px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            // flex-direction: column;
+
+            .cartimage {
+              width: 120px;
+              height: 150px;
+            }
           }
-        }
-        .prodright {
-          width: 300px;
-          .seller {
-            width: 30px;
-            vertical-align: middle;
-            background-color: aqua; /* ~~~~~ TEST 용 ~~~~~~ */
+          .prodright {
+            width: 200px;
+            .seller {
+              width: 30px;
+              vertical-align: middle;
+              background-color: aqua; /* ~~~~~ TEST 용 ~~~~~~ */
+            }
           }
         }
       }

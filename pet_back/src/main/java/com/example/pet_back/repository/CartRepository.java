@@ -9,18 +9,19 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+
 public interface CartRepository extends JpaRepository<Cart, CartId> {
 
     // 장바구니 조회에 필요한 컬럼
     @Transactional
     @Query("SELECT " +
             "NEW com.example.pet_back.domain.login.CartResponseDTO " +
-            "(g.goods_name, g.price, g.description, g.image_file, g.rating, " +
+            "(g.goods_id, g.goods_name, g.price, g.description, g.image_file, g.rating, " +
             "g.views, g.review_num, c.member_id, c.quantity) " +
             "FROM Cart c " +
-            "JOIN Goods g ON c.goods_id = c.goods_id " +
+            "JOIN Goods g ON g.goods_id = c.goods_id " +
             "WHERE c.member_id=:userId")
-    List<CartResponseDTO> findCartListByUserId(Long userId);
+    public List<CartResponseDTO> findCartListByUserId(Long userId);
 
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

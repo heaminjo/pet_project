@@ -1,17 +1,22 @@
 package com.example.pet_back.domain.login;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Builder
 public class CartRequestDTO {
 
     // Cart
     private Long member_id;
-    private Long goods_id;
-    private int quantity;
+
+    public CartRequestDTO(Long member_id) {
+        this.member_id = member_id;
+    }
+
 
 }

@@ -7,8 +7,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Entity
-@Table(name="goods")
+@Table(name = "goods")
 @Builder
 @Data
 @AllArgsConstructor
@@ -17,8 +19,8 @@ public class Goods {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="goods_id", nullable = false)
-    private Long id;
+    @Column(name = "goods_id", nullable = false)
+    private Long goods_id;
 
     @Column(nullable = false, unique = true)
     private Long category_id;
@@ -35,7 +37,7 @@ public class Goods {
     // 상품 상태 (SALE, SOLDOUT, HIDDEN)
     @Enumerated(EnumType.STRING)
     @Builder.Default
-    private GOODSSTATE goodsstate = GOODSSTATE.SALE;
+    private GOODSSTATE goods_state = GOODSSTATE.SALE;
 
     @Column(nullable = false, length = 100)
     private String image_file;
@@ -44,11 +46,15 @@ public class Goods {
     private double rating;
 
     @Column(nullable = false)
+    private int views;
+
+    @Column(nullable = false)
     private int review_num;
 
     @Column(nullable = false)
     private int quantity;
 
-
+    @Column(nullable = false)
+    private Date reg_date;
 
 }
