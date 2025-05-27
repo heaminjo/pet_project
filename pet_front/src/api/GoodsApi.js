@@ -10,7 +10,7 @@ const GoodsApi = {
         Authorization: `${localStorage.getItem('grantType')} ${localStorage.getItem('accessToken')}`,
       },
     });
-    alert(`GoodsApi의 cart 호출완료 => ${result.data} `);
+    alert(`GoodsApi의 cart 호출완료 => ${JSON.stringify(result.data)} `);
     return result.data;
   },
 };

@@ -1,29 +1,17 @@
 package com.example.pet_back.domain.login;
 
-import com.example.pet_back.constant.GOODSSTATE;
-import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.util.Date;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class CartRequestDTO {
+
+    // Cart
+    private Long member_id;
     private Long goods_id;
-    private Long category_id;
-    private String goods_name;
-    private int price;
-    private String description;
-    private GOODSSTATE goods_state;
-    private String image_file;
-    private double rating;
-    private int views;
-    private int review_num;
     private int quantity;
-    private Date reg_date;
+
 }
