@@ -88,10 +88,10 @@ public class MemberServiceImpl implements MemberService{
         //일치하면 변경
         if(passwordEncoder.matches(dto.getPassword(),member.getPassword())){
             log.info("비밀번호가 일치 합니다.");
-            log.info("기존 비밀번호 => "+member.getPassword());
-            member.setPassword(passwordEncoder.encode(dto.getPassword()));
-            log.info("새로운 비밀번호 => "+member.getPassword());
-            memberRepository.save(member);
+//            member.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+            memberRepository.updatePassword(userDetails.getMember().getId(), passwordEncoder.encode(dto.getNewPassword()));
+
+//            memberRepository.save(member);
             return ResponseEntity.ok(new ApiResponse<>(true,"비밀번호 수정에 성공하였습니다."));
         }else{
             log.info("비밀번호가 불일치 합니다.");
