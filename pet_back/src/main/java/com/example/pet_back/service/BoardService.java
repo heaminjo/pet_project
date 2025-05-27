@@ -17,4 +17,5 @@ public interface BoardService {
 
 	//** update
 	int updateBoard(BoardDTO dto);
+	//d
 }

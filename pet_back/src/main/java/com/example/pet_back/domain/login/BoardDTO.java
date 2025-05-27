@@ -16,5 +16,5 @@ public class BoardDTO {
 	private int views;
 	private String reg_date;
 	private String name;
-	
+	//d
 }

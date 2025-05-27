@@ -20,4 +20,5 @@ public interface BoardMapper {
 
 	//** update
 	int updateBoard(BoardDTO dto);
+	//d
 }

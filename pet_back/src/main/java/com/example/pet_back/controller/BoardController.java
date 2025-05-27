@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 public class BoardController {
-	
+	//d
 	private final BoardService boardService;
 	
 	//** BoardList (게시글 목록)
