@@ -8,8 +8,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +33,7 @@ public class TokenProvider {
     //보안 강도가 높다.
     private final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     private static final String BEARER_TYPE = "Bearer"; // 토큰이 어떤 방식으로 발급되었는지
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 5000 ;            // 30분(1000 * 60 * 30)
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 5000;            // 30분(1000 * 60 * 30)
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
 
     //AccessToken만 생성
@@ -183,5 +185,10 @@ public class TokenProvider {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+    //id를 통해 Authentication 객체 생성 후 반환
+    public Authentication getAuthentication(Long userId) {
+        CustomUserDetails userDetails = CustomUserDetailsService.loadUserById(userId);
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 }

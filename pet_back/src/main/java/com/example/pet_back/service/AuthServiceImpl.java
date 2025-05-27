@@ -14,6 +14,8 @@ import com.example.pet_back.mapper.MemberMapper;
 import com.example.pet_back.repository.AddressRepository;
 import com.example.pet_back.repository.MemberRepository;
 import com.example.pet_back.repository.RefreshTokenRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -45,7 +47,7 @@ public class AuthServiceImpl implements  AuthService{
     //로그인
     @Override
 
-    public ApiResponse<?> login(LoginRequestDTO dto) {
+    public ApiResponse<?> login(HttpServletResponse response,LoginRequestDTO dto) {
         try {
             //email과 pw기반으로 AuthenticationToken 생성
             UsernamePasswordAuthenticationToken authenticationToken =
@@ -72,6 +74,16 @@ public class AuthServiceImpl implements  AuthService{
                     .token(tokenDTO.getRefreshToken())
                     .expiration(tokenDTO.getAccessTokenExpiresln())
                     .build();
+
+            //refreshToken은 쿠키에 저장
+            Cookie refreshTokenCookie = new Cookie("refreshToken",tokenDTO.getRefreshToken());
+
+            refreshTokenCookie.setHttpOnly(true);    //JS 접근 불가
+            refreshTokenCookie.setSecure(true);      // HTTPS 연결에서만 전송
+            refreshTokenCookie.setPath("/");        //모든 경로에서 전송
+            refreshTokenCookie.setMaxAge(7 * 24 * 60 * 60); // 7일 유지
+
+            response.addCookie(refreshTokenCookie);
 
             refreshTokenRepository.save((refreshToken));
             //커스텀 응답 객체에 token을 담아 반환
@@ -106,9 +118,12 @@ public class AuthServiceImpl implements  AuthService{
 
     //리프레쉬 토큰
 
+    //refreshToken으로 사용자 아이디 추출 후
+    //사용자 정보로 Authentication 생성 후 accessToken만 생성한다.
     @Override
-    public ResponseEntity<?> getRefresh(CustomUserDetails userDetails) {
-        Optional<RefreshToken> refreshToken = refreshTokenRepository.findByUserId(userDetails.getMember().getId());
-        return ResponseEntity.ok(refreshToken.get());
+    public ResponseEntity<?> getRefresh( String refreshToken) {
+        Long userId = tokenProvider.getUserId(refreshToken);
+        Authentication authentication = tokenProvider.getAuthentication(userId);
+        return null;
     }
 }
