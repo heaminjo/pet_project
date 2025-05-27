@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private static final MemberRepository memberRepository = null;
+    private final MemberRepository memberRepository ;
     
     //DB에서 조회 후 반환
     @Override
@@ -22,7 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     //아이디로 조회
-    public static CustomUserDetails loadUserById(Long userId) throws UsernameNotFoundException {
+    public CustomUserDetails loadUserById(Long userId) throws UsernameNotFoundException {
         Member member = memberRepository.findById(userId).orElseThrow(()-> new UsernameNotFoundException("유저가 존재하지않음"));
         return new CustomUserDetails(member);
     }

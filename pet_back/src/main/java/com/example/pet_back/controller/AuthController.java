@@ -7,6 +7,7 @@ import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.service.AuthService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
+@Log4j2
 public class AuthController {
 
     //자동 주입
@@ -35,7 +37,11 @@ public class AuthController {
 
     //리프레쉬 토큰
     @GetMapping("/getrefresh")
-    public ResponseEntity<?>getRefresh(@CookieValue(value = "refreshToken", required = false) String refreshToken){
+    public ResponseEntity<?>getRefresh(@CookieValue("refreshToken") String refreshToken){
+        log.info("쿠키 컨틑롤러");
+        if(refreshToken== null){
+            log.info("쿠키가 제대로안옴");
+        }
         return authService.getRefresh(refreshToken);
     }
 }

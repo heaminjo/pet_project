@@ -5,6 +5,7 @@ import com.example.pet_back.domain.login.TokenDTO;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,7 @@ import java.util.Map;
 // JWT관련 모든 기능을 담당한다.
 @Service
 @Log4j2
+@RequiredArgsConstructor
 public class TokenProvider {
     //암호화 된 SECRETKEY 객체 생성
     //보안 강도가 높다.
@@ -35,6 +37,7 @@ public class TokenProvider {
     private static final String BEARER_TYPE = "Bearer"; // 토큰이 어떤 방식으로 발급되었는지
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 5000;            // 30분(1000 * 60 * 30)
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
+    private final CustomUserDetailsService customUserDetailsService;
 
     //AccessToken만 생성
     public TokenDTO createToken(Authentication authentication){
@@ -117,6 +120,7 @@ public class TokenProvider {
         Date refreshTokenExpiresIn = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
         String refreshToken = Jwts.builder()
                 .setExpiration(refreshTokenExpiresIn)
+                .setSubject(String.valueOf(userId)) // payload에 id 를 꺼내기 위해 principal
                 .signWith(SECRET_KEY,SignatureAlgorithm.HS512)
                 .compact();
 
@@ -167,6 +171,7 @@ public class TokenProvider {
 
     //토큰에서 id 추출
     public Long getUserId(String token){
+        log.info("토큰으로 아이디를 추출 합니다. => "+token);
         Claims claims = parseClaims(token);
         //userId를 Long 타입으로 변환하여 반환
         return Long.parseLong(claims.getSubject());
@@ -188,7 +193,7 @@ public class TokenProvider {
     }
     //id를 통해 Authentication 객체 생성 후 반환
     public Authentication getAuthentication(Long userId) {
-        CustomUserDetails userDetails = CustomUserDetailsService.loadUserById(userId);
+        CustomUserDetails userDetails = customUserDetailsService.loadUserById(userId);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 }

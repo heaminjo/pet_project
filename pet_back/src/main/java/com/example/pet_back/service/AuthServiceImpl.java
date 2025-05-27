@@ -84,7 +84,7 @@ public class AuthServiceImpl implements  AuthService{
             refreshTokenCookie.setMaxAge(7 * 24 * 60 * 60); // 7일 유지
 
             response.addCookie(refreshTokenCookie);
-
+            log.info("쿠키 저장 완료 => " + refreshTokenCookie );
             refreshTokenRepository.save((refreshToken));
             //커스텀 응답 객체에 token을 담아 반환
             return new ApiResponse<TokenDTO>(true,tokenDTO,"로그인에 성공하였습니다.");
@@ -122,8 +122,15 @@ public class AuthServiceImpl implements  AuthService{
     //사용자 정보로 Authentication 생성 후 accessToken만 생성한다.
     @Override
     public ResponseEntity<?> getRefresh( String refreshToken) {
+        log.info("쿠키 서비스");
+        //refreshToken을 통해 유저 Id를 가져온다.
         Long userId = tokenProvider.getUserId(refreshToken);
+        //userId를 통해 tokenProvider에서 유저의 정보를 담은 Authentication 객체를 가져온다
         Authentication authentication = tokenProvider.getAuthentication(userId);
-        return null;
+        
+        //새로운 access토큰 생성
+        TokenDTO tokenDTO = tokenProvider.createToken(authentication);
+        
+        return ResponseEntity.ok(new ApiResponse<TokenDTO>(true,tokenDTO,"토큰 재발급 성공"));
     }
 }

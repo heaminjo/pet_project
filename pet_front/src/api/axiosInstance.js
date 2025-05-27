@@ -32,9 +32,9 @@ instance.interceptors.response.use(
 
       try {
         //리프레쉬 가져오기
-        const response = await MemberApi.getRefresh();
+        const response = await MemberApi.getRefresh().data;
         //새로 발급된 엑세스 토큰
-        const newToken = response.token;
+        const newToken = response.data.accessToken;
 
         localStorage.setItem("accessToken", newToken);
         //요청 헤더에 새토큰 업데이트트

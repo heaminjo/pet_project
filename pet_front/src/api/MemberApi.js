@@ -49,7 +49,9 @@ const MemberApi = {
 
   //리프레쉬 가져오기기
   getRefresh: async () => {
-    const result = await axios.get(`${KH_DOMAIN}/auth/getrefresh`{withCredentials : true});
+    const result = await axios.get(`${KH_DOMAIN}/auth/getrefresh`, {
+      withCredentials: true,
+    });
     return result.data;
   },
 };
