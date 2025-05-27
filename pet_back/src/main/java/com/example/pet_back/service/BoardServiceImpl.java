@@ -22,7 +22,7 @@ public class BoardServiceImpl implements BoardService {
 		List<BoardDTO> list = boardMapper.selectList();
 		return list;
 	}
-
+	//test
 	@Override
 	public BoardDTO selectOne(int id) {
 		return boardMapper.selectOne(id);
