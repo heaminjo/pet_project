@@ -1,5 +1,6 @@
 package com.example.pet_back.service;
 
+import com.example.pet_back.domain.login.CartDTO;
 import com.example.pet_back.domain.login.CartResponseDTO;
 import com.example.pet_back.domain.login.GoodsDTO;
 import com.example.pet_back.entity.Cart;

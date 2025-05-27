@@ -1,5 +1,7 @@
 package com.example.pet_back.repository;
 
+import com.example.pet_back.domain.login.CartDTO;
+import com.example.pet_back.domain.login.CartResponseDTO;
 import com.example.pet_back.domain.login.GoodsDTO;
 import com.example.pet_back.entity.Cart;
 import com.example.pet_back.entity.CartId;
@@ -15,7 +17,7 @@ public interface CartRepository extends JpaRepository<Cart, CartId> {
 
     @Transactional
     @Query("SELECT c FROM Cart c WHERE c.member_id=:userId")
-    List<Cart> findCartListByUserId (Long userId);
+    List<CartResponseDTO> findCartListByUserId (Long userId);
 
 
 

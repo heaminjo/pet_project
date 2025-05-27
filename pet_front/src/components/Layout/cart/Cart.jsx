@@ -10,9 +10,8 @@ export default function Cart() {
   const [goods, setGoods] = useState(null);
 
   const cartList = async () => {
-    const uri = 'goods/cart';
-    const userName = localStorage.getItem('loginName');
-    GoodsApi.cart(uri, null, userName)
+    // const userName = localStorage.getItem('loginName');
+    GoodsApi.cartList()
       .then((response) => {
         setGoods(response);
       })
@@ -30,39 +29,42 @@ export default function Cart() {
           <h2> 장바구니 </h2>
         </div>
         <div className='body'>
-          {/* {goods.map((item, index) => (
-            <div className='left' key={index}>
-              <div className='prodleft'>
-                <img src={cartImage1} alt='상품1이미지' className='cartimage' onClick={() => navigate('/purchase')} />
+          <div className='left'>
+            {/* {goods.map((item, index) => (
+              <div key={index}>
+                <div className='prodleft'>
+                  <img src={cartImage1} alt='상품1이미지' className='cartimage' onClick={() => navigate('/purchase')} />
+                </div>
+                <div className='prodright'>
+                  <div>{item.goods_name}</div>
+                  <div>내일 7시 도착보장&nbsp;{item.description}</div>
+                  <div>{item.price}</div>
+                  <img src={seller} className='seller' alt='판매자' /> ROYAL CANIN
+                </div>
               </div>
-              <div className='prodright'>
-                <div>{goods.goods_name}</div>
-                <div>내일 7시 도착보장&nbsp;{goods.description}</div>
-                <div>{goods.price}</div>
-                <img src={seller} className='seller' alt='판매자' /> ROYAL CANIN
-              </div>
-            </div>
-          ))} */}
+            ))} */}
+          </div>
           <div className='right'>
             <table>
-              <tr>
-                <td colSpan='2'>
-                  <b>주문예상금액</b>
-                </td>
-              </tr>
-              <br />
-              <tr>
-                <td>상품가격</td>
-                <td>10000 원</td>
-              </tr>
-              <tr>
-                <td>배송비</td>
-                <td>3000 원</td>
-              </tr>
-              <tr>
-                <td>최종 가격</td>
-                <td>10000 원</td>
-              </tr>
+              <tbody>
+                <tr>
+                  <td colSpan='2'>
+                    <b>주문예상금액</b>
+                  </td>
+                </tr>
+                <tr>
+                  <td>상품가격</td>
+                  <td>10000 원</td>
+                </tr>
+                <tr>
+                  <td>배송비</td>
+                  <td>3000 원</td>
+                </tr>
+                <tr>
+                  <td>최종 가격</td>
+                  <td>10000 원</td>
+                </tr>
+              </tbody>
             </table>
             <button className='buy'>구매하기</button>
           </div>
