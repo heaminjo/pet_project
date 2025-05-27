@@ -13,13 +13,18 @@ const GoodsApi = {
     // alert(`GoodsApi의 cart 호출완료 => ${JSON.stringify(result.data)} `);
     return result.data;
   },
-  regGoods: async () => {
-    const result = await axios.put(`${KH_DOMAIN}/goods/register`, {
-      headers: {
-        Authorization: `${localStorage.getItem('grantType')} ${localStorage.getItem('accessToken')}`,
-      },
-    });
-    return;
+  regGoods: async (goods) => {
+    try {
+      const result = await axios.put(`${KH_DOMAIN}/goods/register`, goods, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${localStorage.getItem('grantType')} ${localStorage.getItem('accessToken')}`,
+        },
+      });
+      return result.data;
+    } catch (err) {
+      throw err;
+    }
   },
 };
 

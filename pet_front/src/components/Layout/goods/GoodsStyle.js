@@ -20,6 +20,7 @@ const GoodsComp = styled.div`
           margin: 0 auto;
           margin-top: 30px;
           input {
+            width: 100px;
             margin: 10px 0;
           }
         }
