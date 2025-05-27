@@ -1,10 +1,9 @@
 package com.example.pet_back.jwt;
 
 import com.example.pet_back.domain.login.TokenDTO;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -126,17 +125,29 @@ public class TokenProvider {
 
     //전달 받은 토큰 검증
     //Claim 정보 (사용자 정보, 만료 시간 등)을 추출해서 Map<String,Object> 형태로 반환
-    public Map<String,Object> validateToken(String token){
+    public Map<String,Object> validateToken(String token, HttpServletResponse response){
         //Jwts.parser() : JWT를 파싱(해석) 하기 위한 객체 (체인형식)
         //setSingningKey(SECRET_KEY) : 토큰 서명을 검증하기 위한 비밀키
         //      토큰을 생성할 때 사용한 키와 동일해야한다.
-        return Jwts.parser()
-                .setSigningKey(SECRET_KEY).build()
-                //전달받은 JWT 문자열을 파싱해서 Claims객체로 변환
-                //유효하지 않은 토큰일 경우 Exception이 발생
-                .parseClaimsJws(token)
-                //JWT에 Claims영역을 가져온다. 반환타입은 Map
-                .getBody();
+
+        //토큰 만료를 잡기위한 try-catch
+        try {
+            return Jwts.parser()
+                    .setSigningKey(SECRET_KEY).build()
+                    //전달받은 JWT 문자열을 파싱해서 Claims객체로 변환
+                    //유효하지 않은 토큰일 경우 Exception이 발생
+                    .parseClaimsJws(token)
+                    //JWT에 Claims영역을 가져온다. 반환타입은 Map
+                    .getBody();
+        }catch (ExpiredJwtException e){
+            //만료된 토큰일 경우
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\": \"access_token_expired\"}");
+
+        }catch (JwtException e){
+            //서명 위조 혹은 유효하지 않은 토큰
+        }
     }
 
     //토큰에서 id 추출

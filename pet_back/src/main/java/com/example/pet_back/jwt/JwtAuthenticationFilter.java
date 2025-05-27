@@ -56,7 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             log.info("토큰 있음");
             
             //토큰 검증 , claims 가져오기
-            Map<String, Object> claims = tokenProvider.validateToken(token);
+            Map<String, Object> claims = tokenProvider.validateToken(token,response);
             log.info("토큰 Claims 사용자정보 만료시간 => " + claims);
 
             //토큰에 사용자 정보(claims)에서 userId를 가져온다
