@@ -24,11 +24,11 @@ const MyEditComp = styled.div`
         width: 500px;
       }
       table {
-        padding: 60px 0;
         width: 500px;
         tbody {
           display: flex;
           flex-direction: column;
+          padding: 60px 0;
           gap: 30px;
           tr {
             .error_message {
