@@ -79,12 +79,21 @@ public class AuthServiceImpl implements  AuthService{
             Cookie refreshTokenCookie = new Cookie("refreshToken",tokenDTO.getRefreshToken());
 
             refreshTokenCookie.setHttpOnly(true);    //JS 접근 불가
-            refreshTokenCookie.setSecure(true);      // HTTPS 연결에서만 전송
+            refreshTokenCookie.setSecure(false);      // HTTPS 연결에서만 전송
             refreshTokenCookie.setPath("/");        //모든 경로에서 전송
             refreshTokenCookie.setMaxAge(7 * 24 * 60 * 60); // 7일 유지
 
-            response.addCookie(refreshTokenCookie);
-            log.info("쿠키 저장 완료 => " + refreshTokenCookie );
+            //Cookie 객체는 SameSite 속성을 기본적으로 지원하지 않기 때문에 setHeader로 직접 설정
+            //secure는 HTTPS 연결에서만 브라우저로 전송
+            //HTTP 연결을 하므로 false 해야한다.
+
+//            response.addCookie(refreshTokenCookie);
+            response.setHeader("Set-Cookie",
+                    "refreshToken=" + tokenDTO.getRefreshToken() +
+                            "; Path=/; Max-Age=604800; HttpOnly; SameSite=Lax");
+
+            log.info("쿠키 저장 완료 => " + refreshTokenCookie.getValue() );
+
             refreshTokenRepository.save((refreshToken));
             //커스텀 응답 객체에 token을 담아 반환
             return new ApiResponse<TokenDTO>(true,tokenDTO,"로그인에 성공하였습니다.");

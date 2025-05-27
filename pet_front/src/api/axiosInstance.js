@@ -32,20 +32,23 @@ instance.interceptors.response.use(
 
       try {
         //리프레쉬 가져오기
-        const response = await MemberApi.getRefresh().data;
+        const response = await MemberApi.getRefresh();
         //새로 발급된 엑세스 토큰
+        console.log(response);
         const newToken = response.data.accessToken;
 
         localStorage.setItem("accessToken", newToken);
         //요청 헤더에 새토큰 업데이트트
         originalRequest.headers["authorization"] = `Bearer ${newToken}`;
-        return axios(originalRequest);
+
+        //원래 실패했던 요청에 토큰를 다시 갱신 후 다시 요청청
+        return instance(originalRequest);
       } catch (error) {
         //리프레쉬 토큰 만료 시 로그아웃 처리
         if (error.response?.data.code === "AUTH004") {
           alert("로그인 세션이 만료되었습니다.\n다시 로그인 하시길 바랍니다.");
         }
-        return Promise.reject(refreshError);
+        return Promise.reject(error);
       }
     }
     return Promise.reject(error);
