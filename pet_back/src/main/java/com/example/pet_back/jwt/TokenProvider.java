@@ -1,34 +1,43 @@
 package com.example.pet_back.jwt;
 
+import com.example.pet_back.domain.custom.ErrorResponse;
 import com.example.pet_back.domain.login.TokenDTO;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 //JWT 토큰을 생성 , 파싱 ,검증하는 클래스
 // JWT관련 모든 기능을 담당한다.
 @Service
 @Log4j2
+@RequiredArgsConstructor
 public class TokenProvider {
     //암호화 된 SECRETKEY 객체 생성
     //보안 강도가 높다.
     private final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     private static final String BEARER_TYPE = "Bearer"; // 토큰이 어떤 방식으로 발급되었는지
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;            // 30분
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;            // 30분(1000 * 60 * 30)
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
+    private final CustomUserDetailsService customUserDetailsService;
 
     //AccessToken만 생성
     public TokenDTO createToken(Authentication authentication){
@@ -111,6 +120,7 @@ public class TokenProvider {
         Date refreshTokenExpiresIn = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
         String refreshToken = Jwts.builder()
                 .setExpiration(refreshTokenExpiresIn)
+                .setSubject(String.valueOf(userId)) // payload에 id 를 꺼내기 위해 principal
                 .signWith(SECRET_KEY,SignatureAlgorithm.HS512)
                 .compact();
 
@@ -126,21 +136,42 @@ public class TokenProvider {
 
     //전달 받은 토큰 검증
     //Claim 정보 (사용자 정보, 만료 시간 등)을 추출해서 Map<String,Object> 형태로 반환
-    public Map<String,Object> validateToken(String token){
+    public Map<String,Object> validateToken(String token, HttpServletResponse response) throws IOException {
         //Jwts.parser() : JWT를 파싱(해석) 하기 위한 객체 (체인형식)
         //setSingningKey(SECRET_KEY) : 토큰 서명을 검증하기 위한 비밀키
         //      토큰을 생성할 때 사용한 키와 동일해야한다.
-        return Jwts.parser()
-                .setSigningKey(SECRET_KEY).build()
-                //전달받은 JWT 문자열을 파싱해서 Claims객체로 변환
-                //유효하지 않은 토큰일 경우 Exception이 발생
-                .parseClaimsJws(token)
-                //JWT에 Claims영역을 가져온다. 반환타입은 Map
-                .getBody();
+        log.info("토큰 검증 합니다.");
+        //토큰 만료를 잡기위한 try-catch
+        try {
+            return Jwts.parser()
+                    .setSigningKey(SECRET_KEY).build()
+                    //전달받은 JWT 문자열을 파싱해서 Claims객체로 변환
+                    //유효하지 않은 토큰일 경우 Exception이 발생
+                    .parseClaimsJws(token)
+                    //JWT에 Claims영역을 가져온다. 반환타입은 Map
+                    .getBody();
+        }catch (ExpiredJwtException e){
+            //만료된 토큰일 경우
+            //클라이언트에게 401 값을 보내어 refresh를 통해 다시 토큰을 재발급하라고 한다.
+            log.info("만료된 토큰 입니다.");
+            //HTTP 상태코드를 401로 설정
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            //응답 타입 JSON
+            response.setContentType("application/json");
+            //만료된 Token이라는 메시지
+            response.getWriter().write("{\"error\": \"access_token_expired\"}");
+
+            return null;
+        }
+//        catch (JwtException e){
+//            //서명 위조 혹은 유효하지 않은 토큰
+//        }
+
     }
 
     //토큰에서 id 추출
     public Long getUserId(String token){
+        log.info("토큰으로 아이디를 추출 합니다. => "+token);
         Claims claims = parseClaims(token);
         //userId를 Long 타입으로 변환하여 반환
         return Long.parseLong(claims.getSubject());
@@ -159,5 +190,10 @@ public class TokenProvider {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+    //id를 통해 Authentication 객체 생성 후 반환
+    public Authentication getAuthentication(Long userId) {
+        CustomUserDetails userDetails = customUserDetailsService.loadUserById(userId);
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 }

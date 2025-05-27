@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import instance from "./axiosInstance";
 const KH_DOMAIN = "http://localhost:8080";
 const MemberApi = {
   //로그인
@@ -8,7 +8,9 @@ const MemberApi = {
       email: email,
       password: password,
     };
-    const result = await axios.post(`${KH_DOMAIN}/auth/login`, login);
+    const result = await axios.post(`${KH_DOMAIN}/auth/login`, login, {
+      withCredentials: true,
+    });
     return result.data;
   },
   //이메일 중복 체크
@@ -27,41 +29,31 @@ const MemberApi = {
 
   //회원 조회
   detail: async () => {
-    const result = await axios.get(`${KH_DOMAIN}/member/detail`, {
-      headers: {
-        Authorization: `${localStorage.getItem(
-          "grantType"
-        )} ${localStorage.getItem("accessToken")}`,
-      },
-    });
+    //요청 인터셉터를 통해 header
+    const result = await instance.get(`${KH_DOMAIN}/member/detail`);
     return result.data;
   },
 
   //회원 수정정
   update: async (user) => {
-    const result = await axios.patch(`${KH_DOMAIN}/member/update`, user, {
-      headers: {
-        Authorization: `${localStorage.getItem(
-          "grantType"
-        )} ${localStorage.getItem("accessToken")}`,
-      },
-    });
+    const result = await instance.patch(`${KH_DOMAIN}/member/update`, user);
     return result.data;
   },
 
   //비밀번호 변경
   updatePw: async (passwords) => {
-    const result = await axios.patch(
+    const result = await instance.patch(
       `${KH_DOMAIN}/member/pwupdate`,
-      passwords,
-      {
-        headers: {
-          Authorization: `${localStorage.getItem(
-            "grantType"
-          )} ${localStorage.getItem("accessToken")}`,
-        },
-      }
+      passwords
     );
+    return result.data;
+  },
+
+  //리프레쉬 가져오기기
+  getRefresh: async () => {
+    const result = await axios.get(`${KH_DOMAIN}/auth/getrefresh`, {
+      withCredentials: true,
+    });
     return result.data;
   },
 };
