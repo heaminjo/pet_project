@@ -1,3 +1,4 @@
+
 import MainComp from "./MainStyle";
 
 export default function Main() {
