@@ -8,13 +8,18 @@ export default function BoardInsertForm() {
   const [content, setContent] = useState("");
   const navigate = useNavigate();
 
-  const member_id = localStorage.getItem("member_id");
+  
    
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/board/insert", { member_id, title, content });
+      await axios.post("/board/boardinsert", { title, content },
+        {
+          headers: {
+            Authorization: `${localStorage.getItem("grantType")} ${localStorage.getItem("accessToken")}`
+          }
+        });
       alert("게시글이 등록되었습니다.");
       navigate("/boardList"); // 등록 후 게시판 목록으로 이동
     } catch (err) {

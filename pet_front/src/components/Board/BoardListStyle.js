@@ -63,10 +63,8 @@ const boardListContainer = styled.div`
         tr {
           td {
             button {
-              width: 80px;
-              height: 30px;
               font-size: 18px;
-              width: 100px;
+              width:100px;
               height: 40px;
               border: none;
               border-radius: 10px;

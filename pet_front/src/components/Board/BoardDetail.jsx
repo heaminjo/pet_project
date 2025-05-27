@@ -4,6 +4,31 @@ import axios from "axios";
 import BoardDetailStyle from "./BoardDetailStyle";
 
 
+  // jwt 토큰에서 로그인한 회원의 ID를 가져옴
+  function getMemberIdFromToken(token) {
+    if(!token) return null;
+    try {
+      //1. 토큰을 .으로 분리
+      const base64Payload = token.split('.')[1];
+      //2. base64payload -> base64로 디코딩 
+      const base64 = base64Payload.replace(/-/g, '+').replace(/_/g, '/');
+      //3. base64 디코딩 (atob 사용)
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map(c => `%${('00' + c.charCodeAt(0).toString(16)).slice(-2)}`)
+          .join('')
+      );
+      //4. JSON 파싱
+      const payload = JSON.parse(jsonPayload);
+      //5. member_id 반환
+      return payload.member_id || payload.sub || null;
+    } catch (e) {
+      return null;
+    }
+  }  
+
+
 export default function BoardDetail() { 
   const { board_Id } = useParams(); // URL 파라미터에서 게시글 ID 추출
   const [post, setPost] = useState(null);
@@ -11,7 +36,13 @@ export default function BoardDetail() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`/board/boardDetail/${board_Id}`)
+    axios.get(`/board/boardDetail/${board_Id}`,
+      {
+        headers: {
+          Authorization: `${localStorage.getItem("grantType")} ${localStorage.getItem("accessToken")}`
+        }
+      }
+    )
       .then(response => setPost(response.data))
       .catch(error => setError(error));
   }, [board_Id]);
@@ -24,7 +55,8 @@ export default function BoardDetail() {
     return <div>로딩 중...</div>;
   }
 
-  const loginMemberId = localStorage.getItem("member_id");
+  const token = localStorage.getItem("accessToken");
+  const loginMemberId = getMemberIdFromToken(token); // JWT 토큰에서 로그인한 회원의 ID를 가져옴
   //const loginRole = localStorage.getItem("role"); // "ADMIN" 또는 "USER"
 
   // 작성자(member_id) 또는 관리자(ADMIN)만 버튼 보이게
@@ -53,7 +85,7 @@ export default function BoardDetail() {
     navigate(`/boardEditForm/${post.board_id}`);
   };
 
-  console.log(loginMemberId, post.member_id);
+  console.log("loginMemberId:", loginMemberId, "post.member_id:", post.member_id);
 
   return (
     <BoardDetailStyle>
