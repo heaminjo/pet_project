@@ -2,6 +2,7 @@ package com.example.pet_back.controller;
 
 import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.domain.member.UpdateMemberRequestDTO;
+import com.example.pet_back.domain.member.UpdatePwRequestDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -34,5 +35,12 @@ public class MemberController {
     public ResponseEntity<?> memberUpdate(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody UpdateMemberRequestDTO dto){
         log.info("member update 실행");
         return memberService.memberUpdate(userDetails,dto);
+    }
+
+    //비밀번호 수정
+    @PatchMapping("/pwupdate")
+    public ResponseEntity<?> memberPwUpdate(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody UpdatePwRequestDTO dto){
+        log.info("member pwupdate 실행");
+        return memberService.memberPwUpdate(userDetails,dto);
     }
 }
