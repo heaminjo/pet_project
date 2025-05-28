@@ -9,7 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class TokenDTO {
     private String memberName;
-    private String grantType;
+    private String role;
     private String accessToken;
     private String refreshToken;
     private Long accessTokenExpiresln;

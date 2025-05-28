@@ -73,7 +73,7 @@ public class TokenProvider {
         log.info("accessToken 생성 => ", accessToken);
 
         return TokenDTO.builder()
-                .grantType(BEARER_TYPE)
+                .role(role)
                 .accessToken(accessToken)
                 .accessTokenExpiresln(accessTokenExpiresIn.getTime()) //만료시간
                 .refreshToken(null)
@@ -120,7 +120,7 @@ public class TokenProvider {
 
         return TokenDTO.builder()
                 .memberName(userDetails.getMember().getName())
-                .grantType(BEARER_TYPE)
+                .role(role)//
                 .accessToken(accessToken)
                 .accessTokenExpiresln(accessTokenExpiresIn.getTime())
                 .refreshToken(refreshToken)
