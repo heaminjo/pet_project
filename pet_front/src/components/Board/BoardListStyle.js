@@ -5,6 +5,9 @@ const { default: styled } = require("styled-components");
 const boardListContainer = styled.div`
   margin-top: 150px;
   height: 1000px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
     .boardListMenuContainer {
       width: 100%;
       height: 100px;
@@ -34,6 +37,7 @@ const boardListContainer = styled.div`
       
     }
     table {
+      flex-grow: 1;
       width: 60%; 
       margin-Left: auto;
       margin-Right: auto;
