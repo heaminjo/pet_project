@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import NavComp from "./NavStyle";
 import { PetContext } from "../../App";
@@ -6,14 +5,12 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 
 export default function Nav() {
-  const { isLogin } = useContext(PetContext);
-
   const navigate = useNavigate();
 
   //로그인 체크
   //비 로그인 시 로그인 화면으로 이동동
   const loginCheck = (move) => {
-    if (isLogin) {
+    if (localStorage.getItem("loginName") == null) {
       navigate(move);
     } else {
       alert("로그인이 필요한 서비스입니다");
@@ -34,4 +31,3 @@ export default function Nav() {
     </NavComp>
   );
 }
-

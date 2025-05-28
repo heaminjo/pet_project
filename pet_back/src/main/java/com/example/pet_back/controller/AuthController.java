@@ -1,12 +1,15 @@
 package com.example.pet_back.controller;
 
+import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.login.LoginRequestDTO;
 import com.example.pet_back.domain.member.MemberRequestDTO;
+import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.service.AuthService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,5 +46,11 @@ public class AuthController {
             log.info("쿠키가 제대로안옴");
         }
         return authService.getRefresh(refreshToken);
+    }
+
+    //로그아웃
+    @GetMapping("/logout")
+    public ResponseEntity<ApiResponse> logout(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return ResponseEntity.ok(authService.logout(userDetails));
     }
 }

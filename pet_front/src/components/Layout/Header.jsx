@@ -3,17 +3,16 @@ import HeaderComp from "./Headerstyle";
 import Nav from "./Nav";
 import { useContext, useEffect, useState } from "react";
 import { PetContext } from "../../App";
+import MemberApi from "../../api/MemberApi";
 
 export default function Header() {
   const navigate = useNavigate();
 
-  const { isLogin, setIsLogin } = useContext(PetContext);
-
   //로그아웃 클릭
-  const clickLogout = () => {
+  const clickLogout = async () => {
+    await MemberApi.logout();
     localStorage.clear();
     alert("로그아웃 됩니다.");
-    setIsLogin(false);
     navigate("/");
   };
   return (
@@ -33,7 +32,7 @@ export default function Header() {
                 <span onClick={() => navigate("/mypage")}>마이페이지</span>
               </li>
               <li>
-                <span onClick={() => clickLogout()}>로그이웃</span>
+                <span onClick={() => clickLogout()}>로그아웃</span>
               </li>
             </>
           ) : (
@@ -48,7 +47,7 @@ export default function Header() {
           )}
         </ul>
       </div>
-      <Nav isLogin={isLogin} />
+      <Nav />
     </HeaderComp>
   );
 }

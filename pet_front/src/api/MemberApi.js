@@ -56,5 +56,10 @@ const MemberApi = {
     });
     return result.data;
   },
+
+  logout: async () => {
+    const result = await instance.get(`${KH_DOMAIN}/auth/logout`);
+    return result.data;
+  },
 };
 export default MemberApi;

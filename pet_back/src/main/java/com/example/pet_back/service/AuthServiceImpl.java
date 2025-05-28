@@ -8,6 +8,7 @@ import com.example.pet_back.domain.member.MemberRequestDTO;
 import com.example.pet_back.entity.Address;
 import com.example.pet_back.entity.Member;
 import com.example.pet_back.entity.RefreshToken;
+import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.jwt.TokenProvider;
 import com.example.pet_back.mapper.MemberMapper;
 import com.example.pet_back.repository.AddressRepository;
@@ -159,5 +160,13 @@ public class AuthServiceImpl implements AuthService {
             refreshTokenRepository.deleteByToken(refreshToken);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(HttpStatus.UNAUTHORIZED, "만료되었습니다. 다시 로그인 해주세요.", "401"));
         }
+    }
+
+    @Override
+    @Transactional
+    public ApiResponse logout(CustomUserDetails userDetails) {
+        //리프레쉬 제거
+        refreshTokenRepository.deleteByUserId(userDetails.getMember().getId());
+        return new ApiResponse<>(true, "로그아웃 성공입니다.");
     }
 }
