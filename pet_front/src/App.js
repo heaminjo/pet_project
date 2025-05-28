@@ -17,6 +17,7 @@ import MyEdit from "./page/mypage/MyEdit";
 import UpdatePw from "./page/mypage/UpdatePw";
 import BoardList from "./components/Board/BoardList";
 import AdminPage from "./page/admin/AdminPage";
+import UserList from "./page/admin/UserList";
 
 //컨텍스트(useContext)
 //로그인 여부부를 전역변수로 뿌리기 위한것
@@ -33,8 +34,8 @@ function App() {
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Main />} />
-            <Route path="/user/login" element={<Login />} />
-            <Route path="/user/join" element={<Join />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/join" element={<Join />} />
             <Route path="user/mypage" element={<MyPage />} />
             <Route path="/user/myedit" element={<MyEdit />} />
             <Route path="/user/updatepw" element={<UpdatePw />} />
@@ -47,6 +48,7 @@ function App() {
             <Route path="/user/pay" element={<Pay />} />
             <Route path="/admin/goods" element={<Goods />} />
             <Route path="/admin/page" element={<AdminPage />} />
+            <Route path="/admin/page/userlist" element={<UserList />} />
           </Route>
         </Routes>
       </BrowserRouter>

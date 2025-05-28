@@ -4,6 +4,7 @@ import MemberApi from "../../api/MemberApi";
 import { useEffect, useState } from "react";
 
 export default function AdminMenu() {
+  const navigate = useNavigate();
   return (
     <AdminMenuComp>
       <div className="side_menu">
@@ -11,7 +12,9 @@ export default function AdminMenu() {
           <p className="menu_title">회원 관리</p>
           <ul>
             <li>
-              <span>회원 목록 및 상세 정보</span>
+              <span onClick={() => navigate("/admin/page/userlist")}>
+                회원 목록 및 상세 정보
+              </span>
             </li>
             <li>
               <span>회원 등급 관리</span>
