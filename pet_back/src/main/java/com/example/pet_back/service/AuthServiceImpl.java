@@ -13,6 +13,7 @@ import com.example.pet_back.mapper.MemberMapper;
 import com.example.pet_back.repository.AddressRepository;
 import com.example.pet_back.repository.MemberRepository;
 import com.example.pet_back.repository.RefreshTokenRepository;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -129,24 +130,34 @@ public class AuthServiceImpl implements AuthService {
     //refreshToken으로 사용자 아이디 추출 후
     //사용자 정보로 Authentication 생성 후 accessToken만 생성한다.
     @Override
+    @Transactional
     public ResponseEntity<?> getRefresh(String refreshToken) {
         //db 조회를 통해 리프레쉬 토큰의 유효성을 다시 검증
         Optional<RefreshToken> rToken = refreshTokenRepository.findByToken(refreshToken);
 
-        //만약 DB에 RefreshToken이 없다면 유효하지 않은 토큰
+        //만약 DB에 RefreshToken이 없다면 유효하지 않은 토큰(잘못입력 예시)
         if (rToken.isEmpty()) {
+            //DB에서 삭제
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(HttpStatus.UNAUTHORIZED, "유효하지 않는 RefreshToken입니다.", "401"));
         }
-        log.info("유효한 RefreshToken 입니다.");
-        //refreshToken을 통해 유저 Id를 가져온다.
-        Long userId = tokenProvider.getUserId(refreshToken);
-        //userId를 통해 tokenProvider에서 유저의 정보를 담은 Authentication 객체를 가져온다
-        Authentication authentication = tokenProvider.getAuthentication(userId);
+        log.info("DB 조회 성공 유효한 RefreshToken 입니다.");
 
-        //새로운 access토큰 생성
-        TokenDTO tokenDTO = tokenProvider.createToken(authentication);
+        try {
+            //refreshToken을 통해 유저 Id를 가져온다.
+            Long userId = tokenProvider.getUserId(refreshToken);
+            log.info("test userId => " + userId);
+            //userId를 통해 tokenProvider에서 유저의 정보를 담은 Authentication 객체를 가져온다
+            Authentication authentication = tokenProvider.getAuthentication(userId);
+            log.info("authentication => " + authentication);
+            //새로운 access토큰 생성
+            TokenDTO tokenDTO = tokenProvider.createToken(authentication);
 
-        return ResponseEntity.ok(new ApiResponse<TokenDTO>(true, tokenDTO, "토큰 재발급 성공"));
-
+            return ResponseEntity.ok(new ApiResponse<TokenDTO>(true, tokenDTO, "토큰 재발급 성공"));
+        } catch (ExpiredJwtException e) {
+            log.info("만료된 RefreshToken입니다.");
+            //만료되었다면 db에서 삭제
+            refreshTokenRepository.deleteByToken(refreshToken);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(HttpStatus.UNAUTHORIZED, "만료되었습니다. 다시 로그인 해주세요.", "401"));
+        }
     }
 }
