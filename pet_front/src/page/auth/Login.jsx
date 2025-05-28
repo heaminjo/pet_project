@@ -1,4 +1,3 @@
-
 import { useForm } from "react-hook-form";
 import LoginComp from "./LoginStyle";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -45,9 +44,8 @@ export default function Login() {
     if (result.success) {
       alert("로그인 성공!");
       localStorage.setItem("loginName", result.data.memberName);
-      localStorage.setItem("grantType", result.data.grantType);
       localStorage.setItem("accessToken", result.data.accessToken);
-
+      localStorage.setItem("role", result.data.role);
       //전역변수에 로그인 여부 저장
       setIsLogin(true);
       navigate("/");

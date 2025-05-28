@@ -7,6 +7,7 @@ import MemberApi from "../../api/MemberApi";
 
 export default function Header() {
   const navigate = useNavigate();
+  const [role, setRole] = useState(localStorage.getItem("role"));
 
   //로그아웃 클릭
   const clickLogout = async () => {
@@ -28,9 +29,18 @@ export default function Header() {
               <li>
                 <span>{localStorage.getItem("loginName")}님 환영합니다</span>
               </li>
-              <li>
-                <span onClick={() => navigate("/mypage")}>마이페이지</span>
-              </li>
+              {localStorage.getItem("role") == "ROLE_USER" && (
+                <li>
+                  <span onClick={() => navigate("/mypage")}>마이페이지</span>
+                </li>
+              )}
+              {localStorage.getItem("role") == "ROLE_ADMIN" && (
+                <li>
+                  <span onClick={() => navigate("/adminpage")}>
+                    관리자 메뉴
+                  </span>
+                </li>
+              )}
               <li>
                 <span onClick={() => clickLogout()}>로그아웃</span>
               </li>
