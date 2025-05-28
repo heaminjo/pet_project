@@ -21,7 +21,24 @@ export default function UserList() {
         <div className="list_container">
           <h3>회원 목록 및 상세정보 </h3>
           <hr />
-          <table border="1">
+          <div className="search">
+            <div className="search_type">
+              <select name="type" id="type">
+                <option value="all">전체</option>
+                <option value="email">이메일</option>
+                <option value="name">이름</option>
+                <option value="email">휴대번호</option>
+                <option value="email">생년월일</option>
+                <option value="email">등급</option>
+                <option value="email">상태</option>
+              </select>
+            </div>
+            <div className="search_input">
+              <input type="text" />
+              <button className="search_btn">검색</button>
+            </div>
+          </div>
+          <table>
             <tr>
               <th>이메일</th>
               <th>이름</th>
@@ -40,7 +57,7 @@ export default function UserList() {
                 <td>{m.birth}</td>
                 <td>{m.phone}</td>
                 <td>{m.grade}</td>
-                <td>{m.state}</td>
+                <td>{m.memberState}</td>
                 <td>{m.regDate}</td>
               </tr>
             ))}
