@@ -3,15 +3,17 @@ import axios from "axios";
 import BoardListStyle from "./BoardListStyle";
 import { useNavigate } from "react-router-dom";
 
-export default function BoardList({ isLogin }) {  // 나중에 login 여부에 따라 글쓰기 버튼을 보여줄지 말지 결정할 수 있음
+export default function BoardList({ isLogin }) {
+  // 나중에 login 여부에 따라 글쓰기 버튼을 보여줄지 말지 결정할 수 있음
   const [listData, setListData] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("/board/boardList")
-      .then(response => setListData(response.data))
-      .catch(error => setError(error));
+    axios
+      .get("/board/boardList")
+      .then((response) => setListData(response.data))
+      .catch((error) => setError(error));
   }, []);
 
   if (error) {
@@ -33,10 +35,12 @@ export default function BoardList({ isLogin }) {  // 나중에 login 여부에 �
             <li onClick={() => navigate("/boardList")}>게시판</li>
           </ul>
         </div>
-        <table>                                 
+        <table>
           <thead>
             <tr>
-              <td colSpan={5} height={50}>게시판</td>
+              <td colSpan={5} height={50}>
+                게시판
+              </td>
             </tr>
             <tr style={{ backgroundColor: " #f8e776" }}>
               <th>NO</th>
@@ -50,7 +54,13 @@ export default function BoardList({ isLogin }) {  // 나중에 login 여부에 �
             {listData.map((b) => (
               <tr key={b.board_id}>
                 <td className="center">{b.board_id}</td>
-                <td className="center" onClick={() => navigate(`/boardDetail/${b.board_id}`)} style={{ cursor: "pointer" }}>{b.title}</td>
+                <td
+                  className="center"
+                  onClick={() => navigate(`/boardDetail/${b.board_id}`)}
+                  style={{ cursor: "pointer" }}
+                >
+                  {b.title}
+                </td>
                 <td className="center">{b.name}</td>
                 <td className="center">{b.views}</td>
                 <td className="center">{b.reg_date}</td>
@@ -58,7 +68,7 @@ export default function BoardList({ isLogin }) {  // 나중에 login 여부에 �
             ))}
             <tr>
               <td colSpan={5} align="right">
-                <button 
+                <button
                   type="button"
                   onClick={() => {
                     if (!isLogin) {
@@ -79,4 +89,3 @@ export default function BoardList({ isLogin }) {  // 나중에 login 여부에 �
     </BoardListStyle>
   );
 }
-

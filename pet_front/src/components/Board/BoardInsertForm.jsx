@@ -9,7 +9,6 @@ export default function BoardInsertForm() {
   const navigate = useNavigate();
 
   const member_id = localStorage.getItem("member_id");
-   
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,30 +27,36 @@ export default function BoardInsertForm() {
         <h2>게시글 작성</h2>
         <form onSubmit={handleSubmit}>
           <div className="titleRow">
-            <label htmlFor="title" className="titleLabel">제목</label>
+            <label htmlFor="title" className="titleLabel">
+              제목
+            </label>
             <input
               type="text"
               id="title"
               name="title"
               className="titleInput"
               value={title}
-              onChange={e => setTitle(e.target.value)}
+              onChange={(e) => setTitle(e.target.value)}
               required
             />
           </div>
           <div className="contentRow">
-            <label htmlFor="content" className="contentLabel">내용</label>
+            <label htmlFor="content" className="contentLabel">
+              내용
+            </label>
             <textarea
               id="content"
               name="content"
               className="contentTextarea"
               value={content}
-              onChange={e => setContent(e.target.value)}
-              required>
-            </textarea>
+              onChange={(e) => setContent(e.target.value)}
+              required
+            ></textarea>
           </div>
           <div className="buttonRow">
-            <button type="submit" className="submitBtn">등록하기</button>
+            <button type="submit" className="submitBtn">
+              등록하기
+            </button>
           </div>
         </form>
       </div>

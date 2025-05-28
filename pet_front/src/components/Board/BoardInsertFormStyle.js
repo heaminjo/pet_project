@@ -11,7 +11,7 @@ const boardInsertFormContainer = styled.div`
     padding: 40px 32px;
     background: #fff;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 
     h2 {
       text-align: center;
@@ -24,13 +24,15 @@ const boardInsertFormContainer = styled.div`
       gap: 32px;
     }
 
-    .titleRow, .contentRow {
+    .titleRow,
+    .contentRow {
       display: flex;
       flex-direction: column;
       gap: 8px;
     }
 
-    .titleLabel, .contentLabel {
+    .titleLabel,
+    .contentLabel {
       font-size: 16px;
       color: #444;
       font-weight: bold;
@@ -60,7 +62,7 @@ const boardInsertFormContainer = styled.div`
       resize: vertical;
       transition: border-color 0.2s;
       &:focus {
-        border-color :  #f8e776;
+        border-color: #f8e776;
         outline: none;
       }
     }
