@@ -88,7 +88,8 @@ public class TokenProvider {
                 .findFirst()
                 .map(GrantedAuthority::getAuthority)
                 .orElse(null); //없을 경우 null
-
+        log.info("권한 => " + role);
+        
         //유저 아이디를 꺼내온다.
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         Long userId = userDetails.getMember().getId();

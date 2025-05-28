@@ -31,12 +31,14 @@ export default function Header() {
               </li>
               {localStorage.getItem("role") == "ROLE_USER" && (
                 <li>
-                  <span onClick={() => navigate("/mypage")}>마이페이지</span>
+                  <span onClick={() => navigate("/user/mypage")}>
+                    마이페이지
+                  </span>
                 </li>
               )}
               {localStorage.getItem("role") == "ROLE_ADMIN" && (
                 <li>
-                  <span onClick={() => navigate("/adminpage")}>
+                  <span onClick={() => navigate("/admin/page")}>
                     관리자 메뉴
                   </span>
                 </li>
@@ -48,10 +50,10 @@ export default function Header() {
           ) : (
             <>
               <li>
-                <span onClick={() => navigate("/login")}>로그인</span>
+                <span onClick={() => navigate("/user/login")}>로그인</span>
               </li>
               <li>
-                <span onClick={() => navigate("/join")}>회원가입</span>
+                <span onClick={() => navigate("/user/join")}>회원가입</span>
               </li>
             </>
           )}

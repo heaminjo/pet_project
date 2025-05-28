@@ -5,6 +5,7 @@ import com.example.pet_back.domain.login.LoginRequestDTO;
 import com.example.pet_back.domain.member.MemberRequestDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.service.AuthService;
+import com.example.pet_back.service.MemberService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -25,6 +26,7 @@ public class AuthController {
 
     //자동 주입
     private final AuthService authService;
+    private final MemberService memberService;
 
     //회원 가입
     @PostMapping("/join")
@@ -52,5 +54,11 @@ public class AuthController {
     @GetMapping("/logout")
     public ResponseEntity<ApiResponse> logout(@AuthenticationPrincipal CustomUserDetails userDetails) {
         return ResponseEntity.ok(authService.logout(userDetails));
+    }
+
+    @GetMapping("/emailcheck")
+    public ResponseEntity<Boolean> emailCheck(@RequestParam("email") String email) {
+        log.info("이메일 중복 체크 요청된 이메일=>" + email);
+        return memberService.emailCheck(email);
     }
 }

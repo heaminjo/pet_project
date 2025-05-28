@@ -35,7 +35,7 @@ export default function MyEdit() {
     if (result.success) {
       alert("회원 수정이 완료되었습니다.");
       localStorage.setItem("loginName", result.data);
-      navigate("/mypage");
+      navigate("/user/mypage");
     }
   };
   const schema = yup.object({

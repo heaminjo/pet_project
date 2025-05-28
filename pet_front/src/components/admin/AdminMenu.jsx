@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import AdminMenuComp from "./AdminMenuStyle";
+import MemberApi from "../../api/MemberApi";
+import { useEffect, useState } from "react";
 
 export default function AdminMenu() {
-  const navigate = useNavigate();
   return (
     <AdminMenuComp>
       <div className="side_menu">
@@ -10,18 +11,16 @@ export default function AdminMenu() {
           <p className="menu_title">회원 관리</p>
           <ul>
             <li>
-              <span onClick={() => navigate("/myedit")}>
-                회원 목록 및 상세 정보
-              </span>
+              <span>회원 목록 및 상세 정보</span>
             </li>
             <li>
-              <span onClick={() => navigate("/updatepw")}>회원 등급 관리</span>
+              <span>회원 등급 관리</span>
             </li>
             <li>
-              <span onClick={() => navigate("/updatepw")}>회원 상태 관리</span>
+              <span>회원 상태 관리</span>
             </li>
             <li>
-              <span onClick={() => navigate("/updatepw")}>고객 활동 기록</span>
+              <span>고객 활동 기록</span>
             </li>
           </ul>
         </div>

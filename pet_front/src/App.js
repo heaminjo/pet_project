@@ -33,20 +33,20 @@ function App() {
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Main />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/join" element={<Join />} />
-            <Route path="/mypage" element={<MyPage />} />
-            <Route path="/myedit" element={<MyEdit />} />
-            <Route path="/updatepw" element={<UpdatePw />} />
+            <Route path="/user/login" element={<Login />} />
+            <Route path="/user/join" element={<Join />} />
+            <Route path="user/mypage" element={<MyPage />} />
+            <Route path="/user/myedit" element={<MyEdit />} />
+            <Route path="/user/updatepw" element={<UpdatePw />} />
             <Route path="/boardList" element={<BoardList />} />
-            <Route path="/cart/list" element={<Cart />} />
-            <Route path="/delivery" element={<Delivery />} />
-            <Route path="/order" element={<Order />} />
-            <Route path="/orderdetail" element={<OrderDetail />} />
-            <Route path="/withdraw" element={<WithDraw />} />
-            <Route path="/pay" element={<Pay />} />
-            <Route path="/goods" element={<Goods />} />
-            <Route path="/adminpage" element={<AdminPage />} />
+            <Route path="/user/cart/list" element={<Cart />} />
+            <Route path="/user/delivery" element={<Delivery />} />
+            <Route path="/user/order" element={<Order />} />
+            <Route path="/user/orderdetail" element={<OrderDetail />} />
+            <Route path="/user/withdraw" element={<WithDraw />} />
+            <Route path="/user/pay" element={<Pay />} />
+            <Route path="/admin/goods" element={<Goods />} />
+            <Route path="/admin/page" element={<AdminPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

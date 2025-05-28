@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -29,6 +30,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 //스프링 시큐리티를 활성화 하고 웹 보안 구성을 설정
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -36,11 +38,10 @@ public class SecurityConfig {
     private final CustomUserDetailsService customUserDetailsService;
 
 
-
     //필터를 받아 권한에 따른 페이지 허용
     //HttpSecurity는 웹 보안 설정을 구성하는데 사용되며 여러 보안필터,권한설정,인증방식등을 설정
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         //필터를 등록 한다.
         //addFilterBefore() : HttpSecurity에서 제공하는 메서드로 인자로 주어진 필터를 체인에 beforeFilter라는 클래스 바로앞에 삽입
         http.addFilterBefore((Filter) jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -67,30 +68,32 @@ public class SecurityConfig {
                 .formLogin(formLogin -> formLogin.disable()) // formLogin 비활성화
                 .logout(logout -> logout.disable()) // logout 비활성화
                 .csrf(csrf -> csrf.disable()) // CSRF 비활성화
-                .cors(cors -> {}) // CORS설정 활성화(기본값)_필수항목
+                .cors(cors -> {
+                }) // CORS설정 활성화(기본값)_필수항목
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 비활성화 (무상태)
 
 //인가 설정 경로 별로 권한에 따른 설정
                 .authorizeHttpRequests(auth -> auth
                         //관리자와 회원의 경로가 나올때마다 즉시 추가
-
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/user/**").hasRole("USER")
+                        .requestMatchers("/auth/**").permitAll()
                         //OPTIONS 메서드로 들어오는 모든 요청을 인증없이 허용
                         //프론트엔드가 API 요청 전 보내는 CORS 사전 확인 요청을 막지 않기 위해
-                        .requestMatchers("/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.OPTIONS ,"/**").permitAll()
-                        //설정하지 않은 모든 도메인 요청을 허용 (즉 누구나 접근 가능)
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().permitAll())
+                //설정하지 않은 모든 도메인 요청을 허용 (즉 누구나 접근 가능
                 .build();
     }
 
 
     //비밀번호 암호화 BCryptPasswordEncoder 알고리즘 사용
     @Bean
-    public PasswordEncoder getPasswordEncoder(){
+    public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
+
     //회원 DB조회를 위한 설정
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder) throws Exception {

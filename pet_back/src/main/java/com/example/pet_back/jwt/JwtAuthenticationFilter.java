@@ -12,8 +12,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -22,7 +20,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Objects;
 
 @Component
 @Log4j2
@@ -44,72 +41,73 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        try{
-        //request에서 토큰 가져오기
-        String token = getToken(request);
+        try {
+            //request에서 토큰 가져오기
+            String token = getToken(request);
 
-        log.info("토큰 정보 확인 => "+token);
+            log.info("토큰 정보 확인 => " + token);
 
-        //토큰이 존재할 경우
-        if(token != null  && !token.equalsIgnoreCase("null")) {
-            
-            log.info("토큰 있음");
-            
-            //토큰 검증 , claims 가져오기
-            Map<String, Object> claims = tokenProvider.validateToken(token,response);
+            //토큰이 존재할 경우
+            if (token != null && !token.equalsIgnoreCase("null")) {
 
-            if(claims == null){
-                log.info("만료된 토큰");
-                return;
+                log.info("토큰 있음");
+
+                //토큰 검증 , claims 가져오기
+                Map<String, Object> claims = tokenProvider.validateToken(token, response);
+
+                if (claims == null) {
+                    log.info("만료된 토큰");
+                    return;
+                }
+                log.info("토큰 Claims 사용자정보 만료시간 => " + claims);
+
+                //토큰에 사용자 정보(claims)에서 userId를 가져온다
+                Object idStr = claims.get("sub");
+                Long userId = Long.parseLong((String) idStr);
+                log.info("재발급 userId " + userId);
+                //유저 권한 가져오기(USER or ADMIN)
+                String role = (String) claims.get("role");
+                String authority = role.startsWith("ROLE_") ? role : "ROLE_" + role;
+                log.info("cliams role은 => " + role);
+                //유저 정보를 가져온다.
+                CustomUserDetails userDetails = customUserDetailsService.loadUserById(userId);
+
+                log.info("userDetails" + userDetails.getMember().getId());
+                //인증 객체 수동 생성
+                //AbstractAuthenticationToken 인증을 구현한 클래스
+                //유저의 정보와 권한이 들어간다.
+                AbstractAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails,  //요청한 주체 (Principal)
+                        null,  //일반적으로 비밀번호가 들어가지만 JWT은 토큰 자체가 인증 수단이므로 null로 처리한다.
+                        Collections.singletonList(new SimpleGrantedAuthority(authority)) //role은 단일값
+                );
+                log.info(authenticationToken.getAuthorities());
+//                log.info("권한 다시 확인"+SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+                //authenticationToken 객체에 부가 정보를 담아준다.
+                //단순히 사용자ID와 권한정보 이외에도 접속 IP 주소 , 세션Id등을 저장할 수 있다.
+                //setDetails에 저장
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+
+                // 빈 SecurityContext 객체를 생성한다
+                //SecurityContextHolder 로 부터 생성
+                SecurityContext context = SecurityContextHolder.createEmptyContext();
+                //검증 결과로 생성된 인증 정보를 저장
+                context.setAuthentication(authenticationToken);
+                log.info("context =>", context);
+                //최종적으로 현재 요청에 Context를 설정
+                // 이후 컨트롤러나 서비스에서 인증된 사용자로 인식
+                SecurityContextHolder.setContext(context);
             }
-            log.info("토큰 Claims 사용자정보 만료시간 => " + claims);
-
-            //토큰에 사용자 정보(claims)에서 userId를 가져온다
-            Object idStr =  claims.get("sub");
-            Long userId = Long.parseLong((String) idStr);
-            log.info("재발급 userId " + userId);
-            //유저 권한 가져오기(USER or ADMIN)
-            String role = (String) claims.get("role");
-
-            //유저 정보를 가져온다.
-            CustomUserDetails userDetails = customUserDetailsService.loadUserById(userId);
-
-            log.info("userDetails"+userDetails.getMember().getId());
-            //인증 객체 수동 생성
-            //AbstractAuthenticationToken 인증을 구현한 클래스
-            //유저의 정보와 권한이 들어간다.
-            AbstractAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    userDetails,  //요청한 주체 (Principal)
-                    null,  //일반적으로 비밀번호가 들어가지만 JWT은 토큰 자체가 인증 수단이므로 null로 처리한다.
-                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role)) //role은 단일값
-            );
-
-            //authenticationToken 객체에 부가 정보를 담아준다.
-            //단순히 사용자ID와 권한정보 이외에도 접속 IP 주소 , 세션Id등을 저장할 수 있다.
-            //setDetails에 저장
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-
-
-            // 빈 SecurityContext 객체를 생성한다
-            //SecurityContextHolder 로 부터 생성
-            SecurityContext context = SecurityContextHolder.createEmptyContext();
-            //검증 결과로 생성된 인증 정보를 저장
-            context.setAuthentication(authenticationToken);
-            log.info("context =>" ,context);
-            //최종적으로 현재 요청에 Context를 설정
-            // 이후 컨트롤러나 서비스에서 인증된 사용자로 인식
-            SecurityContextHolder.setContext(context);
-        }
-        }catch (Exception e){
-            log.info("사용자 인증 과정 중 에러 발생 => "+e.toString());
+        } catch (Exception e) {
+            log.info("사용자 인증 과정 중 에러 발생 => " + e.toString());
         }
         //최종 서블릿으로 요청과 응답을 넘김
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
     }
 
     //요청 시 request로 부터 토큰을 가져오는 메서드
-    private String getToken(HttpServletRequest request){
+    private String getToken(HttpServletRequest request) {
 
         //요청 헤더 중 Authorization 값을 가져온다.
         //Authorization은 클라이언트의 요청할때의 인증 정보를 담고있음
@@ -118,7 +116,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         //공백 문자열 모두 false를 해주고 값이 실제로 있는지 확인한다.
         //동시에 앞에 문자열이 Bearer로 시작하는지 확인한다.
-        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")){
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
             //전부 만족한다면 "Bearer "를 제외한 실제 토큰 문자열만 추출한다.
             return bearerToken.substring(7);
         }
