@@ -8,7 +8,6 @@ import com.example.pet_back.domain.member.MemberRequestDTO;
 import com.example.pet_back.entity.Address;
 import com.example.pet_back.entity.Member;
 import com.example.pet_back.entity.RefreshToken;
-import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.jwt.TokenProvider;
 import com.example.pet_back.mapper.MemberMapper;
 import com.example.pet_back.repository.AddressRepository;
@@ -27,14 +26,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.beans.Transient;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Log4j2
 
-public class AuthServiceImpl implements  AuthService{
+public class AuthServiceImpl implements AuthService {
     private final TokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
@@ -47,7 +45,7 @@ public class AuthServiceImpl implements  AuthService{
     //로그인
     @Override
 
-    public ApiResponse<?> login(HttpServletResponse response,LoginRequestDTO dto) {
+    public ApiResponse<?> login(HttpServletResponse response, LoginRequestDTO dto) {
         try {
             //email과 pw기반으로 AuthenticationToken 생성
             UsernamePasswordAuthenticationToken authenticationToken =
@@ -76,12 +74,13 @@ public class AuthServiceImpl implements  AuthService{
                     .build();
 
             //refreshToken은 쿠키에 저장
-            Cookie refreshTokenCookie = new Cookie("refreshToken",tokenDTO.getRefreshToken());
+            Cookie refreshTokenCookie = new Cookie("refreshToken", tokenDTO.getRefreshToken());
 
             refreshTokenCookie.setHttpOnly(true);    //JS 접근 불가
             refreshTokenCookie.setSecure(false);      // HTTPS 연결에서만 전송
             refreshTokenCookie.setPath("/");        //모든 경로에서 전송
             refreshTokenCookie.setMaxAge(7 * 24 * 60 * 60); // 7일 유지
+
 
             //Cookie 객체는 SameSite 속성을 기본적으로 지원하지 않기 때문에 setHeader로 직접 설정
             //secure는 HTTPS 연결에서만 브라우저로 전송
@@ -92,14 +91,14 @@ public class AuthServiceImpl implements  AuthService{
                     "refreshToken=" + tokenDTO.getRefreshToken() +
                             "; Path=/; Max-Age=604800; HttpOnly; SameSite=Lax");
 
-            log.info("쿠키 저장 완료 => " + refreshTokenCookie.getValue() );
+            log.info("쿠키 저장 완료 => " + refreshTokenCookie.getValue());
 
             refreshTokenRepository.save((refreshToken));
             //커스텀 응답 객체에 token을 담아 반환
-            return new ApiResponse<TokenDTO>(true,tokenDTO,"로그인에 성공하였습니다.");
+            return new ApiResponse<TokenDTO>(true, tokenDTO, "로그인에 성공하였습니다.");
         } catch (Exception e) {
-            log.info("로그인 중 에러 발생 =>"+e.getMessage());
-            return new ApiResponse<>(false,"아이디 또는 비밀번호가 일치하지 않습니다.");
+            log.info("로그인 중 에러 발생 =>" + e.getMessage());
+            return new ApiResponse<>(false, "아이디 또는 비밀번호가 일치하지 않습니다.");
         }
     }
 
@@ -121,7 +120,7 @@ public class AuthServiceImpl implements  AuthService{
             log.info("저장된 회원의 식별자 => " + member.getId());
             return ResponseEntity.ok().body(new ApiResponse<>(true, "회원가입에 성공하였습니다."));
         } catch (Exception e) {
-            return ResponseEntity.ok().body(new ApiResponse<>(false,"회원가입에 실패하였습니다."));
+            return ResponseEntity.ok().body(new ApiResponse<>(false, "회원가입에 실패하였습니다."));
         }
     }
 
@@ -130,16 +129,24 @@ public class AuthServiceImpl implements  AuthService{
     //refreshToken으로 사용자 아이디 추출 후
     //사용자 정보로 Authentication 생성 후 accessToken만 생성한다.
     @Override
-    public ResponseEntity<?> getRefresh( String refreshToken) {
-        log.info("쿠키 서비스");
+    public ResponseEntity<?> getRefresh(String refreshToken) {
+        //db 조회를 통해 리프레쉬 토큰의 유효성을 다시 검증
+        Optional<RefreshToken> rToken = refreshTokenRepository.findByToken(refreshToken);
+
+        //만약 DB에 RefreshToken이 없다면 유효하지 않은 토큰
+        if (rToken.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(HttpStatus.UNAUTHORIZED, "유효하지 않는 RefreshToken입니다.", "401"));
+        }
+        log.info("유효한 RefreshToken 입니다.");
         //refreshToken을 통해 유저 Id를 가져온다.
         Long userId = tokenProvider.getUserId(refreshToken);
         //userId를 통해 tokenProvider에서 유저의 정보를 담은 Authentication 객체를 가져온다
         Authentication authentication = tokenProvider.getAuthentication(userId);
-        
+
         //새로운 access토큰 생성
         TokenDTO tokenDTO = tokenProvider.createToken(authentication);
-        
-        return ResponseEntity.ok(new ApiResponse<TokenDTO>(true,tokenDTO,"토큰 재발급 성공"));
+
+        return ResponseEntity.ok(new ApiResponse<TokenDTO>(true, tokenDTO, "토큰 재발급 성공"));
+
     }
 }
