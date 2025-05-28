@@ -27,7 +27,18 @@ public class GoodsResponseDTO {
     private int quantity;
     private Date reg_date;
 
-    // 생성자
+    // 생성자 - 상품리스트 출력용 (메인)
+    public GoodsResponseDTO(Long category_id, String goods_name, int price, //
+                            String description, GOODSSTATE goods_state, //
+                            String image_file, int quantity) {
+        this.category_id = category_id;
+        this.goods_name = goods_name;
+        this.price = price;
+        this.description = description;
+        this.goods_state = goods_state;
+        this.image_file = image_file;
+        this.quantity = quantity;
+    }
 
 
 }

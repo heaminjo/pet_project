@@ -1,13 +1,18 @@
 package com.example.pet_back.service;
 
 import com.example.pet_back.domain.login.GoodsRequestDTO;
+import com.example.pet_back.domain.login.GoodsResponseDTO;
 import com.example.pet_back.mapper.MemberMapper;
 import com.example.pet_back.repository.CartRepository;
 import com.example.pet_back.repository.GoodsRepository;
 import com.example.pet_back.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -20,6 +25,16 @@ public class GoodsServiceImpl implements GoodsService {
 
     private final MemberMapper mapper;
 
+    // 상품리스트 출력
+    @Override
+    public ResponseEntity<?> showGoodsList() {
+        log.info("** GoodsServiceImpl 실행됨 **");
+        List<GoodsResponseDTO> goodsList = goodsRepository.showGoodsList();
+        return ResponseEntity.status(HttpStatus.OK).body(goodsList);
+    }
+
+
+    // 상품등록
     @Override
     public void registerGoods(GoodsRequestDTO goodsRequestDTO) {
         log.info("** GoodsServiceImpl 실행됨 **");

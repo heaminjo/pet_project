@@ -21,6 +21,13 @@ public class GoodsController {
     private final GoodsService goodsService;
     private final MemberService memberService;
 
+    // 상품 리스트 출력 (메인)
+    @GetMapping("/list")
+    public ResponseEntity<?> showGoodsList() {
+        log.info("** GoodsController => showGoodsList() 실행됨 **");
+        return goodsService.showGoodsList();
+    }
+    
     // 상품등록 메서드 (관리자 페이지)
     @PostMapping("/register")
     public ResponseEntity<?> createGoods( //

@@ -1,11 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import OrderComp from './OrderStyle.js';
+import GoodsApi from '../../../api/GoodsApi';
 
 export default function Order() {
-  const prodImage = process.env.PUBLIC_URL + '/images/pic2.png';
-  const [select, setSelect] = useState(false);
-  const [menu, setMenu] = useState({ label: '10kg', price: '10000 원' });
-
   const handleSelect = (option) => {
     if (!option.disabled) {
       setMenu(option);
@@ -27,6 +24,37 @@ export default function Order() {
       disabled: false,
     },
   ];
+
+  const prodImage = process.env.PUBLIC_URL + '/images/pic2.png';
+  const [select, setSelect] = useState(false);
+  const [menu, setMenu] = useState({ label: '10kg', price: '10000 원' });
+  const [goods, setGoods] = useState({
+    goods_name: '',
+    image_file: '',
+    goods_state: 'SALE',
+    description: '',
+    rice: '',
+  });
+
+  const pay = async (goods) => {
+    GoodsApi.pay(goods)
+      .then((response) => {
+        setGoods(response);
+      })
+      .catch((err) => {});
+  };
+
+  const addToCart = async (goods) => {
+    GoodsApi.addToCart(goods)
+      .then((response) => {
+        setGoods(response);
+      })
+      .catch((err) => {});
+  };
+
+  useEffect(() => {
+    addToCart();
+  }, []);
 
   return (
     <OrderComp>
@@ -61,8 +89,8 @@ export default function Order() {
             </select>
             <br />
             <br />
-            <button>장바구니</button>&nbsp;&nbsp;
-            <button>바로구매</button>
+            <button onClick={addToCart}>장바구니</button>&nbsp;&nbsp;
+            <button onClick={pay}>바로구매</button>
           </div>
         </section>
 

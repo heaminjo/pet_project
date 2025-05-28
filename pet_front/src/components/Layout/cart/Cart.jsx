@@ -15,7 +15,7 @@ export default function Cart() {
       .then((response) => {
         setGoods(response);
       })
-      .catch((err) => {}); //apiCall
+      .catch((err) => {});
   };
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function Cart() {
             {goods.map((item, index) => (
               <div className='prod' key={index}>
                 <div className='prodleft'>
-                  <img src={cartImage1} alt='상품1이미지' className='cartimage' onClick={() => navigate('/purchase')} />
+                  <img src={cartImage1} alt='상품1이미지' className='cartimage' onClick={() => navigate('/order')} />
                 </div>
                 <div className='prodright'>
                   <div>{item.goods_name}</div>

@@ -39,7 +39,6 @@ public class GoodsRequestDTO {
         this.image_file = image_file;
         this.quantity = quantity;
         this.reg_date = reg_date;
-
     }
 
 }
