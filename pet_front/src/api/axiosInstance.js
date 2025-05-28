@@ -16,7 +16,7 @@ instance.interceptors.request.use((config) => {
   return config;
 });
 
-//interceptors 을 통해 에러 상태코드에 따른 핸들링
+//응답 인터셉터
 instance.interceptors.response.use(
   //성공한 응답일 경우 그대로 넘기지만
   //에러 일 경우 asycn 함수가 호출
@@ -44,10 +44,7 @@ instance.interceptors.response.use(
         //원래 실패했던 요청에 토큰를 다시 갱신 후 다시 요청청
         return instance(originalRequest);
       } catch (error) {
-        //리프레쉬 토큰 만료 시 로그아웃 처리
-        if (error.response?.data.code === "AUTH004") {
-          alert("로그인 세션이 만료되었습니다.\n다시 로그인 하시길 바랍니다.");
-        }
+        //리프레쉬 토큰 401 시 로그아웃 처리하고 다시 로그인 요청하도록 하게 에러 객체 전달
         return Promise.reject(error);
       }
     }
