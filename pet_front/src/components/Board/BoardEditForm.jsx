@@ -27,10 +27,10 @@ export default function BoardEditForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`/board/update/${board_id}`, {
-        board_id,
-        title,
-        content,
+      await axios.put(`/board/updateboard/${board_id}`, { board_id, title, content }, {
+        headers: {
+          Authorization: `${localStorage.getItem("grantType")} ${localStorage.getItem("accessToken")}`
+        }
       });
       alert("게시글이 수정되었습니다.");
       navigate(`/boardDetail/${board_id}`);
@@ -38,6 +38,8 @@ export default function BoardEditForm() {
       alert("게시글 수정에 실패했습니다.");
     }
   };
+
+  console.log("board_id", board_id);
 
   return (
     <BoardInsertFormStyle>
