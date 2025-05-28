@@ -50,10 +50,10 @@ export default function Header() {
           ) : (
             <>
               <li>
-                <span onClick={() => navigate("/user/login")}>로그인</span>
+                <span onClick={() => navigate("/login")}>로그인</span>
               </li>
               <li>
-                <span onClick={() => navigate("/user/join")}>회원가입</span>
+                <span onClick={() => navigate("/join")}>회원가입</span>
               </li>
             </>
           )}

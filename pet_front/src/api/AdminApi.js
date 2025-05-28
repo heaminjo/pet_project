@@ -9,5 +9,10 @@ const AdminApi = {
     const result = await instance.get(`${KH_DOMAIN}/admin/detail`);
     return result.data;
   },
+
+  userList: async () => {
+    const result = await instance.get(`${KH_DOMAIN}/admin/userlist`);
+    return result.data;
+  },
 };
 export default AdminApi;
