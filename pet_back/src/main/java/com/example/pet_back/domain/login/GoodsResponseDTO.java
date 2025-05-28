@@ -1,10 +1,7 @@
 package com.example.pet_back.domain.login;
 
 import com.example.pet_back.constant.GOODSSTATE;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
@@ -12,7 +9,8 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GoodsDTO {
+@Builder
+public class GoodsResponseDTO {
 
     private Long goods_id;
     private Long category_id;
@@ -28,6 +26,8 @@ public class GoodsDTO {
     private int review_num;
     private int quantity;
     private Date reg_date;
+
+    // 생성자
 
 
 }

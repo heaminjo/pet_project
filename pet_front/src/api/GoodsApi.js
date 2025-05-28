@@ -15,15 +15,19 @@ const GoodsApi = {
   },
   regGoods: async (goods) => {
     try {
-      const result = await axios.put(`${KH_DOMAIN}/goods/register`, goods, {
+      const result = await axios.post(`${KH_DOMAIN}/goods/register`, goods, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `${localStorage.getItem('grantType')} ${localStorage.getItem('accessToken')}`,
         },
       });
-      return result.data;
+      if (result.data != null) {
+        alert(`상품등록 완료 => ${result.data}`);
+        return result.data;
+      }
     } catch (err) {
-      throw err;
+      console.error('상품 등록 실패:', err);
+      alert('상품 등록 중 에러가 발생했습니다.');
     }
   },
 };

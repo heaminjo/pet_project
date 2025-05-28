@@ -1,14 +1,9 @@
 package com.example.pet_back.service;
 
-import com.example.pet_back.domain.login.GoodsDTO;
-import com.example.pet_back.entity.Goods;
-import com.example.pet_back.jwt.CustomUserDetails;
-import org.springframework.http.ResponseEntity;
-
-import java.util.List;
+import com.example.pet_back.domain.login.GoodsRequestDTO;
 
 public interface GoodsService {
 
-
+    void registerGoods(GoodsRequestDTO goodsRequestDTO);
 
 }

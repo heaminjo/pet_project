@@ -3,25 +3,27 @@ import GoodsComp from './GoodsStyle';
 import { useEffect, useState } from 'react';
 import GoodsApi from '../../../api/GoodsApi';
 
-export default function Cart() {
+export default function Goods() {
   const navigate = useNavigate();
   const goodsImg = process.env.PUBLIC_URL + '/images/pic1.png';
   // form의 input 값들을 state로 관리하고
   //submit 버튼 클릭 시 axios.post()로 데이터 전송
   const [goods, setGoods] = useState({
     // input 값 연결용
-    name: '',
-    img: '',
-    category: '',
-    desc: '',
-    status: '',
+    goods_name: '',
+    image_file: '',
+    category_id: '',
+    goods_state: 'SALE',
+    description: '',
     quantity: '',
-    unit: '',
+    price: '',
   });
 
   const register = async (e) => {
     e.preventDefault(); // form 기본 제출 막기
-    GoodsApi.regGoods(goods);
+    const response = GoodsApi.regGoods(goods);
+    console.log('등록 결과:', response);
+    navigate('/');
   };
 
   return (
@@ -32,44 +34,43 @@ export default function Cart() {
         <hr />
         <div className='register-form'>
           <div className='left'>
-            <form onSubmit={() => register()}>
+            <form onSubmit={register} method='post'>
               <table>
                 <tbody>
                   <tr>
                     <td>상품명</td>
                     <td>
-                      <input type='text' value={goods.name} onChange={(e) => setGoods({ ...goods, name: e.target.value })} />
+                      <input type='text' value={goods.goods_name} onChange={(e) => setGoods({ ...goods, goods_name: e.target.value })} />
                     </td>
                   </tr>
                   <tr>
                     <td>상품이미지</td>
                     <td>
-                      <input type='text' value={goods.img} onChange={(e) => setGoods({ ...goods, img: e.target.value })} />
-                      <button onClick={() => {}}>등록</button>
+                      <input type='text' value={goodsImg} readOnly />
+                      {/* <button onClick={() => {}}>등록</button> */}
                     </td>
                   </tr>
                   <tr>
                     <td>카테고리</td>
                     <td>
-                      <select value={goods.category} onChange={(e) => setGoods({ ...goods, category: e.target.value })}>
+                      <select value={goods.category_id} onChange={(e) => setGoods({ ...goods, category_id: e.target.value })}>
                         <option value=''> 선택 </option>
-                        <option value='cat1'>상품 카테고리1</option>
-                        <option value='cat2'>상품 카테고리2</option>
-                        <option value='cat3'>상품 카테고리3</option>
+                        <option value='1'>1 : 사료</option>
+                        <option value='2'>2 : 간식</option>
+                        <option value='3'>3 : 장난감</option>
                       </select>
                     </td>
                   </tr>
                   <tr>
                     <td>상품 Description</td>
                     <td>
-                      <input type='text' value={goods.desc} onChange={(e) => setGoods({ ...goods, desc: e.target.value })} />
+                      <input type='text' value={goods.description} onChange={(e) => setGoods({ ...goods, description: e.target.value })} />
                     </td>
                   </tr>
                   <tr>
                     <td>상태(SALE, SOLDOUT, HIDDEN)</td>
                     <td>
-                      <select value={goods.status} onChange={(e) => setGoods({ ...goods, status: e.target.value })}>
-                        <option value=''> 선택 </option>
+                      <select value={goods.goods_state} onChange={(e) => setGoods({ ...goods, goods_state: e.target.value })}>
                         <option value='SALE'>SALE</option>
                         <option value='SOLDOUT'>SOLDOUT</option>
                         <option value='HIDDEN'>HIDDEN</option>
@@ -77,14 +78,15 @@ export default function Cart() {
                     </td>
                   </tr>
                   <tr>
-                    <td>판매 기본단위</td>
+                    <td>기본 판매 수량(단위)</td>
                     <td>
                       <input type='text' value={goods.quantity} onChange={(e) => setGoods({ ...goods, quantity: e.target.value })} /> &nbsp;&nbsp;
-                      <select value={goods.unit} onChange={(e) => setGoods({ ...goods, unit: e.target.value })}>
-                        <option value=''> 단위 선택 </option>
-                        <option value='kg'>kg</option>
-                        <option value='num'>개</option>
-                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>판매 가격</td>
+                    <td>
+                      <input type='text' value={goods.price} onChange={(e) => setGoods({ ...goods, price: e.target.value })} /> &nbsp;&nbsp;
                     </td>
                   </tr>
                   <tr id='tr_btn'>
