@@ -13,7 +13,7 @@ export default function Goods() {
     goods_name: '',
     image_file: '',
     category_id: '',
-    goods_state: 0,
+    goods_state: 'SALE',
     description: '',
     quantity: '',
     price: '',
@@ -21,13 +21,9 @@ export default function Goods() {
 
   const register = async (e) => {
     e.preventDefault(); // form 기본 제출 막기
-    try {
-      const response = GoodsApi.regGoods(goods);
-      console.log('등록 결과:', response);
-    } catch (err) {
-      console.error('상품 등록 실패:', err);
-      alert('상품 등록 중 에러가 발생했습니다.');
-    }
+    const response = GoodsApi.regGoods(goods);
+    console.log('등록 결과:', response);
+    navigate('/');
   };
 
   return (
@@ -75,9 +71,9 @@ export default function Goods() {
                     <td>상태(SALE, SOLDOUT, HIDDEN)</td>
                     <td>
                       <select value={goods.goods_state} onChange={(e) => setGoods({ ...goods, goods_state: e.target.value })}>
-                        <option value='0'>SALE</option>
-                        <option value='1'>SOLDOUT</option>
-                        <option value='2'>HIDDEN</option>
+                        <option value='SALE'>SALE</option>
+                        <option value='SOLDOUT'>SOLDOUT</option>
+                        <option value='HIDDEN'>HIDDEN</option>
                       </select>
                     </td>
                   </tr>

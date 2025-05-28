@@ -1,6 +1,5 @@
 package com.example.pet_back.repository;
 
-import com.example.pet_back.constant.GOODSSTATE;
 import com.example.pet_back.entity.Goods;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,7 +17,7 @@ public interface GoodsRepository extends JpaRepository<Goods, Long> {
             "VALUES (:category_id, :goods_name, :price, :description, :goods_state, :image_file, :quantity)")
     public void registerGoods(@Param("category_id") Long category_id, @Param("goods_name") String goods_name, //
                               @Param("price") int price, @Param("description") String description, //
-                              @Param("goods_state") GOODSSTATE goods_state, //
+                              @Param("goods_state") String goods_state, //
                               @Param("image_file") String image_file, @Param("quantity") int quantity);
 
 

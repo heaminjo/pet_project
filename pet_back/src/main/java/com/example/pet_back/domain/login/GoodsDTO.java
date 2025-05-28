@@ -1,8 +1,10 @@
 package com.example.pet_back.domain.login;
 
 import com.example.pet_back.constant.GOODSSTATE;
-import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 
@@ -26,5 +28,6 @@ public class GoodsDTO {
     private int review_num;
     private int quantity;
     private Date reg_date;
+
 
 }

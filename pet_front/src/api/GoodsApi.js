@@ -23,12 +23,11 @@ const GoodsApi = {
       });
       if (result.data != null) {
         alert(`상품등록 완료 => ${result.data}`);
-      } else {
-        alert('등록실패');
+        return result.data;
       }
-      return result.data;
     } catch (err) {
-      throw err;
+      console.error('상품 등록 실패:', err);
+      alert('상품 등록 중 에러가 발생했습니다.');
     }
   },
 };

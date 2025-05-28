@@ -28,9 +28,12 @@ public class GoodsController {
                                           @RequestBody GoodsRequestDTO goodsRequestDTO) {
         log.info("** GoodsController => createGoods() 실행됨 **");
         System.out.println("goodsDTO 이름: " + goodsRequestDTO.getGoods_name());
-        GoodsRequestDTO dto = goodsService.registerGoods(goodsRequestDTO); // 에러 지점
-        System.out.println("dto 이름: " + dto.getGoods_name());
-        return ResponseEntity.status(HttpStatus.OK).body(dto); // 등록요청한 상품의 DTO반환
+        System.out.println("goodsDTO state: " + goodsRequestDTO.getGoods_state());
+        System.out.println("goodsDTO state 타입: " + goodsRequestDTO.getGoods_state().getClass());
+
+        goodsService.registerGoods(goodsRequestDTO); // 에러 지점
+
+        return ResponseEntity.status(HttpStatus.OK).body("성공");
     }
 
 
