@@ -2,15 +2,19 @@ import { useEffect, useState } from "react";
 import AdminMenu from "../../components/admin/AdminMenu";
 import UserListComp from "./UserListStyle";
 import AdminApi from "../../api/AdminApi";
+import PageNumber from "../../components/util/PageNumber";
+import { useNavigate } from "react-router-dom";
 
 export default function UserList() {
+  const navigate = useNavigate();
+
   const [userList, setUserList] = useState([]);
   const [type, setType] = useState("all");
   const [keyword, setKeyword] = useState("");
   const [sort, setSort] = useState("desc");
   const [page, setPage] = useState(0);
 
-  //페이징 정보보
+  //페이징 정보
   const [paging, setPaging] = useState({
     start: 0,
     end: 4,
@@ -39,8 +43,6 @@ export default function UserList() {
 
     //컨텐츠 저장
     setUserList(result.content);
-    console.log(result.prev);
-    console.log(result.next);
     let temp = Math.floor(page / 5) * 5;
 
     //페이지번호 정보 저장
@@ -58,6 +60,11 @@ export default function UserList() {
   const searchClick = () => {
     setPage(0);
     getPageList();
+  };
+
+  //유저 상세보기 클릭
+  const userDetail = (id) => {
+    navigate("/admin/page/userdetail", { state: { memberId: id } });
   };
   return (
     <UserListComp>
@@ -115,7 +122,10 @@ export default function UserList() {
 
               {userList.length > 0 ? (
                 userList.map((m) => (
-                  <tr className="user_present">
+                  <tr
+                    className="user_present"
+                    onClick={() => userDetail(m.memberId)}
+                  >
                     <td>{m.email}</td>
                     <td>{m.name}</td>
                     <td>{m.phone}</td>
@@ -133,58 +143,7 @@ export default function UserList() {
               )}
             </table>
           </div>
-          <div className="select_page">
-            <ul className="curr_page">
-              {Array.from({ length: paging.end - paging.start }, (_, index) => {
-                const pageNumber = paging.start + index;
-                return (
-                  <li onClick={() => setPage(pageNumber)}>
-                    <span className={page == pageNumber ? "current" : ""}>
-                      {pageNumber + 1}
-                    </span>
-                  </li>
-                );
-              })}
-              <li>
-                <span id="last_page">. . . {paging.totalPages}</span>
-              </li>
-            </ul>
-            <div className="page_btn">
-              {paging.start != 0 && (
-                <button className="move" id="first" onClick={() => setPage(0)}>
-                  ◀◀
-                </button>
-              )}
-              {paging.isPrev && (
-                <button
-                  className="move"
-                  id="prev"
-                  onClick={() => setPage(page - 1)}
-                >
-                  ◀
-                </button>
-              )}
-
-              {paging.isNext && (
-                <button
-                  className="move"
-                  id="next"
-                  onClick={() => setPage(page + 1)}
-                >
-                  ▶
-                </button>
-              )}
-              {paging.end != paging.totalPages && (
-                <button
-                  className="move"
-                  id="last"
-                  onClick={() => setPage(paging.totalPages - 1)}
-                >
-                  ▶▶
-                </button>
-              )}
-            </div>
-          </div>
+          <PageNumber page={page} setPage={setPage} paging={paging} />
         </div>
       </div>
     </UserListComp>
