@@ -10,7 +10,7 @@ const UserListComp = styled.div`
     padding: 40px 0;
     gap: 40px;
     .list_container {
-      width: 100%;
+      width: 900px;
       border: 1px solid #000;
       padding: 20px;
       border: 1px solid #eee;
@@ -32,6 +32,7 @@ const UserListComp = styled.div`
             width: 350px;
             border-radius: 20px;
             border: 1px solid #000;
+            padding-left: 15px;
           }
           input:focus {
             outline: none;
@@ -59,23 +60,31 @@ const UserListComp = styled.div`
         }
       }
       table {
-        width: 100%;
+        width: 880px;
         border-collapse: collapse;
-        tr {
+        th {
+          background-color: rgb(255, 221, 0);
+          color: rgb(52, 45, 1);
+          padding: 5px 0;
+          text-align: start;
+          padding-left: 5px;
+        }
+        .user_present {
           height: 30px;
           border-bottom: 1px solid #eee;
           cursor: pointer;
-          th {
-            background-color: rgb(255, 221, 0);
-            color: rgb(52, 45, 1);
-          }
           td {
             padding: 0 5px;
             font-size: 14px;
           }
         }
-        tr:hover {
+        .user_present:hover {
           background-color: #eee;
+        }
+        .user_empty {
+          height: 50px;
+          border: 1px solid #eee;
+          text-align: center;
         }
       }
     }

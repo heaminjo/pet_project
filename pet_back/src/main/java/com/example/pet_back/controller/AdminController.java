@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -28,8 +29,13 @@ public class AdminController {
         return memberService.selectOne(userDetails);
     }
 
-    @GetMapping("/userlist")
+    @GetMapping("/list/all")
     public ResponseEntity<List<MemberResponseDTO>> memberList() {
         return ResponseEntity.ok(memberService.memberList());
+    }
+
+    @GetMapping("/list/search")
+    public ResponseEntity<List<MemberResponseDTO>> memberSearchList(@RequestParam("type") String type, @RequestParam("keyword") String keyword) {
+        return ResponseEntity.ok(memberService.memberSearchList(type, keyword));
     }
 }

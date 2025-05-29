@@ -18,4 +18,6 @@ public interface MemberService {
     public ResponseEntity<?> memberPwUpdate(CustomUserDetails userDetails, UpdatePwRequestDTO dto);
 
     public List<MemberResponseDTO> memberList();
+
+    public List<MemberResponseDTO> memberSearchList(String type, String keyword);
 }
