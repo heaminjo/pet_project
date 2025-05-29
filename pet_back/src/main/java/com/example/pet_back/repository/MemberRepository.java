@@ -17,9 +17,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query(nativeQuery = true, value = "update member set password = :password where member_id = :id")
     public void updatePassword(@Param("id") Long id, @Param("password") String password);
 
-    @Query(nativeQuery = true, value = "select * from member where " +
-            "(:type = 'name' AND name LIKE :keyword) OR " +
-            "(:type = 'email' AND email LIKE :keyword)")
-    public Page<Member> findSearchList(@Param("type") String type, @Param("keyword") String keyword, Pageable pageable);
+    //검색 조건 있는 경우
+    @Query("SELECT m FROM Member m WHERE " +
+            "(:type = 'name' AND m.name LIKE :keyword) OR " +
+            "(:type = 'email' AND m.email LIKE :keyword)")
+    Page<Member> findSearchList(@Param("type") String type, @Param("keyword") String keyword, Pageable pageable);
 
 }

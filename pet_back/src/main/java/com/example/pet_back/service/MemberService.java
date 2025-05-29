@@ -8,8 +8,6 @@ import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
-
 public interface MemberService {
     public ResponseEntity<Boolean> emailCheck(String email);
 
@@ -19,7 +17,8 @@ public interface MemberService {
 
     public ResponseEntity<?> memberPwUpdate(CustomUserDetails userDetails, UpdatePwRequestDTO dto);
 
-    public List<MemberResponseDTO> memberList();
+//    public List<MemberResponseDTO> memberList();
 
+    //멤버 리스트
     public PageResponseDTO<MemberResponseDTO> memberSearchList(PageRequestDTO dto);
 }

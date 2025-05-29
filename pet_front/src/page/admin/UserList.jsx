@@ -7,6 +7,7 @@ export default function UserList() {
   const [userList, setUserList] = useState([]);
   const [type, setType] = useState("all");
   const [keyword, setKeyword] = useState("");
+  const [sort, setSort] = useState("desc");
 
   const getUserList = async () => {
     const result = await AdminApi.userList();
@@ -54,7 +55,17 @@ export default function UserList() {
                 <option value="grade">등급</option>
                 <option value="state">상태</option>
               </select>
+              <select
+                name="sort"
+                id="sort"
+                value={sort}
+                onChange={(e) => setSort(e.target.value)}
+              >
+                <option value="desc">최신순</option>
+                <option value="asc">오래된 순</option>
+              </select>
             </div>
+
             <div className="search_input">
               <input
                 type="text"

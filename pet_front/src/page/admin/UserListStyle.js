@@ -50,6 +50,8 @@ const UserListComp = styled.div`
           }
         }
         .search_type {
+          display: flex;
+          gap: 10px;
           select {
             height: 40px;
             width: 100px;

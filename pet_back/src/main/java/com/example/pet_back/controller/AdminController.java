@@ -12,8 +12,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -28,10 +26,10 @@ public class AdminController {
         return memberService.selectOne(userDetails);
     }
 
-    @GetMapping("/list/all")
-    public ResponseEntity<List<MemberResponseDTO>> memberList() {
-        return ResponseEntity.ok(memberService.memberList());
-    }
+//    @GetMapping("/list/all")
+//    public ResponseEntity<List<MemberResponseDTO>> memberList() {
+//        return ResponseEntity.ok(memberService.memberList());
+//    }
 
     @PostMapping("/list/search")
     public ResponseEntity<PageResponseDTO<MemberResponseDTO>> memberSearchList(@RequestBody PageRequestDTO dto) {
