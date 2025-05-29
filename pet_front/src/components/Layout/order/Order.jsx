@@ -21,13 +21,14 @@ export default function Order() {
   const addToCart = async (goods) => {
     GoodsApi.addToCart(goods)
       .then((response) => {
-        alert(`장바구니 담기 성공 => ${response}`);
+        alert(`장바구니 담기 성공 => ${response.goods_id}`);
+        console.log(response);
       })
       .catch((err) => {});
   };
 
   useEffect(() => {
-    alert(`상품정보 확인: ${goods.goods_name}, ${goods.goods_state}, ${goods.description}, ${goods.price}`);
+    alert(`상품정보 확인: ${goods.goods_id}, ${goods.goods_name}, ${goods.goods_state}, ${goods.description}, ${goods.price}, 수량: ${goods.quantity}`);
   }, []);
 
   return (
@@ -63,7 +64,7 @@ export default function Order() {
             </select>
             <br />
             <br />
-            <button onClick={addToCart}>장바구니</button>&nbsp;&nbsp;
+            <button onClick={() => addToCart(goods)}>장바구니</button>&nbsp;&nbsp;
             <button onClick={pay}>바로구매</button>
           </div>
         </section>
@@ -72,12 +73,14 @@ export default function Order() {
           <h2>상세페이지</h2>
           <p>필수 표기정보</p>
           <table>
-            <tr>
-              <th>품명</th>
-            </tr>
-            <tr>
-              <td></td>
-            </tr>
+            <tbody>
+              <tr>
+                <th>품명</th>
+              </tr>
+              <tr>
+                <td></td>
+              </tr>
+            </tbody>
           </table>
         </section>
         <div className='reviews'>후기목록</div>

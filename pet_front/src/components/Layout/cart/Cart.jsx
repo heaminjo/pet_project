@@ -36,11 +36,22 @@ export default function Cart() {
                   <img src={cartImage1} alt='상품1이미지' className='cartimage' onClick={() => navigate('/order', { state: { goods: item } })} />
                 </div>
                 <div className='prodright'>
-                  <div>{item.goods_name}</div>
-                  <div>{item.description}</div>
+                  <div>
+                    <b>상품명</b>&nbsp;&nbsp;{item.goods_name}
+                  </div>
+                  <div>
+                    <b>상세정보</b>&nbsp;&nbsp;{item.description}
+                  </div>
+                  <div>
+                    <b>가격</b>&nbsp;&nbsp; {item.price}
+                  </div>
+                  <div>
+                    <b>수량</b>&nbsp;&nbsp; {item.quantity}
+                  </div>
+                  <div>
+                    <img src={seller} className='seller' alt='판매자' /> ROYAL CANIN
+                  </div>
                   <div>내일 7시 도착</div>
-                  <div>{item.price}</div>
-                  <img src={seller} className='seller' alt='판매자' /> ROYAL CANIN
                 </div>
               </div>
             ))}
