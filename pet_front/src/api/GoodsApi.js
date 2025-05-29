@@ -5,13 +5,25 @@ const KH_DOMAIN = 'http://localhost:8080';
 const GoodsApi = {
   // 장바구니 추가
   addToCart: async (goods) => {
-    const result = await instance.post(`/cart/add`, goods);
-    return result.data;
+    //alert(`장바구니 담기 => ${goods}`);
+    console.log(`장바구니 담기 시도 => ${goods.goods_id}, 수량: ${goods.quantity}`);
+    const result = await instance.post('/cart/add', goods);
+    try {
+      if (result.data != null) {
+        console.log('장바구니 담기 완료');
+        return result.data;
+      } else {
+        console.log('장바구니 담기 실패');
+      }
+    } catch (err) {
+      console.error('장바구니 추가 실패:', err);
+      alert('장바구니 추가 중 에러가 발생했습니다.');
+    }
   },
 
   // 장바구니 출력 (완료)
   cartList: async () => {
-    const result = await instance.get(`/cart/list`);
+    const result = await instance.get('/cart/list');
     // alert(`GoodsApi의 cart 호출완료 => ${JSON.stringify(result.data)} `);
     return result.data;
   }, // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -22,7 +34,7 @@ const GoodsApi = {
       const result = await instance.get('/goods/list');
       if (result.data != null) {
         alert(`상품 리스트 호출 완료 => ${JSON.stringify(result.data)}`);
-        return result.data.body;
+        return result.data;
       }
     } catch (err) {}
   },

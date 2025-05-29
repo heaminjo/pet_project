@@ -11,13 +11,13 @@ export default function GoodsList() {
   const goodsList = async () => {
     GoodsApi.showGoods()
       .then((response) => {
-        setGoods(response);
+        setGoods(response.body);
       })
       .catch((err) => {});
   };
 
   const clickProd = (item) => {
-    alert(`선택된 상품: ${item.goods_name}, ${item.goods_state}, ${item.description}, ${item.price}`);
+    alert(`clickProd 선택된 상품: ${item.goods_id}, ${item.goods_name}, ${item.goods_state}, ${item.description}, ${item.price}`);
     navigate('/order', { state: { goods: item } });
   };
 

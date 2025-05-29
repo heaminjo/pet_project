@@ -5,47 +5,42 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce94af43-ae82-4e55-bb2b-6016175262a9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/mapper/GoodsMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.13/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.13/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.13/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.13/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main/generated/com/example/pet_back/mapper/CartMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main/generated/com/example/pet_back/mapper/CartMapperImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/controller/CartController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/controller/GoodsController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/controller/GoodsController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/login/GoodsRequestDTO$GoodsRequestDTOBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/login/GoodsRequestDTO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/login/GoodsResponseDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/login/GoodsResponseDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/repository/CartRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/repository/GoodsRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/CartService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/CartServiceImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/GoodsService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/GoodsService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/GoodsServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main/generated/com/example/pet_back/mapper/MemberMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main/generated/com/example/pet_back/mapper/MemberMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/reports/problems/problems-report.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/problems/problems-report.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/controller/CartController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/controller/CartController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/goods/CartRequestDTO$CartRequestDTOBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/goods/CartRequestDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/goods/CartRequestDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/goods/CartResponseDTO$CartResponseDTOBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/goods/CartResponseDTO$CartResponseDTOBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/goods/CartResponseDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/goods/CartResponseDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/goods/GoodsRequestDTO$GoodsRequestDTOBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/goods/GoodsRequestDTO$GoodsRequestDTOBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/goods/GoodsRequestDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/goods/GoodsRequestDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/mapper/CartMapperImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/mapper/CartMapperImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/mapper/MemberMapperImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/mapper/MemberMapperImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/repository/CartRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/repository/CartRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/repository/GoodsRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/repository/GoodsRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/CartServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/CartServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/GoodsServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/GoodsServiceImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/controller/CartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/controller/CartController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/controller/GoodsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/controller/GoodsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/custom/ApiResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/custom/ApiResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/login/CartRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/goods/CartRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/login/CartResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/goods/CartResponseDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/login/GoodsDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/goods/GoodsDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/login/GoodsRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/goods/GoodsRequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/login/GoodsResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/goods/GoodsResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/goods/CartRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/goods/CartRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/goods/CartResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/goods/CartResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/goods/GoodsRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/goods/GoodsRequestDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/entity/Cart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/entity/Cart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/entity/CartId.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/entity/CartId.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/mapper/CartMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/mapper/CartMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/repository/CartRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/repository/CartRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/repository/GoodsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/repository/GoodsRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/service/CartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/service/CartService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/service/CartServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/service/CartServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/service/GoodsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/service/GoodsService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/service/GoodsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/service/GoodsServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/.eslintcache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/14.pack_" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/14.pack_" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/15.pack_" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/15.pack_" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../pet_front/src/api/GoodsApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/api/GoodsApi.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Layout/cart/Cart.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Layout/cart/Cart.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Layout/goods/GoodsList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Layout/goods/GoodsList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Layout/goods/GoodsListStyle.js" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Layout/goods/GoodsListStyle.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Layout/order/Order.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Layout/order/Order.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Layout/pay/Pay.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Layout/pay/Pay.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Layout/pay/PayStyle.js" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Layout/pay/PayStyle.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,8 +74,8 @@
       <list>
         <option value="Kotlin Enum" />
         <option value="Enum" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -102,18 +97,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.PetBackApplication.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;정서영-branch&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;actions.on.save&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.PetBackApplication.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "정서영-branch",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "actions.on.save"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="PetBackApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.example.pet_back.PetBackApplication" />
@@ -154,5 +149,16 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/pet_back/mapper/CartMapper.java</url>
+          <line>8</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

@@ -32,6 +32,6 @@ public class Cart implements Serializable { // Serializable 상속
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "goods_id", insertable = false, updatable = false)
-    private Goods goods; // JPA Join 필요 (Goods 엔티티 포함)
+    private Goods goods; // JPA 가 연관관계 조회시 필요 (Join : Goods 엔티티 포함)
 
 }

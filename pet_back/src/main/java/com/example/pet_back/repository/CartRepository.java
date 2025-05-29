@@ -5,7 +5,9 @@ import com.example.pet_back.entity.Cart;
 import com.example.pet_back.entity.CartId;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -23,7 +25,13 @@ public interface CartRepository extends JpaRepository<Cart, CartId> {
             "WHERE c.member_id=:userId")
     public List<CartResponseDTO> findCartListByUserId(Long userId);
 
-    // 장바구니에 추가하는쿼리는 JPA의 기본 save() 메서드를 사용한다.
+    // 장바구니에 추가하는 쿼리
+    // 값을 누적시키는 쿼리 (nativeQuery=true 경우만 가능.) : demo/repository/TestKeyRepository 부분 참고
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value = "INSERT INTO Cart VALUES(" +
+            ":member_id, :goods_id, :quantity) ON DUPLICATE KEY UPDATE quantity=quantity+:quantity")
+    public int addToCart(@Param("member_id") Long member_id, @Param("goods_id") Long goods_id, @Param("quantity") int quantity);
 
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

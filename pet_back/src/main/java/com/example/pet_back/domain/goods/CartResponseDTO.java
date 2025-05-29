@@ -14,6 +14,12 @@ public class CartResponseDTO extends GoodsDTO {
     private Long goods_id;
     private int quantity;
 
+    // @ManyToOne(fetch = FetchType.LAZY)
+    // @JoinColumn(name = "goods_id", insertable = false, updatable = false)
+    // Goods의 다른 필드가 필요하더라도, 해당 방식으로 필요시 필드를 바로 추가해주면 됨.
+    // Cart Entity 의 연관관계 매핑해 두었으므로, 바로 사용 가능.
+    private String goods_name;
+
 
     // 생성자 : SELECT * FROM Cart c JOIN Goods g ON g.goods_id = c.goods_id WHERE c.member_id = :userId
     // DTO 사용: com.example.pet_back.domain.goods.CartResponseDTO

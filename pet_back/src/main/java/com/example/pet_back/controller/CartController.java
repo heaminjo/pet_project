@@ -31,8 +31,12 @@ public class CartController {
 
     // 상품을 장바구니에 추가
     @PostMapping("/add")
-    public ResponseEntity<?> addToCart(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody GoodsRequestDTO dto) {
+    public ResponseEntity<?> addToCart( //
+                                        @AuthenticationPrincipal CustomUserDetails userDetails, //
+                                        @RequestBody GoodsRequestDTO dto) {
         log.info("** CartController => addToCart() 실행됨 **");
+        log.info("goodsRequestDTO ID => " + dto.getGoods_id());
+        log.info("goodsRequestDTO 수량 => " + dto.getQuantity());
         return cartService.addToCart(userDetails, dto);
     }
 

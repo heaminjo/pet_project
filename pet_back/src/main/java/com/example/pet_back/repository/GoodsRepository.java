@@ -1,6 +1,5 @@
 package com.example.pet_back.repository;
 
-import com.example.pet_back.domain.goods.GoodsResponseDTO;
 import com.example.pet_back.entity.Goods;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,17 +7,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
-
 public interface GoodsRepository extends JpaRepository<Goods, Long> {
 
-    // ( findAll()로 대체됨 ) 전체 상품리스트 출력 쿼리 :
-    @Transactional
-    @Query("SELECT new com.example.pet_back.domain.goods.GoodsResponseDTO(" +
-            "g.category_id, g.goods_name, g.price, g.description, g.goods_state, g.image_file, g.quantity) " +
-            "FROM Goods g")
-    public List<GoodsResponseDTO> showGoodsList();
-
+    // ( findAll()로 대체됨 ) 전체 상품리스트 출력 쿼리
 
     // 상품등록 쿼리 : INSERT 시 nativeQuery 만 가능
     @Modifying
