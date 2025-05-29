@@ -14,6 +14,8 @@ export default function UserList() {
   const [paging, setPaging] = useState({
     start: 0,
     end: 4,
+    isPrev: false,
+    isNext: true,
     totalElement: 0,
     totalPages: 0,
   });
@@ -28,7 +30,7 @@ export default function UserList() {
   const getPageList = async () => {
     const pages = {
       page: page,
-      size: 10,
+      size: 12,
       sortBy: sort,
       keyword: keyword,
       type: type,
@@ -44,6 +46,8 @@ export default function UserList() {
     setPaging({
       start: temp,
       end: Math.min(temp + 5, result.totalPages),
+      isPrev: result.prev,
+      isNext: result.next,
       totalElement: result.totalElements,
       totalPages: result.totalPages,
     });
@@ -134,15 +138,50 @@ export default function UserList() {
                 const pageNumber = paging.start + index;
                 return (
                   <li onClick={() => setPage(pageNumber)}>
-                    <span>{pageNumber + 1}</span>
+                    <span className={page == pageNumber ? "current" : ""}>
+                      {pageNumber + 1}
+                    </span>
                   </li>
                 );
               })}
-              <li>. . . {paging.totalPages}</li>
+              <li>
+                <span id="last_page">. . . {paging.totalPages}</span>
+              </li>
             </ul>
             <div className="page_btn">
-              <button className="prev_btn">이전</button>
-              <button className="next_btn">다음</button>
+              {paging.start != 0 && (
+                <button className="move" id="first" onClick={() => setPage(0)}>
+                  ◀◀
+                </button>
+              )}
+              {paging.isPrev && (
+                <button
+                  className="move"
+                  id="prev"
+                  onClick={() => setPage(page - 1)}
+                >
+                  ◀
+                </button>
+              )}
+
+              {paging.isNext && (
+                <button
+                  className="move"
+                  id="next"
+                  onClick={() => setPage(page + 1)}
+                >
+                  ▶
+                </button>
+              )}
+              {paging.end != paging.totalPages && (
+                <button
+                  className="move"
+                  id="last"
+                  onClick={() => setPage(paging.totalPages - 1)}
+                >
+                  ▶▶
+                </button>
+              )}
             </div>
           </div>
         </div>
