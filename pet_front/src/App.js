@@ -16,6 +16,10 @@ import Goods from "./components/Layout/goods/Goods";
 import MyEdit from "./page/mypage/MyEdit";
 import UpdatePw from "./page/mypage/UpdatePw";
 import BoardList from "./components/Board/BoardList";
+import BoardInsertForm from "./components/Board/BoardInsertForm";
+import BoardDetail from "./components/Board/BoardDetail";
+import BoardEditForm from "./components/Board/BoardEditForm";
+import NoticeBoardList from "./components/Board/NoticeBoardList";
 
 //컨텍스트(useContext)
 //로그인 여부부를 전역변수로 뿌리기 위한것
@@ -38,6 +42,10 @@ function App() {
             <Route path="/myedit" element={<MyEdit />} />
             <Route path="/updatepw" element={<UpdatePw />} />
             <Route path="/boardList" element={<BoardList />} />
+            <Route path="/boardDetail/:board_id" element={<BoardDetail />} />
+            <Route path="/boardInsertForm" element={<BoardInsertForm />} />
+            <Route path="/boardEditForm/:board_id" element={<BoardEditForm />} />
+            <Route path="/noticeboardList" element={<NoticeBoardList />} />
             <Route path="/cart/list" element={<Cart />} />
             <Route path="/delivery" element={<Delivery />} />
             <Route path="/order" element={<Order />} />

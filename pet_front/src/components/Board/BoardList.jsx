@@ -3,7 +3,7 @@ import axios from "axios";
 import BoardListStyle from "./BoardListStyle";
 import { useNavigate } from "react-router-dom";
 
-export default function BoardList({ isLogin }) {
+export default function BoardList() {
   // 나중에 login 여부에 따라 글쓰기 버튼을 보여줄지 말지 결정할 수 있음
   const [listData, setListData] = useState([]);
   const [error, setError] = useState(null);
@@ -29,7 +29,7 @@ export default function BoardList({ isLogin }) {
       <div className="boardListContainer">
         <div className="boardListMenuContainer">
           <ul className="boardListMenu">
-            <li>공지사항</li>
+            <li onClick={()=>navigate("/noticeboardList")}>공지사항</li>
             <li>커뮤니티</li>
             <li>문의/FAQ</li>
             <li onClick={() => navigate("/boardList")}>게시판</li>
@@ -71,11 +71,11 @@ export default function BoardList({ isLogin }) {
                 <button
                   type="button"
                   onClick={() => {
-                    if (!isLogin) {
-                      alert("로그인 해주세요");
-                      navigate("/login");
-                    } else {
+                    if (localStorage.getItem("accessToken")!=null) {
                       navigate("/boardInsertForm");
+                    } else {
+                      alert("로그인 해주세요");
+                      navigate("/login?redirectTo=/boardInsertForm");
                     }
                   }}
                 >

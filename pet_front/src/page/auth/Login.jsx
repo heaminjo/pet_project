@@ -4,12 +4,16 @@ import LoginComp from "./LoginStyle";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import MemberApi from "../../api/MemberApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useContext } from "react";
 import { PetContext } from "../../App";
 export default function Login() {
   const { setIsLogin } = useContext(PetContext);
   const navigate = useNavigate();
+  const location = useLocation();
+  // 쿼리스트링에서 redirectTo 추출
+  const params = new URLSearchParams(location.search);
+  const redirectTo = params.get("redirectTo") || "/"; // 기본값은 홈으로 설정
 
   //유효성 조건(yup)
   const schema = yup.object({
@@ -50,7 +54,7 @@ export default function Login() {
 
       //전역변수에 로그인 여부 저장
       setIsLogin(true);
-      navigate("/");
+      navigate(redirectTo);
     } else {
       alert("로그인 실패");
     }
