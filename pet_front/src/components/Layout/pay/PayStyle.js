@@ -6,17 +6,18 @@ const PayComp = styled.div`
     height: 1200px;
     margin: 0 auto;
     margin-top: 200px;
-  }
-  .title {
-    height: 50px;
-    display: flex;
-    align-items: center;
-    font-weight: bold;
-    font-size: larger;
-    .payment {
-      border-top: 1px solid black;
+    .title {
+      height: 50px;
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: larger;
+      .payment {
+        border-top: 1px solid black;
+      }
     }
   }
+
   th {
     width: 150px;
     background-color: rgb(220, 220, 220);

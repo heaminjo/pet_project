@@ -1,32 +1,34 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import OrderComp from './OrderStyle.js';
+import GoodsApi from '../../../api/GoodsApi';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Order() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { goods } = location.state || {};
   const prodImage = process.env.PUBLIC_URL + '/images/pic2.png';
-  const [select, setSelect] = useState(false);
-  const [menu, setMenu] = useState({ label: '10kg', price: '10000 원' });
 
-  const handleSelect = (option) => {
-    if (!option.disabled) {
-      setMenu(option);
-      setSelect(false);
+  const pay = async () => {
+    try {
+      await GoodsApi.pay(goods); // 필요하다면 서버 호출 후
+      navigate('/pay', { state: { goods } }); // 여기서 전달
+    } catch (err) {
+      console.error('결제 실패:', err);
     }
   };
 
-  const options = [
-    {
-      label: '10kg',
-      price: '10000',
-      note: '',
-      disabled: true,
-    },
-    {
-      label: '5kg',
-      price: '5000',
-      note: '',
-      disabled: false,
-    },
-  ];
+  const addToCart = async (goods) => {
+    GoodsApi.addToCart(goods)
+      .then((response) => {
+        alert(`장바구니 담기 성공 => ${response}`);
+      })
+      .catch((err) => {});
+  };
+
+  useEffect(() => {
+    alert(`상품정보 확인: ${goods.goods_name}, ${goods.goods_state}, ${goods.description}, ${goods.price}`);
+  }, []);
 
   return (
     <OrderComp>
@@ -37,11 +39,11 @@ export default function Order() {
             <img src={prodImage} alt='상품이미지' className='prodimage' />
           </div>
           <div className='right'>
-            <div className='prodname'>사료 이름</div>
+            <div className='prodname'>{goods.goods_name}</div>
             <p className='rating'>⭐ 11,624개 상품평</p>
             <hr />
             <div className='prodprice'>
-              {options.price} 10000 원 <span className='prodprice2'>(1kg당 1000원)</span>
+              {goods.price} 원<span className='prodprice2'>(1kg당 1000원)</span>
             </div>
             <hr />
             <div className='seller'>
@@ -51,18 +53,18 @@ export default function Order() {
             <br />
             <hr />
             <select className='options'>
-              {options.map((opt, idx) => (
-                <div key={idx} className={`{opt.disabled ? 'disabled': : ''}`} onClick={() => handleSelect(opt)}>
+              {/* {options.map((opt, idx) => (
+                <div key={idx} className={`{opt.disabled ? 'disabled': : ''}`} onClick={() => {}}>
                   <option>
                     {opt.label} - {opt.price}원
                   </option>
                 </div>
-              ))}
+              ))} */}
             </select>
             <br />
             <br />
-            <button>장바구니</button>&nbsp;&nbsp;
-            <button>바로구매</button>
+            <button onClick={addToCart}>장바구니</button>&nbsp;&nbsp;
+            <button onClick={pay}>바로구매</button>
           </div>
         </section>
 
