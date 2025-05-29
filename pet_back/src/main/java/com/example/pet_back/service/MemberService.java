@@ -3,6 +3,8 @@ package com.example.pet_back.service;
 import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.domain.member.UpdateMemberRequestDTO;
 import com.example.pet_back.domain.member.UpdatePwRequestDTO;
+import com.example.pet_back.domain.page.PageRequestDTO;
+import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import org.springframework.http.ResponseEntity;
 
@@ -19,5 +21,5 @@ public interface MemberService {
 
     public List<MemberResponseDTO> memberList();
 
-    public List<MemberResponseDTO> memberSearchList(String type, String keyword);
+    public PageResponseDTO<MemberResponseDTO> memberSearchList(PageRequestDTO dto);
 }
