@@ -9,7 +9,15 @@ export default function UserList() {
   const [keyword, setKeyword] = useState("");
   const [sort, setSort] = useState("desc");
   const [page, setPage] = useState(0);
-  const [curr, setCurr] = useState();
+
+  //페이징 정보보
+  const [paging, setPaging] = useState({
+    start: 0,
+    end: 4,
+    totalElement: 0,
+    totalPages: 0,
+  });
+
   //첫 화면 로드 시
   //1페이지 ,최신순,전체출력을 페이징한 리스트 출력
   useEffect(() => {
@@ -29,18 +37,21 @@ export default function UserList() {
 
     //컨텐츠 저장
     setUserList(result.content);
-    //출력될 페이지번호(총 개수 / 사이즈 + 1)
-    setCurr(Math.ceil(result.totalElements / 10));
+
+    let temp = Math.floor(page / 5) * 5;
+
+    //페이지번호 정보 저장
+    setPaging({
+      start: temp,
+      end: Math.min(temp + 5, result.totalPages),
+      totalElement: result.totalElements,
+      totalPages: result.totalPages,
+    });
   };
 
   //검색 버튼 클릭
   const searchClick = () => {
-    getPageList();
-  };
-
-  //페이지 클릭
-  const clickPage = (index) => {
-    setPage(index);
+    setPage(0);
     getPageList();
   };
   return (
@@ -119,12 +130,20 @@ export default function UserList() {
           </div>
           <div className="select_page">
             <ul className="curr_page">
-              {Array.from({ length: curr }).map((_, index) => (
-                <li onClick={() => setPage(index)}>
-                  <span>{index + 1}</span>
-                </li>
-              ))}
+              {Array.from({ length: paging.end - paging.start }, (_, index) => {
+                const pageNumber = paging.start + index;
+                return (
+                  <li onClick={() => setPage(pageNumber)}>
+                    <span>{pageNumber + 1}</span>
+                  </li>
+                );
+              })}
+              <li>. . . {paging.totalPages}</li>
             </ul>
+            <div className="page_btn">
+              <button className="prev_btn">이전</button>
+              <button className="next_btn">다음</button>
+            </div>
           </div>
         </div>
       </div>

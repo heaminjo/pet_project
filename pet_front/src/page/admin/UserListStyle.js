@@ -96,11 +96,15 @@ const UserListComp = styled.div`
         display: flex;
         gap: 10px;
         justify-content: center;
-        align-items: center;
+        align-items: end;
         height: 40px;
+        margin-top: 10px;
         span {
           cursor: pointer;
         }
+      }
+      .page_btn {
+        display: flex;
       }
     }
   }
