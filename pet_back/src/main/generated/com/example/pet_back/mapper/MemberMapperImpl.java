@@ -2,16 +2,15 @@ package com.example.pet_back.mapper;
 
 import com.example.pet_back.domain.member.MemberRequestDTO;
 import com.example.pet_back.domain.member.MemberResponseDTO;
-import com.example.pet_back.domain.member.MemberResponseDTO.MemberResponseDTOBuilder;
 import com.example.pet_back.entity.Member;
-import com.example.pet_back.entity.Member.MemberBuilder;
+import java.time.format.DateTimeFormatter;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-05-27T18:36:53+0900",
-    comments = "version: 1.4.2.Final, compiler: javac, environment: Java 17.0.11 (Oracle Corporation)"
+    date = "2025-05-29T09:49:03+0900",
+    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.13 (Amazon.com Inc.)"
 )
 @Component
 public class MemberMapperImpl implements MemberMapper {
@@ -22,7 +21,7 @@ public class MemberMapperImpl implements MemberMapper {
             return null;
         }
 
-        MemberBuilder member = Member.builder();
+        Member.MemberBuilder member = Member.builder();
 
         member.email( dto.getEmail() );
         member.password( dto.getPassword() );
@@ -39,12 +38,18 @@ public class MemberMapperImpl implements MemberMapper {
             return null;
         }
 
-        MemberResponseDTOBuilder memberResponseDTO = MemberResponseDTO.builder();
+        MemberResponseDTO.MemberResponseDTOBuilder memberResponseDTO = MemberResponseDTO.builder();
 
+        memberResponseDTO.grade( MemberMapper.gradeToString( member.getGrade() ) );
+        memberResponseDTO.memberState( MemberMapper.gradeToString( member.getMemberState() ) );
         memberResponseDTO.email( member.getEmail() );
         memberResponseDTO.name( member.getName() );
         memberResponseDTO.phone( member.getPhone() );
         memberResponseDTO.birth( member.getBirth() );
+        memberResponseDTO.point( member.getPoint() );
+        if ( member.getRegDate() != null ) {
+            memberResponseDTO.regDate( DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( member.getRegDate() ) );
+        }
         memberResponseDTO.image_file( member.getImage_file() );
 
         return memberResponseDTO.build();
