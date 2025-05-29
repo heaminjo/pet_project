@@ -1,7 +1,7 @@
 package com.example.pet_back.mapper;
 
-import com.example.pet_back.domain.login.CartRequestDTO;
-import com.example.pet_back.domain.login.CartResponseDTO;
+import com.example.pet_back.domain.goods.CartRequestDTO;
+import com.example.pet_back.domain.goods.CartResponseDTO;
 import com.example.pet_back.entity.Cart;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;

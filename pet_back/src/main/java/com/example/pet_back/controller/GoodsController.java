@@ -1,6 +1,6 @@
 package com.example.pet_back.controller;
 
-import com.example.pet_back.domain.login.GoodsRequestDTO;
+import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.service.GoodsService;
 import com.example.pet_back.service.MemberService;
@@ -20,6 +20,15 @@ public class GoodsController {
 
     private final GoodsService goodsService;
     private final MemberService memberService;
+
+    // 상품 리스트 출력 (메인)
+    @GetMapping("/list")
+    public ResponseEntity<?> showGoodsList() {
+        log.info("** GoodsController => showGoodsList() 실행됨 **");
+        System.out.println("GoodsController 상품리스트출력 : " + goodsService.showGoodsList().toString());
+
+        return ResponseEntity.status(HttpStatus.OK).body(goodsService.showGoodsList());
+    }
 
     // 상품등록 메서드 (관리자 페이지)
     @PostMapping("/register")

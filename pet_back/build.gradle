@@ -47,7 +47,7 @@ dependencies {
     //타입 변환 mapstruct
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
-    
+
     //유효성 검사
     implementation 'jakarta.validation:jakarta.validation-api'
 }

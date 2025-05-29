@@ -6,6 +6,46 @@
   <component name="ChangeListManager">
     <list default="true" id="ce94af43-ae82-4e55-bb2b-6016175262a9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main/generated/com/example/pet_back/mapper/CartMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main/generated/com/example/pet_back/mapper/CartMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/controller/CartController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/controller/GoodsController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/controller/GoodsController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/login/GoodsRequestDTO$GoodsRequestDTOBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/login/GoodsRequestDTO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/login/GoodsResponseDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/login/GoodsResponseDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/repository/CartRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/repository/GoodsRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/CartService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/CartServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/GoodsService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/GoodsService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/GoodsServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/controller/CartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/controller/CartController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/controller/GoodsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/controller/GoodsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/custom/ApiResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/custom/ApiResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/login/CartRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/goods/CartRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/login/CartResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/goods/CartResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/login/GoodsDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/goods/GoodsDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/login/GoodsRequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/goods/GoodsRequestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/login/GoodsResponseDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/domain/goods/GoodsResponseDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/entity/Cart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/entity/Cart.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/entity/CartId.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/entity/CartId.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/mapper/CartMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/mapper/CartMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/repository/CartRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/repository/CartRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/repository/GoodsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/repository/GoodsRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/service/CartService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/service/CartService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/service/CartServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/service/CartServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/service/GoodsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/service/GoodsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/service/GoodsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/service/GoodsServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/.eslintcache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/14.pack_" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/14.pack_" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/15.pack_" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/15.pack_" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pet_front/src/api/GoodsApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/api/GoodsApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Layout/cart/Cart.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Layout/cart/Cart.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Layout/goods/GoodsList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Layout/goods/GoodsList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Layout/goods/GoodsListStyle.js" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Layout/goods/GoodsListStyle.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Layout/order/Order.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Layout/order/Order.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Layout/pay/Pay.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Layout/pay/Pay.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Layout/pay/PayStyle.js" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Layout/pay/PayStyle.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,6 +56,23 @@
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="pet_back" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -45,18 +102,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.PetBackApplication.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "actions.on.save"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.PetBackApplication.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;정서영-branch&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;actions.on.save&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="PetBackApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.example.pet_back.PetBackApplication" />
