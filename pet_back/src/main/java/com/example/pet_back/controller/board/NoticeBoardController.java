@@ -36,10 +36,19 @@ public class NoticeBoardController {
     } //selectList()
 
     //** NoticeBoardDetail
+    @GetMapping("/noticeboardDetail/{id}")
+    public ResponseEntity<?> selectOne(@PathVariable("id") int id) {
+        NoticeBoardDTO dto = noticeBoardService.selectOne(id);
 
+        if (dto != null) {
+            return ResponseEntity.ok(dto);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("게시글을 찾을 수 없습니다");
+        }
+    }
 
     //** NoticeInsertBoard
-    @PostMapping("insertNoticeBoard")
+    @PostMapping("noticeboardinsert")
     public ResponseEntity<?> insertNoticeBoard(@RequestBody NoticeBoardDTO dto,
                                                @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
         Long memberId = extractMemberIdFromToken(authorizationHeader);
@@ -53,6 +62,18 @@ public class NoticeBoardController {
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("등록 실패");
         }
+    }
+
+    //** delete
+    @DeleteMapping("/deletenoticeboard/{id}")
+    public ResponseEntity<?> deleteNoticeBoard(@PathVariable("id") int id,
+                                               @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+        Long memberId = extractMemberIdFromToken(authorizationHeader);
+        if (memberId == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 정보가 없습니다.");
+
+        int result = noticeBoardService.deleteNoticeBoard(id);
+        if (result > 0) return ResponseEntity.ok("삭제 성공");
+        else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("삭제 권한이 없거나 게시글이 없습니다.");
     }
 
 } //class

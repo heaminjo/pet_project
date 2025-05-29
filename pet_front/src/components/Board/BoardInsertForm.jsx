@@ -43,6 +43,7 @@ export default function BoardInsertForm() {
           }
         });
       alert("게시글이 등록되었습니다.");
+      console.log("category:", category, "url:", url);
 
       // 등록 후 해당 게시판 목록으로 이동  
       if(category==="notice") navigate("/noticeboardList"); 
@@ -53,6 +54,8 @@ export default function BoardInsertForm() {
       alert("게시글 등록에 실패했습니다.");
     }
   };
+
+  
 
   return (
     <BoardInsertFormStyle>
