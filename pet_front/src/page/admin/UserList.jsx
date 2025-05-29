@@ -39,7 +39,8 @@ export default function UserList() {
 
     //컨텐츠 저장
     setUserList(result.content);
-
+    console.log(result.prev);
+    console.log(result.next);
     let temp = Math.floor(page / 5) * 5;
 
     //페이지번호 정보 저장

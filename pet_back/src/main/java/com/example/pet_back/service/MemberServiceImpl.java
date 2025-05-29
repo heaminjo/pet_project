@@ -132,8 +132,8 @@ public class MemberServiceImpl implements MemberService {
         List<MemberResponseDTO> responseList = page.stream().map(mapper::toDto).toList();
 
         //반환할 ResponseDTO에 데이터들 저장
-        PageResponseDTO<MemberResponseDTO> response = new PageResponseDTO<>(responseList, dto.getPage(), dto.getSize(), page.getTotalElements(), page.getTotalPages(), page.hasPrevious()
-                , page.hasNext());
+        PageResponseDTO<MemberResponseDTO> response = new PageResponseDTO<>(responseList, dto.getPage(), dto.getSize(), page.getTotalElements(), page.getTotalPages(), page.hasNext(), page.hasPrevious()
+        );
         return response;
     }
 }
