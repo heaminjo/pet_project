@@ -50,6 +50,8 @@ const UserListComp = styled.div`
           }
         }
         .search_type {
+          display: flex;
+          gap: 10px;
           select {
             height: 40px;
             width: 100px;
@@ -59,32 +61,45 @@ const UserListComp = styled.div`
           }
         }
       }
-      table {
-        width: 880px;
-        border-collapse: collapse;
-        th {
-          background-color: rgb(255, 221, 0);
-          color: rgb(52, 45, 1);
-          padding: 5px 0;
-          text-align: start;
-          padding-left: 5px;
-        }
-        .user_present {
-          height: 30px;
-          border-bottom: 1px solid #eee;
-          cursor: pointer;
-          td {
-            padding: 0 5px;
-            font-size: 14px;
+      .list_view {
+        height: 330px;
+        table {
+          width: 880px;
+          border-collapse: collapse;
+          th {
+            background-color: rgb(255, 221, 0);
+            color: rgb(52, 45, 1);
+            padding: 5px 0;
+            text-align: start;
+            padding-left: 5px;
+          }
+          .user_present {
+            height: 30px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            td {
+              padding: 0 5px;
+              font-size: 14px;
+            }
+          }
+          .user_present:hover {
+            background-color: #eee;
+          }
+          .user_empty {
+            height: 50px;
+            border: 1px solid #eee;
+            text-align: center;
           }
         }
-        .user_present:hover {
-          background-color: #eee;
-        }
-        .user_empty {
-          height: 50px;
-          border: 1px solid #eee;
-          text-align: center;
+      }
+      .curr_page {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+        height: 40px;
+        span {
+          cursor: pointer;
         }
       }
     }

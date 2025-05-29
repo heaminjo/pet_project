@@ -14,10 +14,9 @@ const AdminApi = {
     const result = await instance.get(`${KH_DOMAIN}/admin/list/all`);
     return result.data;
   },
-  userKeywordList: async (type, keyword) => {
-    const result = await instance.get(
-      `${KH_DOMAIN}/admin/list/search?type=${type}&keyword=${keyword}`
-    );
+  getPageList: async (pages) => {
+    console.log(pages);
+    const result = await instance.post(`${KH_DOMAIN}/admin/list/search`, pages);
     return result.data;
   },
 };

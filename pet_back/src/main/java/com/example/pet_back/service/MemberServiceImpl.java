@@ -5,6 +5,8 @@ import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.domain.member.UpdateMemberRequestDTO;
 import com.example.pet_back.domain.member.UpdatePwRequestDTO;
+import com.example.pet_back.domain.page.PageRequestDTO;
+import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.entity.Member;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.mapper.MemberMapper;
@@ -12,6 +14,10 @@ import com.example.pet_back.repository.AddressRepository;
 import com.example.pet_back.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -90,22 +96,44 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
-    //회원 리스트
-    @Override
-    public List<MemberResponseDTO> memberList() {
-        List<Member> list = memberRepository.findAll();
-        List<MemberResponseDTO> responseList = list.stream().map(mapper::toDto).toList();
-
-        return responseList;
-    }
+    //회원 전체 리스트
+//    @Override
+//    public List<MemberResponseDTO> memberList(PageRequestDTO dto) {
+//        List<Member> list = memberRepository.findAll();
+//        List<MemberResponseDTO> responseList = list.stream().map(mapper::toDto).toList();
+//
+//        return responseList;
+//    }
 
     //회원 검색 리스트
     @Override
-    public List<MemberResponseDTO> memberSearchList(String type, String keyword) {
-        List<Member> list = memberRepository.findSearchList(type, "%" + keyword + "%");
-        log.info("검색 리스트 => " + list.toString());
-        List<MemberResponseDTO> responseList = list.stream().map(mapper::toDto).toList();
+    public PageResponseDTO<MemberResponseDTO> memberSearchList(PageRequestDTO dto) {
 
-        return responseList;
+        //정렬(최신순,오래된 순)
+        Sort sort = dto.getSortBy().equals("desc") ?
+                Sort.by("regDate").descending()
+                : Sort.by("regDate").ascending();
+
+        //요청 페이지, 출력 개수,정렬을 담은 Pageable 객체
+        Pageable pageable = PageRequest.of(dto.getPage(), dto.getSize(), sort);
+
+        Page<Member> page;
+        //키워드의 여부
+        if (dto.getKeyword().isEmpty()) {
+            //검색 x 전체 조회
+            page = memberRepository.findAll(pageable);
+        } else {
+            //검색 타입과 키워드를 포함하여 리스트를 가져온다.
+            page = memberRepository.findSearchList(dto.getType(), "%" + dto.getKeyword() + "%", pageable);
+        }
+
+
+        //페이지의 데이터를 List에 저장
+        List<MemberResponseDTO> responseList = page.stream().map(mapper::toDto).toList();
+
+        //반환할 ResponseDTO에 데이터들 저장
+        PageResponseDTO<MemberResponseDTO> response = new PageResponseDTO<>(responseList, dto.getPage(), dto.getSize(), page.getTotalElements(), page.getTotalPages(), page.hasPrevious()
+                , page.hasNext());
+        return response;
     }
 }
