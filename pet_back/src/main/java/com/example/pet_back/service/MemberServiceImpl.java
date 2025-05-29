@@ -89,11 +89,21 @@ public class MemberServiceImpl implements MemberService {
             return ResponseEntity.ok(new ApiResponse<>(false, "비밀번호 수정에 실패하였습니다."));
         }
     }
-    
+
     //회원 리스트
     @Override
     public List<MemberResponseDTO> memberList() {
         List<Member> list = memberRepository.findAll();
+        List<MemberResponseDTO> responseList = list.stream().map(mapper::toDto).toList();
+
+        return responseList;
+    }
+
+    //회원 검색 리스트
+    @Override
+    public List<MemberResponseDTO> memberSearchList(String type, String keyword) {
+        List<Member> list = memberRepository.findSearchList(type, "%" + keyword + "%");
+        log.info("검색 리스트 => " + list.toString());
         List<MemberResponseDTO> responseList = list.stream().map(mapper::toDto).toList();
 
         return responseList;
