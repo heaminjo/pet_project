@@ -1,9 +1,47 @@
 import PayComp from './PayStyle';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import GoodsApi from '../../../api/GoodsApi';
 
 export default function Pay() {
+  const [goods, setGoods] = useState([]);
+  const [member, setMember] = useState([]);
+
+  const pay = async () => {
+    // const userName = localStorage.getItem('loginName');
+    GoodsApi.pay()
+      .then((response) => {
+        setGoods(response);
+      })
+      .catch((err) => {});
+  };
+
+  useEffect(() => {
+    pay(); // 호출
+  }, []);
+
   return (
     <PayComp>
       <div className='container'>
+        <section>
+          <h2>상품정보</h2>
+          <hr />
+          <div className='title'>구매자 정보</div>
+          <table>
+            <tr>
+              <th> 상품명</th>
+              <td>고양이 사료, 1KG</td>
+            </tr>
+            <tr>
+              <th>가격</th>
+              <td>10000 원</td>
+            </tr>
+            <tr>
+              <th>수량</th>
+              <td>1개</td>
+            </tr>
+          </table>
+        </section>
         <section>
           <h2>결제</h2>
           <hr />
@@ -19,7 +57,6 @@ export default function Pay() {
             </tr>
             <tr>
               <th>연락처</th>
-
               <td>010-0000-0000</td>
             </tr>
           </table>

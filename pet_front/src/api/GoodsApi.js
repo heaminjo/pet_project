@@ -4,8 +4,8 @@ import instance from '../api/axiosInstance'; // 인스턴스 불러오기
 const KH_DOMAIN = 'http://localhost:8080';
 const GoodsApi = {
   // 장바구니 추가
-  addToCart: async () => {
-    const result = await instance.post(`/goods/add`);
+  addToCart: async (goods) => {
+    const result = await instance.post(`/cart/add`, goods);
     return result.data;
   },
 
@@ -16,12 +16,13 @@ const GoodsApi = {
     return result.data;
   }, // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  // 상품 리스트 출력 (메인)
+  // 상품 리스트 출력 (메인) (완료)
   showGoods: async () => {
     try {
       const result = await instance.get('/goods/list');
       if (result.data != null) {
-        alert(`상품 리스트 호출 완료 => ${result.data}`);
+        alert(`상품 리스트 호출 완료 => ${JSON.stringify(result.data)}`);
+        return result.data.body;
       }
     } catch (err) {}
   },
@@ -48,7 +49,7 @@ const GoodsApi = {
 
   // 결제
   pay: async () => {
-    const result = await instance.post(`/pay`);
+    const result = await instance.post(`/goods/pay`);
 
     return result.data;
   }, // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

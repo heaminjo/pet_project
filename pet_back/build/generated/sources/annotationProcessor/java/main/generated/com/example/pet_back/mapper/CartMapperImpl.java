@@ -1,8 +1,8 @@
 package com.example.pet_back.mapper;
 
-import com.example.pet_back.domain.login.CartRequestDTO;
-import com.example.pet_back.domain.login.CartResponseDTO;
-import com.example.pet_back.domain.login.CartResponseDTO.CartResponseDTOBuilder;
+import com.example.pet_back.domain.goods.CartRequestDTO;
+import com.example.pet_back.domain.goods.CartResponseDTO;
+import com.example.pet_back.domain.goods.CartResponseDTO.CartResponseDTOBuilder;
 import com.example.pet_back.entity.Cart;
 import com.example.pet_back.entity.Cart.CartBuilder;
 import javax.annotation.processing.Generated;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-05-28T14:07:02+0900",
+    date = "2025-05-29T11:24:20+0900",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 17.0.11 (Oracle Corporation)"
 )
 @Component

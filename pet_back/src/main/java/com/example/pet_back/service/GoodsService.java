@@ -1,6 +1,6 @@
 package com.example.pet_back.service;
 
-import com.example.pet_back.domain.login.GoodsRequestDTO;
+import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import org.springframework.http.ResponseEntity;
 
 public interface GoodsService {

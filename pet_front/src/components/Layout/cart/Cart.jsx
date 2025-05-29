@@ -33,7 +33,7 @@ export default function Cart() {
             {goods.map((item, index) => (
               <div className='prod' key={index}>
                 <div className='prodleft'>
-                  <img src={cartImage1} alt='상품1이미지' className='cartimage' onClick={() => navigate('/order')} />
+                  <img src={cartImage1} alt='상품1이미지' className='cartimage' onClick={() => navigate('/order', { state: { goods: item } })} />
                 </div>
                 <div className='prodright'>
                   <div>{item.goods_name}</div>
@@ -67,7 +67,9 @@ export default function Cart() {
                 </tr>
               </tbody>
             </table>
-            <button className='buy'>구매하기</button>
+            <button className='buy' onClick={() => navigate('/pay')}>
+              구매하기
+            </button>
           </div>
         </div>
       </div>

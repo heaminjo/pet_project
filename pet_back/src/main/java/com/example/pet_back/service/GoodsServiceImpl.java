@@ -1,7 +1,7 @@
 package com.example.pet_back.service;
 
-import com.example.pet_back.domain.login.GoodsRequestDTO;
-import com.example.pet_back.domain.login.GoodsResponseDTO;
+import com.example.pet_back.domain.goods.GoodsRequestDTO;
+import com.example.pet_back.domain.goods.GoodsResponseDTO;
 import com.example.pet_back.mapper.MemberMapper;
 import com.example.pet_back.repository.CartRepository;
 import com.example.pet_back.repository.GoodsRepository;
@@ -32,7 +32,6 @@ public class GoodsServiceImpl implements GoodsService {
         List<GoodsResponseDTO> goodsList = goodsRepository.showGoodsList();
         return ResponseEntity.status(HttpStatus.OK).body(goodsList);
     }
-
 
     // 상품등록
     @Override

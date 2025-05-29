@@ -1,6 +1,6 @@
 package com.example.pet_back.repository;
 
-import com.example.pet_back.domain.login.GoodsResponseDTO;
+import com.example.pet_back.domain.goods.GoodsResponseDTO;
 import com.example.pet_back.entity.Goods;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,10 +12,11 @@ import java.util.List;
 
 public interface GoodsRepository extends JpaRepository<Goods, Long> {
 
-    // 상품리스트 출력 쿼리
+    // ( findAll()로 대체됨 ) 전체 상품리스트 출력 쿼리 :
     @Transactional
-    @Query("SELECT category_id, goods_name, price, description, goods_state, image_file, quantity " +
-            "FROM Goods")
+    @Query("SELECT new com.example.pet_back.domain.goods.GoodsResponseDTO(" +
+            "g.category_id, g.goods_name, g.price, g.description, g.goods_state, g.image_file, g.quantity) " +
+            "FROM Goods g")
     public List<GoodsResponseDTO> showGoodsList();
 
 
