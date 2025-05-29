@@ -62,7 +62,7 @@ const UserListComp = styled.div`
         }
       }
       .list_view {
-        height: 330px;
+        height: 380px;
         table {
           width: 880px;
           border-collapse: collapse;
@@ -96,10 +96,51 @@ const UserListComp = styled.div`
         display: flex;
         gap: 10px;
         justify-content: center;
-        align-items: center;
+        align-items: end;
         height: 40px;
+        margin-top: 10px;
+        margin-left: 100px;
         span {
           cursor: pointer;
+          font-size: 15px;
+          padding: 10px;
+          cursor: pointer;
+        }
+        .current {
+          font-weight: bold;
+        }
+        #last_page {
+          margin-left: 40px;
+        }
+      }
+      .page_btn {
+        display: flex;
+        width: 200px;
+        height: 20px;
+        gap: 20px;
+        justify-content: center;
+        margin: 0 auto;
+        position: relative;
+        padding: 10px 0;
+        .move {
+          width: 40px;
+          height: 40px;
+          border-radius: 100%;
+          border: none;
+          cursor: pointer;
+          position: absolute;
+        }
+        #first {
+          left: 0;
+        }
+        #prev {
+          right: 120px;
+        }
+        #next {
+          left: 120px;
+        }
+        #last {
+          right: 0;
         }
       }
     }
