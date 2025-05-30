@@ -26,7 +26,7 @@ export default function MypageMenu() {
               <span>찜</span>
             </li>
             <li>
-              <span>장바구니</span>
+              <span onClick={() => navigate("/user/cart/list")}>장바구니</span>
             </li>
             <li>
               <span>최근 본 목록</span>

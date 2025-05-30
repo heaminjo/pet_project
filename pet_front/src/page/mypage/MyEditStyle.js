@@ -11,7 +11,7 @@ const MyEditComp = styled.div`
     gap: 40px;
     .main_container {
       width: 500px;
-      margin-left: 100px;
+      margin-left: 170px;
       order: 1px solid #000;
       padding: 20px;
       border: 1px solid #eee;

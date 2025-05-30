@@ -96,15 +96,6 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
-    //회원 전체 리스트
-//    @Override
-//    public List<MemberResponseDTO> memberList(PageRequestDTO dto) {
-//        List<Member> list = memberRepository.findAll();
-//        List<MemberResponseDTO> responseList = list.stream().map(mapper::toDto).toList();
-//
-//        return responseList;
-//    }
-
     //회원 검색 리스트
     @Override
     public PageResponseDTO<MemberResponseDTO> memberSearchList(PageRequestDTO dto) {

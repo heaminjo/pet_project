@@ -20,19 +20,21 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
     private final MemberService memberService;
 
+    //관리자 조회
     @GetMapping("/detail")
     public ResponseEntity<?> memberDetail(@AuthenticationPrincipal CustomUserDetails userDetails) {
 
         return memberService.selectOne(userDetails);
     }
 
-//    @GetMapping("/list/all")
-//    public ResponseEntity<List<MemberResponseDTO>> memberList() {
-//        return ResponseEntity.ok(memberService.memberList());
-//    }
-
+    //회원 목록 검색 리스트
     @PostMapping("/list/search")
     public ResponseEntity<PageResponseDTO<MemberResponseDTO>> memberSearchList(@RequestBody PageRequestDTO dto) {
         return ResponseEntity.ok(memberService.memberSearchList(dto));
+    }
+
+    @GetMapping("/user/detail/{email}")
+    public ResponseEntity<UserDetailDTO> adminUserDetail(@RequestParam("email") String email) {
+        return memberService.userDetail(email);
     }
 }

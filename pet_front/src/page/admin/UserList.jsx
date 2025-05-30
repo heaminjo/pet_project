@@ -63,8 +63,10 @@ export default function UserList() {
   };
 
   //유저 상세보기 클릭
-  const userDetail = (id) => {
-    navigate("/admin/page/userdetail", { state: { memberId: id } });
+  //유저 이메일을 넘긴다.
+  const userDetail = (email) => {
+    console.log(email);
+    navigate("/admin/page/userdetail", { state: { email: email } });
   };
   return (
     <UserListComp>
@@ -121,10 +123,10 @@ export default function UserList() {
               </tr>
 
               {userList.length > 0 ? (
-                userList.map((m) => (
+                userList.map((m, index) => (
                   <tr
                     className="user_present"
-                    onClick={() => userDetail(m.memberId)}
+                    onClick={() => userDetail(m.email)}
                   >
                     <td>{m.email}</td>
                     <td>{m.name}</td>
