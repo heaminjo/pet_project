@@ -18,14 +18,14 @@ export default function UserDetail() {
 
   useEffect(() => {
     getUserData();
-  }, [user]);
+  }, []);
 
   return (
     <UserDetailComp>
       <div className="detail_inner">
         <AdminMenu />
         <div className="detail_container">
-          <UserData user={user} navigate={navigate} />
+          <UserData user={user} setUser={setUser} navigate={navigate} />
         </div>
       </div>
     </UserDetailComp>

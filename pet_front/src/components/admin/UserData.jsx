@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Toggle from "../util/Toggle";
 import AdminApi from "../../api/AdminApi";
 
-export default function UserData({ user, navigate }) {
+export default function UserData({ user, setUser, navigate }) {
   const UserDataComp = styled.div`
     .title {
       height: 80px;
@@ -111,24 +111,17 @@ export default function UserData({ user, navigate }) {
     }
   `;
 
-  //회원 상태
-  const [isActive, setIsActive] = useState(true);
-
-  //로드 시 회원 상태를 저장장
-  useEffect(() => {
-    setIsActive(user.memberState == "정상회원" ? true : false);
-  }, [user]);
-
   //토글 클릭하면 회원의 상태를 변환한다.
   //ACTIVE = 정상회원 , BANNED = 정지회원
   const toggleClick = async () => {
-    //현재 상태의 반대 상태를 담는다.
-    const state = !isActive ? "ACTIVE" : "BANNED";
+    setUser({
+      ...user,
+      memberState: user.memberState == "정상회원" ? "정지회원" : "정상회원",
+    });
+
     //저장
+    const state = user.memberState == "정상회원" ? "BANNED" : "ACTIVE";
     const result = await AdminApi.changeState(user.id, state);
-    //상태변수 업데이트
-    setIsActive(!isActive);
-    console.log(result);
   };
   return (
     <UserDataComp>
@@ -189,7 +182,10 @@ export default function UserData({ user, navigate }) {
               <div className="content" id="state_content">
                 <h4>회원 상태</h4>
                 <span>{user.memberState}</span>
-                <Toggle isOn={isActive} clickEvt={toggleClick} />
+                <Toggle
+                  isOn={user?.memberState == "정상회원"}
+                  clickEvt={toggleClick}
+                />
               </div>
             </div>
             <div className="point">
