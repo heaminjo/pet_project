@@ -64,6 +64,26 @@ public class NoticeBoardController {
         }
     }
 
+    //** updateboard 게시글 수정
+    @PutMapping("/noticeboardupdate/{id}")
+    public ResponseEntity<?> updateNoticeBoard(
+            @PathVariable("id") int id,
+            @RequestBody NoticeBoardDTO dto,
+            @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+
+        Long memberId = extractMemberIdFromToken(authorizationHeader);
+        if (memberId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 정보가 없습니다.");
+        }
+        dto.setBoard_id(id);
+        dto.setMember_id(memberId.intValue());
+        if (noticeBoardService.updateNoticeBoard(dto) > 0) {
+            return ResponseEntity.ok("수정 성공");
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
+        }
+    } //updateBoard
+
     //** delete
     @DeleteMapping("/deletenoticeboard/{id}")
     public ResponseEntity<?> deleteNoticeBoard(@PathVariable("id") int id,

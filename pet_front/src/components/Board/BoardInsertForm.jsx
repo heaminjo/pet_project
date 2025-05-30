@@ -39,7 +39,7 @@ export default function BoardInsertForm() {
       await axios.post(url, data,
         {
           headers: {
-            Authorization: `${localStorage.getItem("grantType")} ${localStorage.getItem("accessToken")}`
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
           }
         });
       alert("게시글이 등록되었습니다.");
@@ -75,7 +75,7 @@ export default function BoardInsertForm() {
             />
           </div>
           <div className="categoryRow">
-            <label htmlFor="category" className="categoryLabel">게시판</label>
+            <label htmlFor="category" className="categoryLabel">게시판</label><br></br>
             <select
               id="category"
               name="category"

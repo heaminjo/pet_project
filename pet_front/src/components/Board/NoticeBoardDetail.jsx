@@ -39,7 +39,7 @@ export default function BoardDetail() {
     axios.get(`/board/noticeboardDetail/${board_id}`,
       {
         headers: {
-          Authorization: `${localStorage.getItem("grantType")} ${localStorage.getItem("accessToken")}`
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
       }
     )
@@ -60,7 +60,7 @@ export default function BoardDetail() {
   //const loginRole = localStorage.getItem("role"); // "ADMIN" 또는 "USER"
 
   // 작성자(member_id) 또는 관리자(ADMIN)만 버튼 보이게
-  const canEditOrDelete = String(post.member_id) === String(loginMemberId); // || loginRole === "ADMIN"
+  const canEditOrDelete = String(post.member_id) === String(loginMemberId); // || loginRole === "ADMIN";
 
   console.log("board_Id:", board_id);
 
@@ -70,7 +70,7 @@ export default function BoardDetail() {
       try {
         await axios.delete(`/board/deletenoticeboard/${post.board_id}`, {
           headers: {
-            Authorization: `${localStorage.getItem("grantType")} ${localStorage.getItem("accessToken")}`
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
           }
         });
         alert("삭제되었습니다.");
@@ -83,7 +83,7 @@ export default function BoardDetail() {
 
   // 수정 기능 (수정 폼으로 이동)
   const handleEdit = () => {
-    navigate(`/boardEditForm/${post.board_id}`);
+    navigate(`/boardEditForm/${post.board_id}`, { state: { category: post.category || "notice" } });
   };
 
   console.log("loginMemberId:", loginMemberId, "post.member_id:", post.member_id);

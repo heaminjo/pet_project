@@ -33,10 +33,11 @@ export default function BoardDetail() {
   const { board_id } = useParams(); // URL 파라미터에서 게시글 ID 추출
   const [post, setPost] = useState(null);
   const [error, setError] = useState(null);
+  const [category, setCategory] = useState("board"); // 카테고리 기본값 설정
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`/board/boardDetail/${board_id}`,
+    axios.get(`/board/boardDetail/${board_id}`, { category },
       {
         headers: {
           Authorization: `${localStorage.getItem("grantType")} ${localStorage.getItem("accessToken")}`
@@ -70,7 +71,7 @@ export default function BoardDetail() {
       try {
         await axios.delete(`/board/delete/${post.board_id}`, {
           headers: {
-            Authorization: `${localStorage.getItem("grantType")} ${localStorage.getItem("accessToken")}`
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`
           }
         });
         alert("삭제되었습니다.");
@@ -83,7 +84,7 @@ export default function BoardDetail() {
 
   // 수정 기능 (수정 폼으로 이동)
   const handleEdit = () => {
-    navigate(`/boardEditForm/${post.board_id}`);
+    navigate(`/boardEditForm/${post.board_id}`, { state: { category: post.category || "board" } });
   };
 
   console.log("loginMemberId:", loginMemberId, "post.member_id:", post.member_id);

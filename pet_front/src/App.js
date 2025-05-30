@@ -39,9 +39,9 @@ function App() {
             <Route path="/" element={<Main />} />
             <Route path="/login" element={<Login />} />
             <Route path="/join" element={<Join />} />
-            <Route path="/mypage" element={<MyPage />} />
-            <Route path="/myedit" element={<MyEdit />} />
-            <Route path="/updatepw" element={<UpdatePw />} />
+            <Route path="/user/mypage" element={<MyPage />} />
+            <Route path="/user/myedit" element={<MyEdit />} />
+            <Route path="/user/updatepw" element={<UpdatePw />} />
             <Route path="/boardList" element={<BoardList />} />
             <Route path="/boardDetail/:board_id" element={<BoardDetail />} />
             <Route path="/boardInsertForm" element={<BoardInsertForm />} />

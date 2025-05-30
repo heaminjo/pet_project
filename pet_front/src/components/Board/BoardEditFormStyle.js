@@ -52,6 +52,27 @@ const boardInsertFormContainer = styled.div`
       }
     }
 
+    .categoryLabel {
+      font-size: 16px;
+      color: #444;
+      font-weight: bold;
+    }
+
+    .categorySelect {  
+      width: 100%;
+      font-size: 18px;
+      padding: 10px 12px;
+      border: none;
+      border-bottom: 2px solid #eee;
+      border-radius: 4px;
+      background: #fafafa;
+      outline: none;
+      transition: border-color 0.2s;
+      &:focus {
+        border-color: #f8e776;
+      }
+    }
+
     .contentTextarea {
       min-height: 180px;
       font-size: 16px;
