@@ -127,4 +127,13 @@ public class MemberServiceImpl implements MemberService {
         );
         return response;
     }
+
+    //관리자의 회원 조회
+    @Override
+    public ResponseEntity<?> adminUserDetail(String email) {
+        //회원 존재 확인
+        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return ResponseEntity.ok(mapper.memberToUserDetail(member));
+    }
 }

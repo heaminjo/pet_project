@@ -1,10 +1,11 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import UserDetailComp from "./UserDetailStyle";
 import AdminMenu from "../../components/admin/AdminMenu";
 import { useEffect, useState } from "react";
 import AdminApi from "../../api/AdminApi";
 
 export default function UserDetail() {
+  const navigate = useNavigate();
   const location = useLocation();
   const { email } = location.state || {};
   const [user, setUser] = useState([]);
@@ -24,7 +25,9 @@ export default function UserDetail() {
         <AdminMenu />
         <div className="detail_container">
           <div className="title">
-            <p className="back">◀ 회원 목록으로 돌아가기</p>
+            <p className="back" onClick={() => navigate(-1)}>
+              ◀ 회원 목록으로 돌아가기
+            </p>
             <h2>회원 상세 조회</h2>
           </div>
           <div className="detail">
@@ -41,30 +44,29 @@ export default function UserDetail() {
             </div>
             <div className="user_detail">
               <div className="basic_data">
+                <div className="title">
+                  <span>기본 정보</span>
+                </div>
                 <table>
                   <tr>
                     <th>이름</th>
-                    <td>조해민</td>
+                    <td>{user.name}</td>
                   </tr>
                   <tr>
                     <th>이메일</th>
-                    <td>조해민</td>
+                    <td>{user.email}</td>
                   </tr>
                   <tr>
                     <th>휴대번호</th>
-                    <td>조해민</td>
+                    <td>{user.phone}</td>
                   </tr>
                   <tr>
                     <th>생년월일 </th>
-                    <td>조해민</td>
-                  </tr>
-                  <tr>
-                    <th>이메일</th>
-                    <td>조해민</td>
+                    <td>{user.birth}</td>
                   </tr>
                   <tr>
                     <th>가입날짜</th>
-                    <td>조해민</td>
+                    <td>{user.regDate}</td>
                   </tr>
                 </table>
               </div>
@@ -72,19 +74,19 @@ export default function UserDetail() {
                 <div className="grade">
                   <div className="content">
                     <h4>등급</h4>
-                    <span>새싹 집사</span>
+                    <span>{user.grade}</span>
                   </div>
                 </div>
                 <div className="state">
                   <div className="content">
                     <h4>회원 상태</h4>
-                    <span>정상회원</span>
+                    <span>{user.memberState}</span>
                   </div>
                 </div>
                 <div className="point">
                   <div className="content">
                     <h4>멍코인</h4>
-                    <span>3000</span>
+                    <span>{user.point}</span>
                   </div>
                 </div>
               </div>

@@ -33,8 +33,8 @@ public class AdminController {
         return ResponseEntity.ok(memberService.memberSearchList(dto));
     }
 
-    @GetMapping("/user/detail/{email}")
-    public ResponseEntity<UserDetailDTO> adminUserDetail(@RequestParam("email") String email) {
-        return memberService.userDetail(email);
+    @GetMapping("/user/detail")
+    public ResponseEntity<?> adminUserDetail(@RequestParam("email") String email) {
+        return memberService.adminUserDetail(email);
     }
 }

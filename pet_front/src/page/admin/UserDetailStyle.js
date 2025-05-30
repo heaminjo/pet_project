@@ -18,6 +18,7 @@ const UserDetailComp = styled.div`
         .back {
           font-size: 13px;
           margin-bottom: 30px;
+          cursor: pointer;
         }
         h2 {
         }
@@ -60,13 +61,25 @@ const UserDetailComp = styled.div`
 
           .basic_data {
             display: flex;
+            flex-direction: column;
             align-items: center;
             border: 1px solid #ccc;
             height: 250px;
             box-shadow: 3px 5px 5px 1px #ccc;
+            .title {
+              height: 40px;
+              background-color: #999;
+              width: 100%;
+              line-height: 40px;
+              span {
+                padding-left: 10px;
+                font-weight: bold;
+                color: #eee;
+              }
+            }
             table {
               width: 100%;
-              padding: 20px;
+              padding: 10px;
               tr {
                 height: 35px;
                 border-bottom: 1px solid #ccc;
@@ -83,6 +96,8 @@ const UserDetailComp = styled.div`
           .sub_data {
             height: 130px;
             display: flex;
+            border: 1px solid #ccc;
+            box-shadow: 3px 3px 5px #ccc;
 
             .content {
               text-align: center;

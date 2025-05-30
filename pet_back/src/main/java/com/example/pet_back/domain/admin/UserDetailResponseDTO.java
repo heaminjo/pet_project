@@ -1,23 +1,24 @@
-package com.example.pet_back.domain.member;
+package com.example.pet_back.domain.admin;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class MemberResponseDTO {
-    private Long id;
+//관리자 회원 조회(컬럼 더 추가 예정)
+public class UserDetailResponseDTO {
     private String email;
     private String name;
     private String phone;
     private String birth;
-    private double point;
+    private LocalDateTime regDate;
     private String grade;
-    private String regDate;
+    private String role;
+    private double point;
     private String memberState;
-    private String imageFile;
+
 }

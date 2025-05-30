@@ -39,7 +39,7 @@ public class Member extends BaseEntity {
 
     private double point;
 
-    private String image_file; //프로필 이미지
+    private String imageFile; //프로필 이미지
 
     //등급(첫 회원 가입 시 NUEBIE)
     @Enumerated(EnumType.STRING)

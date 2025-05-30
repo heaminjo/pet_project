@@ -21,4 +21,6 @@ public interface MemberService {
 
     //멤버 리스트
     public PageResponseDTO<MemberResponseDTO> memberSearchList(PageRequestDTO dto);
+
+    public ResponseEntity<?> adminUserDetail(String email);
 }
