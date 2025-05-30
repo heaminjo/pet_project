@@ -81,6 +81,9 @@ const UserListComp = styled.div`
               padding: 0 5px;
               font-size: 14px;
             }
+            #state_col {
+              font-weight: bold;
+            }
           }
           .user_present:hover {
             background-color: #eee;

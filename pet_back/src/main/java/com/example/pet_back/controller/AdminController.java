@@ -1,5 +1,6 @@
 package com.example.pet_back.controller;
 
+import com.example.pet_back.domain.admin.UserStateUpdateDTO;
 import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
@@ -36,5 +37,10 @@ public class AdminController {
     @GetMapping("/user/detail")
     public ResponseEntity<?> adminUserDetail(@RequestParam("email") String email) {
         return memberService.adminUserDetail(email);
+    }
+
+    @PostMapping("/user/state/update")
+    public ResponseEntity<?> userStateUpdate(@RequestBody UserStateUpdateDTO dto) {
+        return memberService.userStateUpdate(dto);
     }
 }

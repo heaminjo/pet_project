@@ -1,6 +1,8 @@
 package com.example.pet_back.service;
 
 
+import com.example.pet_back.constant.MEMBERSTATE;
+import com.example.pet_back.domain.admin.UserStateUpdateDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.domain.member.UpdateMemberRequestDTO;
@@ -33,6 +35,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
@@ -135,5 +138,18 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         return ResponseEntity.ok(mapper.memberToUserDetail(member));
+    }
+
+    //상태 수정
+    @Override
+
+    public ResponseEntity<?> userStateUpdate(UserStateUpdateDTO dto) {
+        log.info(dto.toString());
+        Member member = memberRepository.findById(dto.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        MEMBERSTATE memberstate = MEMBERSTATE.valueOf(dto.getState());
+        member.setMemberState(memberstate);
+        log.info(String.valueOf(member.getMemberState()));
+        memberRepository.save(member);
+        return ResponseEntity.ok(new ApiResponse<>(true, "회원 상태 업데이트 성공"));
     }
 }

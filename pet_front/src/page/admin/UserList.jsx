@@ -68,6 +68,19 @@ export default function UserList() {
     console.log(email);
     navigate("/admin/page/userdetail", { state: { email: email } });
   };
+
+  const getBgColor = (state) => {
+    switch (state) {
+      case "정상회원":
+        return "lightgreen";
+      case "정지회원":
+        return "lightcoral";
+      case "탈퇴회원":
+        return "lightgray";
+      default:
+        return "white";
+    }
+  };
   return (
     <UserListComp>
       <div className="list_inner">
@@ -112,6 +125,7 @@ export default function UserList() {
           <div className="list_view">
             <table>
               <tr>
+                <th>번호</th>
                 <th style={{ width: "25%" }}>이메일</th>
                 <th style={{ width: "10%" }}>이름</th>
                 <th style={{ width: "13%" }}>휴대번호</th>
@@ -128,14 +142,20 @@ export default function UserList() {
                     className="user_present"
                     onClick={() => userDetail(m.email)}
                   >
-                    <td>{m.email}</td>
-                    <td>{m.name}</td>
-                    <td>{m.phone}</td>
-                    <td>{m.birth}</td>
-                    <td>{m.point}</td>
-                    <td>{m.grade}</td>
-                    <td>{m.memberState}</td>
-                    <td>{m.regDate}</td>
+                    <td align="center">{index + 1 + page * 12}</td>
+                    <td id="email_col">{m.email}</td>
+                    <td id="name_col">{m.name}</td>
+                    <td id="phone_col">{m.phone}</td>
+                    <td id="birth_col">{m.birth}</td>
+                    <td id="point_col">{m.point}</td>
+                    <td id="grade_col">{m.grade}</td>
+                    <td
+                      style={{ color: getBgColor(m.memberState) }}
+                      id="state_col"
+                    >
+                      {m.memberState}
+                    </td>
+                    <td id="date_col">{m.regDate}</td>
                   </tr>
                 ))
               ) : (

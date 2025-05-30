@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 //관리자 회원 조회(컬럼 더 추가 예정)
 public class UserDetailResponseDTO {
+    private Long id;
     private String email;
     private String name;
     private String phone;

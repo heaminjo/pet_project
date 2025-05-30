@@ -112,19 +112,23 @@ export default function UserData({ user, navigate }) {
   `;
 
   //회원 상태
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(true);
 
   //로드 시 회원 상태를 저장장
   useEffect(() => {
     setIsActive(user.memberState == "정상회원" ? true : false);
-  }, []);
+  }, [user]);
 
   //토글 클릭하면 회원의 상태를 변환한다.
   //ACTIVE = 정상회원 , BANNED = 정지회원
   const toggleClick = async () => {
-    //BANNED
-    const state = isActive ? "ACTIVE" : "BANNED";
-    const result = await AdminApi.changeState(state);
+    //현재 상태의 반대 상태를 담는다.
+    const state = !isActive ? "ACTIVE" : "BANNED";
+    //저장
+    const result = await AdminApi.changeState(user.id, state);
+    //상태변수 업데이트
+    setIsActive(!isActive);
+    console.log(result);
   };
   return (
     <UserDataComp>

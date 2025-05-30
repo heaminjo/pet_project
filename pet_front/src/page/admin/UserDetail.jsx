@@ -18,7 +18,7 @@ export default function UserDetail() {
 
   useEffect(() => {
     getUserData();
-  }, []);
+  }, [user]);
 
   return (
     <UserDetailComp>
