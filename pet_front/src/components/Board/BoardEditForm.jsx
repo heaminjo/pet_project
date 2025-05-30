@@ -13,25 +13,9 @@ export default function BoardEditForm() {
 
   // 기존 게시글 데이터 불러오기 (수정 폼 진입 시 1회)
   useEffect(() => {
-    let url = "";
-    switch (category) {
-      case "notice":
-        url = `/board/noticeboardDetail/${board_id}`;
-        break;
-      case "community":
-        url = `/board/communityboardDetail/${board_id}`;
-        break;
-      case "faq":
-        url = `/board/faqboardDetail/${board_id}`;
-        break;
-      case "board":
-      default:
-        url = `/board/boardDetail/${board_id}`;
-        break;
-    }
-
+    
     axios
-      .get(url)
+      .get(`/board/boardDetail/${category}/${board_id}`)
       .then((response) => {
         setTitle(response.data.title);
         setContent(response.data.content);
@@ -39,46 +23,25 @@ export default function BoardEditForm() {
       })
       .catch((error) => {
         alert("게시글 정보를 불러오지 못했습니다.");
-        navigate("/boardList");
+        navigate("/boardList/free");
       });
-  }, [board_id, navigate]);
+  }, [board_id, category, title, navigate]);
 
   // 수정 폼 제출
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let url = "";
+    
     let data = { board_id, title, content};
 
-    // 선택한 카테고리에 따라 URL을 설정
-    switch (category) {
-      case "notice":
-        url = `/board/noticeboardupdate/${board_id}`;
-        break;
-      case "community":
-        url = `/board/communityboardupdate/${board_id}`;
-        break;
-      case "faq":
-        url = `/board/faqboardupdate/${board_id}`;
-        break;
-      case "board":
-        url = `/board/updateboard/${board_id}`;
-        break;
-      default:
-        alert("잘못된 카테고리입니다.");
-        return;
-    }
-
     try {
-      await axios.put(url, data, {
+      await axios.put(`/board/updateboard/${board_id}`, data, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         }
       });
       alert("게시글이 수정되었습니다.");
-      if(category==="notice") navigate(`/noticeboardDetail/${board_id}`); 
-      else if(category==="community") navigate(`/communityboardDetail/${board_id}`);
-      else if(category==="faq") navigate(`/faqboardDetail/${board_id}`);
-      else if(category==="board") navigate(`/boardDetail/${board_id}`);
+      navigate(`/boardDetail/${category}/${board_id}`); 
+      
     } catch (err) {
       alert("게시글 수정에 실패했습니다.");
     }

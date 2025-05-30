@@ -7,10 +7,10 @@ import java.util.List;
 public interface BoardService {
 
     //** selectList
-    List<BoardDTO> selectList();
+    List<BoardDTO> selectList(String category);
 
     //** selectOne
-    BoardDTO selectOne(int id);
+    BoardDTO selectOne(String category, int board_id);
 
     //** insert
     int insertBoard(BoardDTO dto);

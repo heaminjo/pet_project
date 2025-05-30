@@ -42,12 +42,10 @@ function App() {
             <Route path="/user/mypage" element={<MyPage />} />
             <Route path="/user/myedit" element={<MyEdit />} />
             <Route path="/user/updatepw" element={<UpdatePw />} />
-            <Route path="/boardList" element={<BoardList />} />
-            <Route path="/boardDetail/:board_id" element={<BoardDetail />} />
+            <Route path="/boardList/:category" element={<BoardList />} />
+            <Route path="/boardDetail/:category/:board_id" element={<BoardDetail />} />
             <Route path="/boardInsertForm" element={<BoardInsertForm />} />
-            <Route path="/boardEditForm/:board_id" element={<BoardEditForm />} />
-            <Route path="/noticeboardList" element={<NoticeBoardList />} />
-            <Route path="/noticeboardDetail/:board_id" element={<NoticeBoardDetail />} />
+            <Route path="/boardEditForm/:category/:board_id" element={<BoardEditForm />} />
             <Route path="/cart/list" element={<Cart />} />
             <Route path="/delivery" element={<Delivery />} />
             <Route path="/order" element={<Order />} />

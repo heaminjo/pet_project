@@ -19,13 +19,13 @@ export default function BoardInsertForm() {
     // 선택한 카테고리에 따라 URL을 설정
     switch (category) {
       case "notice":
-        url = "/board/noticeboardinsert";
+        url = `/board/boardinsert/${category}`;
         break;
       case "community":
-        url = "/board/communityboardinsert";
+        url = `/board/boardinsert/${category}`;
         break;
       case "faq":
-        url = "/board/faqboardinsert";
+        url = `/board/boardinsert/${category}`;
         break;
       case "board":
         url = "/board/boardinsert";
@@ -46,9 +46,9 @@ export default function BoardInsertForm() {
       console.log("category:", category, "url:", url);
 
       // 등록 후 해당 게시판 목록으로 이동  
-      if(category==="notice") navigate("/noticeboardList"); 
-      else if(category==="community") navigate("/communityboardList");
-      else if(category==="faq") navigate("/faqboardList");
+      if(category==="notice") navigate(`/boardList/${category}`); 
+      else if(category==="community") navigate(`/boardList/${category}`);
+      else if(category==="faq") navigate(`/boardList/${category}`);
       else if(category==="board") navigate("/boardList");
     } catch (err) {
       alert("게시글 등록에 실패했습니다.");

@@ -32,19 +32,20 @@ public class BoardController {
 
 
     //** BoardList (게시글 목록)
-    @GetMapping("/boardList")
-    public ResponseEntity<?> selectList() {
+    @GetMapping("/boardList/{category}")
+    public ResponseEntity<?> selectList(@PathVariable("category") String category) {
         //return service.selectList();
-        List<BoardDTO> list = boardService.selectList();
+        List<BoardDTO> list = boardService.selectList(category);
         return ResponseEntity.ok(list != null ? list : new ArrayList<>());
     } //selectList()
 
 
     //** BoardDetail (게시글 내용)
-    @GetMapping("/boardDetail/{id}")
-    public ResponseEntity<?> selectOne(@PathVariable("id") int id) {
+    @GetMapping("/boardDetail/{category}/{board_id}")
+    public ResponseEntity<?> selectOne(@PathVariable("board_id") int board_id,
+                                       @PathVariable("category") String category) {
 
-        BoardDTO dto = boardService.selectOne(id);
+        BoardDTO dto = boardService.selectOne(category, board_id);
 
         if (dto != null) {
             return ResponseEntity.ok(dto);
@@ -55,10 +56,10 @@ public class BoardController {
 
 
     //** BoardInsert 게시글 등록
-    @PostMapping("/boardinsert")
-    public ResponseEntity<?> insertBoard(
-            @RequestBody BoardDTO dto,
-            @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
+    @PostMapping("/boardinsert/{category}")
+    public ResponseEntity<?> insertBoard(@PathVariable("category") String category,
+                                         @RequestBody BoardDTO dto,
+                                         @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
 
         Long memberId = extractMemberIdFromToken(authorizationHeader);
         if (memberId == null) {

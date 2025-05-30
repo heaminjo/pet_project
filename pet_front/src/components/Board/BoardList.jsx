@@ -1,20 +1,39 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BoardListStyle from "./BoardListStyle";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+
 
 export default function BoardList() {
-  // 나중에 login 여부에 따라 글쓰기 버튼을 보여줄지 말지 결정할 수 있음
+  const { category } = useParams(); // URL 파라미터에서 카테고리 추출
   const [listData, setListData] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  // 카테고리별 API 엔드포인트 매핑
+  const categoryApiMap = {
+    notice: "/board/boardList/notice",
+    community: "/board/boardList/community",
+    faq: "/board/boardList/faq",
+    free: "/board/boardList/free"
+  };
+
+  // 카테고리별 게시판 이름 매핑
+  const categoryNameMap = {
+    notice: "공지사항",
+    community: "커뮤니티",
+    faq: "문의/FAQ",
+    free: "자유게시판"
+  };
+
   useEffect(() => {
+    // 카테고리가 없으면 기본 board로 설정
+    const apiUrl = categoryApiMap[category] || "/board/boardList/free";
     axios
-      .get("/board/boardList")
+      .get(apiUrl)
       .then((response) => setListData(response.data))
       .catch((error) => setError(error));
-  }, []);
+  }, [category]);
 
   if (error) {
     // 서버 에러 코드에 따라 메시지 분기
@@ -29,17 +48,19 @@ export default function BoardList() {
       <div className="boardListContainer">
         <div className="boardListMenuContainer">
           <ul className="boardListMenu">
-            <li onClick={()=>navigate("/noticeboardList")}>공지사항</li>
-            <li>커뮤니티</li>
-            <li>문의/FAQ</li>
-            <li onClick={() => navigate("/boardList")}>게시판</li>
+            {/* 클릭하면 해당 카테고리로 이동하게 코딩 */}
+            <li onClick={()=>navigate("/boardList/notice")}>공지사항</li>
+            <li onClick={()=>navigate("/boardList/community")}>커뮤니티</li>
+            <li onClick={()=>navigate("/boardList/faq")}>Q&A</li>
+            <li onClick={() => navigate("/boardList/free")}>게시판</li>
           </ul>
         </div>
         <table>
           <thead>
             <tr>
               <td colSpan={5} height={50}>
-                게시판
+                {/* 해당 게시판의 종류에 따라 게시판 이름 표시 */}
+                { categoryNameMap[category] || "자유게시판"}
               </td>
             </tr>
             <tr style={{ backgroundColor: " #f8e776" }}>
@@ -63,7 +84,7 @@ export default function BoardList() {
                 <td className="center">{listData.length - index}</td>
                 <td
                   className="center"
-                  onClick={() => navigate(`/boardDetail/${b.board_id}`)}
+                  onClick={() => navigate(`/boardDetail/${category}/${b.board_id}`)}
                   style={{ cursor: "pointer" }}
                 >
                   {b.title}
@@ -80,7 +101,7 @@ export default function BoardList() {
                   type="button"
                   onClick={() => {
                     if (localStorage.getItem("accessToken")!=null) {
-                      navigate("/boardInsertForm");
+                      navigate(`/boardInsertForm?category=${category || "board"}`);
                     } else {
                       alert("로그인 해주세요");
                       navigate("/login?redirectTo=/boardInsertForm");

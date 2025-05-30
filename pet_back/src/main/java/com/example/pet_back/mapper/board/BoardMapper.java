@@ -2,6 +2,7 @@ package com.example.pet_back.mapper.board;
 
 import com.example.pet_back.domain.board.BoardDTO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -9,10 +10,10 @@ import java.util.List;
 public interface BoardMapper {
 
     //** selectList
-    List<BoardDTO> selectList();
+    List<BoardDTO> selectList(@Param("category") String category);
 
     //** selectOne
-    BoardDTO selectOne(int id);
+    BoardDTO selectOne(@Param("category") String category, @Param("board_id") int board_id);
 
     //** insert
     int insertBoard(BoardDTO dto);

@@ -15,16 +15,16 @@ public class BoardServiceImpl implements BoardService {
     private final BoardMapper boardMapper;
 
     @Override
-    public List<BoardDTO> selectList() {
+    public List<BoardDTO> selectList(String category) {
         //return mapper.selectList();
-        List<BoardDTO> list = boardMapper.selectList();
+        List<BoardDTO> list = boardMapper.selectList(category);
         return list;
     }
 
     //test
     @Override
-    public BoardDTO selectOne(int id) {
-        return boardMapper.selectOne(id);
+    public BoardDTO selectOne(String category, int board_id) {
+        return boardMapper.selectOne(category, board_id);
     }
 
     @Override

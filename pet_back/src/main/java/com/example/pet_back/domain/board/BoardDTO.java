@@ -11,6 +11,7 @@ public class BoardDTO {
 
     private int board_id;
     private int member_id;
+    private String category;
     private String title;
     private String content;
     private int views;
