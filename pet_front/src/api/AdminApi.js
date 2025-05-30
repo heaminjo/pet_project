@@ -24,5 +24,11 @@ const AdminApi = {
     );
     return result.data;
   },
+
+  changeState: async (state) => {
+    const result = await instance.get(
+      `${KH_DOMAIN}/admin/user/state/update?${state}`
+    );
+  },
 };
 export default AdminApi;
