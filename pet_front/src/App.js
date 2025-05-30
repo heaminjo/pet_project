@@ -16,9 +16,11 @@ import Goods from "./components/Layout/goods/Goods";
 import MyEdit from "./page/mypage/MyEdit";
 import UpdatePw from "./page/mypage/UpdatePw";
 import BoardList from "./components/Board/BoardList";
-import AdminPage from "./page/admin/AdminPage";
-import UserList from "./page/admin/UserList";
-import UserDetail from "./page/admin/UserDetail";
+import BoardInsertForm from "./components/Board/BoardInsertForm";
+import BoardDetail from "./components/Board/BoardDetail";
+import BoardEditForm from "./components/Board/BoardEditForm";
+import NoticeBoardList from "./components/Board/NoticeBoardList";
+import NoticeBoardDetail from "./components/Board/NoticeBoardDetail";
 
 //컨텍스트(useContext)
 //로그인 여부부를 전역변수로 뿌리기 위한것
@@ -37,20 +39,22 @@ function App() {
             <Route path="/" element={<Main />} />
             <Route path="/login" element={<Login />} />
             <Route path="/join" element={<Join />} />
-            <Route path="user/mypage" element={<MyPage />} />
-            <Route path="/user/myedit" element={<MyEdit />} />
-            <Route path="/user/updatepw" element={<UpdatePw />} />
+            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/myedit" element={<MyEdit />} />
+            <Route path="/updatepw" element={<UpdatePw />} />
             <Route path="/boardList" element={<BoardList />} />
-            <Route path="/user/cart/list" element={<Cart />} />
-            <Route path="/user/delivery" element={<Delivery />} />
-            <Route path="/user/order" element={<Order />} />
-            <Route path="/user/orderdetail" element={<OrderDetail />} />
-            <Route path="/user/withdraw" element={<WithDraw />} />
-            <Route path="/user/pay" element={<Pay />} />
-            <Route path="/admin/goods" element={<Goods />} />
-            <Route path="/admin/page" element={<AdminPage />} />
-            <Route path="/admin/page/userlist" element={<UserList />} />
-            <Route path="/admin/page/userdetail" element={<UserDetail />} />
+            <Route path="/boardDetail/:board_id" element={<BoardDetail />} />
+            <Route path="/boardInsertForm" element={<BoardInsertForm />} />
+            <Route path="/boardEditForm/:board_id" element={<BoardEditForm />} />
+            <Route path="/noticeboardList" element={<NoticeBoardList />} />
+            <Route path="/noticeboardDetail/:board_id" element={<NoticeBoardDetail />} />
+            <Route path="/cart/list" element={<Cart />} />
+            <Route path="/delivery" element={<Delivery />} />
+            <Route path="/order" element={<Order />} />
+            <Route path="/orderdetail" element={<OrderDetail />} />
+            <Route path="/withdraw" element={<WithDraw />} />
+            <Route path="/pay" element={<Pay />} />
+            <Route path="/goods" element={<Goods />} />
           </Route>
         </Routes>
       </BrowserRouter>

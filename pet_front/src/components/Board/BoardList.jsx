@@ -3,7 +3,7 @@ import axios from "axios";
 import BoardListStyle from "./BoardListStyle";
 import { useNavigate } from "react-router-dom";
 
-export default function BoardList({ isLogin }) {
+export default function BoardList() {
   // 나중에 login 여부에 따라 글쓰기 버튼을 보여줄지 말지 결정할 수 있음
   const [listData, setListData] = useState([]);
   const [error, setError] = useState(null);
@@ -29,7 +29,7 @@ export default function BoardList({ isLogin }) {
       <div className="boardListContainer">
         <div className="boardListMenuContainer">
           <ul className="boardListMenu">
-            <li>공지사항</li>
+            <li onClick={()=>navigate("/noticeboardList")}>공지사항</li>
             <li>커뮤니티</li>
             <li>문의/FAQ</li>
             <li onClick={() => navigate("/boardList")}>게시판</li>
@@ -51,9 +51,16 @@ export default function BoardList({ isLogin }) {
             </tr>
           </thead>
           <tbody>
-            {listData.map((b) => (
-              <tr key={b.board_id}>
-                <td className="center">{b.board_id}</td>
+            {(!listData || listData.length === 0) ? (
+              <tr>
+                <td colSpan={5} className="center" style={{ textAlign: "center", padding: "20px" }}>
+                  게시글이 없습니다.
+                </td>
+              </tr>
+            ) : (
+            listData.map((b, index) => (
+              <tr key={index}>
+                <td className="center">{listData.length - index}</td>
                 <td
                   className="center"
                   onClick={() => navigate(`/boardDetail/${b.board_id}`)}
@@ -65,17 +72,18 @@ export default function BoardList({ isLogin }) {
                 <td className="center">{b.views}</td>
                 <td className="center">{b.reg_date}</td>
               </tr>
-            ))}
+              ))
+            )}
             <tr>
               <td colSpan={5} align="right">
                 <button
                   type="button"
                   onClick={() => {
-                    if (!isLogin) {
-                      alert("로그인 해주세요");
-                      navigate("/login");
-                    } else {
+                    if (localStorage.getItem("accessToken")!=null) {
                       navigate("/boardInsertForm");
+                    } else {
+                      alert("로그인 해주세요");
+                      navigate("/login?redirectTo=/boardInsertForm");
                     }
                   }}
                 >

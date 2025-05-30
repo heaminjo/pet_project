@@ -7,25 +7,55 @@ export default function BoardInsertForm() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const navigate = useNavigate();
-
+  const [category, setCategory] = useState("notice");
   
    
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let url = "";
+    let data = {title, content};
+
+    // 선택한 카테고리에 따라 URL을 설정
+    switch (category) {
+      case "notice":
+        url = "/board/noticeboardinsert";
+        break;
+      case "community":
+        url = "/board/communityboardinsert";
+        break;
+      case "faq":
+        url = "/board/faqboardinsert";
+        break;
+      case "board":
+        url = "/board/boardinsert";
+        break;
+      default:
+        alert("잘못된 카테고리입니다.");
+        return;
+    }
+
     try {
-      await axios.post("/board/boardinsert", { title, content },
+      await axios.post(url, data,
         {
           headers: {
             Authorization: `${localStorage.getItem("grantType")} ${localStorage.getItem("accessToken")}`
           }
         });
       alert("게시글이 등록되었습니다.");
-      navigate("/boardList"); // 등록 후 게시판 목록으로 이동
+      console.log("category:", category, "url:", url);
+
+      // 등록 후 해당 게시판 목록으로 이동  
+      if(category==="notice") navigate("/noticeboardList"); 
+      else if(category==="community") navigate("/communityboardList");
+      else if(category==="faq") navigate("/faqboardList");
+      else if(category==="board") navigate("/boardList");
     } catch (err) {
       alert("게시글 등록에 실패했습니다.");
     }
   };
+
+  
 
   return (
     <BoardInsertFormStyle>
@@ -43,6 +73,23 @@ export default function BoardInsertForm() {
               onChange={e => setTitle(e.target.value)}
               required
             />
+          </div>
+          <div className="categoryRow">
+            <label htmlFor="category" className="categoryLabel">게시판</label>
+            <select
+              id="category"
+              name="category"
+              className="categorySelect"
+              value={category}
+              onChange={e => setCategory(e.target.value)}
+              required
+            >
+              <option value="notice">공지사항</option>
+              <option value="community">커뮤니티</option>
+              <option value="faq">FAQ</option>
+              <option value="board">게시판</option>
+              {/* 필요시 더 추가 */}
+            </select>
           </div>
           <div className="contentRow">
             <label htmlFor="content" className="contentLabel">내용</label>

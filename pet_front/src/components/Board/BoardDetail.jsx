@@ -30,13 +30,13 @@ import BoardDetailStyle from "./BoardDetailStyle";
 
 
 export default function BoardDetail() { 
-  const { board_Id } = useParams(); // URL 파라미터에서 게시글 ID 추출
+  const { board_id } = useParams(); // URL 파라미터에서 게시글 ID 추출
   const [post, setPost] = useState(null);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`/board/boardDetail/${board_Id}`,
+    axios.get(`/board/boardDetail/${board_id}`,
       {
         headers: {
           Authorization: `${localStorage.getItem("grantType")} ${localStorage.getItem("accessToken")}`
@@ -45,7 +45,7 @@ export default function BoardDetail() {
     )
       .then(response => setPost(response.data))
       .catch(error => setError(error));
-  }, [board_Id]);
+  }, [board_id]);
 
   if (error) {
     return <div>게시글을 불러오지 못했습니다. {error.message}</div>;
@@ -62,6 +62,7 @@ export default function BoardDetail() {
   // 작성자(member_id) 또는 관리자(ADMIN)만 버튼 보이게
   const canEditOrDelete = String(post.member_id) === String(loginMemberId); // || loginRole === "ADMIN"
 
+  console.log("board_Id:", board_id);
 
    // 삭제 기능
   const handleDelete = async () => {

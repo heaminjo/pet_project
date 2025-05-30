@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.pet_back.mapper.board.NoticeBoardMapper">
+
+    <!-- ** selectList -->
+    <select id="selectList" resultType="com.example.pet_back.domain.board.NoticeBoardDTO">
+        select b.board_id, b.title, m.name, b.views, b.reg_date
+        from noticeboard b left join member m on b.member_id=m.member_id
+        order by b.board_id desc
+    </select>
+
+    <!-- ** selectOne -->
+    <!--    <select id="selectOne" resultType="com.example.pet_back.domain.board.BoardDTO">-->
+    <!--        select * from board where board_id=#{board_id}-->
+    <!--    </select>-->
+    <select id="selectOne" resultType="com.example.pet_back.domain.board.NoticeBoardDTO">
+        select b.board_id, b.title, b.content, b.views, b.reg_date, m.name, b.member_id
+        from noticeboard b
+        left join member m on b.member_id = m.member_id
+        where b.board_id = #{board_id}
+        <!-- 추후에 로그인 기능 합친 후 #{member_id}로 변경 -->
+    </select>
+
+
+    <insert id="insertNoticeBoard" parameterType="com.example.pet_back.domain.board.NoticeBoardDTO"
+            useGeneratedKeys="true" keyProperty="board_id">
+        insert into noticeboard(member_id, title, content, views, reg_date)
+        values(#{member_id},#{title},#{content},0,NOW())
+    </insert>
+
+
+    <!-- update-->
+    <update id="updateNoticeBoard" parameterType="com.example.pet_back.domain.board.NoticeBoardDTO">
+        UPDATE noticeboard SET title = #{title}, content = #{content} WHERE board_id = #{board_id}
+    </update>
+
+    <!-- ** delete -->
+    <delete id="deleteNoticeBoard" parameterType="int">
+        delete from noticeboard where board_id=#{board_id}
+    </delete>
+
+
+</mapper>

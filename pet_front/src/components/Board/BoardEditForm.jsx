@@ -7,15 +7,17 @@ export default function BoardEditForm() {
   const { board_id } = useParams(); // URL에서 게시글 id 추출
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [category, setCategory] = useState(""); // 카테고리 기본값 설정
   const navigate = useNavigate();
 
   // 기존 게시글 데이터 불러오기 (수정 폼 진입 시 1회)
   useEffect(() => {
     axios
-      .get(`/board/boardDetail/${board_id}`)
+      .get(`/board/noticeboardDetail/${board_id}`)
       .then((response) => {
         setTitle(response.data.title);
         setContent(response.data.content);
+        setCategory(response.data.category); // 카테고리 설정
       })
       .catch((error) => {
         alert("게시글 정보를 불러오지 못했습니다.");
@@ -59,6 +61,22 @@ export default function BoardEditForm() {
               onChange={(e) => setTitle(e.target.value)}
               required
             />
+          </div>
+          <div className="categoryRow">
+            <label htmlFor="category" className="categoryLabel">게시판</label>
+            <select
+              id="category"
+              name="category"
+              className="categorySelect"
+              value={category}
+              onChange={e => setCategory(e.target.value)}
+              required
+            >
+              <option value="notice">공지사항</option>
+              <option value="community">커뮤니티</option>
+              <option value="faq">FAQ</option>
+              <option value="board">게시판</option>
+            </select>
           </div>
           <div className="contentRow">
             <label htmlFor="content" className="contentLabel">
