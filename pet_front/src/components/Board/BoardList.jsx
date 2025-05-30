@@ -58,9 +58,9 @@ export default function BoardList() {
                 </td>
               </tr>
             ) : (
-            listData.map((b) => (
-              <tr key={b.board_id}>
-                <td className="center">{b.board_id}</td>
+            listData.map((b, index) => (
+              <tr key={index}>
+                <td className="center">{listData.length - index}</td>
                 <td
                   className="center"
                   onClick={() => navigate(`/boardDetail/${b.board_id}`)}

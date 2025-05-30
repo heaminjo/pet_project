@@ -2,16 +2,14 @@ package com.example.pet_back.mapper;
 
 import com.example.pet_back.domain.login.CartRequestDTO;
 import com.example.pet_back.domain.login.CartResponseDTO;
-import com.example.pet_back.domain.login.CartResponseDTO.CartResponseDTOBuilder;
 import com.example.pet_back.entity.Cart;
-import com.example.pet_back.entity.Cart.CartBuilder;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-05-28T12:24:08+0900",
-    comments = "version: 1.4.2.Final, compiler: javac, environment: Java 17.0.12 (Oracle Corporation)"
+    date = "2025-05-30T09:40:45+0900",
+    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.12 (Oracle Corporation)"
 )
 @Component
 public class CartMapperImpl implements CartMapper {
@@ -22,7 +20,7 @@ public class CartMapperImpl implements CartMapper {
             return null;
         }
 
-        CartBuilder cart = Cart.builder();
+        Cart.CartBuilder cart = Cart.builder();
 
         cart.member_id( dto.getMember_id() );
 
@@ -35,7 +33,7 @@ public class CartMapperImpl implements CartMapper {
             return null;
         }
 
-        CartResponseDTOBuilder cartResponseDTO = CartResponseDTO.builder();
+        CartResponseDTO.CartResponseDTOBuilder cartResponseDTO = CartResponseDTO.builder();
 
         cartResponseDTO.member_id( cart.getMember_id() );
         cartResponseDTO.goods_id( cart.getGoods_id() );
