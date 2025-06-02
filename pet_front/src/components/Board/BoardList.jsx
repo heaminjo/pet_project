@@ -10,6 +10,8 @@ export default function BoardList() {
   const [listData, setListData] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [searchType, setSearchType] = useState("title");
+  const [searchKeyword, setSearchKeyword] = useState("");
 
   // pageNumber 상태 변수 추가
   const [paging, setPaging] = useState({
@@ -73,6 +75,40 @@ export default function BoardList() {
     }
     return <div>게시판을 불러오지 못했습니다. =&gt; {error.message}</div>;
   }
+
+  //검색 기능
+
+  const handleSearch = () => {
+    const apiUrl = categoryApiMap[category] || "/board/boardList/free";
+    axios.get(apiUrl, {
+      params: {
+        page: 0,
+        size: paging.size,
+        searchType: searchType,
+        searchKeyword: searchKeyword
+      }
+    })
+    .then((response) => {
+      setListData(response.data.content || []);
+      setPaging({
+        page: response.data.page,
+        size: response.data.size,
+        totalElements: response.data.totalElements,
+        totalPages: response.data.totalPages,
+        isPrev: response.data.prev,
+        isNext: response.data.next,
+        start: 0,
+        end: Math.min(3, response.data.totalPages),
+      });
+      setPage(0); // 검색 후 페이지를 0으로 초기화
+    })
+    .catch((error) => { setError(error);
+      console.error("검색 중 오류 발생:", error);
+    });
+  };
+
+
+
 
   return (
     <BoardListStyle>
@@ -148,6 +184,32 @@ export default function BoardList() {
         <div className="pageNumber">
           <PageNumber page={page} setPage={setPage} paging={paging} />
         </div>  
+        <div className="search-bar" style={{ display: "flex", alignItems: "center", margin: "30px 0 0 0" }}>
+          <div className="custom-select">
+            <select
+              value={searchType}
+              onChange={e => setSearchType(e.target.value)}
+            >
+              <option value="title">제목</option>
+              <option value="content">내용</option>
+              <option value="writer">작성자</option>
+            </select>
+          </div>
+          <input
+            type="text"
+            value={searchKeyword}
+            onChange={e => setSearchKeyword(e.target.value)}
+            placeholder="검색어를 입력하세요"
+            
+            onKeyDown={e => { if (e.key === "Enter") handleSearch(); }}
+          />
+          <button
+            onClick={handleSearch}
+            
+          >
+          <span role="img" aria-label="search">🔍</span>
+          </button>
+        </div>
       </div>
     </BoardListStyle>
   );
