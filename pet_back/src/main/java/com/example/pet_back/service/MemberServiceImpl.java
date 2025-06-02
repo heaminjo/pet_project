@@ -64,9 +64,15 @@ public class MemberServiceImpl implements MemberService {
         //유저 details에서 id 가져와 회원을 가져온다.
         Member member = memberRepository.findById(userDetails.getMember().getId()).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
 
-
-        String grade = member.getGrade().getGradeName();
-        return ResponseEntity.ok(mapper.toDto(member));
+        String imageFile = "";
+        //등록한 사진이 없을 경우 기본 사진으로
+        if (member.getImageFile() == null) imageFile = "1e1daeb3-7968-40d1-93f2-09b5ea794ae0";
+        else imageFile = member.getImageFile();
+        //외부디렉토리에서 파일 가져오기
+        MemberResponseDTO dto = mapper.toDto(member);
+        dto.setImageFile("http://localhost:8080/uploads/" + imageFile);
+//        String grade = member.getGrade().getGradeName();
+        return ResponseEntity.ok(dto);
     }
 
     @Override
@@ -169,6 +175,7 @@ public class MemberServiceImpl implements MemberService {
         return ResponseEntity.ok(new ApiResponse<>(true, "탈퇴가 정상적으로 처리되었습니다."));
     }
 
+    //이미지 변경
     @Override
     public ResponseEntity<?> memberUploadImage(Long id, MultipartFile file) {
         //비어있는지 확인
@@ -176,7 +183,6 @@ public class MemberServiceImpl implements MemberService {
 
         //값 제대로 받아왔는지 체크
         String originalName = file.getOriginalFilename(); //apple.png
-        String contentType = file.getContentType();  //image.png
         String extension = originalName.substring(originalName.lastIndexOf("."));// .pag
         String uuid = UUID.randomUUID().toString(); //고유한 식별자를 랜덤으로 생성
         String saveFileName = uuid + extension; //저장할 파일 변수이름 -> 고유식별자.png
@@ -195,7 +201,7 @@ public class MemberServiceImpl implements MemberService {
 
             //DB에 저장
             Member member = memberRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-            member.setImageFile("/uploads/" + saveFileName);
+            member.setImageFile(saveFileName);
             memberRepository.save(member);
 
         } catch (IOException e) {
@@ -203,7 +209,7 @@ public class MemberServiceImpl implements MemberService {
             return null;
         }
         String imageURL = fileUploadProperties.getUrl() + saveFileName;
-        return ResponseEntity.ok(new ApiResponse<String>(true, imageURL, "이미지 변경 성공"));
+        return ResponseEntity.ok(new ApiResponse<String>(true, imageURL, "이미지 변경이 완료되었습니다."));
 
     }
 }

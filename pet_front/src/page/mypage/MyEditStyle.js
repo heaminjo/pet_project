@@ -14,10 +14,36 @@ const MyEditComp = styled.div`
       padding: 20px;
       border: 1px solid #eee;
       box-shadow: 3px 3px 3px #ccc;
-      height: 500px;
+      height: 600px;
       position: relative;
       h3 {
         padding: 10px 0;
+      }
+      .image_box {
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        position: relative;
+        img {
+          width: 180px;
+          height: 180px;
+          border-radius: 100%;
+        }
+        .image_btn {
+          position: absolute;
+          display: flex;
+          gap: 10px;
+          right: 40px;
+          bottom: 0;
+          button {
+            width: 80px;
+            height: 40px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+          }
+        }
       }
       .form_container {
         width: 500px;
@@ -27,7 +53,7 @@ const MyEditComp = styled.div`
         tbody {
           display: flex;
           flex-direction: column;
-          padding: 60px 0;
+          padding: 30px 0;
           gap: 30px;
           tr {
             .error_message {

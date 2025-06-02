@@ -3,6 +3,7 @@ import MyInfoComp from "./MyInfoStyle";
 
 export default function MyInfo() {
   const { user } = useOutletContext();
+
   return (
     <MyInfoComp>
       <div className="main_container">
@@ -10,10 +11,7 @@ export default function MyInfo() {
           <div className="user_profile">
             {/* 프로필 이미지 ,이름, 이메일 ,  */}
             <div className="image">
-              <img
-                src="https://images.mypetlife.co.kr/content/uploads/2023/01/13160523/AdobeStock_405843911-scaled.jpeg"
-                alt=""
-              />
+              <img src={user.imageFile} alt="" />
             </div>
             <div className="data">
               <p className="user_name">

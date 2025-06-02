@@ -3,15 +3,15 @@ import MypageMenu from "../../components/mypage/MyPageMenu";
 import MyEditComp from "./MyEditStyle";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MemberApi from "../../api/MemberApi";
 import { useNavigate, useOutletContext } from "react-router-dom";
 //회원 수정 페이지
 export default function MyEdit() {
   const navigate = useNavigate();
 
-  const [selectImage, setSelectImage] = useState(""); //선택 프로필
-  const [prevImage, setPrevImage] = useState(""); //이전 프로필필
+  const [selectImage, setSelectImage] = useState(null); //선택 프로필
+  const [prevImage, setPrevImage] = useState(null); //이전 프로필필
 
   //로드 시 회원 정보 불러오기
   useEffect(() => {
@@ -25,6 +25,7 @@ export default function MyEdit() {
       birth: result.birth,
       phone: result.phone,
     });
+    setPrevImage(result.imageFile);
   };
 
   //회원 수정 처리
@@ -71,16 +72,36 @@ export default function MyEdit() {
     mode: "onBlur", // 실시간 검사
   });
 
+  //이미지 선택 버튼 클릭
+  const fileInputRef = useRef(null);
+
   //이미지 선택
   const changeImage = (e) => {
     const file = e.target.files[0];
-    console.log(file);
-    setSelectImage(file);
+    if (file) {
+      //파일 미리보기를 위한 객체
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        //파일 읽기가 끝났을때 자동 실행되어 선택된 이미지 저장
+        setSelectImage(reader.result);
+      };
+
+      reader.readAsDataURL(file);
+    }
   };
 
   //이미지 업로드
   const uploadImage = async () => {
-    const result = await MemberApi.uploadImage(selectImage);
+    try {
+      const result = await MemberApi.uploadImage(selectImage);
+      if (result.success) {
+        alert(result.message);
+        navigate("/user/myinfo");
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
   return (
     <MyEditComp>
@@ -90,16 +111,27 @@ export default function MyEdit() {
           <hr />
           {/* 유효성 검사 후 수정 처리 */}
           <div className="image_box">
-            <img
-              src={selectImage ? URL.createObjectURL(selectImage) : ""}
-              alt=""
-            />
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => changeImage(e)}
-            />
-            <button onClick={() => uploadImage()}> 등록하기</button>
+            <div className="image">
+              <img src={selectImage ? selectImage : prevImage} alt="" />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => changeImage(e)}
+                ref={fileInputRef}
+                style={{ display: "none" }}
+              />
+            </div>
+            <div className="image_btn">
+              <button
+                id="select_btn"
+                onClick={() => fileInputRef.current.click()}
+              >
+                프로필 변경
+              </button>
+              <button id="save_btn" onClick={() => uploadImage()}>
+                등록하기
+              </button>
+            </div>
           </div>
           <form
             className="form_container"
