@@ -6,24 +6,25 @@
   <component name="ChangeListManager">
     <list default="true" id="ce94af43-ae82-4e55-bb2b-6016175262a9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/controller/board/BoardController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/controller/board/BoardController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/controller/board/BoardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/controller/board/BoardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/controller/board/NoticeBoardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/controller/board/NoticeBoardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/mapper/board/BoardMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/mapper/board/BoardMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/mapper/board/NoticeBoardMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/service/board/BoardService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/service/board/BoardService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/service/board/NoticeBoardService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/service/board/NoticeBoardServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mappers/NoticeBoardMapper.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/.eslintcache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/0.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/0.pack" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/1.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/1.pack" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/11.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/11.pack" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/12.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/12.pack" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/14.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/14.pack" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/15.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/15.pack" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/17.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/17.pack" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/2.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/2.pack" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/4.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/4.pack" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/5.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/5.pack" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/7.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/7.pack" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/9.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/9.pack" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/index.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/index.pack" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/index.pack.old" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/index.pack.old" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Board/BoardEditForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Board/BoardEditForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Board/BoardInsertForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Board/BoardInsertForm.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Board/BoardList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Board/BoardList.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

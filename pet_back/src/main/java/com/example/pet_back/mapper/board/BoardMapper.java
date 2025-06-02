@@ -9,18 +9,18 @@ import java.util.List;
 @Mapper
 public interface BoardMapper {
 
-    //** selectList
+    //** 게시글 목록
     List<BoardDTO> selectList(@Param("category") String category);
 
-    //** selectOne
+    //** 게시글 내용
     BoardDTO selectOne(@Param("category") String category, @Param("board_id") int board_id);
 
-    //** insert
+    //** 게시글 등록
     int insertBoard(BoardDTO dto);
 
-    //** update
+    //** 게시글 수정
     int updateBoard(BoardDTO dto);
 
-    //** delete
+    //** 게시글 삭제
     int deleteBoard(int board_id);
 }

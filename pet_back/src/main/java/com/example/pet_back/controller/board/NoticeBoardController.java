@@ -2,7 +2,6 @@ package com.example.pet_back.controller.board;
 
 import com.example.pet_back.domain.board.NoticeBoardDTO;
 import com.example.pet_back.jwt.TokenProvider;
-import com.example.pet_back.service.board.NoticeBoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -6,18 +6,18 @@ import java.util.List;
 
 public interface BoardService {
 
-    //** selectList
+    //** 게시글 목록
     List<BoardDTO> selectList(String category);
 
-    //** selectOne
+    //** 게시글 내용
     BoardDTO selectOne(String category, int board_id);
 
-    //** insert
+    //** 게시글 등록
     int insertBoard(BoardDTO dto);
 
-    //** update
+    //** 게시글 수정
     int updateBoard(BoardDTO dto);
 
-    //** delete
+    //** 게시글 삭제
     int deleteBoard(int board_id);
 }

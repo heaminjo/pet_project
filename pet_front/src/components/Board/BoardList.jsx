@@ -14,11 +14,13 @@ export default function BoardList() {
   // pageNumber 상태 변수 추가
   const [paging, setPaging] = useState({
     start: 0,
-    end: 3,
+    end: 10,
+    totalElements: 0,
+    totalPages: 1,
     isPrev: false,
-    isNext: true,
-    totalElement: 0,
-    totalPages: 0
+    isNext: false,
+    start: 0,
+    end: 10
   });
   const [page, setPage] = useState(0);
 
