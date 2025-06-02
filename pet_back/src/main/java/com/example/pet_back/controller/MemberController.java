@@ -38,4 +38,11 @@ public class MemberController {
         log.info("member pwupdate 실행");
         return memberService.memberPwUpdate(userDetails, dto);
     }
+
+    //회원 탈퇴
+    @GetMapping("/withdrawal")
+    public ResponseEntity<?> memberWithdrawal(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        log.info("멤버 탈퇴 처리 실행");
+        return memberService.memberWithdrawal(userDetails.getMember().getId());
+    }
 }

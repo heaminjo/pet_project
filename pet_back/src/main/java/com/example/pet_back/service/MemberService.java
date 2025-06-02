@@ -26,4 +26,6 @@ public interface MemberService {
     public ResponseEntity<?> adminUserDetail(String email);
 
     public ResponseEntity<?> userStateUpdate(UserStateUpdateDTO dto);
+
+    public ResponseEntity<?> memberWithdrawal(Long id);
 }

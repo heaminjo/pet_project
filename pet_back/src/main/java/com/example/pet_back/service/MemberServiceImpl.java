@@ -143,7 +143,6 @@ public class MemberServiceImpl implements MemberService {
 
     //상태 수정
     @Override
-
     public ResponseEntity<?> userStateUpdate(UserStateUpdateDTO dto) {
         log.info(dto.toString());
         Member member = memberRepository.findById(dto.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -152,5 +151,15 @@ public class MemberServiceImpl implements MemberService {
         log.info(String.valueOf(member.getMemberState()));
         memberRepository.save(member);
         return ResponseEntity.ok(new ApiResponse<>(true, "회원 상태 업데이트 성공"));
+    }
+
+    //탈퇴 처리
+    @Override
+    @Transactional
+    public ResponseEntity<?> memberWithdrawal(Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다."));
+        member.setMemberState(MEMBERSTATE.WITHDRAWN);
+
+        return ResponseEntity.ok(new ApiResponse<>(true, "탈퇴가 정상적으로 처리되었습니다."));
     }
 }
