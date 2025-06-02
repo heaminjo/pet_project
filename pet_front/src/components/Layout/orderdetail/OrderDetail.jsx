@@ -2,6 +2,7 @@ import OrderDetailComp from './OrderDetailStyle';
 
 export default function OrderDetail() {
   const prodImg = process.env.PUBLIC_URL + '/images/pic1.png';
+  const orders = location.state?.orders || [];
 
   return (
     <OrderDetailComp>

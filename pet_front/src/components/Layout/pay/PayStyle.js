@@ -46,6 +46,11 @@ const PayComp = styled.div`
     height: 100px;
     font-size: large;
   }
+
+  .goodslist {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 export default PayComp;

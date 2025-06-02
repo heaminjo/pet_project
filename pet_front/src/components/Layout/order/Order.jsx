@@ -9,19 +9,15 @@ export default function Order() {
   const { goods } = location.state || {};
   const prodImage = process.env.PUBLIC_URL + '/images/pic2.png';
 
-  const pay = async () => {
-    try {
-      await GoodsApi.pay(goods); // 필요하다면 서버 호출 후
-      navigate('/pay', { state: { goods } }); // 여기서 전달
-    } catch (err) {
-      console.error('결제 실패:', err);
-    }
+  const pay = async (goods) => {
+    alert(`결제페이지 이동 성공, 상품ID:  => ${goods.goods_id}`);
+    navigate('/user/pay', { state: { goods } }); // 여기서 전달
   };
 
   const addToCart = async (goods) => {
     GoodsApi.addToCart(goods)
       .then((response) => {
-        alert(`장바구니 담기 성공 => ${response.goods_id}`);
+        alert(`장바구니 담기 성공, 상품ID:  => ${response.goods_id}`);
         console.log(response);
       })
       .catch((err) => {});
@@ -54,10 +50,10 @@ export default function Order() {
             <br />
             <hr />
             <select className='options'>
-              {/* {options.map((opt, idx) => (
-                <div key={idx} className={`{opt.disabled ? 'disabled': : ''}`} onClick={() => {}}>
+              {/* {goods.map((q, idx) => ( // 1kg, 2kg, 등 수량 추가예정
+                <div key={idx} className={`{q.disabled ? 'disabled': : ''}`} onClick={() => {}}>
                   <option>
-                    {opt.label} - {opt.price}원
+                    {q.price}원
                   </option>
                 </div>
               ))} */}
@@ -65,7 +61,7 @@ export default function Order() {
             <br />
             <br />
             <button onClick={() => addToCart(goods)}>장바구니</button>&nbsp;&nbsp;
-            <button onClick={pay}>바로구매</button>
+            <button onClick={() => pay(goods)}>바로구매</button>
           </div>
         </section>
 

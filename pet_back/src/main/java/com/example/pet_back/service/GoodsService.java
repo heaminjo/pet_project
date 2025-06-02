@@ -1,14 +1,23 @@
 package com.example.pet_back.service;
 
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
+import com.example.pet_back.domain.goods.PayRequestDTO;
+import com.example.pet_back.jwt.CustomUserDetails;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
+
+import java.io.IOException;
 
 public interface GoodsService {
 
-    // 상품리스트 출력 (메인)
+    // 상품 리스트 출력 (메인)
     ResponseEntity<?> showGoodsList();
 
-    // 상품등록
-    void registerGoods(GoodsRequestDTO goodsRequestDTO);
+    // 상품 등록
+    void registerGoods(GoodsRequestDTO goodsRequestDTO, HttpServletRequest request) throws IOException;
+
+    // 상품 결제
+    ResponseEntity<?> payGoods(CustomUserDetails userDetails, PayRequestDTO dto);
+
 
 }

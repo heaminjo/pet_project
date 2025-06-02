@@ -3,6 +3,7 @@ import instance from '../api/axiosInstance'; // 인스턴스 불러오기
 
 const KH_DOMAIN = 'http://localhost:8080';
 const GoodsApi = {
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 장 바 구 니 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 장바구니 추가
   addToCart: async (goods) => {
     //alert(`장바구니 담기 => ${goods}`);
@@ -20,14 +21,14 @@ const GoodsApi = {
       alert('장바구니 추가 중 에러가 발생했습니다.');
     }
   },
-
   // 장바구니 출력 (완료)
   cartList: async () => {
     const result = await instance.get('/cart/list');
     // alert(`GoodsApi의 cart 호출완료 => ${JSON.stringify(result.data)} `);
     return result.data;
-  }, // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  },
 
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상  품 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 상품 리스트 출력 (메인) (완료)
   showGoods: async () => {
     try {
@@ -51,17 +52,44 @@ const GoodsApi = {
       console.error('상품 등록 실패:', err);
       alert('상품 등록 중 에러가 발생했습니다.');
     }
-  }, // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  },
 
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 주  문 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 주문등록
   order: async () => {
-    const result = await instance.post(`/goods/add`);
+    const result = await instance.post(`/goods/order`);
     return result.data;
-  }, // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  },
 
+  // 주문리스트
+  orderList: async () => {
+    const result = await instance.get('/goods/orderlist');
+    return result.data;
+  },
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 결  제 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 결제
-  pay: async () => {
-    const result = await instance.post(`/goods/pay`);
+  pay: async (goods, payment) => {
+    goods.forEach((item) => {
+      console.log(`결제 시도 => ${item.goods_id}, 수량: ${item.quantity}`);
+    });
+
+    const payload = {
+      goodsList: goods,
+      payment: payment.toUpperCase(),
+    };
+    const result = await instance.post(`/goods/pay`, payload);
+    try {
+      if (result != null) {
+        alert(`${result.body}`);
+        return result;
+      } else {
+        alert(`GoodsApi.pay() null`);
+      }
+    } catch (err) {
+      console.error('오류 발생:', err);
+      alert('GoodsApi.pay() 수행중 에러발생.');
+    }
 
     return result.data;
   }, // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
