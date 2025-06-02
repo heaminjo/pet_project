@@ -56,9 +56,14 @@ const MemberApi = {
     });
     return result.data;
   },
-
+  //로그아웃
   logout: async () => {
     const result = await instance.get(`${KH_DOMAIN}/auth/logout`);
+    return result.data;
+  },
+  //회원 탈퇴
+  withdrawal: async () => {
+    const result = await instance.get(`${KH_DOMAIN}/member/withdrawal`);
     return result.data;
   },
 };

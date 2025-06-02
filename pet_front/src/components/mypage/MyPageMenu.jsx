@@ -40,6 +40,11 @@ export default function MypageMenu() {
           <p className="menu_title">내 정보</p>
           <ul>
             <li>
+              <span onClick={() => navigate("/user/mypage/myinfo")}>
+                내 정보
+              </span>
+            </li>
+            <li>
               <span onClick={() => navigate("/user/mypage/myedit")}>
                 회원 수정
               </span>

@@ -21,6 +21,7 @@ import UserList from "./page/admin/UserList";
 import UserDetail from "./page/admin/UserDetail";
 import WithDrawal from "./page/mypage/WithDrawal";
 import MyInfo from "./page/mypage/MyInfo";
+import WithDrawalComplete from "./page/main/WithDrawalComplete";
 
 //컨텍스트(useContext)
 //로그인 여부부를 전역변수로 뿌리기 위한것
@@ -45,6 +46,8 @@ function App() {
               <Route path="updatepw" element={<UpdatePw />} />
               <Route path="withdrawal" element={<WithDrawal />} />
             </Route>
+            {/* 탈퇴 성공 */}
+            <Route path="/withcomplete" element={<WithDrawalComplete />} />
             <Route path="/boardList" element={<BoardList />} />
             <Route path="/user/cart/list" element={<Cart />} />
             <Route path="/user/delivery" element={<Delivery />} />
