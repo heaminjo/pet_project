@@ -50,7 +50,7 @@ export default function Login() {
       setIsLogin(true);
       navigate("/");
     } else {
-      alert("로그인 실패");
+      alert(result.message);
     }
   };
   return (

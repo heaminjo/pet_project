@@ -56,8 +56,9 @@ export default function WithDrawal() {
   const navigate = useNavigate();
   //탈퇴 처리
   const withdrawal = async () => {
+    console.log("탈퇴 처리 실행");
     const result = await MemberApi.withdrawal();
-    if (result.access) {
+    if (result.success) {
       navigate("/withcomplete");
     }
   };

@@ -63,7 +63,8 @@ const MemberApi = {
   },
   //회원 탈퇴
   withdrawal: async () => {
-    const result = await instance.get(`${KH_DOMAIN}/member/withdrawal`);
+    console.log("처리 실행");
+    const result = await instance.get(`${KH_DOMAIN}/user/withdrawal`);
     return result.data;
   },
 };

@@ -60,7 +60,7 @@ public class AuthServiceImpl implements AuthService {
             //여기에서 DB조회가 이루어지며 권한(role)을 포함한 Authentication객체 반환
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
             log.info("Authentication => " + authentication);
-
+            
             //인증 정보 기반으로 토큰 생성
             //로그인 직후 이므로 refreshToken과  AccessToken 모두 생성해서 발급한다.
             TokenDTO tokenDTO = tokenProvider.generateTokenDto(authentication);
@@ -100,7 +100,7 @@ public class AuthServiceImpl implements AuthService {
             return new ApiResponse<TokenDTO>(true, tokenDTO, "로그인에 성공하였습니다.");
         } catch (Exception e) {
             log.info("로그인 중 에러 발생 =>" + e.getMessage());
-            return new ApiResponse<>(false, "아이디 또는 비밀번호가 일치하지 않습니다.");
+            return new ApiResponse<>(false, e.getMessage());
         }
     }
 
