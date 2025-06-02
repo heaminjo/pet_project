@@ -9,7 +9,7 @@ const MyEditComp = styled.div`
     gap: 40px;
     .edit_container {
       width: 500px;
-      margin-left: 170px;
+      margin-left: 30px;
       order: 1px solid #000;
       padding: 20px;
       border: 1px solid #eee;

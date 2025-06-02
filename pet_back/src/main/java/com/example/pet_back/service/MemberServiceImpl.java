@@ -27,6 +27,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -161,5 +162,17 @@ public class MemberServiceImpl implements MemberService {
         member.setMemberState(MEMBERSTATE.WITHDRAWN);
 
         return ResponseEntity.ok(new ApiResponse<>(true, "탈퇴가 정상적으로 처리되었습니다."));
+    }
+
+    @Override
+    public ResponseEntity<?> memberUploadImage(Long id, MultipartFile file) {
+        //값 제대로 받아왔는지 체크
+        String fileName = file.getOriginalFilename();
+        log.info("새로 등록할 이미지 파일 => {}", fileName);
+        String contentType = file.getContentType();
+        log.info("새로 등록할 이미지 타입 =>{} ", contentType);
+
+        Member member = memberRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return null;
     }
 }

@@ -9,7 +9,10 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 //회원 수정 페이지
 export default function MyEdit() {
   const navigate = useNavigate();
-  const { user } = useOutletContext();
+
+  const [selectImage, setSelectImage] = useState(""); //선택 프로필
+  const [prevImage, setPrevImage] = useState(""); //이전 프로필필
+
   //로드 시 회원 정보 불러오기
   useEffect(() => {
     getLoginUser();
@@ -67,6 +70,18 @@ export default function MyEdit() {
     resolver: yupResolver(schema),
     mode: "onBlur", // 실시간 검사
   });
+
+  //이미지 선택
+  const changeImage = (e) => {
+    const file = e.target.files[0];
+    console.log(file);
+    setSelectImage(file);
+  };
+
+  //이미지 업로드
+  const uploadImage = async () => {
+    const result = await MemberApi.uploadImage(selectImage);
+  };
   return (
     <MyEditComp>
       <div className="myedit_inner">
@@ -74,6 +89,18 @@ export default function MyEdit() {
           <h3>회원 수정</h3>
           <hr />
           {/* 유효성 검사 후 수정 처리 */}
+          <div className="image_box">
+            <img
+              src={selectImage ? URL.createObjectURL(selectImage) : ""}
+              alt=""
+            />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => changeImage(e)}
+            />
+            <button onClick={() => uploadImage()}> 등록하기</button>
+          </div>
           <form
             className="form_container"
             onSubmit={handleSubmit(() => updateUser())}

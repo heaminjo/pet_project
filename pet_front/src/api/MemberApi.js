@@ -67,5 +67,17 @@ const MemberApi = {
     const result = await instance.get(`${KH_DOMAIN}/user/withdrawal`);
     return result.data;
   },
+
+  //업로드 이미지
+  uploadImage: async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    console.log(formData);
+    const result = await instance.post(
+      `${KH_DOMAIN}/user/uploadimage`,
+      formData
+    );
+    return result.data;
+  },
 };
 export default MemberApi;

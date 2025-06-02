@@ -8,6 +8,7 @@ import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface MemberService {
     public ResponseEntity<Boolean> emailCheck(String email);
@@ -28,4 +29,6 @@ public interface MemberService {
     public ResponseEntity<?> userStateUpdate(UserStateUpdateDTO dto);
 
     public ResponseEntity<?> memberWithdrawal(Long id);
+
+    public ResponseEntity<?> memberUploadImage(Long id, MultipartFile file);
 }

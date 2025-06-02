@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -44,5 +45,13 @@ public class MemberController {
     public ResponseEntity<?> memberWithdrawal(@AuthenticationPrincipal CustomUserDetails userDetails) {
         log.info("멤버 탈퇴 처리 실행");
         return memberService.memberWithdrawal(userDetails.getMember().getId());
+    }
+
+    //프로필 이미지 변경
+    @PostMapping("/uploadimage")
+    public ResponseEntity<?> uploadImage(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("file") MultipartFile file) {
+        log.info("프로필 이미지 변경 처리 실행");
+        return memberService.memberUploadImage(userDetails.getMember().getId(), file);
+
     }
 }
