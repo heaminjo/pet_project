@@ -1,21 +1,20 @@
 import styled from "styled-components";
 
 const MyEditComp = styled.div`
-  width: 100%;
-  margin-top: 150px;
   .myedit_inner {
     width: 80%;
     margin: 0 auto;
     display: flex;
     padding: 40px 0;
     gap: 40px;
-    .main_container {
+    .edit_container {
       width: 500px;
       margin-left: 170px;
       order: 1px solid #000;
       padding: 20px;
       border: 1px solid #eee;
       box-shadow: 3px 3px 3px #ccc;
+      height: 500px;
       position: relative;
       h3 {
         padding: 10px 0;

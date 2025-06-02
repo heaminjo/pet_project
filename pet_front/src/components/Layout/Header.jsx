@@ -31,7 +31,7 @@ export default function Header() {
               </li>
               {localStorage.getItem("role") == "ROLE_USER" && (
                 <li>
-                  <span onClick={() => navigate("/user/mypage")}>
+                  <span onClick={() => navigate("/user/mypage/myinfo")}>
                     마이페이지
                   </span>
                 </li>

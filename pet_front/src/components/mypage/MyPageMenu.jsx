@@ -40,11 +40,18 @@ export default function MypageMenu() {
           <p className="menu_title">내 정보</p>
           <ul>
             <li>
-              <span onClick={() => navigate("/user/myedit")}>회원 수정</span>
+              <span onClick={() => navigate("/user/mypage/myedit")}>
+                회원 수정
+              </span>
             </li>
             <li>
-              <span onClick={() => navigate("/user/updatepw")}>
+              <span onClick={() => navigate("/user/mypage/updatepw")}>
                 비밀번호 변경
+              </span>
+            </li>
+            <li>
+              <span onClick={() => navigate("/user/mypage/withdrawal")}>
+                회원 탈퇴
               </span>
             </li>
           </ul>

@@ -2,6 +2,7 @@ package com.example.pet_back.service;
 
 
 import com.example.pet_back.constant.MEMBERSTATE;
+import com.example.pet_back.constant.ROLE;
 import com.example.pet_back.domain.admin.UserStateUpdateDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.member.MemberResponseDTO;
@@ -115,10 +116,10 @@ public class MemberServiceImpl implements MemberService {
         //키워드의 여부
         if (dto.getKeyword().isEmpty()) {
             //검색 x 전체 조회
-            page = memberRepository.findAll(pageable);
+            page = memberRepository.findAllUser(pageable);
         } else {
             //검색 타입과 키워드를 포함하여 리스트를 가져온다.
-            page = memberRepository.findSearchList(dto.getType(), "%" + dto.getKeyword() + "%", pageable);
+            page = memberRepository.findSearchList(dto.getType(), "%" + dto.getKeyword() + "%", ROLE.USER, pageable);
         }
 
 

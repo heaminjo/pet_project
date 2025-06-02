@@ -19,6 +19,8 @@ import BoardList from "./components/Board/BoardList";
 import AdminPage from "./page/admin/AdminPage";
 import UserList from "./page/admin/UserList";
 import UserDetail from "./page/admin/UserDetail";
+import WithDrawal from "./page/mypage/WithDrawal";
+import MyInfo from "./page/mypage/MyInfo";
 
 //컨텍스트(useContext)
 //로그인 여부부를 전역변수로 뿌리기 위한것
@@ -37,9 +39,12 @@ function App() {
             <Route path="/" element={<Main />} />
             <Route path="/login" element={<Login />} />
             <Route path="/join" element={<Join />} />
-            <Route path="user/mypage" element={<MyPage />} />
-            <Route path="/user/myedit" element={<MyEdit />} />
-            <Route path="/user/updatepw" element={<UpdatePw />} />
+            <Route path="user/mypage" element={<MyPage />}>
+              <Route path="myinfo" element={<MyInfo />} />
+              <Route path="myedit" element={<MyEdit />} />
+              <Route path="updatepw" element={<UpdatePw />} />
+              <Route path="withdrawal" element={<WithDrawal />} />
+            </Route>
             <Route path="/boardList" element={<BoardList />} />
             <Route path="/user/cart/list" element={<Cart />} />
             <Route path="/user/delivery" element={<Delivery />} />

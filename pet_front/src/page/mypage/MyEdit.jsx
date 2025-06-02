@@ -5,11 +5,11 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import MemberApi from "../../api/MemberApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 //회원 수정 페이지
 export default function MyEdit() {
   const navigate = useNavigate();
-
+  const { user } = useOutletContext();
   //로드 시 회원 정보 불러오기
   useEffect(() => {
     getLoginUser();
@@ -70,8 +70,7 @@ export default function MyEdit() {
   return (
     <MyEditComp>
       <div className="myedit_inner">
-        <MypageMenu />
-        <div className="main_container">
+        <div className="edit_container">
           <h3>회원 수정</h3>
           <hr />
           {/* 유효성 검사 후 수정 처리 */}
