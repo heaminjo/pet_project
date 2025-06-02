@@ -2,6 +2,7 @@ package com.example.pet_back.controller;
 
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.domain.goods.PayRequestDTO;
+import com.example.pet_back.entity.OrderDetail;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.service.GoodsService;
 import com.example.pet_back.service.MemberService;
@@ -22,6 +23,13 @@ public class GoodsController {
 
     private final GoodsService goodsService;
     private final MemberService memberService;
+
+    // 상품 상세정보
+    @GetMapping("/detail")
+    public ResponseEntity<?> selectOne(Long goods_id) {
+        log.info("** GoodsController => selectOne() 실행됨 **");
+        return goodsService.selectOne(goods_id);
+    }
 
     // 상품 리스트 출력 (메인)
     @GetMapping("/list")
@@ -49,11 +57,19 @@ public class GoodsController {
         return ResponseEntity.status(HttpStatus.OK).body("성공");
     }
 
+    // 결제 메서드
     @PostMapping("/pay")
     public ResponseEntity<?> payGoods(@AuthenticationPrincipal CustomUserDetails userDetails, //
                                       @RequestBody PayRequestDTO dto) {
         log.info("** GoodsController => payGoods() 실행됨 **");
         return goodsService.payGoods(userDetails, dto);
+    }
+
+    // 주문 리스트
+    @GetMapping("/orderlist")
+    public ResponseEntity<?> orderList(@AuthenticationPrincipal CustomUserDetails userDetails, //
+                                       @RequestBody OrderDetail orderDetail) {
+        return goodsService.orderList(userDetails, orderDetail);
     }
 
 

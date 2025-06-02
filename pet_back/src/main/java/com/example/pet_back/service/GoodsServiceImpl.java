@@ -3,16 +3,10 @@ package com.example.pet_back.service;
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.domain.goods.GoodsResponseDTO;
 import com.example.pet_back.domain.goods.PayRequestDTO;
-import com.example.pet_back.entity.Delivery;
-import com.example.pet_back.entity.Goods;
-import com.example.pet_back.entity.Member;
-import com.example.pet_back.entity.Orders;
+import com.example.pet_back.entity.*;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.mapper.GoodsMapper;
-import com.example.pet_back.repository.DeliveryRepository;
-import com.example.pet_back.repository.GoodsRepository;
-import com.example.pet_back.repository.MemberRepository;
-import com.example.pet_back.repository.OrderRepository;
+import com.example.pet_back.repository.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +21,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,9 +32,19 @@ public class GoodsServiceImpl implements GoodsService {
 
     private final GoodsRepository goodsRepository;
     private final OrderRepository orderRepository;
+    private final OrderDetailRepository orderDetailRepository;
     private final DeliveryRepository deliveryRepository;
     private final MemberRepository memberRepository;
     private final GoodsMapper goodsMapper;
+
+    // 상품상세정보
+    @Override
+    public ResponseEntity<?> selectOne(Long goods_id) {
+        log.info("** GoodsServiceImpl 실행됨 **");
+        Goods goods = goodsRepository.findById(goods_id).get();
+        return ResponseEntity.status(HttpStatus.OK).body(goods);
+    }
+
 
     // 상품리스트 출력
     @Override
@@ -107,7 +112,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     }
 
-    // 결제
+    // 결제 : Delivery > Orders > Order_Detail 테이블 save
     @Override
     public ResponseEntity<?> payGoods(CustomUserDetails userDetails, //
                                       PayRequestDTO dto) {
@@ -126,43 +131,58 @@ public class GoodsServiceImpl implements GoodsService {
         System.out.println("member.id = " + member.getId());
 
         System.out.println("GoodsServiceImpl --------------------------------- 오류확인용 -----------------");
-        // 3. Delivery 테이블에 저장 (delivery_id 생성)
+
+        // 3. Delivery 테이블에 저장 (delivery_id 생성) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         Delivery delivery = Delivery.builder()
                 .member(member).recipient(member.getName()).recipient_phone(member.getPhone()).build();
         Delivery save = deliveryRepository.save(delivery);
         System.out.println("GoodsServiceImpl delivery_id => " + delivery.getDelivery_id());
 
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 따로 메서드로 뺄 것인가 ?? (재사용에 따라서 다름)
-        // 4. Orders 테이블에 저장
+        // 4. Orders 테이블에 저장 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         int totalQuantity = dto.getGoodsList().stream()
                 .mapToInt(GoodsRequestDTO::getQuantity).sum(); // 결제페이지로 넘어온 총 수량
         int totalPrice = dto.getGoodsList().stream()
                 .mapToInt(GoodsRequestDTO::getPrice).sum(); // 결제페이지로 넘어온 총 가격
-        Orders orders = Orders.builder().delivery(save)
+        Orders order = Orders.builder().delivery(save)
                 .member(member).total_quantity(totalQuantity).total_price(totalPrice)
                 .payment(dto.getPayment()).build();
-        Orders result = orderRepository.save(orders);
+        Orders orders = orderRepository.save(order);
 
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        // 5. Order_Detail 테이블에 저장
+        // 5. Order_Detail 테이블에 저장 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        List<GoodsRequestDTO> requestGoodsList = dto.getGoodsList();
+        List<OrderDetail> orderDetailList = new ArrayList<>() >();
+        for (GoodsRequestDTO requestDTO : requestGoodsList) {
+            // Goods 엔티티 가져오기
+            Goods goods = goodsList.stream()
+                    .filter(g -> g.getGoods_id().equals(requestDTO.getGoods_id()))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("상품이 존재하지 않습니다."));
 
+            OrderDetail orderDetail = OrderDetail.builder()
+                    .goods(goods)
+                    .orders(orders)
+                    .goods_quantity(requestDTO.getQuantity())
+                    .goods_price(requestDTO.getPrice())
+                    .build();
+            orderDetailList.add(orderDetailRepository.save(orderDetail));
 
+        }
+        // 장바구니에서 삭제하는 추가.
         System.out.println("GoodsServiceImpl 의 payGoods() 끝");
-
-
-        return ResponseEntity.status(HttpStatus.OK).body(result);
+        return ResponseEntity.status(HttpStatus.OK).body(orderDetailList); // orderDetail컴포넌트로 이동
     }//
 
+    // 주문내역(List) 출력하기
+    @Override
+    public ResponseEntity<?> orderList(CustomUserDetails userDetails, OrderDetail orderDetail) {
+        log.info("** GoodsServiceImpl orderList 실행됨 **");
+        Member member = memberRepository.findById( //
+                        userDetails.getMember().getId()) //
+                .orElseThrow(() //
+                        -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+        List<OrderDetail> list = orderDetailRepository.findAllByUserId(member.getId());
 
-//    // 주문 등록
-//    public ResponseEntity<?> orderGoods() {
-//        // 시나리오
-//        // <Cart /> 또는 <GoodsList /> 에서 클릭시 <Order /> 페이지로 넘어옴 (주문페이지)
-//        // <Order /> 페이지에서 '결제' 클릭 -> /user/pay 진입 -> <Pay />
-//        // <Pay /> 에서 결제를 모두 완료하면 팝업 띄워준 후, <OrderDetail /> 리스트에 추가됨.
-//        // (이때 Orders 테이블에 저장)
-//        return ResponseEntity.status(HttpStatus.OK).body("repo결과");
-//    }
+    }
 
 
 }

@@ -25,11 +25,14 @@ export default function Pay() {
 
   // 결제 로직 수행(BackEnd)
   const pay = async (goods, payment) => {
-    // const userName = localStorage.getItem('loginName');
-    GoodsApi.pay(goods, payment)
+    const payload = {
+      goodsList: goods,
+      payment: payment,
+    };
+    GoodsApi.pay(payload)
       .then((response) => {
         alert('GoodsApi.pay() 성공');
-        navigate('/user/orderdetail', { state: { orders: response } });
+        navigate('/user/orderdetail', { state: { orderList: response } });
       })
       .catch((err) => {
         alert('GoodsApi.pay() 에러');

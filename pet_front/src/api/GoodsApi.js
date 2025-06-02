@@ -54,6 +54,11 @@ const GoodsApi = {
     }
   },
 
+  // 상품상세정보
+  goodsDetail: async (goods_id) => {
+
+  },
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 주  문 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 주문등록
   order: async () => {
@@ -69,20 +74,14 @@ const GoodsApi = {
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 결  제 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 결제
-  pay: async (goods, payment) => {
-    goods.forEach((item) => {
-      console.log(`결제 시도 => ${item.goods_id}, 수량: ${item.quantity}`);
+  pay: async (payload) => {
+    payload.goodsList.forEach((item) => {
+      console.log(`결제 시도 => 상품 ID: ${item.goods_id}, 상품 수량: ${item.quantity}`);
     });
-
-    const payload = {
-      goodsList: goods,
-      payment: payment.toUpperCase(),
-    };
     const result = await instance.post(`/goods/pay`, payload);
     try {
       if (result != null) {
-        alert(`${result.body}`);
-        return result;
+        return result.data;
       } else {
         alert(`GoodsApi.pay() null`);
       }

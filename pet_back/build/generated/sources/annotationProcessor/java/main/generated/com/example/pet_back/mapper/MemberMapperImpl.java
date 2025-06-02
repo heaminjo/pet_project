@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-05-30T12:50:04+0900",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.13 (Amazon.com Inc.)"
+    date = "2025-06-02T15:02:18+0900",
+    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.11 (Oracle Corporation)"
 )
 @Component
 public class MemberMapperImpl implements MemberMapper {
@@ -67,6 +67,7 @@ public class MemberMapperImpl implements MemberMapper {
 
         userDetailResponseDTO.setGrade( MemberMapper.gradeToString( member.getGrade() ) );
         userDetailResponseDTO.setMemberState( MemberMapper.gradeToString( member.getMemberState() ) );
+        userDetailResponseDTO.setId( member.getId() );
         userDetailResponseDTO.setEmail( member.getEmail() );
         userDetailResponseDTO.setName( member.getName() );
         userDetailResponseDTO.setPhone( member.getPhone() );
