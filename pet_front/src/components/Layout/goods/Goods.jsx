@@ -47,7 +47,7 @@ export default function Goods() {
                     <td>상품이미지</td>
                     <td>
                       <input type='text' value={goodsImg} readOnly />
-                      {/* <button onClick={() => {}}>등록</button> */}
+                      <button onClick={() => {}}>등록</button>
                     </td>
                   </tr>
                   <tr>

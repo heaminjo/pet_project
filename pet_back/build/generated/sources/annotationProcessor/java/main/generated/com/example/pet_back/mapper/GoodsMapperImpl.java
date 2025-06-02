@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-05-29T14:41:41+0900",
+    date = "2025-06-02T15:02:18+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.11 (Oracle Corporation)"
 )
 @Component
@@ -33,6 +33,7 @@ public class GoodsMapperImpl implements GoodsMapper {
         goods.image_file( dto.getImage_file() );
         goods.quantity( dto.getQuantity() );
         goods.reg_date( dto.getReg_date() );
+        goods.upload_img( dto.getUpload_img() );
 
         return goods.build();
     }

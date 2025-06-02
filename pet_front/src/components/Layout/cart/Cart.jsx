@@ -8,6 +8,7 @@ export default function Cart() {
   const cartImage1 = process.env.PUBLIC_URL + '/images/pic1.png';
   const seller = process.env.PUBLIC_URL + '/images/avatar.png';
   const [goods, setGoods] = useState([]);
+  const [checked, setChecked] = useState({}); // key: 인덱스 , value: 체크유무
 
   const cart = async () => {
     // const userName = localStorage.getItem('loginName');
@@ -16,6 +17,25 @@ export default function Cart() {
         setGoods(response);
       })
       .catch((err) => {});
+  };
+
+  // 체크박스의 선택 상태를 토글
+  const handleCheckboxChange = (index) => {
+    setChecked((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
+  };
+
+  const handleBuyClick = () => {
+    const isAnyChecked = Object.values(checked).some((value) => value);
+    if (!isAnyChecked) {
+      alert('최소 한 개 이상의 상품을 선택해 주세요!');
+      return;
+    }
+    // 선택된 상품 넘기기
+    const selectedGoods = goods.filter((_, idx) => checked[idx]);
+    navigate('/user/pay', { state: { goods: selectedGoods } });
   };
 
   useEffect(() => {
@@ -33,7 +53,10 @@ export default function Cart() {
             {goods.map((item, index) => (
               <div className='prod' key={index}>
                 <div className='prodleft'>
-                  <img src={cartImage1} alt='상품1이미지' className='cartimage' onClick={() => navigate('/order', { state: { goods: item } })} />
+                  <label>
+                    <input type='checkbox' checked={checked[index] || false} onChange={() => handleCheckboxChange(index)} required />
+                  </label>
+                  <img src={cartImage1} alt='상품1이미지' className='cartimage' onClick={() => navigate('/user/order', { state: { goods: item } })} />
                 </div>
                 <div className='prodright'>
                   <div>
@@ -78,8 +101,11 @@ export default function Cart() {
                 </tr>
               </tbody>
             </table>
-            <button className='buy' onClick={() => navigate('/pay')}>
+            <button className='buy' onClick={handleBuyClick}>
               구매하기
+            </button>
+            <button className='buy' onClick={() => navigate('/')}>
+              취소
             </button>
           </div>
         </div>
