@@ -1,6 +1,7 @@
 package com.example.pet_back.service;
 
 
+import com.example.pet_back.config.FileUploadProperties;
 import com.example.pet_back.constant.MEMBERSTATE;
 import com.example.pet_back.constant.ROLE;
 import com.example.pet_back.domain.admin.UserStateUpdateDTO;
@@ -30,8 +31,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 
 @Slf4j
@@ -44,6 +48,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberMapper mapper;
     private final AddressRepository addressRepository;
     private final PasswordEncoder passwordEncoder;
+    private final FileUploadProperties fileUploadProperties;
 
     //이메일 중복 검사
     @Override
@@ -166,13 +171,39 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public ResponseEntity<?> memberUploadImage(Long id, MultipartFile file) {
-        //값 제대로 받아왔는지 체크
-        String fileName = file.getOriginalFilename();
-        log.info("새로 등록할 이미지 파일 => {}", fileName);
-        String contentType = file.getContentType();
-        log.info("새로 등록할 이미지 타입 =>{} ", contentType);
+        //비어있는지 확인
+        if (file.isEmpty()) return null;
 
-        Member member = memberRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return null;
+        //값 제대로 받아왔는지 체크
+        String originalName = file.getOriginalFilename(); //apple.png
+        String contentType = file.getContentType();  //image.png
+        String extension = originalName.substring(originalName.lastIndexOf("."));// .pag
+        String uuid = UUID.randomUUID().toString(); //고유한 식별자를 랜덤으로 생성
+        String saveFileName = uuid + extension; //저장할 파일 변수이름 -> 고유식별자.png
+        String saveDirPath = fileUploadProperties.getPath(); // C:/uploads
+        String savePath = saveDirPath + saveFileName;//C:/uploads/고유 식별자.png
+        log.info("새로 등록할 이미지 파일 => {}", originalName + "\n" + extension + "\n" + uuid + "\n" + saveFileName + "\n" + savePath);
+
+        try {
+            File saveDir = new File(saveDirPath); //저장할 디렉토리 생성(C:/uploads)
+            //만얃 C:/uploads 이 경로가 없다면 디렉토리를 생성한다.
+            if (!saveDir.exists()) {
+                saveDir.mkdir();
+            }
+            //실제 파일 저장 (multipart파일을 File 객체로 복사)
+            file.transferTo(new File(savePath));
+
+            //DB에 저장
+            Member member = memberRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            member.setImageFile("/uploads/" + saveFileName);
+            memberRepository.save(member);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        String imageURL = fileUploadProperties.getUrl() + saveFileName;
+        return ResponseEntity.ok(new ApiResponse<String>(true, imageURL, "이미지 변경 성공"));
+
     }
 }
