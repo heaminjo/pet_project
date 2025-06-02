@@ -13,14 +13,14 @@ export default function BoardList() {
 
   // pageNumber 상태 변수 추가
   const [paging, setPaging] = useState({
-    start: 0,
-    end: 10,
+    page: 0,
+    size: 3,
     totalElements: 0,
     totalPages: 1,
     isPrev: false,
-    isNext: false,
+    isNext: true,
     start: 0,
-    end: 10
+    end: 1,
   });
   const [page, setPage] = useState(0);
 
@@ -40,14 +40,31 @@ export default function BoardList() {
     free: "자유게시판"
   };
 
+  
+
   useEffect(() => {
     // 카테고리가 없으면 기본 board로 설정
     const apiUrl = categoryApiMap[category] || "/board/boardList/free";
     axios
-      .get(apiUrl)
-      .then((response) => setListData(response.data))
+      .get(apiUrl, { params: { page, size: paging.size } })
+      .then((response) => {
+        setListData(response.data.content || []);
+        let temp = Math.floor(page / 3) * 3;
+        setPaging(prev => ({ 
+          ...prev,
+          page: response.data.page,
+          size: response.data.size,
+          totalElements: response.data.totalElements,
+          totalPages: response.data.totalPages,
+          isPrev: response.data.prev,
+          isNext: response.data.next,
+          start: temp,
+          end: Math.min(temp +3, response.data.totalPages),
+        }));
+      })
       .catch((error) => setError(error));
-  }, [category]);
+      // eslint-disable-next-line
+  }, [category, page]);
 
   if (error) {
     // 서버 에러 코드에 따라 메시지 분기
@@ -62,7 +79,7 @@ export default function BoardList() {
       <div className="boardListContainer">
         <div className="boardListMenuContainer">
           <ul className="boardListMenu">
-            {/* 클릭하면 해당 카테고리로 이동하게 코딩 */}
+            {/* 클릭하면 해당 카테고리로 이동 */}
             <li onClick={()=>navigate("/boardList/notice")}>공지사항</li>
             <li onClick={()=>navigate("/boardList/community")}>커뮤니티</li>
             <li onClick={()=>navigate("/boardList/faq")}>Q&A</li>
@@ -95,7 +112,7 @@ export default function BoardList() {
             ) : (
             listData.map((b, index) => (
               <tr key={index}>
-                <td className="center">{listData.length - index}</td>
+                <td className="center">{paging.totalElements -(paging.page * paging.size) - index}</td>
                 <td
                   className="center"
                   onClick={() => navigate(`/boardDetail/${category}/${b.board_id}`)}
@@ -128,6 +145,9 @@ export default function BoardList() {
             </tr>
           </tbody>
         </table>
+        <div className="pageNumber">
+          <PageNumber page={page} setPage={setPage} paging={paging} />
+        </div>  
       </div>
     </BoardListStyle>
   );

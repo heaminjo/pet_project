@@ -1,13 +1,14 @@
 package com.example.pet_back.service.board;
 
 import com.example.pet_back.domain.board.BoardDTO;
-
-import java.util.List;
+import com.example.pet_back.domain.page.PageRequestDTO;
+import com.example.pet_back.domain.page.PageResponseDTO;
 
 public interface BoardService {
 
     //** 게시글 목록
-    List<BoardDTO> selectList(String category);
+    //List<BoardDTO> selectList(String category);
+    PageResponseDTO<BoardDTO> selectList(String category, PageRequestDTO pageRequestDTO);
 
     //** 게시글 내용
     BoardDTO selectOne(String category, int board_id);

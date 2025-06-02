@@ -4,11 +4,16 @@
 <mapper namespace="com.example.pet_back.mapper.board.BoardMapper">
 
     <!-- ** selectList -->
-    <select id="selectList" resultType="com.example.pet_back.domain.board.BoardDTO">
+    <select id="selectListPaging" resultType="com.example.pet_back.domain.board.BoardDTO">
         select b.board_id, b.title, m.name, b.views, b.reg_date
         from board b left join member m on b.member_id=m.member_id
         where category=#{category}
         order by b.board_id desc
+        limit #{size} offset #{offset}
+    </select>
+
+    <select id="countByCategory" resultType="long">
+        select count(*) from board where category=#{category}
     </select>
 
     <!-- ** selectOne -->

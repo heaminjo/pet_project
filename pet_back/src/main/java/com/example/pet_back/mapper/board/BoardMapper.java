@@ -10,7 +10,10 @@ import java.util.List;
 public interface BoardMapper {
 
     //** 게시글 목록
-    List<BoardDTO> selectList(@Param("category") String category);
+    //List<BoardDTO> selectList(@Param("category") String category);
+    List<BoardDTO> selectListPaging(@Param("category") String category, @Param("size") int size, @Param("offset") int offset);
+
+    long countByCategory(@Param("category") String category);
 
     //** 게시글 내용
     BoardDTO selectOne(@Param("category") String category, @Param("board_id") int board_id);

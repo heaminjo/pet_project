@@ -1,15 +1,14 @@
 package com.example.pet_back.controller.board;
 
 import com.example.pet_back.domain.board.BoardDTO;
+import com.example.pet_back.domain.page.PageRequestDTO;
+import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.jwt.TokenProvider;
 import com.example.pet_back.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/board")
@@ -36,8 +35,11 @@ public class BoardController {
     public ResponseEntity<?> selectList(@PathVariable("category") String category,
                                         @RequestParam(value = "page", defaultValue = "0") int page,
                                         @RequestParam(value = "size", defaultValue = "3") int size) {
-        List<BoardDTO> list = boardService.selectList(category);
-        return ResponseEntity.ok(list != null ? list : new ArrayList<>());
+        //List<BoardDTO> list = boardService.selectList(category);
+        //return ResponseEntity.ok(list != null ? list : new ArrayList<>());
+        PageRequestDTO pageRequestDTO = new PageRequestDTO(page, size, null, null, null);
+        PageResponseDTO<BoardDTO> responseDTO = boardService.selectList(category, pageRequestDTO);
+        return ResponseEntity.ok(responseDTO);
     } //selectList()
 
 
