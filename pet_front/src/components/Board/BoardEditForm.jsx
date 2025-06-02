@@ -4,11 +4,11 @@ import axios from "axios";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 
 export default function BoardEditForm() {
-  const { board_id } = useParams(); // URL에서 게시글 id 추출
+  const { category, board_id } = useParams(); // URL에서 게시글 id 추출
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const location = useLocation();
-  const [category, setCategory] = useState(location.state?.category || "board"); // 카테고리 기본값 설정
+   // 카테고리 기본값 설정
   const navigate = useNavigate();
 
   // 기존 게시글 데이터 불러오기 (수정 폼 진입 시 1회)
@@ -19,7 +19,6 @@ export default function BoardEditForm() {
       .then((response) => {
         setTitle(response.data.title);
         setContent(response.data.content);
-        setCategory(response.data.category || category); // 카테고리 설정
       })
       .catch((error) => {
         alert("게시글 정보를 불러오지 못했습니다.");
@@ -75,14 +74,14 @@ export default function BoardEditForm() {
               name="category"
               className="categorySelect"
               value={category}
-              onChange={e => setCategory(e.target.value)}
+              
               required
               disabled
             >
               <option value="notice">공지사항</option>
               <option value="community">커뮤니티</option>
               <option value="faq">FAQ</option>
-              <option value="board">게시판</option>
+              <option value="free">게시판</option>
             </select>
           </div>
           <div className="contentRow">

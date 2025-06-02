@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BoardListStyle from "./BoardListStyle";
 import { useNavigate, useParams } from "react-router-dom";
+import PageNumber from "../util/PageNumber";
 
 
 export default function BoardList() {
@@ -9,6 +10,17 @@ export default function BoardList() {
   const [listData, setListData] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  // pageNumber 상태 변수 추가
+  const [paging, setPaging] = useState({
+    start: 0,
+    end: 3,
+    isPrev: false,
+    isNext: true,
+    totalElement: 0,
+    totalPages: 0
+  });
+  const [page, setPage] = useState(0);
 
   // 카테고리별 API 엔드포인트 매핑
   const categoryApiMap = {

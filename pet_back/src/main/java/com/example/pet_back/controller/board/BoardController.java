@@ -33,8 +33,9 @@ public class BoardController {
 
     //** BoardList (게시글 목록)
     @GetMapping("/boardList/{category}")
-    public ResponseEntity<?> selectList(@PathVariable("category") String category) {
-        //return service.selectList();
+    public ResponseEntity<?> selectList(@PathVariable("category") String category,
+                                        @RequestParam(value = "page", defaultValue = "0") int page,
+                                        @RequestParam(value = "size", defaultValue = "3") int size) {
         List<BoardDTO> list = boardService.selectList(category);
         return ResponseEntity.ok(list != null ? list : new ArrayList<>());
     } //selectList()
@@ -56,7 +57,7 @@ public class BoardController {
 
 
     //** BoardInsert 게시글 등록
-    @PostMapping("/boardinsert/{category}")
+    @PostMapping("/insertBoard/{category}")
     public ResponseEntity<?> insertBoard(@PathVariable("category") String category,
                                          @RequestBody BoardDTO dto,
                                          @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {

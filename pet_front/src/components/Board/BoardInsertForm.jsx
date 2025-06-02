@@ -13,27 +13,9 @@ export default function BoardInsertForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let url = "";
-    let data = {title, content};
-
-    // 선택한 카테고리에 따라 URL을 설정
-    switch (category) {
-      case "notice":
-        url = `/board/boardinsert/${category}`;
-        break;
-      case "community":
-        url = `/board/boardinsert/${category}`;
-        break;
-      case "faq":
-        url = `/board/boardinsert/${category}`;
-        break;
-      case "board":
-        url = "/board/boardinsert";
-        break;
-      default:
-        alert("잘못된 카테고리입니다.");
-        return;
-    }
+    
+    let data = {title, content, category};
+    let url = `/board/insertBoard/${category}`;
 
     try {
       await axios.post(url, data,
@@ -49,7 +31,7 @@ export default function BoardInsertForm() {
       if(category==="notice") navigate(`/boardList/${category}`); 
       else if(category==="community") navigate(`/boardList/${category}`);
       else if(category==="faq") navigate(`/boardList/${category}`);
-      else if(category==="board") navigate("/boardList");
+      else if(category==="board") navigate(`/boardList/${category}`);
     } catch (err) {
       alert("게시글 등록에 실패했습니다.");
     }
