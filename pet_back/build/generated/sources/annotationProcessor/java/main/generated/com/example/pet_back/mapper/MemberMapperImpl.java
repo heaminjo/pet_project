@@ -1,5 +1,6 @@
 package com.example.pet_back.mapper;
 
+import com.example.pet_back.domain.admin.UserDetailResponseDTO;
 import com.example.pet_back.domain.member.MemberRequestDTO;
 import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.entity.Member;
@@ -9,8 +10,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-05-29T16:35:15+0900",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.11 (Oracle Corporation)"
+    date = "2025-05-30T12:50:04+0900",
+    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.13 (Amazon.com Inc.)"
 )
 @Component
 public class MemberMapperImpl implements MemberMapper {
@@ -42,6 +43,7 @@ public class MemberMapperImpl implements MemberMapper {
 
         memberResponseDTO.grade( MemberMapper.gradeToString( member.getGrade() ) );
         memberResponseDTO.memberState( MemberMapper.gradeToString( member.getMemberState() ) );
+        memberResponseDTO.id( member.getId() );
         memberResponseDTO.email( member.getEmail() );
         memberResponseDTO.name( member.getName() );
         memberResponseDTO.phone( member.getPhone() );
@@ -50,8 +52,31 @@ public class MemberMapperImpl implements MemberMapper {
         if ( member.getRegDate() != null ) {
             memberResponseDTO.regDate( DateTimeFormatter.ISO_LOCAL_DATE_TIME.format( member.getRegDate() ) );
         }
-        memberResponseDTO.image_file( member.getImage_file() );
+        memberResponseDTO.imageFile( member.getImageFile() );
 
         return memberResponseDTO.build();
+    }
+
+    @Override
+    public UserDetailResponseDTO memberToUserDetail(Member member) {
+        if ( member == null ) {
+            return null;
+        }
+
+        UserDetailResponseDTO userDetailResponseDTO = new UserDetailResponseDTO();
+
+        userDetailResponseDTO.setGrade( MemberMapper.gradeToString( member.getGrade() ) );
+        userDetailResponseDTO.setMemberState( MemberMapper.gradeToString( member.getMemberState() ) );
+        userDetailResponseDTO.setEmail( member.getEmail() );
+        userDetailResponseDTO.setName( member.getName() );
+        userDetailResponseDTO.setPhone( member.getPhone() );
+        userDetailResponseDTO.setBirth( member.getBirth() );
+        userDetailResponseDTO.setRegDate( member.getRegDate() );
+        if ( member.getRole() != null ) {
+            userDetailResponseDTO.setRole( member.getRole().name() );
+        }
+        userDetailResponseDTO.setPoint( member.getPoint() );
+
+        return userDetailResponseDTO;
     }
 }

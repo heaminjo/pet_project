@@ -1,5 +1,6 @@
 package com.example.pet_back.controller;
 
+import com.example.pet_back.domain.admin.UserStateUpdateDTO;
 import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
@@ -20,19 +21,26 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
     private final MemberService memberService;
 
+    //관리자 조회
     @GetMapping("/detail")
     public ResponseEntity<?> memberDetail(@AuthenticationPrincipal CustomUserDetails userDetails) {
 
         return memberService.selectOne(userDetails);
     }
 
-//    @GetMapping("/list/all")
-//    public ResponseEntity<List<MemberResponseDTO>> memberList() {
-//        return ResponseEntity.ok(memberService.memberList());
-//    }
-
+    //회원 목록 검색 리스트
     @PostMapping("/list/search")
     public ResponseEntity<PageResponseDTO<MemberResponseDTO>> memberSearchList(@RequestBody PageRequestDTO dto) {
         return ResponseEntity.ok(memberService.memberSearchList(dto));
+    }
+
+    @GetMapping("/user/detail")
+    public ResponseEntity<?> adminUserDetail(@RequestParam("email") String email) {
+        return memberService.adminUserDetail(email);
+    }
+
+    @PostMapping("/user/state/update")
+    public ResponseEntity<?> userStateUpdate(@RequestBody UserStateUpdateDTO dto) {
+        return memberService.userStateUpdate(dto);
     }
 }

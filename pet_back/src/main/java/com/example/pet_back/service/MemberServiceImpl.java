@@ -1,6 +1,8 @@
 package com.example.pet_back.service;
 
 
+import com.example.pet_back.constant.MEMBERSTATE;
+import com.example.pet_back.domain.admin.UserStateUpdateDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.domain.member.UpdateMemberRequestDTO;
@@ -33,6 +35,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
@@ -96,15 +99,6 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
-    //회원 전체 리스트
-//    @Override
-//    public List<MemberResponseDTO> memberList(PageRequestDTO dto) {
-//        List<Member> list = memberRepository.findAll();
-//        List<MemberResponseDTO> responseList = list.stream().map(mapper::toDto).toList();
-//
-//        return responseList;
-//    }
-
     //회원 검색 리스트
     @Override
     public PageResponseDTO<MemberResponseDTO> memberSearchList(PageRequestDTO dto) {
@@ -132,8 +126,30 @@ public class MemberServiceImpl implements MemberService {
         List<MemberResponseDTO> responseList = page.stream().map(mapper::toDto).toList();
 
         //반환할 ResponseDTO에 데이터들 저장
-        PageResponseDTO<MemberResponseDTO> response = new PageResponseDTO<>(responseList, dto.getPage(), dto.getSize(), page.getTotalElements(), page.getTotalPages(), page.hasPrevious()
-                , page.hasNext());
+        PageResponseDTO<MemberResponseDTO> response = new PageResponseDTO<>(responseList, dto.getPage(), dto.getSize(), page.getTotalElements(), page.getTotalPages(), page.hasNext(), page.hasPrevious()
+        );
         return response;
+    }
+
+    //관리자의 회원 조회
+    @Override
+    public ResponseEntity<?> adminUserDetail(String email) {
+        //회원 존재 확인
+        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return ResponseEntity.ok(mapper.memberToUserDetail(member));
+    }
+
+    //상태 수정
+    @Override
+
+    public ResponseEntity<?> userStateUpdate(UserStateUpdateDTO dto) {
+        log.info(dto.toString());
+        Member member = memberRepository.findById(dto.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        MEMBERSTATE memberstate = MEMBERSTATE.valueOf(dto.getState());
+        member.setMemberState(memberstate);
+        log.info(String.valueOf(member.getMemberState()));
+        memberRepository.save(member);
+        return ResponseEntity.ok(new ApiResponse<>(true, "회원 상태 업데이트 성공"));
     }
 }

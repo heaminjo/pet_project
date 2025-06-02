@@ -2,6 +2,7 @@ package com.example.pet_back.mapper;
 
 import com.example.pet_back.constant.GRADE;
 import com.example.pet_back.constant.MEMBERSTATE;
+import com.example.pet_back.domain.admin.UserDetailResponseDTO;
 import com.example.pet_back.domain.member.MemberRequestDTO;
 import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.entity.Member;
@@ -17,13 +18,9 @@ import java.time.format.DateTimeFormatter;
 public interface MemberMapper {
     //dto -> entity
     public Member toEntity(MemberRequestDTO dto);
+
     //entity -> dto
-
-    @Mapping(source = "grade", target = "grade", qualifiedByName = "gradeToString")
-    @Mapping(source = "memberState", target = "memberState", qualifiedByName = "stateToString")
-    public MemberResponseDTO toDto(Member member);
-
-    //grade 한글로
+//grade 한글로
     @Named("gradeToString")
     public static String gradeToString(GRADE grade) {
         return grade.getGradeName();
@@ -39,5 +36,13 @@ public interface MemberMapper {
     public static String regDateToString(LocalDateTime regDate) {
         return regDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
+
+    @Mapping(source = "grade", target = "grade", qualifiedByName = "gradeToString")
+    @Mapping(source = "memberState", target = "memberState", qualifiedByName = "stateToString")
+    public MemberResponseDTO toDto(Member member);
+
+    @Mapping(source = "grade", target = "grade", qualifiedByName = "gradeToString")
+    @Mapping(source = "memberState", target = "memberState", qualifiedByName = "stateToString")
+    public UserDetailResponseDTO memberToUserDetail(Member member);
 
 }

@@ -62,7 +62,7 @@ const UserListComp = styled.div`
         }
       }
       .list_view {
-        height: 330px;
+        height: 380px;
         table {
           width: 880px;
           border-collapse: collapse;
@@ -81,6 +81,9 @@ const UserListComp = styled.div`
               padding: 0 5px;
               font-size: 14px;
             }
+            #state_col {
+              font-weight: bold;
+            }
           }
           .user_present:hover {
             background-color: #eee;
@@ -90,16 +93,6 @@ const UserListComp = styled.div`
             border: 1px solid #eee;
             text-align: center;
           }
-        }
-      }
-      .curr_page {
-        display: flex;
-        gap: 10px;
-        justify-content: center;
-        align-items: center;
-        height: 40px;
-        span {
-          cursor: pointer;
         }
       }
     }

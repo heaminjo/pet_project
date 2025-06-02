@@ -1,8 +1,38 @@
 import { useNavigate } from "react-router-dom";
-import MyPageMenuComp from "./MyPageMenuStyle";
+import styled from "styled-components";
 
 export default function MypageMenu() {
   const navigate = useNavigate();
+  const MyPageMenuComp = styled.div`
+    .side_menu {
+      width: 200px;
+      padding: 15px 10px;
+      background-color: rgb(255, 251, 195);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 3px 3px 3px #ccc;
+      .sub_menu {
+        background-color: #fff;
+        .menu_title {
+          background-color: #f8e776;
+          font-size: 17px;
+          font-weight: bold;
+          padding: 5px;
+          color: rgb(86, 82, 57);
+        }
+        ul {
+          padding: 10px;
+          li {
+            span {
+              font-size: 14px;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+  `;
   return (
     <MyPageMenuComp>
       <div className="side_menu">
@@ -26,7 +56,7 @@ export default function MypageMenu() {
               <span>찜</span>
             </li>
             <li>
-              <span>장바구니</span>
+              <span onClick={() => navigate("/user/cart/list")}>장바구니</span>
             </li>
             <li>
               <span>최근 본 목록</span>

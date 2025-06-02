@@ -23,4 +23,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             "(:type = 'email' AND m.email LIKE :keyword)")
     Page<Member> findSearchList(@Param("type") String type, @Param("keyword") String keyword, Pageable pageable);
 
+    //회원 상태 업데이트
 }
