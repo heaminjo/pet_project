@@ -1,8 +1,24 @@
-import { useOutlet, useOutletContext } from "react-router-dom";
+import { Navigate, useOutlet, useOutletContext } from "react-router-dom";
 import MyInfoComp from "./MyInfoStyle";
+import { useEffect, useState } from "react";
+import MemberApi from "../../api/MemberApi";
 
 export default function MyInfo() {
-  const { user } = useOutletContext();
+  const [user, setUser] = useState([]);
+  useEffect(() => {
+    getLoginUser();
+  }, []);
+
+  const getLoginUser = async () => {
+    try {
+      const result = await MemberApi.detail();
+      setUser(result);
+      console.log(result);
+    } catch (e) {
+      //401 에러 시 로그아웃 처리리
+      localStorage.clear();
+    }
+  };
   return (
     <MyInfoComp>
       <div className="main_container">
@@ -10,10 +26,7 @@ export default function MyInfo() {
           <div className="user_profile">
             {/* 프로필 이미지 ,이름, 이메일 ,  */}
             <div className="image">
-              <img
-                src="https://images.mypetlife.co.kr/content/uploads/2023/01/13160523/AdobeStock_405843911-scaled.jpeg"
-                alt=""
-              />
+              <img src={user.imageFile} alt="" />
             </div>
             <div className="data">
               <p className="user_name">
