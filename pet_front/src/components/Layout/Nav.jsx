@@ -17,6 +17,7 @@ export default function Nav() {
       navigate("/login");
     }
   };
+
   return (
     <NavComp>
       <div className="nav_inner">

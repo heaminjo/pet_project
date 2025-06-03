@@ -22,11 +22,8 @@ export default function UserDetail() {
 
   return (
     <UserDetailComp>
-      <div className="detail_inner">
-        <AdminMenu />
-        <div className="detail_container">
-          <UserData user={user} setUser={setUser} navigate={navigate} />
-        </div>
+      <div className="detail_container">
+        <UserData user={user} setUser={setUser} navigate={navigate} />
       </div>
     </UserDetailComp>
   );

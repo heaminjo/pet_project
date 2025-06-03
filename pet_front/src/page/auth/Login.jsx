@@ -43,9 +43,11 @@ export default function Login() {
     const result = await MemberApi.login(watch("email"), watch("password"));
     if (result.success) {
       alert("로그인 성공!");
+
       localStorage.setItem("loginName", result.data.memberName);
       localStorage.setItem("accessToken", result.data.accessToken);
       localStorage.setItem("role", result.data.role);
+      await MemberApi.lastLogin();
       //전역변수에 로그인 여부 저장
       setIsLogin(true);
       navigate("/");

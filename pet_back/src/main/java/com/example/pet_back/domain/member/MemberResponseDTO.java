@@ -20,4 +20,5 @@ public class MemberResponseDTO {
     private String regDate;
     private String memberState;
     private String imageFile;
+    private String lastLogin;
 }

@@ -32,11 +32,23 @@ public interface MemberMapper {
         return state.getGradeName();
     }
 
+    //생성 날짜
     @Named("regDateToString")
     public static String regDateToString(LocalDateTime regDate) {
         return regDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
+    //마지막 로그인
+    @Named("lastLoginToString")
+    public static String lastLoginToString(LocalDateTime lastLogin) {
+        if (lastLogin == null) {
+            return null;
+        }
+        return lastLogin.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+    @Mapping(source = "lastLogin", target = "lastLogin", qualifiedByName = "lastLoginToString")
+    @Mapping(source = "regDate", target = "regDate", qualifiedByName = "regDateToString")
     @Mapping(source = "grade", target = "grade", qualifiedByName = "gradeToString")
     @Mapping(source = "memberState", target = "memberState", qualifiedByName = "stateToString")
     public MemberResponseDTO toDto(Member member);

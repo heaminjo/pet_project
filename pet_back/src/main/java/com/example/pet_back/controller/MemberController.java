@@ -55,4 +55,5 @@ public class MemberController {
         log.info("프로필 이미지 변경 처리 실행");
         return memberService.memberUploadImage(userDetails.getMember().getId(), file);
     }
+
 }

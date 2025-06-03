@@ -7,6 +7,8 @@ import com.example.pet_back.constant.ROLE;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 //부모 클래스 필드값도 동일 하다.
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -39,7 +41,9 @@ public class Member extends BaseEntity {
 
     private double point;
 
-    private String imageFile; //프로필 이미지
+    private String imageFile = "1e1daeb3-7968-40d1-93f2-09b5ea794ae0.jpg"; //프로필 이미지
+    @Column(name = "last_login")
+    private LocalDateTime lastLogin; //마지막 로그인 시간
 
     //등급(첫 회원 가입 시 NUEBIE)
     @Enumerated(EnumType.STRING)

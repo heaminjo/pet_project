@@ -16,6 +16,7 @@ export default function Header() {
     alert("로그아웃 됩니다.");
     navigate("/");
   };
+
   return (
     <HeaderComp>
       <div className="header_inner">
@@ -38,7 +39,7 @@ export default function Header() {
               )}
               {localStorage.getItem("role") == "ROLE_ADMIN" && (
                 <li>
-                  <span onClick={() => navigate("/admin/page")}>
+                  <span onClick={() => navigate("/admin/page/statistics")}>
                     관리자 메뉴
                   </span>
                 </li>

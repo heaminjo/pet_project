@@ -83,90 +83,87 @@ export default function UserList() {
   };
   return (
     <UserListComp>
-      <div className="list_inner">
-        <AdminMenu />
-        <div className="list_container">
-          <h3>회원 목록 및 상세정보 </h3>
-          <hr />
-          <div className="search">
-            <div className="search_type">
-              <select
-                name="type"
-                id="type"
-                value={type}
-                onChange={(e) => setType(e.target.value)}
-              >
-                <option value="all">전체</option>
-                <option value="email">이메일</option>
-                <option value="name">이름</option>
-              </select>
-              <select
-                name="sort"
-                id="sort"
-                value={sort}
-                onChange={(e) => setSort(e.target.value)}
-              >
-                <option value="desc">최신순</option>
-                <option value="asc">오래된 순</option>
-              </select>
-            </div>
-
-            <div className="search_input">
-              <input
-                type="text"
-                value={keyword}
-                onChange={(e) => setKeyword(e.target.value)}
-              />
-              <button className="search_btn" onClick={() => searchClick()}>
-                검색
-              </button>
-            </div>
+      <div className="list_container">
+        <h3>회원 목록 및 상세정보 </h3>
+        <hr />
+        <div className="search">
+          <div className="search_type">
+            <select
+              name="type"
+              id="type"
+              value={type}
+              onChange={(e) => setType(e.target.value)}
+            >
+              <option value="all">전체</option>
+              <option value="email">이메일</option>
+              <option value="name">이름</option>
+            </select>
+            <select
+              name="sort"
+              id="sort"
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+            >
+              <option value="desc">최신순</option>
+              <option value="asc">오래된 순</option>
+            </select>
           </div>
-          <div className="list_view">
-            <table>
-              <tr>
-                <th>번호</th>
-                <th style={{ width: "25%" }}>이메일</th>
-                <th style={{ width: "10%" }}>이름</th>
-                <th style={{ width: "13%" }}>휴대번호</th>
-                <th style={{ width: "10%" }}>생년월일</th>
-                <th>포인트</th>
-                <th>등급</th>
-                <th>상태</th>
-                <th>가입 날짜</th>
-              </tr>
 
-              {userList.length > 0 ? (
-                userList.map((m, index) => (
-                  <tr
-                    className="user_present"
-                    onClick={() => userDetail(m.email)}
-                  >
-                    <td align="center">{index + 1 + page * 12}</td>
-                    <td id="email_col">{m.email}</td>
-                    <td id="name_col">{m.name}</td>
-                    <td id="phone_col">{m.phone}</td>
-                    <td id="birth_col">{m.birth}</td>
-                    <td id="point_col">{m.point}</td>
-                    <td id="grade_col">{m.grade}</td>
-                    <td
-                      style={{ color: getBgColor(m.memberState) }}
-                      id="state_col"
-                    >
-                      {m.memberState}
-                    </td>
-                    <td id="date_col">{m.regDate}</td>
-                  </tr>
-                ))
-              ) : (
-                <tr className="user_empty">
-                  <td colSpan="8">조회되는 회원이 1건도 없습니다.</td>
-                </tr>
-              )}
-            </table>
+          <div className="search_input">
+            <input
+              type="text"
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+            />
+            <button className="search_btn" onClick={() => searchClick()}>
+              검색
+            </button>
           </div>
-          <PageNumber page={page} setPage={setPage} paging={paging} />
         </div>
+        <div className="list_view">
+          <table>
+            <tr>
+              <th>번호</th>
+              <th style={{ width: "25%" }}>이메일</th>
+              <th style={{ width: "10%" }}>이름</th>
+              <th style={{ width: "13%" }}>휴대번호</th>
+              <th style={{ width: "10%" }}>생년월일</th>
+              <th>포인트</th>
+              <th>등급</th>
+              <th>상태</th>
+              <th>가입 날짜</th>
+            </tr>
+
+            {userList.length > 0 ? (
+              userList.map((m, index) => (
+                <tr
+                  className="user_present"
+                  onClick={() => userDetail(m.email)}
+                >
+                  <td align="center">{index + 1 + page * 12}</td>
+                  <td id="email_col">{m.email}</td>
+                  <td id="name_col">{m.name}</td>
+                  <td id="phone_col">{m.phone}</td>
+                  <td id="birth_col">{m.birth}</td>
+                  <td id="point_col">{m.point}</td>
+                  <td id="grade_col">{m.grade}</td>
+                  <td
+                    style={{ color: getBgColor(m.memberState) }}
+                    id="state_col"
+                  >
+                    {m.memberState}
+                  </td>
+                  <td id="date_col">{m.regDate}</td>
+                </tr>
+              ))
+            ) : (
+              <tr className="user_empty">
+                <td colSpan="8">조회되는 회원이 1건도 없습니다.</td>
+              </tr>
+            )}
+          </table>
+        </div>
+        <PageNumber page={page} setPage={setPage} paging={paging} />
       </div>
     </UserListComp>
   );

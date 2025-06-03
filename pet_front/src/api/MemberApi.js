@@ -79,5 +79,11 @@ const MemberApi = {
     );
     return result.data;
   },
+
+  //마지막 로그인 시간 업데이트
+  lastLogin: async () => {
+    const result = await instance.put(`${KH_DOMAIN}/auth/login/history`);
+    return result.data;
+  },
 };
 export default MemberApi;

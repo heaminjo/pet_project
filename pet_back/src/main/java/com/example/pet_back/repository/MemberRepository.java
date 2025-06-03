@@ -26,7 +26,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             "(:type = 'email' AND m.email LIKE :keyword))")
     Page<Member> findSearchList(@Param("type") String type, @Param("keyword") String keyword, @Param("role") ROLE role, Pageable pageable);
 
+    //모든 유저
     @Query("select m from Member m where m.role = 'USER'")
     public Page<Member> findAllUser(Pageable pageable);
 
+    //오늘 로그인한 유저 수
+    @Query(nativeQuery = true, value = "select count(*) from member where Date(last_login) = curdate()")
+    public Long todayUserCount();
 }
