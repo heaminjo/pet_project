@@ -2,7 +2,6 @@ package com.example.pet_back.service;
 
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.domain.goods.PayRequestDTO;
-import com.example.pet_back.entity.OrderDetail;
 import com.example.pet_back.jwt.CustomUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +23,6 @@ public interface GoodsService {
     ResponseEntity<?> payGoods(CustomUserDetails userDetails, PayRequestDTO dto);
 
     // 주문 리스트
-    ResponseEntity<?> orderList(CustomUserDetails userDetails, OrderDetail orderDetail);
+//    ResponseEntity<?> orderList(CustomUserDetails userDetails, OrderDetail orderDetail);
 
 }

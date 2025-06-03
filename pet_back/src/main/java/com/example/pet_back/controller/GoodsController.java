@@ -2,7 +2,6 @@ package com.example.pet_back.controller;
 
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.domain.goods.PayRequestDTO;
-import com.example.pet_back.entity.OrderDetail;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.service.GoodsService;
 import com.example.pet_back.service.MemberService;
@@ -66,11 +65,11 @@ public class GoodsController {
     }
 
     // 주문 리스트
-    @GetMapping("/orderlist")
-    public ResponseEntity<?> orderList(@AuthenticationPrincipal CustomUserDetails userDetails, //
-                                       @RequestBody OrderDetail orderDetail) {
-        return goodsService.orderList(userDetails, orderDetail);
-    }
+//    @GetMapping("/orderlist")
+//    public ResponseEntity<?> orderList(@AuthenticationPrincipal CustomUserDetails userDetails, //
+//                                       @RequestBody OrderDetail orderDetail) {
+//        return goodsService.orderList(userDetails, orderDetail);
+//    }
 
 
 }

@@ -150,7 +150,7 @@ public class GoodsServiceImpl implements GoodsService {
 
         // 5. Order_Detail 테이블에 저장 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         List<GoodsRequestDTO> requestGoodsList = dto.getGoodsList();
-        List<OrderDetail> orderDetailList = new ArrayList<>() >();
+        List<OrderDetail> orderDetailList = new ArrayList<>();
         for (GoodsRequestDTO requestDTO : requestGoodsList) {
             // Goods 엔티티 가져오기
             Goods goods = goodsList.stream()
@@ -172,17 +172,17 @@ public class GoodsServiceImpl implements GoodsService {
         return ResponseEntity.status(HttpStatus.OK).body(orderDetailList); // orderDetail컴포넌트로 이동
     }//
 
-    // 주문내역(List) 출력하기
-    @Override
-    public ResponseEntity<?> orderList(CustomUserDetails userDetails, OrderDetail orderDetail) {
-        log.info("** GoodsServiceImpl orderList 실행됨 **");
-        Member member = memberRepository.findById( //
-                        userDetails.getMember().getId()) //
-                .orElseThrow(() //
-                        -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
-        List<OrderDetail> list = orderDetailRepository.findAllByUserId(member.getId());
-
-    }
+//    // 주문내역(List) 출력하기
+//    @Override
+//    public ResponseEntity<?> orderList(CustomUserDetails userDetails, OrderDetail orderDetail) {
+//        log.info("** GoodsServiceImpl orderList 실행됨 **");
+//        Member member = memberRepository.findById( //
+//                        userDetails.getMember().getId()) //
+//                .orElseThrow(() //
+//                        -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+//        List<OrderDetail> list = orderDetailRepository.findAllByUserId(member.getId());
+//        return null;
+//    }
 
 
 }

@@ -2,16 +2,16 @@ package com.example.pet_back.domain.goods;
 
 import com.example.pet_back.constant.GOODSSTATE;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 public class GoodsResponseDTO {
 
     private Long goods_id;
