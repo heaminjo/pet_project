@@ -10,22 +10,23 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 export default function MyEdit() {
   const navigate = useNavigate();
 
-  const [selectImage, setSelectImage] = useState(null); //선택 프로필
+  const [selectImage, setSelectImage] = useState(null); //선택 프로필(서버용)
+  const [selectView, setSelectView] = useState(null); //선택택
   const [prevImage, setPrevImage] = useState(null); //이전 프로필필
+  const { user, setUser } = useOutletContext();
 
   //로드 시 회원 정보 불러오기
   useEffect(() => {
     getLoginUser();
   }, []);
 
-  const getLoginUser = async () => {
-    const result = await MemberApi.detail();
+  const getLoginUser = () => {
     reset({
-      name: result.name,
-      birth: result.birth,
-      phone: result.phone,
+      name: user.name,
+      birth: user.birth,
+      phone: user.phone,
     });
-    setPrevImage(result.imageFile);
+    setPrevImage(user.imageFile);
   };
 
   //회원 수정 처리
@@ -39,7 +40,7 @@ export default function MyEdit() {
     if (result.success) {
       alert("회원 수정이 완료되었습니다.");
       localStorage.setItem("loginName", result.data);
-      navigate("/user/mypage");
+      navigate("/user/mypage/myinfo", { replace: true });
     }
   };
   const schema = yup.object({
@@ -84,23 +85,28 @@ export default function MyEdit() {
 
       reader.onloadend = () => {
         //파일 읽기가 끝났을때 자동 실행되어 선택된 이미지 저장
-        setSelectImage(reader.result);
+        setPrevImage(reader.result);
       };
 
       reader.readAsDataURL(file);
+      setSelectImage(file);
     }
   };
 
   //이미지 업로드
   const uploadImage = async () => {
-    try {
-      const result = await MemberApi.uploadImage(selectImage);
-      if (result.success) {
-        alert(result.message);
-        navigate("/user/myinfo");
+    if (selectImage == null) alert("사진을 변경하지 않았습니다.");
+    else {
+      try {
+        const result = await MemberApi.uploadImage(selectImage);
+        if (result.success) {
+          alert(result.message);
+          // setUser({...user})
+          navigate("/user/mypage/myinfo", { replace: true });
+        }
+      } catch (e) {
+        console.log(e);
       }
-    } catch (e) {
-      console.log(e);
     }
   };
   return (
@@ -112,7 +118,7 @@ export default function MyEdit() {
           {/* 유효성 검사 후 수정 처리 */}
           <div className="image_box">
             <div className="image">
-              <img src={selectImage ? selectImage : prevImage} alt="" />
+              <img src={prevImage} alt="" />
               <input
                 type="file"
                 accept="image/*"

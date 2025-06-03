@@ -72,7 +72,7 @@ const MemberApi = {
   uploadImage: async (file) => {
     const formData = new FormData();
     formData.append("file", file);
-    console.log(formData);
+
     const result = await instance.post(
       `${KH_DOMAIN}/user/uploadimage`,
       formData

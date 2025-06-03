@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @RequestMapping("/user")
 @PreAuthorize("hasRole('USER')")
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", allowCredentials = "true")
 public class MemberController {
     private final MemberService memberService;
 
@@ -49,9 +50,9 @@ public class MemberController {
 
     //프로필 이미지 변경
     @PostMapping("/uploadimage")
-    public ResponseEntity<?> uploadImage(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> uploadImage(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam(value = "file", required = false) MultipartFile file) {
+
         log.info("프로필 이미지 변경 처리 실행");
         return memberService.memberUploadImage(userDetails.getMember().getId(), file);
-
     }
 }

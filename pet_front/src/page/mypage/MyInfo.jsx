@@ -1,9 +1,24 @@
-import { useOutlet, useOutletContext } from "react-router-dom";
+import { Navigate, useOutlet, useOutletContext } from "react-router-dom";
 import MyInfoComp from "./MyInfoStyle";
+import { useEffect, useState } from "react";
+import MemberApi from "../../api/MemberApi";
 
 export default function MyInfo() {
-  const { user } = useOutletContext();
+  const [user, setUser] = useState([]);
+  useEffect(() => {
+    getLoginUser();
+  }, []);
 
+  const getLoginUser = async () => {
+    try {
+      const result = await MemberApi.detail();
+      setUser(result);
+      console.log(result);
+    } catch (e) {
+      //401 에러 시 로그아웃 처리리
+      localStorage.clear();
+    }
+  };
   return (
     <MyInfoComp>
       <div className="main_container">

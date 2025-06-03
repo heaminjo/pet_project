@@ -18,8 +18,9 @@ export default function MyPage() {
       setUser(result);
       console.log(result);
     } catch (e) {
+      //401 에러 시 로그아웃 처리리
       localStorage.clear();
-      alert(e.response.data.message);
+      alert(e.response.message);
       navigate("/login");
     }
   };

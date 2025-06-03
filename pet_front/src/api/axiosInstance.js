@@ -44,6 +44,7 @@ instance.interceptors.response.use(
         //원래 실패했던 요청에 토큰를 다시 갱신 후 다시 요청청
         return instance(originalRequest);
       } catch (error) {
+        console.log(error);
         //리프레쉬 토큰 401 시 로그아웃 처리하고 다시 로그인 요청하도록 하게 에러 객체 전달
         return Promise.reject(error);
       }
