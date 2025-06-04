@@ -20,5 +20,4 @@ public class PageResponseDTO<T> {
     private boolean isNext; //다음 페이지가 있나
     private boolean isPrev; //이전 페이지가 있나
 
-
 }

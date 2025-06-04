@@ -1,13 +1,17 @@
 package com.example.pet_back.domain.member;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.example.pet_back.constant.GENDER;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data @AllArgsConstructor @NoArgsConstructor @Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 
 public class MemberRequestDTO {
 
@@ -25,6 +29,9 @@ public class MemberRequestDTO {
 
     @NotBlank(message = "생년월일은 필수 항목입니다.")
     private String birth;
+
+    @NotNull
+    private GENDER gender;
 
     @NotBlank(message = "주소는 필수 항목입니다.")
     private String address1;
