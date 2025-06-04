@@ -47,8 +47,13 @@ export default function BoardList() {
   useEffect(() => {
     // 카테고리가 없으면 기본 board로 설정
     const apiUrl = categoryApiMap[category] || "/board/boardList/free";
+    const params = { page, size: paging.size };
+    if (searchKeyword.trim() !== "") {
+      params.searchType = searchType;
+      params.searchKeyword = searchKeyword;
+    }
     axios
-      .get(apiUrl, { params: { page, size: paging.size } })
+      .get(apiUrl, { params })
       .then((response) => {
         setListData(response.data.content || []);
         let temp = Math.floor(page / 3) * 3;
@@ -58,7 +63,7 @@ export default function BoardList() {
           size: response.data.size,
           totalElements: response.data.totalElements,
           totalPages: response.data.totalPages,
-          isPrev: response.data.prev,
+          isPrev: response.data.prev,                 // javaBean 규약으로 인해 boolean type의 변수는 isPrev가 아닌 prev로 되어있음
           isNext: response.data.next,
           start: temp,
           end: Math.min(temp +3, response.data.totalPages),
@@ -78,7 +83,9 @@ export default function BoardList() {
 
   //검색 기능
 
-  const handleSearch = () => {
+  const handleSearch = (e) => {
+    if(e) e.preventDefault(); // 폼 제출 시 새로고침 방지
+    setPage(0); // 검색 시 페이지를 0으로 초기화
     const apiUrl = categoryApiMap[category] || "/board/boardList/free";
     axios.get(apiUrl, {
       params: {
@@ -95,12 +102,11 @@ export default function BoardList() {
         size: response.data.size,
         totalElements: response.data.totalElements,
         totalPages: response.data.totalPages,
-        isPrev: response.data.prev,
+        isPrev: response.data.prev,     
         isNext: response.data.next,
         start: 0,
         end: Math.min(3, response.data.totalPages),
       });
-      setPage(0); // 검색 후 페이지를 0으로 초기화
     })
     .catch((error) => { setError(error);
       console.error("검색 중 오류 발생:", error);
@@ -184,7 +190,14 @@ export default function BoardList() {
         <div className="pageNumber">
           <PageNumber page={page} setPage={setPage} paging={paging} />
         </div>  
-        <div className="search-bar" style={{ display: "flex", alignItems: "center", margin: "30px 0 0 0" }}>
+        <form
+          className="search-bar"
+          style={{ display: "flex", alignItems: "center", margin: "30px 0 0 0" }}
+          onSubmit={e => {
+            e.preventDefault(); // 폼 제출 시 새로고침 방지
+            handleSearch();
+          }}
+        >
           <div className="custom-select">
             <select
               value={searchType}
@@ -200,16 +213,11 @@ export default function BoardList() {
             value={searchKeyword}
             onChange={e => setSearchKeyword(e.target.value)}
             placeholder="검색어를 입력하세요"
-            
-            onKeyDown={e => { if (e.key === "Enter") handleSearch(); }}
           />
-          <button
-            onClick={handleSearch}
-            
-          >
-          <span role="img" aria-label="search">🔍</span>
+          <button type="submit">
+            <span role="img" aria-label="search">🔍</span>
           </button>
-        </div>
+        </form>
       </div>
     </BoardListStyle>
   );

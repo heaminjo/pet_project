@@ -11,9 +11,15 @@ public interface BoardMapper {
 
     //** 게시글 목록
     //List<BoardDTO> selectList(@Param("category") String category);
-    List<BoardDTO> selectListPaging(@Param("category") String category, @Param("size") int size, @Param("offset") int offset);
+    List<BoardDTO> selectListPaging(@Param("category") String category,
+                                    @Param("size") int size,
+                                    @Param("offset") int offset,
+                                    @Param("searchType") String searchType,
+                                    @Param("searchKeyword") String searchKeyword);
 
-    long countByCategory(@Param("category") String category);
+    long countByCategory(@Param("category") String category,
+                         @Param("searchType") String searchType,
+                         @Param("searchKeyword") String searchKeyword);
 
     //** 게시글 내용
     BoardDTO selectOne(@Param("category") String category, @Param("board_id") int board_id);

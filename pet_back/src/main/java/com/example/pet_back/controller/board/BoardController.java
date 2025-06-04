@@ -34,11 +34,13 @@ public class BoardController {
     @GetMapping("/boardList/{category}")
     public ResponseEntity<?> selectList(@PathVariable("category") String category,
                                         @RequestParam(value = "page", defaultValue = "0") int page,
-                                        @RequestParam(value = "size", defaultValue = "3") int size) {
+                                        @RequestParam(value = "size", defaultValue = "3") int size,
+                                        @RequestParam(value = "searchType", required = false) String searchType,
+                                        @RequestParam(value = "searchKeyword", required = false) String searchKeyword) {
         //List<BoardDTO> list = boardService.selectList(category);
         //return ResponseEntity.ok(list != null ? list : new ArrayList<>());
-        PageRequestDTO pageRequestDTO = new PageRequestDTO(page, size, null, null, null);
-        PageResponseDTO<BoardDTO> responseDTO = boardService.selectList(category, pageRequestDTO);
+        PageRequestDTO pageRequestDTO = new PageRequestDTO(page, size, null, searchKeyword, searchType);
+        PageResponseDTO<BoardDTO> responseDTO = boardService.selectList(category, pageRequestDTO, searchType, searchKeyword);
         return ResponseEntity.ok(responseDTO);
     } //selectList()
 

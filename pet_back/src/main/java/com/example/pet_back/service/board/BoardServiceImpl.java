@@ -17,12 +17,12 @@ public class BoardServiceImpl implements BoardService {
     private final BoardMapper boardMapper;
 
     @Override
-    public PageResponseDTO<BoardDTO> selectList(String category, PageRequestDTO pageRequestDTO) {
+    public PageResponseDTO<BoardDTO> selectList(String category, PageRequestDTO pageRequestDTO, String searchType, String searchKeyword) {
         //List<BoardDTO> list = boardMapper.selectList(category);
         //return list;
         int offset = pageRequestDTO.getPage() * pageRequestDTO.getSize();
-        List<BoardDTO> content = boardMapper.selectListPaging(category, pageRequestDTO.getSize(), offset);
-        long totalElements = boardMapper.countByCategory(category);
+        List<BoardDTO> content = boardMapper.selectListPaging(category, pageRequestDTO.getSize(), offset, searchType, searchKeyword);
+        long totalElements = boardMapper.countByCategory(category, searchType, searchKeyword);
         int totalPages = (int) Math.ceil((double) totalElements / pageRequestDTO.getSize());
         boolean isPrev = pageRequestDTO.getPage() > 0;
         boolean isNext = pageRequestDTO.getPage() < totalPages - 1;

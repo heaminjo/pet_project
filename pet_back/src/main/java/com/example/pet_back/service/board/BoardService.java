@@ -8,7 +8,7 @@ public interface BoardService {
 
     //** 게시글 목록
     //List<BoardDTO> selectList(String category);
-    PageResponseDTO<BoardDTO> selectList(String category, PageRequestDTO pageRequestDTO);
+    PageResponseDTO<BoardDTO> selectList(String category, PageRequestDTO pageRequestDTO, String searchType, String searchKeyword);
 
     //** 게시글 내용
     BoardDTO selectOne(String category, int board_id);
