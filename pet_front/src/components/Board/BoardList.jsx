@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import BoardListStyle from "./BoardListStyle";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import PageNumber from "../util/PageNumber";
 
 
@@ -10,8 +10,18 @@ export default function BoardList() {
   const [listData, setListData] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const [searchType, setSearchType] = useState("title");
-  const [searchKeyword, setSearchKeyword] = useState("");
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const searchType = params.get("searchType") || "title";
+  const searchKeyword = params.get("searchKeyword") || "";
+  const page = parseInt(params.get("page")) || 0;
+  //const [searchType, setSearchType] = useState("title");
+  //const [searchKeyword, setSearchKeyword] = useState("");
+  const [inputKeyword, setInputKeyword] = useState(searchKeyword); // searchKeyword의 초기값을 inputKeyword로 설정
+
+  useEffect(() => {
+    setInputKeyword(searchKeyword);
+  }, [searchKeyword]);
 
   // pageNumber 상태 변수 추가
   const [paging, setPaging] = useState({
@@ -24,7 +34,7 @@ export default function BoardList() {
     start: 0,
     end: 1,
   });
-  const [page, setPage] = useState(0);
+  //const [page, setPage] = useState(0);
 
   // 카테고리별 API 엔드포인트 매핑
   const categoryApiMap = {
@@ -71,7 +81,7 @@ export default function BoardList() {
       })
       .catch((error) => setError(error));
       // eslint-disable-next-line
-  }, [category, page]);
+  }, [category, location.search]);
 
   if (error) {
     // 서버 에러 코드에 따라 메시지 분기
@@ -84,32 +94,14 @@ export default function BoardList() {
   //검색 기능
 
   const handleSearch = (e) => {
-    if(e) e.preventDefault(); // 폼 제출 시 새로고침 방지
-    setPage(0); // 검색 시 페이지를 0으로 초기화
-    const apiUrl = categoryApiMap[category] || "/board/boardList/free";
-    axios.get(apiUrl, {
-      params: {
-        page: 0,
-        size: paging.size,
-        searchType: searchType,
-        searchKeyword: searchKeyword
-      }
-    })
-    .then((response) => {
-      setListData(response.data.content || []);
-      setPaging({
-        page: response.data.page,
-        size: response.data.size,
-        totalElements: response.data.totalElements,
-        totalPages: response.data.totalPages,
-        isPrev: response.data.prev,     
-        isNext: response.data.next,
-        start: 0,
-        end: Math.min(3, response.data.totalPages),
-      });
-    })
-    .catch((error) => { setError(error);
-      console.error("검색 중 오류 발생:", error);
+    if (e) e.preventDefault();
+    const params = new URLSearchParams();
+    params.set("searchType", searchType);
+    params.set("searchKeyword", inputKeyword);
+    params.set("page", 0);
+    navigate({
+      pathname: location.pathname,
+      search: params.toString(),
     });
   };
 
@@ -157,7 +149,7 @@ export default function BoardList() {
                 <td className="center">{paging.totalElements -(paging.page * paging.size) - index}</td>
                 <td
                   className="center"
-                  onClick={() => navigate(`/boardDetail/${category}/${b.board_id}`)}
+                  onClick={() => navigate(`/boardDetail/${category}/${b.board_id}${location.search}`)}
                   style={{ cursor: "pointer" }}
                 >
                   {b.title}
@@ -188,7 +180,14 @@ export default function BoardList() {
           </tbody>
         </table>
         <div className="pageNumber">
-          <PageNumber page={page} setPage={setPage} paging={paging} />
+          <PageNumber page={page} setPage={(newPage) => {
+              const params = new URLSearchParams(location.search);
+              params.set("page", newPage);
+              navigate({
+              pathname: location.pathname,
+              search: params.toString(),
+            });
+          }} paging={paging} />
         </div>  
         <form
           className="search-bar"
@@ -201,7 +200,15 @@ export default function BoardList() {
           <div className="custom-select">
             <select
               value={searchType}
-              onChange={e => setSearchType(e.target.value)}
+              onChange={e => {
+                const params = new URLSearchParams(location.search);
+                params.set("searchType", e.target.value);
+                params.set("page", 0);
+                navigate({
+                  pathname: location.pathname,
+                  search: params.toString(),
+                });
+              }}
             >
               <option value="title">제목</option>
               <option value="content">내용</option>
@@ -210,8 +217,10 @@ export default function BoardList() {
           </div>
           <input
             type="text"
-            value={searchKeyword}
-            onChange={e => setSearchKeyword(e.target.value)}
+            value={inputKeyword}
+            onChange={e => {
+              setInputKeyword(e.target.value);
+            }}
             placeholder="검색어를 입력하세요"
           />
           <button type="submit">
