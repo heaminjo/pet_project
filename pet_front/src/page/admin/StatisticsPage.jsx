@@ -20,8 +20,24 @@ export default function StatisticsPage() {
   //통계 자료 api 호출
   const getStatistics = async () => {
     const result = await AdminApi.getStatistics();
-    setUserData({ totalUser: result.totalUser, todayUser: result.todayUser });
+    console.log(typeof result.userJoin);
+
+    setUserData({
+      totalUser: result.totalUser, //총 회원
+      todayUser: result.todayUser, //오늘 로그인
+      male: result.male, //남자
+      female: result.female, //여자
+      weekReg: Object.keys(result.userJoin), //최근 7일
+      weekJoin: Object.values(result.userJoin),
+    });
+    console.log(Object.keys(result.userJoin));
+    console.log(Object.values(result.userJoin));
   };
+  useEffect(() => {
+    console.log("weekReg", userData.weekReg);
+    console.log("weekJoin", userData.weekJoin);
+  }, [userData]);
+
   return (
     <StaticticsComp>
       <UserStatistics userData={userData} />

@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
@@ -33,4 +34,25 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     //오늘 로그인한 유저 수
     @Query(nativeQuery = true, value = "select count(*) from member where Date(last_login) = curdate()")
     public Long todayUserCount();
+
+
+    //남자 수
+    @Query(nativeQuery = true, value = "select count(*) from member where gender = 'MALE'")
+    public Long MaleCount();
+
+    @Query(nativeQuery = true, value = "WITH RECURSIVE date_seq AS (\n" +
+            "  SELECT CURDATE() - INTERVAL 7 DAY AS dt\n" +
+            "  UNION ALL\n" +
+            "  SELECT dt + INTERVAL 1 DAY\n" +
+            "  FROM date_seq\n" +
+            "  WHERE dt + INTERVAL 1 DAY <= CURDATE()\n" +
+            ")\n" +
+            "SELECT\n" +
+            "  DATE_FORMAT(ds.dt,'%m월 %d일') AS reg_date,\n" +
+            "  COALESCE(COUNT(m.reg_date), 0) AS count\n" +
+            "FROM date_seq ds\n" +
+            "LEFT JOIN member m ON DATE(m.reg_date) = ds.dt\n" +
+            "GROUP BY ds.dt\n" +
+            "ORDER BY ds.dt;")
+    public List<Object[]> userWeekJoin();
 }

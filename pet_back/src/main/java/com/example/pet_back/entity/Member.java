@@ -1,6 +1,7 @@
 package com.example.pet_back.entity;
 
 
+import com.example.pet_back.constant.GENDER;
 import com.example.pet_back.constant.GRADE;
 import com.example.pet_back.constant.MEMBERSTATE;
 import com.example.pet_back.constant.ROLE;
@@ -44,6 +45,11 @@ public class Member extends BaseEntity {
     private String imageFile = "1e1daeb3-7968-40d1-93f2-09b5ea794ae0.jpg"; //프로필 이미지
     @Column(name = "last_login")
     private LocalDateTime lastLogin; //마지막 로그인 시간
+
+    //성별
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "enum('MALE','FEMALE')")
+    private GENDER gender;
 
     //등급(첫 회원 가입 시 NUEBIE)
     @Enumerated(EnumType.STRING)

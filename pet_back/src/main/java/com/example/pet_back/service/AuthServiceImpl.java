@@ -113,10 +113,9 @@ public class AuthServiceImpl implements AuthService {
         try {
             dto.setPassword(passwordEncoder.encode(dto.getPassword()));
             log.info("비밀번호 암호화 완료 => " + dto.getPassword());
-
+            log.info("성별 확인 " + mapper.toEntity(dto).getGender());
             //회원을 저장하고 member 엔티티를 반환
             Member member = memberRepository.save(mapper.toEntity(dto));
-
             //address 생성 후 저장
             addressRepository.save(new Address(member, dto.getAddress1(), dto.getAddress2(), dto.getAddressZip()));
             log.info("저장된 회원의 식별자 => " + member.getId());

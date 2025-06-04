@@ -25,7 +25,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -99,8 +102,20 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public MemberStatisticsDTO memberStatistics() {
         Long totalUser = memberRepository.count(); //전체 수
-        Long todayUser = memberRepository.todayUserCount();
+        Long todayUser = memberRepository.todayUserCount(); //오늘 로그인
+        Long male = memberRepository.MaleCount(); //남자수
+        Long female = totalUser - male; //여자수
+        List<Object[]> join = memberRepository.userWeekJoin(); //7일 회원가입 통계
+        log.info(join.toString());
+        //회원가입 통계 map으로 변환
+        Map<String, Long> map = join.stream()
+                .collect(Collectors.toMap(
+                        row -> (String) row[0],
+                        row -> ((Number) row[1]).longValue(),
+                        (existing, replacement) -> existing,
+                        LinkedHashMap::new
+                ));
 
-        return new MemberStatisticsDTO(totalUser, 0L, todayUser);
+        return new MemberStatisticsDTO(totalUser, 0L, todayUser, male, female, map);
     }
 }
