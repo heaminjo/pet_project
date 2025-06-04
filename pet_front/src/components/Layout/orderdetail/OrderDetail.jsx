@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import OrderDetailComp from './OrderDetailStyle';
 import GoodsApi from '../../../api/GoodsApi';
+import { useEffect } from 'react';
 
 export default function OrderDetail() {
   const location = useLocation();
@@ -8,9 +9,15 @@ export default function OrderDetail() {
   const orderList = location.state?.orderList || [];
 
   const goodsList = (orderList) => {
-    const goodsIds = orderList.map((item) => item.goods_id);
-    GoodsApi.orderList();
+    // 회원이 주문한 전체내역 orderList
+    //const goodsIds = orderList.map((item) => item.goods_id);
+    GoodsApi.orderList(orderList);
   };
+
+  useEffect(() => {
+    alert('orderList => ${orderList.data}');
+    goodsList(orderList);
+  }, []);
 
   return (
     <OrderDetailComp>

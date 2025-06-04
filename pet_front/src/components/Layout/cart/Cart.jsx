@@ -9,7 +9,13 @@ export default function Cart() {
   const seller = process.env.PUBLIC_URL + '/images/avatar.png';
   const [goods, setGoods] = useState([]);
   const [checked, setChecked] = useState({}); // key: 인덱스 , value: 체크유무
+  const initialQuantity = goods.quantity;
+  const [quantity, setQuantity] = useState(initialQuantity);
 
+  // Goods 정보 요청
+
+
+  // Cart 정보 요청
   const cart = async () => {
     // const userName = localStorage.getItem('loginName');
     GoodsApi.cartList()
@@ -27,6 +33,7 @@ export default function Cart() {
     }));
   };
 
+  // 구매할 상품 체크박스
   const handleBuyClick = () => {
     const isAnyChecked = Object.values(checked).some((value) => value);
     if (!isAnyChecked) {
@@ -36,6 +43,14 @@ export default function Cart() {
     // 선택된 상품 넘기기
     const selectedGoods = goods.filter((_, idx) => checked[idx]);
     navigate('/user/pay', { state: { goods: selectedGoods } });
+  };
+
+  // 구매수량 조절 버튼
+  const increase = () => {
+    setQuantity((prev) => prev - 1);
+  };
+  const decrease = () => {
+    setQuantity((prev) => prev + 1);
   };
 
   useEffect(() => {
@@ -69,7 +84,13 @@ export default function Cart() {
                     <b>가격</b>&nbsp;&nbsp; {item.price}
                   </div>
                   <div>
-                    <b>수량</b>&nbsp;&nbsp; {item.quantity}
+                    <b>구매가능 수량</b>&nbsp;&nbsp; {item.quantity}
+                  </div>
+                  <div>
+                    <b>수량</b>&nbsp;&nbsp;
+                    <button onClick={decrease}>-</button>
+                    {item.quantity}
+                    <button onClick={increase}>-</button>
                   </div>
                   <div>
                     <img src={seller} className='seller' alt='판매자' /> ROYAL CANIN

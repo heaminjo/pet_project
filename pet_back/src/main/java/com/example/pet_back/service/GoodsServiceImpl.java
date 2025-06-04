@@ -130,6 +130,9 @@ public class GoodsServiceImpl implements GoodsService {
                         -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
         System.out.println("member.id = " + member.getId());
 
+        // 3. Cart_id 필요할 것으로 보입니다. (주문한후 리스트에서 사라져야 하기 떄문)
+        //Cart cart = Cart.builder().member_id(member.getId()).goods_id(goods)
+
         System.out.println("GoodsServiceImpl --------------------------------- 오류확인용 -----------------");
 
         // 3. Delivery 테이블에 저장 (delivery_id 생성) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -150,7 +153,7 @@ public class GoodsServiceImpl implements GoodsService {
 
         // 5. Order_Detail 테이블에 저장 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         List<GoodsRequestDTO> requestGoodsList = dto.getGoodsList();
-        List<OrderDetail> orderDetailList = new ArrayList<>() >();
+        List<OrderDetail> orderDetailList = new ArrayList<>();
         for (GoodsRequestDTO requestDTO : requestGoodsList) {
             // Goods 엔티티 가져오기
             Goods goods = goodsList.stream()
@@ -165,23 +168,30 @@ public class GoodsServiceImpl implements GoodsService {
                     .goods_price(requestDTO.getPrice())
                     .build();
             orderDetailList.add(orderDetailRepository.save(orderDetail));
-
         }
         // 장바구니에서 삭제하는 추가.
+
         System.out.println("GoodsServiceImpl 의 payGoods() 끝");
+
+//        PayResponseDTO payResponseDTO = PayResponseDTO.builder() //
+//                .goodsResponseDTO()
+//                .build();
+
         return ResponseEntity.status(HttpStatus.OK).body(orderDetailList); // orderDetail컴포넌트로 이동
     }//
 
     // 주문내역(List) 출력하기
     @Override
-    public ResponseEntity<?> orderList(CustomUserDetails userDetails, OrderDetail orderDetail) {
+    public ResponseEntity<?> orderList(CustomUserDetails userDetails, //
+                                       List<OrderDetail> orderDetailList) {
         log.info("** GoodsServiceImpl orderList 실행됨 **");
         Member member = memberRepository.findById( //
                         userDetails.getMember().getId()) //
                 .orElseThrow(() //
                         -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
-        List<OrderDetail> list = orderDetailRepository.findAllByUserId(member.getId());
 
+
+        return null;
     }
 
 

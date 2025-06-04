@@ -23,13 +23,20 @@ export default function Pay() {
       .catch((err) => {});
   };
 
+  // 총 구매가격
+  const totalPrice = goods.reduce((acc, item) => {
+    return acc + (item.goods?.price || 0);
+  }, 0);
+  // 배달료
+  const deliverPrice = 3000;
+
   // 결제 로직 수행(BackEnd)
   const pay = async (goods, payment) => {
     const payload = {
       goodsList: goods,
       payment: payment,
     };
-    GoodsApi.pay(payload)
+    GoodsApi.pay(payload) // 여기가 호출
       .then((response) => {
         alert('GoodsApi.pay() 성공');
         navigate('/user/orderdetail', { state: { orderList: response } });
@@ -45,7 +52,7 @@ export default function Pay() {
   };
 
   useEffect(() => {
-    console.log(`${goodsList}`);
+    console.log('goodsList:', goodsList);
     memdetail();
     setGoods(goodsList);
   }, []);
@@ -111,8 +118,15 @@ export default function Pay() {
           <div className='title'>상품정보</div>
           {goods.map((item, index) => (
             <div className='goodslist' key={index}>
-              <div>{item.goods_name}</div>
-              <div>{item.description}</div>
+              <div>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                {item.goods?.goods_name}
+                {', '}
+                {item.goods?.description}
+                {', '}
+                {item.goods?.quantity}
+                {' 개'}
+              </div>
             </div>
           ))}
         </section>
@@ -125,15 +139,15 @@ export default function Pay() {
             <tbody>
               <tr>
                 <th>상품 가격</th>
-                <td>{goods.price} 원</td>
+                <td>{totalPrice} 원</td>
               </tr>
               <tr>
                 <th>배송비</th>
-                <td>3000 원</td>
+                <td>{deliverPrice} 원</td>
               </tr>
               <tr>
                 <th>최종결제금액</th>
-                <td>15000 원</td>
+                <td>{totalPrice + deliverPrice} 원</td>
               </tr>
               <tr>
                 <th>결제방법</th>
@@ -161,7 +175,7 @@ export default function Pay() {
               </tr>
               <tr>
                 <th>연락처</th>
-                <td>010-0000-0000</td>
+                <td>{member.phone}</td>
               </tr>
               <tr>
                 <th>요청사항</th>

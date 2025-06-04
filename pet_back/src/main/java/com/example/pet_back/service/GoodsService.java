@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface GoodsService {
 
@@ -24,6 +25,6 @@ public interface GoodsService {
     ResponseEntity<?> payGoods(CustomUserDetails userDetails, PayRequestDTO dto);
 
     // 주문 리스트
-    ResponseEntity<?> orderList(CustomUserDetails userDetails, OrderDetail orderDetail);
+    ResponseEntity<?> orderList(CustomUserDetails userDetails, List<OrderDetail> orderDetailList);
 
 }

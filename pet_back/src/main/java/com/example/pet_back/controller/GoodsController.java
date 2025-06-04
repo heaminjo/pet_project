@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Log4j2
 @RequiredArgsConstructor // private final만
 @RequestMapping(value = "/goods")
@@ -68,9 +70,11 @@ public class GoodsController {
     // 주문 리스트
     @GetMapping("/orderlist")
     public ResponseEntity<?> orderList(@AuthenticationPrincipal CustomUserDetails userDetails, //
-                                       @RequestBody OrderDetail orderDetail) {
-        return goodsService.orderList(userDetails, orderDetail);
+                                       @RequestBody List<OrderDetail> orderDetailList) {
+        return goodsService.orderList(userDetails, orderDetailList);
     }
 
+
+    // 배송
 
 }
