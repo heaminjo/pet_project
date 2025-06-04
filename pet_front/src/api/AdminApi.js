@@ -38,5 +38,10 @@ const AdminApi = {
 
     return result.data;
   },
+  //통계자료
+  getStatistics: async () => {
+    const result = await instance.get(`${KH_DOMAIN}/admin/statistics`);
+    return result.data;
+  },
 };
 export default AdminApi;
