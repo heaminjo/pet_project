@@ -9,6 +9,7 @@ export default function Pay() {
   const navigate = useNavigate();
   const [goods, setGoods] = useState([]);
   const goodsList = location.state?.goods || [];
+  const quantities = location.state?.quantity || [];
   const [payment, setPayment] = useState();
   const goodsImg = process.env.PUBLIC_URL + '/images/pic1.png';
 
@@ -23,15 +24,20 @@ export default function Pay() {
       .catch((err) => {});
   };
 
+  // 사용자의 주소정보 (추가예정)
+
   // 총 구매가격
   const totalPrice = goods.reduce((acc, item) => {
-    return acc + (item.goods?.price || 0);
+    const price = item.price || 0;
+    const quantity = item.quantity || 1;
+    return acc + price * quantity;
   }, 0);
   // 배달료
   const deliverPrice = 3000;
 
   // 결제 로직 수행(BackEnd)
   const pay = async (goods, payment) => {
+    goods.quantity = quantities;
     const payload = {
       goodsList: goods,
       payment: payment,
@@ -120,11 +126,11 @@ export default function Pay() {
             <div className='goodslist' key={index}>
               <div>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {item.goods?.goods_name}
+                {item.goods_name}
                 {', '}
-                {item.goods?.description}
+                {item.description}
                 {', '}
-                {item.goods?.quantity}
+                {item.quantity}
                 {' 개'}
               </div>
             </div>

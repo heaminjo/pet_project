@@ -18,7 +18,6 @@ public interface CartRepository extends JpaRepository<Cart, CartId> {
     @Query("SELECT c FROM Cart c JOIN FETCH c.goods WHERE c.member_id = :userId")
     List<Cart> findCartListByUserId(@Param("userId") Long userId);
 
-
     // 장바구니에 추가하는 쿼리
     // 값을 누적시키는 쿼리 (nativeQuery=true 경우만 가능.) : demo/repository/TestKeyRepository 부분 참고
     @Transactional

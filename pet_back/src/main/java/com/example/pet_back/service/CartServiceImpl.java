@@ -6,7 +6,6 @@ import com.example.pet_back.entity.Cart;
 import com.example.pet_back.entity.Goods;
 import com.example.pet_back.entity.Member;
 import com.example.pet_back.jwt.CustomUserDetails;
-import com.example.pet_back.mapper.CartMapper;
 import com.example.pet_back.mapper.GoodsMapper;
 import com.example.pet_back.mapper.MemberMapper;
 import com.example.pet_back.repository.CartRepository;
@@ -29,7 +28,6 @@ public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
     private final GoodsRepository goodsRepository;
     private final MemberRepository memberRepository;
-    private final CartMapper cartMapper;
     private final GoodsMapper goodsMapper;
     private final MemberMapper memberMapper;
 
@@ -38,26 +36,39 @@ public class CartServiceImpl implements CartService {
     public ResponseEntity<?> selectList(CustomUserDetails userDetails) {
         log.info("** CartServiceImpl 실행됨 **");
 
-        //유저 details에서 id 가져와 회원을 가져온다.
+        // 1. 유저 details에서 id 가져와 회원을 가져온다.
         Member member = memberRepository.findById( //
                         userDetails.getMember().getId()) //
                 .orElseThrow(() //
                         -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
 
-        // Cart 의 goods_id List 불러옴
-        List<Cart> cartEntities = cartRepository.findCartListByUserId(member.getId());
+        // 2. Cart List
+        List<Cart> cartEntities = cartRepository.findCartListByUserId(member.getId()); // Cart List
 
-        // Goods 정보 출력(List)
+        // 3. Goods List
         List<Long> goodsIdList = new ArrayList<>();
         for (Cart cartEntity : cartEntities) {
-            Long goodsId = cartEntity.getGoods_id();
+            Long goodsId = cartEntity.getGoods_id(); // Cart에서 goods_id 추출 => List
             goodsIdList.add(goodsId);
         }
-        List<Goods> cartList = goodsRepository.findAllById(goodsIdList);
+
+        // 4. Cart List 의 goods_id 이용해 Goods List 생성
+        List<Goods> goodsList = goodsRepository.findAllById(goodsIdList); // Goods List
+        List<GoodsResponseDTO> goodsResponseDTOList = goodsMapper.toDtoList(goodsList);
+
+//        // 장바구니의 수량이 필요할시 아래 주석 해제후 사용.
+//        // 4-1. Cart List 를 goodsId 기준으로 Map으로
+//        Map<Long, Integer> goodsIdToQuantityMap = cartEntities.stream()
+//                .collect(Collectors.toMap(Cart::getGoods_id, Cart::getQuantity)); // quantity: Cart
+//        // 4.2. Goods List에 Cart 의 Quantity 반영
+//        for (Goods goods : goodsList) {
+//            Integer quantity = goodsIdToQuantityMap.get(goods.getGoods_id());
+//            goods.setQuantity(quantity);
+//        }
 
         log.info("확인");
-        log.info(cartList.toString());
-        return ResponseEntity.status(HttpStatus.OK).body(cartList);
+        log.info(goodsResponseDTOList.toString());
+        return ResponseEntity.status(HttpStatus.OK).body(goodsResponseDTOList);
     }
 
     // 상품을 장바구니에 추가

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const CartComp = styled.div`
   .container {
@@ -28,18 +28,18 @@ const CartComp = styled.div`
         flex-direction: column;
 
         .prod {
+          width: 500px;
           padding: 10px;
           border: 1px solid rgb(230, 230, 230);
           display: flex;
-          flex-direction: row;
-          justify-content: center;
 
           .prodleft {
-            width: 300px;
+            width: 200px;
             height: 200px;
+            margin-left: 20px;
             overflow: hidden;
             display: flex;
-            justify-content: center;
+            justify-content: start;
             align-items: center;
             // flex-direction: column;
 
@@ -62,7 +62,6 @@ const CartComp = styled.div`
       .right {
         width: 300px;
         height: 500px;
-
         display: flex;
         flex-direction: column;
         table {

@@ -172,11 +172,6 @@ public class GoodsServiceImpl implements GoodsService {
         // 장바구니에서 삭제하는 추가.
 
         System.out.println("GoodsServiceImpl 의 payGoods() 끝");
-
-//        PayResponseDTO payResponseDTO = PayResponseDTO.builder() //
-//                .goodsResponseDTO()
-//                .build();
-
         return ResponseEntity.status(HttpStatus.OK).body(orderDetailList); // orderDetail컴포넌트로 이동
     }//
 
