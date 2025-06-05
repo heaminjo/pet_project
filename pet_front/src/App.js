@@ -19,8 +19,6 @@ import BoardList from "./components/Board/BoardList";
 import BoardInsertForm from "./components/Board/BoardInsertForm";
 import BoardDetail from "./components/Board/BoardDetail";
 import BoardEditForm from "./components/Board/BoardEditForm";
-import NoticeBoardList from "./components/Board/NoticeBoardList";
-import NoticeBoardDetail from "./components/Board/NoticeBoardDetail";
 
 //컨텍스트(useContext)
 //로그인 여부부를 전역변수로 뿌리기 위한것
