@@ -59,7 +59,10 @@ function App() {
               <Route path="userdetail" element={<UserDetail />} />
             </Route>
             <Route path="/withcomplete" element={<WithDrawalComplete />} />
-            <Route path="/boardList" element={<BoardList />} />
+            <Route path="/boardList/:category" element={<BoardList />} />
+            <Route path="/boardInsertForm" element={<BoardInsertForm />} />
+            <Route path="/boardDetail/:category/:board_id" element={<BoardDetail />} />
+            <Route path="/boardEditForm/:category/:board_id" element={<BoardEditForm />} />
             <Route path="/user/cart/list" element={<Cart />} />
             <Route path="/user/delivery" element={<Delivery />} />
             <Route path="/user/order" element={<Order />} />
