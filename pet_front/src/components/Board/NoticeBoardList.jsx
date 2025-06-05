@@ -51,35 +51,39 @@ export default function BoardList() {
             </tr>
           </thead>
           <tbody>
-            {(!listData || listData.length === 0) ? (
+            {!listData || listData.length === 0 ? (
               <tr>
-                <td colSpan={5} className="center" style={{ textAlign: "center", padding: "20px" }}>
+                <td
+                  colSpan={5}
+                  className="center"
+                  style={{ textAlign: "center", padding: "20px" }}
+                >
                   게시글이 없습니다.
                 </td>
               </tr>
             ) : (
-            listData.map((b, index) => (
-              <tr key={index}>
-                <td className="center">{listData.length - index}</td>
-                <td
-                  className="center"
-                  onClick={() => navigate(`/noticeboardDetail/${b.board_id}`)}
-                  style={{ cursor: "pointer" }}
-                >
-                  {b.title}
-                </td>
-                <td className="center">{b.name}</td>
-                <td className="center">{b.views}</td>
-                <td className="center">{b.reg_date}</td>
-              </tr>
-            ))
+              listData.map((b, index) => (
+                <tr key={index}>
+                  <td className="center">{listData.length - index}</td>
+                  <td
+                    className="center"
+                    onClick={() => navigate(`/noticeboardDetail/${b.board_id}`)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {b.title}
+                  </td>
+                  <td className="center">{b.name}</td>
+                  <td className="center">{b.views}</td>
+                  <td className="center">{b.reg_date}</td>
+                </tr>
+              ))
             )}
             <tr>
               <td colSpan={5} align="right">
                 <button
                   type="button"
                   onClick={() => {
-                    if (localStorage.getItem("accessToken")!=null) {
+                    if (localStorage.getItem("accessToken") != null) {
                       navigate("/boardInsertForm");
                     } else {
                       alert("로그인 해주세요");
