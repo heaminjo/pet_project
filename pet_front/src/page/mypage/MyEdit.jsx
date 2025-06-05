@@ -1,27 +1,33 @@
 import { useForm } from "react-hook-form";
-import MypageMenu from "../../components/mypage/MyPageMenu";
-import MyEditComp from "./MyEditStyle";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MemberApi from "../../api/MemberApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import MyEditComp from "./MyEditStyle";
 //회원 수정 페이지
 export default function MyEdit() {
   const navigate = useNavigate();
 
+  const [selectImage, setSelectImage] = useState(null); //선택 프로필(서버용)
+  const [selectView, setSelectView] = useState(null); //선택택
+  const [prevImage, setPrevImage] = useState(null); //이전 프로필필
+  const { user, setUser } = useOutletContext();
+
+  // import { useNavigate, useOutletContext } from "react-router-dom";
+  // const { user } = useOutletContext();
   //로드 시 회원 정보 불러오기
   useEffect(() => {
     getLoginUser();
   }, []);
 
-  const getLoginUser = async () => {
-    const result = await MemberApi.detail();
+  const getLoginUser = () => {
     reset({
-      name: result.name,
-      birth: result.birth,
-      phone: result.phone,
+      name: user.name,
+      birth: user.birth,
+      phone: user.phone,
     });
+    setPrevImage(user.imageFile);
   };
 
   //회원 수정 처리
@@ -35,7 +41,7 @@ export default function MyEdit() {
     if (result.success) {
       alert("회원 수정이 완료되었습니다.");
       localStorage.setItem("loginName", result.data);
-      navigate("/user/mypage");
+      navigate("/user/mypage/myinfo", { replace: true });
     }
   };
   const schema = yup.object({
@@ -67,14 +73,73 @@ export default function MyEdit() {
     resolver: yupResolver(schema),
     mode: "onBlur", // 실시간 검사
   });
+
+  //이미지 선택 버튼 클릭
+  const fileInputRef = useRef(null);
+
+  //이미지 선택
+  const changeImage = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      //파일 미리보기를 위한 객체
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        //파일 읽기가 끝났을때 자동 실행되어 선택된 이미지 저장
+        setPrevImage(reader.result);
+      };
+
+      reader.readAsDataURL(file);
+      setSelectImage(file);
+    }
+  };
+
+  //이미지 업로드
+  const uploadImage = async () => {
+    if (selectImage == null) alert("사진을 변경하지 않았습니다.");
+    else {
+      try {
+        const result = await MemberApi.uploadImage(selectImage);
+        if (result.success) {
+          alert(result.message);
+          // setUser({...user})
+          navigate("/user/mypage/myinfo", { replace: true });
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
   return (
     <MyEditComp>
       <div className="myedit_inner">
-        <MypageMenu />
-        <div className="main_container">
+        <div className="edit_container">
           <h3>회원 수정</h3>
           <hr />
           {/* 유효성 검사 후 수정 처리 */}
+          <div className="image_box">
+            <div className="image">
+              <img src={prevImage} alt="" />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => changeImage(e)}
+                ref={fileInputRef}
+                style={{ display: "none" }}
+              />
+            </div>
+            <div className="image_btn">
+              <button
+                id="select_btn"
+                onClick={() => fileInputRef.current.click()}
+              >
+                프로필 변경
+              </button>
+              <button id="save_btn" onClick={() => uploadImage()}>
+                등록하기
+              </button>
+            </div>
+          </div>
           <form
             className="form_container"
             onSubmit={handleSubmit(() => updateUser())}

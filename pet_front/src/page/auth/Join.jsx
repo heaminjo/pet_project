@@ -41,6 +41,7 @@ export default function Join() {
         /^(19[0-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/,
         "정확한 생년월일 8자리로 입력해주세요"
       ),
+    gender: yup.string().oneOf(["MALE", "FEMALE"]),
     phone: yup
       .string()
       .matches(/^[0-9\b]{0,13}$/, "휴대번호를 정확하게 입력해주세요."),
@@ -58,6 +59,9 @@ export default function Join() {
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onBlur", // 실시간 검사
+    defaultValues: {
+      gender: "MALE",
+    },
   });
 
   //중복버튼 이메일 유효성 검사사
@@ -103,6 +107,7 @@ export default function Join() {
       name: watch("name"),
       birth: watch("birth"),
       phone: watch("phone"),
+      gender: watch("gender"),
       address1: watch("address1"),
       address2: watch("address2"),
       addressZip: watch("addressZip"),
@@ -221,6 +226,43 @@ export default function Join() {
                     {errors.birth && (
                       <p className="error_message">{errors.birth.message}</p>
                     )}
+                  </td>
+                </tr>
+                <tr id="gender">
+                  <th>
+                    <label htmlFor="text">성별</label>
+                  </th>
+                  <td
+                    style={{
+                      background: watch("gender") == "MALE" ? "#ccc" : "#fff",
+                    }}
+                  >
+                    <label htmlFor="MALE">
+                      <input
+                        type="radio"
+                        value="MALE"
+                        {...register("gender")}
+                        name="gender"
+                        id="MALE"
+                      />
+                      남성
+                    </label>
+                  </td>
+                  <td
+                    style={{
+                      background: watch("gender") == "FEMALE" ? "#ccc" : "#fff",
+                    }}
+                  >
+                    <label htmlFor="FEMALE">
+                      <input
+                        type="radio"
+                        value="FEMALE"
+                        id="FEMALE"
+                        {...register("gender")}
+                        name="gender"
+                      />
+                      여성
+                    </label>
                   </td>
                 </tr>
                 <tr>

@@ -56,9 +56,33 @@ const MemberApi = {
     });
     return result.data;
   },
-
+  //로그아웃
   logout: async () => {
     const result = await instance.get(`${KH_DOMAIN}/auth/logout`);
+    return result.data;
+  },
+  //회원 탈퇴
+  withdrawal: async () => {
+    console.log("처리 실행");
+    const result = await instance.get(`${KH_DOMAIN}/user/withdrawal`);
+    return result.data;
+  },
+
+  //업로드 이미지
+  uploadImage: async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const result = await instance.post(
+      `${KH_DOMAIN}/user/uploadimage`,
+      formData
+    );
+    return result.data;
+  },
+
+  //마지막 로그인 시간 업데이트
+  lastLogin: async () => {
+    const result = await instance.put(`${KH_DOMAIN}/auth/login/history`);
     return result.data;
   },
 };

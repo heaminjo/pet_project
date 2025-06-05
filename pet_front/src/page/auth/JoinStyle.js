@@ -1,7 +1,6 @@
 const { default: styled } = require("styled-components");
 
 const JoinComp = styled.div`
-  height: 1000px;
   margin-top: 140px;
   width: 100%;
   /* background-color: #f8e776; */
@@ -80,6 +79,23 @@ const JoinComp = styled.div`
               border: none;
               border-radius: 10px;
               cursor: pointer;
+            }
+          }
+          #gender {
+            td {
+              width: 180px;
+              height: 40px;
+              text-align: center;
+              border: 1px solid #000;
+            }
+            label {
+              display: block;
+              cursor: pointer;
+              height: 100%;
+              line-height: 40px;
+              input {
+                display: none;
+              }
             }
           }
         } //tdody

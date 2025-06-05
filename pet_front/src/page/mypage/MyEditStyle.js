@@ -1,24 +1,49 @@
 import styled from "styled-components";
 
 const MyEditComp = styled.div`
-  width: 100%;
-  margin-top: 150px;
   .myedit_inner {
     width: 80%;
     margin: 0 auto;
     display: flex;
     padding: 40px 0;
     gap: 40px;
-    .main_container {
+    .edit_container {
       width: 500px;
-      margin-left: 100px;
+      margin-left: 30px;
       order: 1px solid #000;
       padding: 20px;
       border: 1px solid #eee;
       box-shadow: 3px 3px 3px #ccc;
+      height: 600px;
       position: relative;
       h3 {
         padding: 10px 0;
+      }
+      .image_box {
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        position: relative;
+        img {
+          width: 180px;
+          height: 180px;
+          border-radius: 100%;
+        }
+        .image_btn {
+          position: absolute;
+          display: flex;
+          gap: 10px;
+          right: 40px;
+          bottom: 0;
+          button {
+            width: 80px;
+            height: 40px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+          }
+        }
       }
       .form_container {
         width: 500px;
@@ -28,7 +53,7 @@ const MyEditComp = styled.div`
         tbody {
           display: flex;
           flex-direction: column;
-          padding: 60px 0;
+          padding: 30px 0;
           gap: 30px;
           tr {
             .error_message {
