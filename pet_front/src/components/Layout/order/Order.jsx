@@ -8,20 +8,20 @@ export default function Order() {
   const location = useLocation();
   const { goods } = location.state || {};
   const prodImage = process.env.PUBLIC_URL + '/images/pic2.png';
+  const [buyQuantity, setBuyQuantity] = useState(1);
 
-  const pay = async () => {
-    try {
-      await GoodsApi.pay(goods); // 필요하다면 서버 호출 후
-      navigate('/pay', { state: { goods } }); // 여기서 전달
-    } catch (err) {
-      console.error('결제 실패:', err);
-    }
+  const pay = async (goods) => {
+    alert(`결제페이지 이동 성공, 상품ID:  => ${goods.goods_id}`);
+    const goodsWithQuantity = { ...goods, quantity: buyQuantity };
+    navigate('/user/pay', { state: { goods: goodsWithQuantity } });
   };
 
   const addToCart = async (goods) => {
-    GoodsApi.addToCart(goods)
+    const goodsWithQuantity = { ...goods, quantity: buyQuantity };
+    alert(`addToCart => ${goodsWithQuantity.quantity}`);
+    GoodsApi.addToCart(goodsWithQuantity)
       .then((response) => {
-        alert(`장바구니 담기 성공 => ${response.goods_id}`);
+        alert(`장바구니 담기 성공, 상품ID:  => ${response.goods_id}`);
         console.log(response);
       })
       .catch((err) => {});
@@ -48,24 +48,27 @@ export default function Order() {
             </div>
             <hr />
             <div className='seller'>
-              <img src={prodImage} alt='상품이미지' className='sellerimg' />
-              판매자 &nbsp;&nbsp; ROYAL CANIN
+              <b>
+                판매자 &nbsp;&nbsp; <img src={prodImage} alt='상품이미지' className='sellerimg' /> &nbsp;&nbsp; ROYAL CANIN
+              </b>
+            </div>
+            <div>
+              <b>
+                <label>구매가능 수량(재고)</label>
+                &nbsp;&nbsp; <span style={{ color: 'red', fontWeight: 'bold' }}>{goods.quantity}</span>
+              </b>
+            </div>
+            <div>
+              <b>
+                <label>구매 수량</label>&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type='number' min={1} max={goods.quantity} value={buyQuantity} onChange={(e) => setBuyQuantity(Number(e.target.value))} />
+              </b>
             </div>
             <br />
             <hr />
-            <select className='options'>
-              {/* {options.map((opt, idx) => (
-                <div key={idx} className={`{opt.disabled ? 'disabled': : ''}`} onClick={() => {}}>
-                  <option>
-                    {opt.label} - {opt.price}원
-                  </option>
-                </div>
-              ))} */}
-            </select>
-            <br />
             <br />
             <button onClick={() => addToCart(goods)}>장바구니</button>&nbsp;&nbsp;
-            <button onClick={pay}>바로구매</button>
+            <button onClick={() => pay(goods)}>바로구매</button>
           </div>
         </section>
 

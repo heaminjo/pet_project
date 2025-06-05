@@ -8,43 +8,46 @@ const OrderDetailComp = styled.div`
     margin-top: 50px;
     padding: 150px;
 
-    .ordertitle {
-      font-weight: bold;
-      font-size: larger;
-    }
-
     .orderlist {
-      width: inherit;
-      height: 200px;
-      padding: 10px;
       border: 1px solid rgb(200, 200, 200);
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
+      .ordertitle {
+        border: 1px solid rgb(200, 200, 200);
+        font-weight: bold;
+        font-size: larger;
+      }
 
-      .orderdesc {
+      .orderlist2 {
+        width: inherit;
+        height: 150px;
         display: flex;
         flex-direction: row;
-        align-items: center;
+        justify-content: center;
 
-        .prodimg {
-          width: 150px;
-          height: 150px;
-        }
-        .proddesc {
-          width: 350px;
-          margin: 10px 50px;
-        }
-        .btn {
-          width: 200px;
+        .orderdesc {
           display: flex;
-          flex-direction: column;
-        }
-        .btn1,
-        .btn2,
-        .btn3 {
-          margin: 3px;
-          padding: 10px;
+          flex-direction: row;
+          align-items: center;
+          border: 1px solid rgb(200, 200, 200);
+
+          .prodimg {
+            width: 50px;
+          }
+          .proddesc {
+            width: 350px;
+            margin: 10px 50px;
+          }
+          .btn {
+            width: 150px;
+            display: flex;
+            flex-direction: column;
+
+            .btn1,
+            .btn2,
+            .btn3 {
+              height: 30px;
+              margin: 3px;
+            }
+          }
         }
       }
     }

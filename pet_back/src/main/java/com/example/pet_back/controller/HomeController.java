@@ -22,20 +22,4 @@ public class HomeController {
 
     }
 
-
-//    // 주문 등록
-//    @PostMapping("/order")
-//    public ResponseEntity<?> orderGoods(@AuthenticationPrincipal CustomUserDetails userDetails, //
-//                                        @RequestBody GoodsRequestDTO goodsRequestDTO) {
-//        log.info("** HomeController => orderGoods() 실행됨 **");
-//        return goodsService.orderGoods();
-//    }
-//
-//    // 주문 리스트
-//    @GetMapping("/orderlist")
-//    public ResponseEntity<?> orderGoodsList(@AuthenticationPrincipal CustomUserDetails userDetails, //
-//                                            @RequestBody GoodsRequestDTO goodsRequestDTO) {
-//        log.info("** HomeController => orderGoodsList() 실행됨 **");
-//    }
-
 }

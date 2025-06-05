@@ -21,5 +21,4 @@ public class OrderResponseDTO {
     private Date reg_date;
     private String status;
 
-
 }

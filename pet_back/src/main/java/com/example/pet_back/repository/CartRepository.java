@@ -1,6 +1,5 @@
 package com.example.pet_back.repository;
 
-import com.example.pet_back.domain.goods.CartResponseDTO;
 import com.example.pet_back.entity.Cart;
 import com.example.pet_back.entity.CartId;
 import jakarta.transaction.Transactional;
@@ -16,17 +15,8 @@ public interface CartRepository extends JpaRepository<Cart, CartId> {
 
     // 장바구니 조회에 필요한 컬럼
     @Transactional
-    @Query("SELECT " +
-            "NEW com.example.pet_back.domain.goods.CartResponseDTO " +
-            "(g.goods_id, g.goods_name, g.price, g.description, g.image_file, g.rating, " +
-            "g.views, g.review_num, c.member_id, c.quantity) " +
-            "FROM Cart c " +
-            "JOIN Goods g ON g.goods_id = c.goods_id " +
-            "WHERE c.member_id=:userId")
-    public List<CartResponseDTO> findCartListByUserId(Long userId);
-//    @Query("SELECT c FROM Cart c JOIN FETCH c.goods WHERE c.member_id = :userId")
-//    List<Cart> findCartListByUserId(@Param("userId") Long userId);
-
+    @Query("SELECT c FROM Cart c JOIN FETCH c.goods WHERE c.member_id = :userId")
+    List<Cart> findCartListByUserId(@Param("userId") Long userId);
 
     // 장바구니에 추가하는 쿼리
     // 값을 누적시키는 쿼리 (nativeQuery=true 경우만 가능.) : demo/repository/TestKeyRepository 부분 참고
@@ -35,6 +25,12 @@ public interface CartRepository extends JpaRepository<Cart, CartId> {
     @Query(nativeQuery = true, value = "INSERT INTO Cart VALUES(" +
             ":member_id, :goods_id, :quantity) ON DUPLICATE KEY UPDATE quantity=quantity+:quantity")
     public int addToCart(@Param("member_id") Long member_id, @Param("goods_id") Long goods_id, @Param("quantity") int quantity);
+
+    // Goods id 로 장바구니 삭제 (결제완료후)
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value = "DELETE FROM Cart WHERE goods_id = :goods_id")
+    public void deleteByGoodsId(@Param("goods_id") Long goods_id);
 
 
 }

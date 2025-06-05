@@ -1,11 +1,10 @@
 package com.example.pet_back.service;
 
-import com.example.pet_back.domain.goods.GoodsRequestDTO;
-import com.example.pet_back.domain.goods.GoodsResponseDTO;
-import com.example.pet_back.domain.goods.PayRequestDTO;
+import com.example.pet_back.domain.goods.*;
 import com.example.pet_back.entity.*;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.mapper.GoodsMapper;
+import com.example.pet_back.mapper.OrderMapper;
 import com.example.pet_back.repository.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +34,10 @@ public class GoodsServiceImpl implements GoodsService {
     private final OrderDetailRepository orderDetailRepository;
     private final DeliveryRepository deliveryRepository;
     private final MemberRepository memberRepository;
+    private final CartRepository cartRepository;
+    // Mapper
     private final GoodsMapper goodsMapper;
+    private final OrderMapper orderMapper;
 
     // 상품상세정보
     @Override
@@ -115,10 +117,10 @@ public class GoodsServiceImpl implements GoodsService {
     // 결제 : Delivery > Orders > Order_Detail 테이블 save
     @Override
     public ResponseEntity<?> payGoods(CustomUserDetails userDetails, //
-                                      PayRequestDTO dto) {
+                                      PayRequestDTO payRequestDTO) {
         System.out.println("GoodsServiceImpl 의 payGoods() 시작");
         // 1. Goods List
-        List<Long> goodsIds = dto.getGoodsList().stream()
+        List<Long> goodsIds = payRequestDTO.getGoodsList().stream()
                 .map(GoodsRequestDTO::getGoods_id)
                 .collect(Collectors.toList());
         List<Goods> goodsList = goodsRepository.findAllById(goodsIds);
@@ -139,18 +141,37 @@ public class GoodsServiceImpl implements GoodsService {
         System.out.println("GoodsServiceImpl delivery_id => " + delivery.getDelivery_id());
 
         // 4. Orders 테이블에 저장 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        int totalQuantity = dto.getGoodsList().stream()
+        int totalQuantity = payRequestDTO.getGoodsList().stream()
                 .mapToInt(GoodsRequestDTO::getQuantity).sum(); // 결제페이지로 넘어온 총 수량
-        int totalPrice = dto.getGoodsList().stream()
+        int totalPrice = payRequestDTO.getGoodsList().stream()
                 .mapToInt(GoodsRequestDTO::getPrice).sum(); // 결제페이지로 넘어온 총 가격
         Orders order = Orders.builder().delivery(save)
                 .member(member).total_quantity(totalQuantity).total_price(totalPrice)
-                .payment(dto.getPayment()).build();
+                .payment(payRequestDTO.getPayment()).build();
         Orders orders = orderRepository.save(order);
 
         // 5. Order_Detail 테이블에 저장 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        List<GoodsRequestDTO> requestGoodsList = dto.getGoodsList();
+        List<GoodsRequestDTO> requestGoodsList = payRequestDTO.getGoodsList();
         List<OrderDetail> orderDetailList = new ArrayList<>();
+        for (GoodsRequestDTO requestDTO : requestGoodsList) {
+            // Goods
+            Goods goods = goodsList.stream()
+                    .filter(g -> g.getGoods_id().equals(requestDTO.getGoods_id()))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("상품이 존재하지 않습니다."));
+            // OrderDetail
+            OrderDetail orderDetail = OrderDetail.builder()
+                    .goods(goods)
+                    .orders(orders)
+                    .goods_quantity(requestDTO.getQuantity())
+                    .goods_price(requestDTO.getPrice())
+                    .build();
+            // OrderDetail 테이블에 저장
+            orderDetailRepository.save(orderDetail);
+        }
+
+        // 6. 장바구니에서 수량차감 또는 삭제
+        List<Cart> cartList = cartRepository.findCartListByUserId(member.getId());
         for (GoodsRequestDTO requestDTO : requestGoodsList) {
             // Goods 엔티티 가져오기
             Goods goods = goodsList.stream()
@@ -158,31 +179,72 @@ public class GoodsServiceImpl implements GoodsService {
                     .findFirst()
                     .orElseThrow(() -> new RuntimeException("상품이 존재하지 않습니다."));
 
-            OrderDetail orderDetail = OrderDetail.builder()
-                    .goods(goods)
-                    .orders(orders)
-                    .goods_quantity(requestDTO.getQuantity())
-                    .goods_price(requestDTO.getPrice())
-                    .build();
-            orderDetailList.add(orderDetailRepository.save(orderDetail));
-
+            // goods id 로 cart 조회후 삭제 (현재 장바구니 전체에서 삭제하도록 함)
+            cartRepository.deleteByGoodsId(goods.getGoods_id());
         }
-        // 장바구니에서 삭제하는 추가.
         System.out.println("GoodsServiceImpl 의 payGoods() 끝");
-        return ResponseEntity.status(HttpStatus.OK).body(orderDetailList); // orderDetail컴포넌트로 이동
+        return ResponseEntity.status(HttpStatus.OK).body("결제가 정상적으로 완료되었습니다."); // orderDetail컴포넌트로 이동
     }//
 
-//    // 주문내역(List) 출력하기
-//    @Override
-//    public ResponseEntity<?> orderList(CustomUserDetails userDetails, OrderDetail orderDetail) {
-//        log.info("** GoodsServiceImpl orderList 실행됨 **");
-//        Member member = memberRepository.findById( //
-//                        userDetails.getMember().getId()) //
-//                .orElseThrow(() //
-//                        -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
-//        List<OrderDetail> list = orderDetailRepository.findAllByUserId(member.getId());
-//        return null;
-//    }
+    // 주문내역(List) 출력하기 ====================================================================
+    @Override
+    public ResponseEntity<?> orderList(CustomUserDetails userDetails) {
+        log.info("** GoodsServiceImpl orderList 실행됨 **");
+        // 1. 고객정보
+        Member member = memberRepository.findById( //
+                        userDetails.getMember().getId()) //
+                .orElseThrow(() //
+                        -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+        // 2. OrderDetail 테이블 조회 : member_id & reg_date
+        // order_detail에서 최신 날짜 DESC 정렬 (+orders, goods)
+        List<Orders> orderList = orderRepository.findAllByUserId(member.getId());
+        List<OrderResponseDTO> orderDtoList = orderMapper.toDtoList(orderList); // order_detail, orders, goods
+        for (OrderResponseDTO o : orderDtoList) {
+            System.out.println(o.getOrder_id());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(orderDtoList);
+    }
+
+    // Order Detail 페이지 (order_id)로 주문한 상품의 오더정보 / 상품정보
+    @Override
+    public ResponseEntity<?> customerGoodsHistory(CustomUserDetails userDetails, List<Long> orderIdList) {
+        // 1. 고객정보
+        Member member = memberRepository.findById( //
+                        userDetails.getMember().getId()) //
+                .orElseThrow(() //
+                        -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+
+        // 2. OrderDetailResponseDTO (Goods / OrderDetail / Order)
+        // 2.1) Order 리스트[엔티티]
+        List<Orders> ordersList = orderRepository.findAllById(orderIdList);
+
+        // 2.2) Order Detail 리스트[엔티티] : Order 의 ID 이용하여
+        List<OrderDetail> orderDetailList = orderDetailRepository.findAllByOrderIdList(orderIdList);
+
+        // OrderDetailDTO SET
+        List<OrderDetailResponseDTO> orderDetailResponseDTOList = orderDetailList.stream() //
+                .map(detail -> OrderDetailResponseDTO.builder() //
+                        .order_detail_id(detail.getOrder_detail_id())
+                        .goods_id(detail.getGoods().getGoods_id())
+                        .order_id(detail.getOrders().getOrder_id())
+                        .goods_quantity(detail.getGoods_quantity())
+                        .goods_price(detail.getGoods_price())
+                        // Goods
+                        .goods_name(detail.getGoods().getGoods_name())
+                        .price(detail.getGoods_price())
+                        .description(detail.getGoods().getDescription())
+                        .goodsstate(detail.getGoods().getGoods_state())
+                        .image_file(detail.getGoods().getImage_file())
+                        // Orders
+                        .total_price(detail.getOrders().getTotal_price())
+                        .total_quantity(detail.getOrders().getTotal_quantity())
+                        .reg_date(detail.getOrders().getReg_date())
+                        .status(detail.getOrders().getStatus())
+                        .build()).collect(Collectors.toList());
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(orderDetailResponseDTOList);
+    }
 
 
 }

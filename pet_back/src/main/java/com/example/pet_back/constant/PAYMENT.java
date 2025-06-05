@@ -1,9 +1,7 @@
 package com.example.pet_back.constant;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Getter;
 
-@Getter
 @JsonFormat(shape = JsonFormat.Shape.STRING)
 public enum PAYMENT {
     CARD, // 카드결제
@@ -11,5 +9,5 @@ public enum PAYMENT {
     NOACCOUNT, // 무통장입금 (계좌X)
     ACCOUNT, // 계좌이체 (계좌O)
     POINT, // 포인트결제
-    PHONE, // 휴대폰결제
+    PHONE, // 휴대폰결제\
 }

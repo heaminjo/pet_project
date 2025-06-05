@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface GoodsRepository extends JpaRepository<Goods, Long> {
+import java.util.List;
 
-    // ( findAll()로 대체됨 ) 전체 상품리스트 출력 쿼리
+public interface GoodsRepository extends JpaRepository<Goods, Long> {
 
     // 상품등록 쿼리 : INSERT 시 nativeQuery 만 가능
     @Modifying
@@ -20,7 +20,15 @@ public interface GoodsRepository extends JpaRepository<Goods, Long> {
     public void registerGoods(@Param("category_id") Long category_id, @Param("goods_name") String goods_name, //
                               @Param("price") int price, @Param("description") String description, //
                               @Param("goods_state") String goods_state, //
-                              @Param("image_file") String vvvvvvvvvvvvvimage_file, @Param("quantity") int quantity);
+                              @Param("image_file") String image_file, @Param("quantity") int quantity);
+
+    // 특정 고객이 한번이라도 주문한 적 있는 상품의 리스트
+    @Transactional
+    @Query("SELECT g FROM OrderDetail od " +
+            "JOIN od.goods g " +
+            "JOIN od.orders o " +
+            "WHERE o.member.id = :memberId")
+    public List<Goods> findAllByUserId(@Param("member_id") Long member_id);
 
 
 }

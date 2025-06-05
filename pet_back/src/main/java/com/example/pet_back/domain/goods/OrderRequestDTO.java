@@ -20,4 +20,5 @@ public class OrderRequestDTO {
     private String payment;
     private Date reg_date;
     private String status;
+
 }
