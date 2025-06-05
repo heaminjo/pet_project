@@ -18,8 +18,6 @@ export default function MyPage() {
       setUser(result);
       console.log(result);
     } catch (e) {
-      //401 에러 시 로그아웃 처리리
-
       navigate("/error", { state: { message: "권한이 없는 페이지 입니다." } });
     }
   };

@@ -24,14 +24,8 @@ instance.interceptors.response.use(
   (response) => response,
   async (error) => {
     //error.config는 에러가 난 객체의 설정 정보
-    const navigate = useNavigate();
-    const originalRequest = error.config;
 
-    // //권한없음 페이지 이동동
-    // if (error.response?.status == 403) {
-    //   alert("권한 ㄴ");
-    //   navigate("/error", { state: { message: "권한이 없는 페이지 입니다." } });
-    // }
+    const originalRequest = error.config;
 
     //토큰이 만료되었을 경우
     if (error.response.status == 401 && !originalRequest._retry) {
@@ -56,6 +50,7 @@ instance.interceptors.response.use(
         return Promise.reject(error);
       }
     }
+
     return Promise.reject(error);
   }
 );
