@@ -4,7 +4,7 @@ import MyEditComp from "./MyEditStyle";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import MemberApi from "../../api/MemberApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function UpdatePw() {
   const navigate = useNavigate();
@@ -59,8 +59,7 @@ export default function UpdatePw() {
   return (
     <MyEditComp>
       <div className="myedit_inner">
-        <MypageMenu />
-        <div className="main_container">
+        <div className="edit_container">
           <h3>비밀번호 변경</h3>
           <hr />
           <form
