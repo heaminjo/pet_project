@@ -2,14 +2,13 @@ package com.example.pet_back.domain.goods;
 
 import com.example.pet_back.constant.GOODSSTATE;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class GoodsDTO {
@@ -29,5 +28,5 @@ public class GoodsDTO {
     private int quantity;
     private Date reg_date;
 
-
+    private MultipartFile upload_img;
 }

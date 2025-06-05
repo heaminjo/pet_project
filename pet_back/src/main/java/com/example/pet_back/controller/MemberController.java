@@ -10,12 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
 @PreAuthorize("hasRole('USER')")
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", allowCredentials = "true")
 public class MemberController {
     private final MemberService memberService;
 
@@ -38,4 +40,20 @@ public class MemberController {
         log.info("member pwupdate 실행");
         return memberService.memberPwUpdate(userDetails, dto);
     }
+
+    //회원 탈퇴
+    @GetMapping("/withdrawal")
+    public ResponseEntity<?> memberWithdrawal(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        log.info("멤버 탈퇴 처리 실행");
+        return memberService.memberWithdrawal(userDetails.getMember().getId());
+    }
+
+    //프로필 이미지 변경
+    @PostMapping("/uploadimage")
+    public ResponseEntity<?> uploadImage(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam(value = "file", required = false) MultipartFile file) {
+
+        log.info("프로필 이미지 변경 처리 실행");
+        return memberService.memberUploadImage(userDetails.getMember().getId(), file);
+    }
+
 }

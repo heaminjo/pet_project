@@ -1,6 +1,9 @@
 package com.example.pet_back.jwt;
 
+import com.example.pet_back.constant.MEMBERSTATE;
 import com.example.pet_back.domain.login.TokenDTO;
+import com.example.pet_back.entity.Member;
+import com.example.pet_back.repository.MemberRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -9,6 +12,8 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,6 +37,7 @@ public class TokenProvider {
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;            // 30분(1000 * 60 * 30)
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
     private final CustomUserDetailsService customUserDetailsService;
+    private final MemberRepository memberRepository;
 
     //AccessToken만 생성
     public TokenDTO createToken(Authentication authentication) {
@@ -89,9 +95,15 @@ public class TokenProvider {
                 .map(GrantedAuthority::getAuthority)
                 .orElse(null); //없을 경우 null
         log.info("권한 => " + role);
-        
+
         //유저 아이디를 꺼내온다.
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+//        탈퇴한 회원인지 검사
+        if (userDetails.getMember().getMemberState() == MEMBERSTATE.WITHDRAWN) {
+            throw new DisabledException("탈퇴한 계정입니다.");
+        }
+
         Long userId = userDetails.getMember().getId();
 
         log.info("userId => " + userId);
@@ -136,31 +148,40 @@ public class TokenProvider {
         //setSingningKey(SECRET_KEY) : 토큰 서명을 검증하기 위한 비밀키
         //      토큰을 생성할 때 사용한 키와 동일해야한다.
         log.info("토큰 검증 합니다.");
-        //토큰 만료를 잡기위한 try-catch
+
+
         try {
-            return Jwts.parser()
+            Claims claims = Jwts.parser()
                     .setSigningKey(SECRET_KEY).build()
                     //전달받은 JWT 문자열을 파싱해서 Claims객체로 변환
                     //유효하지 않은 토큰일 경우 Exception이 발생
                     .parseClaimsJws(token)
                     //JWT에 Claims영역을 가져온다. 반환타입은 Map
                     .getBody();
+
+            //존재하지 않는 회원 처리
+            Member member = memberRepository.findById(Long.parseLong(claims.getSubject())).orElseThrow(() -> new AuthenticationServiceException("존재하지 않는 회원입니다."));
+            //탈퇴회원 처리
+            if (member.getMemberState() == MEMBERSTATE.WITHDRAWN) throw new DisabledException("탈퇴한 계정입니다.");
+            return claims;
         } catch (ExpiredJwtException e) {
             //만료된 토큰일 경우
             //클라이언트에게 401 값을 보내어 refresh를 통해 다시 토큰을 재발급하라고 한다.
             log.info("만료된 토큰 입니다.");
-            //HTTP 상태코드를 401로 설정
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            //응답 타입 JSON
-            response.setContentType("application/json");
             //만료된 Token이라는 메시지
-            response.getWriter().write("{\"error\": \"access_token_expired\"}");
+            writeErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "만료된 계정입니다. 다시 로그인 해주세요.");
 
             return null;
+        } catch (DisabledException e) {
+            //탈퇴한 계정입니다.
+            log.info("탈퇴한 계정 입니다.");
+            writeErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "탈퇴한 계정입니다.");
+            return null;
+        } catch (AuthenticationServiceException e) {
+            log.info("아이디 또는 비밀번호가 틀렸습니다.");
+            writeErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "존재하지 않는 회원입니다.");
+            return null;
         }
-//        catch (JwtException e){
-//            //서명 위조 혹은 유효하지 않은 토큰
-//        }
 
     }
 
@@ -172,6 +193,7 @@ public class TokenProvider {
         return Long.parseLong(claims.getSubject());
     }
 
+    //권한 반환
     public String getRole(String token) {
         Claims claims = parseClaims(token);
         //권한 반환
@@ -191,5 +213,13 @@ public class TokenProvider {
     public Authentication getAuthentication(Long userId) {
         CustomUserDetails userDetails = customUserDetailsService.loadUserById(userId);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
+
+
+    //로그인 실패 공통 응답 메서드
+    private void writeErrorResponse(HttpServletResponse response, int status, String message) throws IOException {
+        response.setStatus(status);
+        response.setContentType("application/json");
+        response.getWriter().write(message);
     }
 }
