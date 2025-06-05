@@ -90,7 +90,7 @@ export default function BoardDetail() {
 
   return (
     <BoardDetailStyle>
-      <div style={{ width: "60%", margin: "40px auto", fontFamily: "GmarketSansMedium" }} className="boardDetailContainer">
+      <div style={{ width: "50%", height:"80%", margin: "40px auto", fontFamily: "GmarketSansMedium" }} className="boardDetailContainer">
         <h2>{post.title}</h2>
         <div style={{ color: "#888", marginBottom: "10px" }}>
           작성자: {post.name} | 조회수: {post.views} | 작성일: {post.reg_date}
@@ -104,6 +104,7 @@ export default function BoardDetail() {
             <button onClick={handleDelete}>삭제</button>
           </div>
         )}
+        <hr></hr>
       </div>
     </BoardDetailStyle>
   );
