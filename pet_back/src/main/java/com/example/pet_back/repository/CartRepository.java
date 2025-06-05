@@ -24,9 +24,6 @@ public interface CartRepository extends JpaRepository<Cart, CartId> {
             "JOIN Goods g ON g.goods_id = c.goods_id " +
             "WHERE c.member_id=:userId")
     public List<CartResponseDTO> findCartListByUserId(Long userId);
-//    @Query("SELECT c FROM Cart c JOIN FETCH c.goods WHERE c.member_id = :userId")
-//    List<Cart> findCartListByUserId(@Param("userId") Long userId);
-
 
     // 장바구니에 추가하는 쿼리
     // 값을 누적시키는 쿼리 (nativeQuery=true 경우만 가능.) : demo/repository/TestKeyRepository 부분 참고
@@ -36,5 +33,23 @@ public interface CartRepository extends JpaRepository<Cart, CartId> {
             ":member_id, :goods_id, :quantity) ON DUPLICATE KEY UPDATE quantity=quantity+:quantity")
     public int addToCart(@Param("member_id") Long member_id, @Param("goods_id") Long goods_id, @Param("quantity") int quantity);
 
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//    @Transactional
+    //  @Query("select c from Cart c where c.member_id = :id") // JPQL - 엔티티 사용시
+//    @Query("select new com.example.pet_back.domain.login.CartDTO(c.member_id, c.goods_id, c.quantity)" + //
+//            " from Cart c where c.member_id = :id") // JPQL - DTO 사용시
+//    public List<Cart> findById(@Param("id") Long id);
+
+    // (잠정폐기) 우선, 해당 메서드는 주석처리하고 memberRepository 를 이용하기로 한다.
+//    @Transactional
+//    @Query("select new com.example.pet_back" + //
+//            ".domain.login.GoodsDTO(" + //
+//            "g.id, g.category_id, g.goods_name, g.price, g.description, g.goods_state, g.image_file, g.rating, g.review_num, g.quantity)" + //
+//            " FROM Goods g" +
+//            " JOIN Cart c ON g.goods_id = c.goods_id" +
+//            " JOIN Member m ON m.member_id = c.member_id" +
+//            " WHERE m.member_id = :id") // JPQL - DTO 사용시
+//    List<GoodsDTO> findAllById(@Param("id") Long id);
 
 }

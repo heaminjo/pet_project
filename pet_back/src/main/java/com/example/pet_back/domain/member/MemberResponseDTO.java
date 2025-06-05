@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class MemberResponseDTO {
-    private Long id;
+    private Long memberId;
     private String email;
     private String name;
     private String phone;
@@ -19,6 +19,5 @@ public class MemberResponseDTO {
     private String grade;
     private String regDate;
     private String memberState;
-    private String imageFile;
-    private String lastLogin;
+    private String image_file;
 }

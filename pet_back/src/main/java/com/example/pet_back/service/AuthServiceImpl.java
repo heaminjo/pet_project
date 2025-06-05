@@ -100,7 +100,7 @@ public class AuthServiceImpl implements AuthService {
             return new ApiResponse<TokenDTO>(true, tokenDTO, "로그인에 성공하였습니다.");
         } catch (Exception e) {
             log.info("로그인 중 에러 발생 =>" + e.getMessage());
-            return new ApiResponse<>(false, "잘못된 아이디 또는 비밀번호를 입력하셨습니다.");
+            return new ApiResponse<>(false, "아이디 또는 비밀번호가 일치하지 않습니다.");
         }
     }
 
@@ -113,9 +113,10 @@ public class AuthServiceImpl implements AuthService {
         try {
             dto.setPassword(passwordEncoder.encode(dto.getPassword()));
             log.info("비밀번호 암호화 완료 => " + dto.getPassword());
-            log.info("성별 확인 " + mapper.toEntity(dto).getGender());
+
             //회원을 저장하고 member 엔티티를 반환
             Member member = memberRepository.save(mapper.toEntity(dto));
+
             //address 생성 후 저장
             addressRepository.save(new Address(member, dto.getAddress1(), dto.getAddress2(), dto.getAddressZip()));
             log.info("저장된 회원의 식별자 => " + member.getId());

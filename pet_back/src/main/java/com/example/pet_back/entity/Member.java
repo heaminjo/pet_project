@@ -1,55 +1,45 @@
 package com.example.pet_back.entity;
 
 
-import com.example.pet_back.constant.GENDER;
 import com.example.pet_back.constant.GRADE;
 import com.example.pet_back.constant.MEMBERSTATE;
 import com.example.pet_back.constant.ROLE;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 //부모 클래스 필드값도 동일 하다.
-@EqualsAndHashCode(callSuper = true)
-@Entity
-@Table(name = "member")
-@Builder
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class Member extends BaseEntity {
+    @EqualsAndHashCode(callSuper = true)
+    @Entity
+    @Table(name="member")
+    @Builder
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public class Member extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id", nullable = false)
+    @Column(name="member_id" ,nullable = false)
     private Long id;
 
-    @Column(nullable = false, length = 50, unique = true)
+    @Column(nullable = false,length = 50,unique = true)
     private String email;       //이메일
 
-    @Column(nullable = false, updatable = false, length = 100)
+    @Column(nullable = false,updatable = false,length = 100)
     private String password;    //비밀번호
 
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false,length = 10)
     private String name;        //이름
 
-    @Column(nullable = false, length = 11)
+    @Column(nullable = false,length = 11)
     private String phone;       //폰번호
 
-    @Column(nullable = false, length = 8)
+    @Column(nullable = false,length = 8)
     private String birth; //생년월일
 
     private double point;
 
-    private String imageFile = "1e1daeb3-7968-40d1-93f2-09b5ea794ae0.jpg"; //프로필 이미지
-    @Column(name = "last_login")
-    private LocalDateTime lastLogin; //마지막 로그인 시간
-
-    //성별
-    @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "enum('MALE','FEMALE')")
-    private GENDER gender;
+    private String image_file; //프로필 이미지
 
     //등급(첫 회원 가입 시 NUEBIE)
     @Enumerated(EnumType.STRING)
@@ -69,4 +59,4 @@ public class Member extends BaseEntity {
     private MEMBERSTATE memberState = MEMBERSTATE.ACTIVE;
 
 
-} //class
+    } //class

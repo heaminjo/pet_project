@@ -34,6 +34,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
     private final CustomUserDetailsService customUserDetailsService;
 
 
@@ -65,7 +66,6 @@ public class SecurityConfig {
         //      세션을 사용하지 않고 요청마다 JWT 토큰으로 인증
         return http.httpBasic(httpBasic -> httpBasic.disable()) // HTTP 기본 인증 비활성화
                 .formLogin(formLogin -> formLogin.disable()) // formLogin 비활성화
-
                 .logout(logout -> logout.disable()) // logout 비활성화
                 .csrf(csrf -> csrf.disable()) // CSRF 비활성화
                 .cors(cors -> {

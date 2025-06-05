@@ -20,7 +20,7 @@ public interface GoodsRepository extends JpaRepository<Goods, Long> {
     public void registerGoods(@Param("category_id") Long category_id, @Param("goods_name") String goods_name, //
                               @Param("price") int price, @Param("description") String description, //
                               @Param("goods_state") String goods_state, //
-                              @Param("image_file") String vvvvvvvvvvvvvimage_file, @Param("quantity") int quantity);
+                              @Param("image_file") String image_file, @Param("quantity") int quantity);
 
 
 }

@@ -61,11 +61,4 @@ public class AuthController {
         log.info("이메일 중복 체크 요청된 이메일=>" + email);
         return memberService.emailCheck(email);
     }
-
-    //로그인 기록
-    @PutMapping("/login/history")
-    public ResponseEntity<?> loginHisTory(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        log.info("로그인 기록 처리 실행");
-        return memberService.loginHistory(userDetails.getMember().getId());
-    }
 }

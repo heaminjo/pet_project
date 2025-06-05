@@ -39,12 +39,9 @@ public class CartServiceImpl implements CartService {
                         userDetails.getMember().getId()) //
                 .orElseThrow(() //
                         -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+
+
         List<CartResponseDTO> cartList = cartRepository.findCartListByUserId(member.getId());
-
-//        List<Cart> cartEntities = cartRepository.findCartListByUserId(member.getId());
-//        List<CartResponseDTO> cartList = cartEntities //
-//                .stream().map(cartMapper::toDto).collect(Collectors.toList());
-
         log.info("확인");
         log.info(cartList.toString());
         return ResponseEntity.status(HttpStatus.OK).body(cartList);

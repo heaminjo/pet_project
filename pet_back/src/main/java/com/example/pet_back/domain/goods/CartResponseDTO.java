@@ -1,15 +1,13 @@
 package com.example.pet_back.domain.goods;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
-public class CartResponseDTO extends GoodsResponseDTO {
+@Builder
+public class CartResponseDTO extends GoodsDTO {
 
     // Cart
     private Long member_id;

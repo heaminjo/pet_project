@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
@@ -55,17 +54,7 @@ public class Goods {
     @Column(nullable = false)
     private int quantity;
 
-    @Column(name = "reg_date", nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Column(nullable = false)
     private Date reg_date;
-
-    @Transient // SQL 구문처리시 제외시켜줌
-    private MultipartFile upload_img;
-
-    // 엔티티 persist() 되기 직전에 자동 호출되는 콜백 메서드
-    @PrePersist
-    protected void onCreate() {
-        this.reg_date = new Date(); // save 전 reg_date 오늘 날짜로 자동 세팅됨
-    }
 
 }
