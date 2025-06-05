@@ -37,7 +37,6 @@ public class CartController {
         log.info("** CartController => addToCart() 실행됨 **");
         log.info("goodsRequestDTO ID => " + dto.getGoods_id());
         log.info("goodsRequestDTO 수량 => " + dto.getQuantity());
-        dto.setQuantity(1);
         return cartService.addToCart(userDetails, dto);
     }
 

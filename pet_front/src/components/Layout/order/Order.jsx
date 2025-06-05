@@ -9,10 +9,6 @@ export default function Order() {
   const { goods } = location.state || {};
   const prodImage = process.env.PUBLIC_URL + '/images/pic2.png';
   const [buyQuantity, setBuyQuantity] = useState(1);
-  // const options = {
-  //   ...goods,
-
-  // };
 
   const pay = async (goods) => {
     alert(`결제페이지 이동 성공, 상품ID:  => ${goods.goods_id}`);
@@ -52,25 +48,24 @@ export default function Order() {
             </div>
             <hr />
             <div className='seller'>
-              <img src={prodImage} alt='상품이미지' className='sellerimg' />
-              판매자 &nbsp;&nbsp; ROYAL CANIN
+              <b>
+                판매자 &nbsp;&nbsp; <img src={prodImage} alt='상품이미지' className='sellerimg' /> &nbsp;&nbsp; ROYAL CANIN
+              </b>
             </div>
             <div>
-              <label>수량: </label>
-              <input type='number' min={1} max={goods.quantity} value={buyQuantity} onChange={(e) => setBuyQuantity(Number(e.target.value))} />
+              <b>
+                <label>구매가능 수량(재고)</label>
+                &nbsp;&nbsp; <span style={{ color: 'red', fontWeight: 'bold' }}>{goods.quantity}</span>
+              </b>
+            </div>
+            <div>
+              <b>
+                <label>구매 수량</label>&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type='number' min={1} max={goods.quantity} value={buyQuantity} onChange={(e) => setBuyQuantity(Number(e.target.value))} />
+              </b>
             </div>
             <br />
             <hr />
-            <select className='options'>
-              {/* {goods.map((q, idx) => ( // 1kg, 2kg, 등 수량 추가예정
-                <div key={idx} className={`{q.disabled ? 'disabled': : ''}`} onClick={() => {}}>
-                  <option>
-                    {q.price}원
-                  </option>
-                </div>
-              ))} */}
-            </select>
-            <br />
             <br />
             <button onClick={() => addToCart(goods)}>장바구니</button>&nbsp;&nbsp;
             <button onClick={() => pay(goods)}>바로구매</button>

@@ -75,7 +75,7 @@ public class GoodsController {
     }
 
     // 특정 고객이 한번이라도 주문한 적 있는 상품의 리스트
-    @GetMapping("/history")
+    @PostMapping("/orderinfo")
     public ResponseEntity<?> customerGoodsHistory(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody List<Long> orderIdList) {
         log.info("** GoodsController => customerGoodsHistory() 실행됨 **");
         return goodsService.customerGoodsHistory(userDetails, orderIdList);

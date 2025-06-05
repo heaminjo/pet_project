@@ -29,6 +29,10 @@ public class GoodsResponseDTO {
     private int quantity;
     private Date reg_date;
 
+    // 장바구니 수량
+    private int cart_quantity;
+
+
     // 생성자 - 상품리스트 출력용 (메인)
     public GoodsResponseDTO(Long category_id, String goods_name, int price, //
                             String description, GOODSSTATE goods_state, //

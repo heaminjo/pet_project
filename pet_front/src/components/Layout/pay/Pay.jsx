@@ -61,11 +61,19 @@ export default function Pay() {
     setPayment(e.target.value);
   };
 
+  // useEffect(() => {
+  //   console.log('goodsList:', goodsList);
+  //   memdetail();
+  //   setGoods(goodsList);
+  // }, [goodsList]);
+
   useEffect(() => {
     console.log('goodsList:', goodsList);
     memdetail();
-    setGoods(goodsList);
-  }, [goodsList]);
+    if (goodsList.length > 0) {
+      setGoods(goodsList);
+    }
+  }, []);
 
   return (
     <PayComp>

@@ -29,7 +29,7 @@ export default function Cart() {
     }));
   };
 
-  // 체크한 상품의 총금액 (quantityMap)
+  // 체크한 상품의 총금액 계산산 (quantityMap 이용)
   const getCheckedTotalPrice = () => {
     return goods.reduce((total, item, index) => {
       if (!checked[index]) return total; // 체크안된 상품 건너뜀 (누적X)
@@ -115,14 +115,17 @@ export default function Cart() {
                     <b>가격</b>&nbsp;&nbsp; {item.price}
                   </div>
                   <div>
-                    <b>구매가능 수량</b>&nbsp;&nbsp; {item.quantity}
+                    <b>최대 구매 가능 수량</b>&nbsp;&nbsp; {item.quantity}
                   </div>
                   <div>
-                    <b>수량</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <b>장바구니 수량 </b> &nbsp;&nbsp;{item.cart_quantity}
+                  </div>
+                  <div>
+                    <b>구매 수량 변경</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <button onClick={() => decrease(item.goods_id)} style={{ width: '20px', height: '20px' }}>
                       -
                     </button>
-                    &nbsp;&nbsp;&nbsp;<b style={{ color: 'red' }}>{quantityMap[item.goods_id] || 1}</b>&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;<b style={{ color: 'red' }}> {quantityMap[item.goods_id] || 1}</b>&nbsp;&nbsp;
                     <button onClick={() => increase(item.goods_id)} style={{ width: '20px', height: '20px' }}>
                       +
                     </button>

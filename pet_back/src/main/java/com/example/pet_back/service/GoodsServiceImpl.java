@@ -1,9 +1,6 @@
 package com.example.pet_back.service;
 
-import com.example.pet_back.domain.goods.GoodsRequestDTO;
-import com.example.pet_back.domain.goods.GoodsResponseDTO;
-import com.example.pet_back.domain.goods.OrderResponseDTO;
-import com.example.pet_back.domain.goods.PayRequestDTO;
+import com.example.pet_back.domain.goods.*;
 import com.example.pet_back.entity.*;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.mapper.GoodsMapper;
@@ -208,7 +205,7 @@ public class GoodsServiceImpl implements GoodsService {
         return ResponseEntity.status(HttpStatus.OK).body(orderDtoList);
     }
 
-    // 특정 고객이 한번이라도 주문한 적 있는 상품의 리스트
+    // Order Detail 페이지 (order_id)로 주문한 상품의 오더정보 / 상품정보
     @Override
     public ResponseEntity<?> customerGoodsHistory(CustomUserDetails userDetails, List<Long> orderIdList) {
         // 1. 고객정보
@@ -216,11 +213,37 @@ public class GoodsServiceImpl implements GoodsService {
                         userDetails.getMember().getId()) //
                 .orElseThrow(() //
                         -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
-        // Order Id List 로 Goods 리스트 작성
+
+        // 2. OrderDetailResponseDTO (Goods / OrderDetail / Order)
+        // 2.1) Order 리스트[엔티티]
+        List<Orders> ordersList = orderRepository.findAllById(orderIdList);
+
+        // 2.2) Order Detail 리스트[엔티티] : Order 의 ID 이용하여
+        List<OrderDetail> orderDetailList = orderDetailRepository.findAllByOrderIdList(orderIdList);
+
+        // OrderDetailDTO SET
+        List<OrderDetailResponseDTO> orderDetailResponseDTOList = orderDetailList.stream() //
+                .map(detail -> OrderDetailResponseDTO.builder() //
+                        .order_detail_id(detail.getOrder_detail_id())
+                        .goods_id(detail.getGoods().getGoods_id())
+                        .order_id(detail.getOrders().getOrder_id())
+                        .goods_quantity(detail.getGoods_quantity())
+                        .goods_price(detail.getGoods_price())
+                        // Goods
+                        .goods_name(detail.getGoods().getGoods_name())
+                        .price(detail.getGoods_price())
+                        .description(detail.getGoods().getDescription())
+                        .goodsstate(detail.getGoods().getGoods_state())
+                        .image_file(detail.getGoods().getImage_file())
+                        // Orders
+                        .total_price(detail.getOrders().getTotal_price())
+                        .total_quantity(detail.getOrders().getTotal_quantity())
+                        .reg_date(detail.getOrders().getReg_date())
+                        .status(detail.getOrders().getStatus())
+                        .build()).collect(Collectors.toList());
 
 
-        List<Goods> goodsList = goodsRepository.findAllByUserId(member.getId());
-        return ResponseEntity.status(HttpStatus.OK).body(goodsList);
+        return ResponseEntity.status(HttpStatus.OK).body(orderDetailResponseDTOList);
     }
 
 

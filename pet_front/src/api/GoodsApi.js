@@ -41,12 +41,14 @@ const GoodsApi = {
     } catch (err) {}
   },
 
-  // 고객이 한번이라도 주문한 적이 있는 상품 리스트
+  // Order Detail 페이지 (order_id)로 주문한 상품의 오더정보 / 상품정보
   customerGoodsHistory: async (orderIds) => {
+    console.log('🔥 주문 ID 리스트:', orderIds);
+    alert('GoodsApi customerGoodsHistory');
     try {
-      const result = await instance.get('/goods/history', orderIds);
+      const result = await instance.post('/goods/orderinfo', orderIds);
       if (result.data != null) {
-        alert(`구매이력 상품 호출 완료 => ${JSON.stringify(result.data)}`);
+        console.log(`구매이력 상품 호출 완료 => ${JSON.stringify(result.data)}`);
         return result.data;
       }
     } catch (err) {}
