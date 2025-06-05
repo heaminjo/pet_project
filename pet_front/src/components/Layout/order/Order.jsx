@@ -8,14 +8,22 @@ export default function Order() {
   const location = useLocation();
   const { goods } = location.state || {};
   const prodImage = process.env.PUBLIC_URL + '/images/pic2.png';
+  const [buyQuantity, setBuyQuantity] = useState(1);
+  // const options = {
+  //   ...goods,
+
+  // };
 
   const pay = async (goods) => {
     alert(`결제페이지 이동 성공, 상품ID:  => ${goods.goods_id}`);
-    navigate('/user/pay', { state: { goods } }); // 여기서 전달
+    const goodsWithQuantity = { ...goods, quantity: buyQuantity };
+    navigate('/user/pay', { state: { goods: goodsWithQuantity } });
   };
 
   const addToCart = async (goods) => {
-    GoodsApi.addToCart(goods)
+    const goodsWithQuantity = { ...goods, quantity: buyQuantity };
+    alert(`addToCart => ${goodsWithQuantity.quantity}`);
+    GoodsApi.addToCart(goodsWithQuantity)
       .then((response) => {
         alert(`장바구니 담기 성공, 상품ID:  => ${response.goods_id}`);
         console.log(response);
@@ -46,6 +54,10 @@ export default function Order() {
             <div className='seller'>
               <img src={prodImage} alt='상품이미지' className='sellerimg' />
               판매자 &nbsp;&nbsp; ROYAL CANIN
+            </div>
+            <div>
+              <label>수량: </label>
+              <input type='number' min={1} max={goods.quantity} value={buyQuantity} onChange={(e) => setBuyQuantity(Number(e.target.value))} />
             </div>
             <br />
             <hr />

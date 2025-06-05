@@ -2,13 +2,11 @@ package com.example.pet_back.service;
 
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.domain.goods.PayRequestDTO;
-import com.example.pet_back.entity.OrderDetail;
 import com.example.pet_back.jwt.CustomUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
-import java.util.List;
 
 public interface GoodsService {
 
@@ -25,6 +23,8 @@ public interface GoodsService {
     ResponseEntity<?> payGoods(CustomUserDetails userDetails, PayRequestDTO dto);
 
     // 주문 리스트
-    ResponseEntity<?> orderList(CustomUserDetails userDetails, List<OrderDetail> orderDetailList);
+    ResponseEntity<?> orderList(CustomUserDetails userDetails);
 
+    // 특정 고객이 한번이라도 주문한 적 있는 상품의 리스트
+    public ResponseEntity<?> customerGoodsHistory(CustomUserDetails userDetails);
 }

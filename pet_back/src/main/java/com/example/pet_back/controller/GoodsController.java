@@ -2,7 +2,6 @@ package com.example.pet_back.controller;
 
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.domain.goods.PayRequestDTO;
-import com.example.pet_back.entity.OrderDetail;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.service.GoodsService;
 import com.example.pet_back.service.MemberService;
@@ -13,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Log4j2
 @RequiredArgsConstructor // private final만
@@ -64,14 +61,22 @@ public class GoodsController {
     public ResponseEntity<?> payGoods(@AuthenticationPrincipal CustomUserDetails userDetails, //
                                       @RequestBody PayRequestDTO dto) {
         log.info("** GoodsController => payGoods() 실행됨 **");
+        log.info("결제 user = " + userDetails.getMember().getEmail()); // 이게 null?
         return goodsService.payGoods(userDetails, dto);
     }
 
     // 주문 리스트
     @GetMapping("/orderlist")
-    public ResponseEntity<?> orderList(@AuthenticationPrincipal CustomUserDetails userDetails, //
-                                       @RequestBody List<OrderDetail> orderDetailList) {
-        return goodsService.orderList(userDetails, orderDetailList);
+    public ResponseEntity<?> orderList(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        log.info("** GoodsController => orderList() 실행됨 **");
+        return goodsService.orderList(userDetails);
+    }
+
+    // 특정 고객이 한번이라도 주문한 적 있는 상품의 리스트
+    @GetMapping("/history")
+    public ResponseEntity<?> customerGoodsHistory(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        log.info("** GoodsController => customerGoodsHistory() 실행됨 **");
+        return goodsService.customerGoodsHistory(userDetails);
     }
 
 

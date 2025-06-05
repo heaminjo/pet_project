@@ -8,7 +8,11 @@ export default function Pay() {
   const location = useLocation();
   const navigate = useNavigate();
   const [goods, setGoods] = useState([]);
-  const goodsList = location.state?.goods || [];
+
+  // const goodsList = location.state?.goods || []; // Order -> Pay 이동위해 변경 (rawGoods 추가)
+  const rawGoods = location.state?.goods;
+  const goodsList = Array.isArray(rawGoods) ? rawGoods : rawGoods ? [rawGoods] : []; // 단일 상품이 오더라도 강제로 배열로 감싸기
+
   const quantities = location.state?.quantity || [];
   const [payment, setPayment] = useState();
   const goodsImg = process.env.PUBLIC_URL + '/images/pic1.png';
@@ -27,7 +31,7 @@ export default function Pay() {
   // 사용자의 주소정보 (추가예정)
 
   // 총 구매가격
-  const totalPrice = goods.reduce((acc, item) => {
+  const totalPrice = goodsList.reduce((acc, item) => {
     const price = item.price || 0;
     const quantity = item.quantity || 1;
     return acc + price * quantity;
@@ -37,15 +41,15 @@ export default function Pay() {
 
   // 결제 로직 수행(BackEnd)
   const pay = async (goods, payment) => {
-    goods.quantity = quantities;
     const payload = {
       goodsList: goods,
       payment: payment,
     };
+    alert('pay 동작테스트');
     GoodsApi.pay(payload) // 여기가 호출
       .then((response) => {
         alert('GoodsApi.pay() 성공');
-        navigate('/user/orderdetail', { state: { orderList: response } });
+        navigate('/user/orderdetail');
       })
       .catch((err) => {
         alert('GoodsApi.pay() 에러');
@@ -61,7 +65,7 @@ export default function Pay() {
     console.log('goodsList:', goodsList);
     memdetail();
     setGoods(goodsList);
-  }, []);
+  }, [goodsList]);
 
   return (
     <PayComp>

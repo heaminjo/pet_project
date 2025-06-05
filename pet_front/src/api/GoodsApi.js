@@ -7,6 +7,7 @@ const GoodsApi = {
   // 장바구니 추가
   addToCart: async (goods) => {
     //alert(`장바구니 담기 => ${goods}`);
+
     console.log(`장바구니 담기 시도 => ${goods.goods_id}, 수량: ${goods.quantity}`);
     const result = await instance.post('/cart/add', goods);
     try {
@@ -24,17 +25,27 @@ const GoodsApi = {
   // 장바구니 출력 (완료)
   cartList: async () => {
     const result = await instance.get('/cart/list');
-    // alert(`GoodsApi의 cart 호출완료 => ${JSON.stringify(result.data)} `);
+    alert(`GoodsApi의 cartList 호출완료 => ${JSON.stringify(result.data)} `);
     return result.data;
   },
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상  품 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // 상품 리스트 출력 (메인) (완료)
+  // 전체 상품 리스트 출력 (메인) (완료)
   showGoods: async () => {
     try {
       const result = await instance.get('/goods/list');
       if (result.data != null) {
         alert(`상품 리스트 호출 완료 => ${JSON.stringify(result.data)}`);
+        return result.data;
+      }
+    } catch (err) {}
+  },
+  // 고객이 한번이라도 주문한 적이 있는 상품 리스트
+  customerGoodsHistory: async () => {
+    try {
+      const result = await instance.get('/goods/history');
+      if (result.data != null) {
+        alert(`구매이력 상품 호출 완료 => ${JSON.stringify(result.data)}`);
         return result.data;
       }
     } catch (err) {}
@@ -55,9 +66,7 @@ const GoodsApi = {
   },
 
   // 상품상세정보
-  goodsDetail: async (goods_id) => {
-
-  },
+  goodsDetail: async (goods_id) => {},
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 주  문 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 주문등록
@@ -91,7 +100,8 @@ const GoodsApi = {
     }
 
     return result.data;
-  }, // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    //console.log(JSON.stringify(payload, null, 2));
+  },
 
   // // 상품등록 (기존 axios 사용한 코드 - 예시)
   // regGoods: async (goods) => {

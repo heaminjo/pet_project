@@ -1,45 +1,64 @@
 import { useLocation } from 'react-router-dom';
 import OrderDetailComp from './OrderDetailStyle';
 import GoodsApi from '../../../api/GoodsApi';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function OrderDetail() {
   const location = useLocation();
   const prodImg = process.env.PUBLIC_URL + '/images/pic1.png';
-  const orderList = location.state?.orderList || [];
+  const [orders, setOrders] = useState([]);
+  const [goods, setGoods] = useState([]);
 
-  const goodsList = (orderList) => {
+  // OrderResponseDTO List
+  const orderList = () => {
     // 회원이 주문한 전체내역 orderList
-    //const goodsIds = orderList.map((item) => item.goods_id);
-    GoodsApi.orderList(orderList);
+    GoodsApi.orderList() //
+      .then((response) => {
+        alert(`GoodsApi.orderList() 성공`);
+        setOrders(response);
+      }) //
+      .catch((err) => {
+        alert(`GoodsApi.orderList() 에러`);
+      });
+  };
+
+  // Goods List : 고객이 주문한 적 있는 상품 리스트
+  const goodsList = () => {
+    GoodsApi.customerGoodsHistory()
+      .then((response) => {
+        alert(`GoodsApi.customerGoodsHistory() 성공`);
+        setGoods(response);
+      }) //
+      .catch((err) => {
+        alert(`GoodsApi.customerGoodsHistory() 에러`);
+      });
   };
 
   useEffect(() => {
-    alert('orderList => ${orderList.data}');
-    goodsList(orderList);
+    orderList();
   }, []);
 
   return (
     <OrderDetailComp>
       <div className='container'>
         <h2>주문내역 페이지</h2>
-        {orderList.map((item, index) => {
+
+        {orders.map((item, index) => {
           <div key={index}>
-            <div className='ordertitle'>2025. 5. 21 주문</div>
+            <div className='ordertitle'>{item.reg_date} 주문</div>
             <div className='orderlist'>
               <div className='orderdesc'>
                 <img src={prodImg} alt='' className='prodimg' />
                 <br />
                 <div className='proddesc'>
                   <b>결제완료</b> <br />
-                  강아지 사료 프리미엄, 1개 <br />
-                  10000 원 / 1 개
+                  {item.goods_name} <br />
+                  {item.price} 원 / 1 개
                   <br />
                   <br />
                   <br />
                   <button>장바구니 담기</button>
                 </div>
-
                 <div className='btn'>
                   <button className='btn1'>배송조회</button>
                   <button className='btn2'>주문취소</button>

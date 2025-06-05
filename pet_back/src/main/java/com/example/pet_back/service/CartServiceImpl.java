@@ -95,12 +95,12 @@ public class CartServiceImpl implements CartService {
         Cart cart = Cart.builder() //
                 .goods_id(goods.getGoods_id()) //
                 .member_id(member.getId()) //
-                .quantity(goods.getQuantity()) //
+                .quantity(goodsRequestDTO.getQuantity()) //
                 .build();
 
         // 3. 수행
         // INSERT 수행
-        if (cartRepository.addToCart(member.getId(), goods.getGoods_id(), goods.getQuantity()) > 0) {
+        if (cartRepository.addToCart(member.getId(), goods.getGoods_id(), goodsRequestDTO.getQuantity()) > 0) {
             GoodsResponseDTO goodsResponseDTO = goodsMapper.toDto(goods);
             return ResponseEntity.status(HttpStatus.OK).body(goodsResponseDTO);
         } else {

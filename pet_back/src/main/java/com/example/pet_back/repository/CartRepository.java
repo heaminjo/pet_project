@@ -26,5 +26,11 @@ public interface CartRepository extends JpaRepository<Cart, CartId> {
             ":member_id, :goods_id, :quantity) ON DUPLICATE KEY UPDATE quantity=quantity+:quantity")
     public int addToCart(@Param("member_id") Long member_id, @Param("goods_id") Long goods_id, @Param("quantity") int quantity);
 
+    // Goods id 로 장바구니 삭제 (결제완료후)
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value = "DELETE FROM Cart WHERE goods_id = :goods_id")
+    public void deleteByGoodsId(@Param("goods_id") Long goods_id);
+
 
 }
