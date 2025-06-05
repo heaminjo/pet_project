@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-05-30T10:43:54+0900",
+    date = "2025-06-05T10:00:40+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.12 (Oracle Corporation)"
 )
 @Component
@@ -33,6 +33,7 @@ public class GoodsMapperImpl implements GoodsMapper {
         goods.image_file( dto.getImage_file() );
         goods.quantity( dto.getQuantity() );
         goods.reg_date( dto.getReg_date() );
+        goods.upload_img( dto.getUpload_img() );
 
         return goods.build();
     }
@@ -43,7 +44,7 @@ public class GoodsMapperImpl implements GoodsMapper {
             return null;
         }
 
-        GoodsResponseDTO.GoodsResponseDTOBuilder goodsResponseDTO = GoodsResponseDTO.builder();
+        GoodsResponseDTO.GoodsResponseDTOBuilder<?, ?> goodsResponseDTO = GoodsResponseDTO.builder();
 
         goodsResponseDTO.goods_id( goods.getGoods_id() );
         goodsResponseDTO.category_id( goods.getCategory_id() );

@@ -25,6 +25,10 @@ import WithDrawalComplete from "./page/main/WithDrawalComplete";
 import UserStatistics from "./components/admin/UserStatistics";
 import Statistice from "./page/admin/StatisticsPage";
 import StatisticsPage from "./page/admin/StatisticsPage";
+import BoardInsertForm from "./components/Board/BoardInsertForm";
+import BoardDetail from "./components/Board/BoardDetail";
+import BoardEditForm from "./components/Board/BoardEditForm";
+
 
 //컨텍스트(useContext)
 //로그인 여부부를 전역변수로 뿌리기 위한것

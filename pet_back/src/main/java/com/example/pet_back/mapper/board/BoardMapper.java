@@ -24,6 +24,9 @@ public interface BoardMapper {
     //** 게시글 내용
     BoardDTO selectOne(@Param("category") String category, @Param("board_id") int board_id);
 
+    //** 조회수 증가
+    int increaseViews(@Param("category") String category, @Param("board_id") int board_id);
+
     //** 게시글 등록
     int insertBoard(BoardDTO dto);
 

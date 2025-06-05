@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-05-30T10:43:54+0900",
+    date = "2025-06-05T10:00:40+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.12 (Oracle Corporation)"
 )
 @Component
@@ -34,7 +34,7 @@ public class CartMapperImpl implements CartMapper {
             return null;
         }
 
-        CartResponseDTO.CartResponseDTOBuilder cartResponseDTO = CartResponseDTO.builder();
+        CartResponseDTO.CartResponseDTOBuilder<?, ?> cartResponseDTO = CartResponseDTO.builder();
 
         cartResponseDTO.member_id( cart.getMember_id() );
         cartResponseDTO.goods_id( cart.getGoods_id() );

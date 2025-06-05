@@ -69,7 +69,7 @@ export default function BoardInsertForm() {
               <option value="notice">공지사항</option>
               <option value="community">커뮤니티</option>
               <option value="faq">FAQ</option>
-              <option value="board">게시판</option>
+              <option value="free">게시판</option>
               {/* 필요시 더 추가 */}
             </select>
           </div>
