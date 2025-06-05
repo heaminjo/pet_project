@@ -96,7 +96,7 @@ export default function MypageMenu() {
           <p className="menu_title">내 게시물</p>
           <ul>
             <li>
-              <span>내 게시물 목록</span>
+              <span onClick={() => navigate("/user/mypage/myboardlist")}>내 게시물 목록</span>
             </li>
             <li>
               <span>북마크</span>
