@@ -40,10 +40,11 @@ const GoodsApi = {
       }
     } catch (err) {}
   },
+
   // 고객이 한번이라도 주문한 적이 있는 상품 리스트
-  customerGoodsHistory: async () => {
+  customerGoodsHistory: async (orderIds) => {
     try {
-      const result = await instance.get('/goods/history');
+      const result = await instance.get('/goods/history', orderIds);
       if (result.data != null) {
         alert(`구매이력 상품 호출 완료 => ${JSON.stringify(result.data)}`);
         return result.data;
@@ -77,7 +78,7 @@ const GoodsApi = {
 
   // 주문리스트
   orderList: async () => {
-    const result = await instance.get('/goods/orderlist');
+    const result = await instance.get('/goods/ordered');
     return result.data;
   },
 

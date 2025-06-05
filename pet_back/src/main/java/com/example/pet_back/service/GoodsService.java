@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface GoodsService {
 
@@ -26,5 +27,5 @@ public interface GoodsService {
     ResponseEntity<?> orderList(CustomUserDetails userDetails);
 
     // 특정 고객이 한번이라도 주문한 적 있는 상품의 리스트
-    public ResponseEntity<?> customerGoodsHistory(CustomUserDetails userDetails);
+    public ResponseEntity<?> customerGoodsHistory(CustomUserDetails userDetails, List<Long> orderIdList);
 }

@@ -198,23 +198,27 @@ public class GoodsServiceImpl implements GoodsService {
                         userDetails.getMember().getId()) //
                 .orElseThrow(() //
                         -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
-
         // 2. OrderDetail 테이블 조회 : member_id & reg_date
         // order_detail에서 최신 날짜 DESC 정렬 (+orders, goods)
         List<Orders> orderList = orderRepository.findAllByUserId(member.getId());
         List<OrderResponseDTO> orderDtoList = orderMapper.toDtoList(orderList); // order_detail, orders, goods
-
+        for (OrderResponseDTO o : orderDtoList) {
+            System.out.println(o.getOrder_id());
+        }
         return ResponseEntity.status(HttpStatus.OK).body(orderDtoList);
     }
 
     // 특정 고객이 한번이라도 주문한 적 있는 상품의 리스트
     @Override
-    public ResponseEntity<?> customerGoodsHistory(CustomUserDetails userDetails) {
+    public ResponseEntity<?> customerGoodsHistory(CustomUserDetails userDetails, List<Long> orderIdList) {
         // 1. 고객정보
         Member member = memberRepository.findById( //
                         userDetails.getMember().getId()) //
                 .orElseThrow(() //
                         -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+        // Order Id List 로 Goods 리스트 작성
+
+
         List<Goods> goodsList = goodsRepository.findAllByUserId(member.getId());
         return ResponseEntity.status(HttpStatus.OK).body(goodsList);
     }

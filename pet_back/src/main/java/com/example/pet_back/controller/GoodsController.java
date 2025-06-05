@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Log4j2
 @RequiredArgsConstructor // private final만
 @RequestMapping(value = "/goods")
@@ -66,7 +68,7 @@ public class GoodsController {
     }
 
     // 주문 리스트
-    @GetMapping("/orderlist")
+    @GetMapping("/ordered")
     public ResponseEntity<?> orderList(@AuthenticationPrincipal CustomUserDetails userDetails) {
         log.info("** GoodsController => orderList() 실행됨 **");
         return goodsService.orderList(userDetails);
@@ -74,9 +76,9 @@ public class GoodsController {
 
     // 특정 고객이 한번이라도 주문한 적 있는 상품의 리스트
     @GetMapping("/history")
-    public ResponseEntity<?> customerGoodsHistory(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<?> customerGoodsHistory(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody List<Long> orderIdList) {
         log.info("** GoodsController => customerGoodsHistory() 실행됨 **");
-        return goodsService.customerGoodsHistory(userDetails);
+        return goodsService.customerGoodsHistory(userDetails, orderIdList);
     }
 
 

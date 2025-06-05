@@ -4,6 +4,8 @@ import com.example.pet_back.constant.ORDERSTATE;
 import com.example.pet_back.constant.PAYMENT;
 import com.example.pet_back.domain.goods.OrderRequestDTO;
 import com.example.pet_back.domain.goods.OrderResponseDTO;
+import com.example.pet_back.entity.Delivery;
+import com.example.pet_back.entity.Member;
 import com.example.pet_back.entity.Orders;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-06-04T18:11:47+0900",
+    date = "2025-06-05T12:24:11+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.11 (Oracle Corporation)"
 )
 @Component
@@ -41,13 +43,15 @@ public class OrderMapperImpl implements OrderMapper {
     }
 
     @Override
-    public OrderResponseDTO toEntity(Orders orders) {
+    public OrderResponseDTO toDto(Orders orders) {
         if ( orders == null ) {
             return null;
         }
 
         OrderResponseDTO.OrderResponseDTOBuilder orderResponseDTO = OrderResponseDTO.builder();
 
+        orderResponseDTO.member_id( ordersMemberId( orders ) );
+        orderResponseDTO.delivery_id( ordersDeliveryDelivery_id( orders ) );
         orderResponseDTO.order_id( orders.getOrder_id() );
         orderResponseDTO.total_quantity( orders.getTotal_quantity() );
         orderResponseDTO.total_price( orders.getTotal_price() );
@@ -84,9 +88,39 @@ public class OrderMapperImpl implements OrderMapper {
 
         List<OrderResponseDTO> list = new ArrayList<OrderResponseDTO>( orderList.size() );
         for ( Orders orders : orderList ) {
-            list.add( toEntity( orders ) );
+            list.add( toDto( orders ) );
         }
 
         return list;
+    }
+
+    private Long ordersMemberId(Orders orders) {
+        if ( orders == null ) {
+            return null;
+        }
+        Member member = orders.getMember();
+        if ( member == null ) {
+            return null;
+        }
+        Long id = member.getId();
+        if ( id == null ) {
+            return null;
+        }
+        return id;
+    }
+
+    private Long ordersDeliveryDelivery_id(Orders orders) {
+        if ( orders == null ) {
+            return null;
+        }
+        Delivery delivery = orders.getDelivery();
+        if ( delivery == null ) {
+            return null;
+        }
+        Long delivery_id = delivery.getDelivery_id();
+        if ( delivery_id == null ) {
+            return null;
+        }
+        return delivery_id;
     }
 }
