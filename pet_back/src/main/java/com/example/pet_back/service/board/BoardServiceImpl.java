@@ -16,6 +16,7 @@ public class BoardServiceImpl implements BoardService {
 
     private final BoardMapper boardMapper;
 
+    //** 게시글 목록
     @Override
     public PageResponseDTO<BoardDTO> selectList(String category, PageRequestDTO pageRequestDTO, String searchType, String searchKeyword) {
         //List<BoardDTO> list = boardMapper.selectList(category);
@@ -37,22 +38,32 @@ public class BoardServiceImpl implements BoardService {
                 .build();
     }
 
-    //test
+    //** 게시글 내용
     @Override
     public BoardDTO selectOne(String category, int board_id) {
         return boardMapper.selectOne(category, board_id);
     }
 
+    //** 조회수 증가
+    @Override
+    public int increaseViews(String category, int board_id) {
+        return boardMapper.increaseViews(category, board_id);
+    }
+
+
+    //** 게시글 등록
     @Override
     public int insertBoard(BoardDTO dto) {
         return boardMapper.insertBoard(dto);
     }
 
+    //** 게시글 수정
     @Override
     public int updateBoard(BoardDTO dto) {
         return boardMapper.updateBoard(dto);
     }
 
+    //** 게시글 삭제
     @Override
     public int deleteBoard(int board_id) {
         return boardMapper.deleteBoard(board_id);

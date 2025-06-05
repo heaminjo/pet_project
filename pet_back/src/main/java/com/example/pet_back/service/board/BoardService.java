@@ -13,6 +13,9 @@ public interface BoardService {
     //** 게시글 내용
     BoardDTO selectOne(String category, int board_id);
 
+    //** 조회수 증가
+    int increaseViews(String category, int board_id);
+
     //** 게시글 등록
     int insertBoard(BoardDTO dto);
 

@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.pet_back.mapper.board.BoardMapper">
 
-    <!-- ** selectList -->
+    <!-- ** selectList 게시글 목록 -->
     <select id="selectListPaging" resultType="com.example.pet_back.domain.board.BoardDTO">
         select b.board_id, b.title, m.name, b.views, b.reg_date
         from board b left join member m on b.member_id=m.member_id
@@ -25,6 +25,7 @@
         limit #{size} offset #{offset}
     </select>
 
+    <!-- ** 페이징을 위한 목록 수 카운트-->
     <select id="countByCategory" resultType="long">
         select count(*)
         from board b
@@ -45,7 +46,7 @@
         </if>
     </select>
 
-    <!-- ** selectOne -->
+    <!-- ** selectOne 게시글 내용 -->
     <!--    <select id="selectOne" resultType="com.example.pet_back.domain.board.BoardDTO">-->
     <!--        select * from board where board_id=#{board_id}-->
     <!--    </select>-->
@@ -57,7 +58,15 @@
         <!-- 추후에 로그인 기능 합친 후 #{member_id}로 변경 -->
     </select>
 
+    <!-- ** 게시글 조회수 증가-->
+    <update id="increaseViews" parameterType="map">
+        UPDATE board SET
+        views = views + 1
+        where category = #{category} AND board_id = #{board_id}
+    </update>
 
+
+    <!-- ** 게시글 등록-->
     <insert id="insertBoard" parameterType="com.example.pet_back.domain.board.BoardDTO"
             useGeneratedKeys="true" keyProperty="board_id">
         insert into board(member_id, category, title, content, views, reg_date)
@@ -65,12 +74,12 @@
     </insert>
 
 
-    <!-- update-->
+    <!-- update 게시글 수정 -->
     <update id="updateBoard" parameterType="com.example.pet_back.domain.board.BoardDTO">
         UPDATE board SET title = #{title}, content = #{content} WHERE board_id = #{board_id}
     </update>
 
-    <!-- ** delete -->
+    <!-- ** delete 게시글 삭제 -->
     <delete id="deleteBoard" parameterType="int">
         delete from board where board_id=#{board_id}
     </delete>

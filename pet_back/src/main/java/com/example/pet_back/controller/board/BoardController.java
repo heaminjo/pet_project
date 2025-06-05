@@ -50,6 +50,8 @@ public class BoardController {
     public ResponseEntity<?> selectOne(@PathVariable("board_id") int board_id,
                                        @PathVariable("category") String category) {
 
+        boardService.increaseViews(category, board_id);
+
         BoardDTO dto = boardService.selectOne(category, board_id);
 
         if (dto != null) {
