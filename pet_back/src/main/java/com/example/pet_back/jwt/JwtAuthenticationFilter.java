@@ -42,37 +42,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         try {
-            //request에서 토큰 가져오기
+            //request에서 토큰 가져오기 (header에서 가져온다.
             String token = getToken(request);
-
-            log.info("토큰 정보 확인 => " + token);
 
             //토큰이 존재할 경우
             if (token != null && !token.equalsIgnoreCase("null")) {
 
-                log.info("토큰 있음");
+                log.info("토큰 존재 => " + token);
 
                 //토큰 검증 , claims 가져오기
                 Map<String, Object> claims = tokenProvider.validateToken(token, response);
 
                 if (claims == null) {
-                    log.info("만료된 토큰");
+                    log.info("만료된 토큰입니다. RefreshToken을 통해 다시 재 발급합니다.");
                     return;
                 }
-                log.info("토큰 Claims 사용자정보 만료시간 => " + claims);
 
                 //토큰에 사용자 정보(claims)에서 userId를 가져온다
                 Object idStr = claims.get("sub");
                 Long userId = Long.parseLong((String) idStr);
-                log.info("재발급 userId " + userId);
+
                 //유저 권한 가져오기(USER or ADMIN)
                 String role = (String) claims.get("role");
                 String authority = role.startsWith("ROLE_") ? role : "ROLE_" + role;
-                log.info("cliams role은 => " + role);
+
                 //유저 정보를 가져온다.
                 CustomUserDetails userDetails = customUserDetailsService.loadUserById(userId);
 
-                log.info("userDetails" + userDetails.getMember().getId());
+                log.info("유저 id = " + userId + "/유저 권한 : " + role);
+
                 //인증 객체 수동 생성
                 //AbstractAuthenticationToken 인증을 구현한 클래스
                 //유저의 정보와 권한이 들어간다.

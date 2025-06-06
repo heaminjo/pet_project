@@ -1,5 +1,6 @@
 package com.example.pet_back.service;
 
+import com.example.pet_back.domain.admin.GradeStatisticsDTO;
 import com.example.pet_back.domain.admin.MemberStatisticsDTO;
 import com.example.pet_back.domain.admin.UserStateUpdateDTO;
 import com.example.pet_back.domain.member.MemberResponseDTO;
@@ -19,4 +20,7 @@ public interface AdminService {
 
     //회원 통계
     public MemberStatisticsDTO memberStatistics();
+
+    //등급 통계
+    public GradeStatisticsDTO gradeStatistics();
 }

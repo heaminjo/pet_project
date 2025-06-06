@@ -1,5 +1,6 @@
 package com.example.pet_back.controller;
 
+import com.example.pet_back.domain.admin.GradeStatisticsDTO;
 import com.example.pet_back.domain.admin.MemberStatisticsDTO;
 import com.example.pet_back.domain.admin.UserStateUpdateDTO;
 import com.example.pet_back.domain.member.MemberResponseDTO;
@@ -49,8 +50,14 @@ public class AdminController {
         return adminService.userStateUpdate(dto);
     }
 
+    //통계
     @GetMapping("/statistics")
     public ResponseEntity<MemberStatisticsDTO> memberStatistics() {
         return ResponseEntity.ok(adminService.memberStatistics());
+    }
+
+    @GetMapping("/statistics/grade")
+    public ResponseEntity<GradeStatisticsDTO> gradeStatistics() {
+        return ResponseEntity.ok(adminService.gradeStatistics());
     }
 }

@@ -44,5 +44,11 @@ const AdminApi = {
     const result = await instance.get(`${KH_DOMAIN}/admin/statistics`);
     return result.data;
   },
+
+  //등급 통계
+  getGradeStatistics: async () => {
+    const result = await instance.get(`${KH_DOMAIN}/admin/statistics/grade`);
+    return result.data;
+  },
 };
 export default AdminApi;

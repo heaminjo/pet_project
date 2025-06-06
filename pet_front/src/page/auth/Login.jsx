@@ -52,7 +52,8 @@ export default function Login() {
       localStorage.setItem("role", result.data.role);
       //전역변수에 로그인 여부 저장
       setIsLogin(true);
-      navigate(redirectTo);
+      MemberApi.lastLogin();
+      navigate("/");
     } else {
       alert("로그인 실패");
     }

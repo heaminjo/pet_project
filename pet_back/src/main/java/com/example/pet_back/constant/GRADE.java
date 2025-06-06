@@ -1,11 +1,11 @@
 package com.example.pet_back.constant;
 
 public enum GRADE {
-    NEWBIE("새싹 집사"),
-    BEGINNER("초보 집사"),
-    INTERMEDIATE("중급 집사"),
-    EXPERT("프로 집사"),
-    MASTER("펫 마스터");
+    NEWBIE("새싹회원"),
+    BLOSSOM("초급회원"),
+    BREEZE("중급회원"),
+    FLAME("상급회원"),
+    AURORA("프리미엄 회원");
 
 
     private final String gradeName;
