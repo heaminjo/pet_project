@@ -35,25 +35,36 @@ export default function UserGrade() {
   }, []);
   return (
     <UserGradeComp>
+      <h2>등급별 회원 통계</h2>
       <div className="grade_intro">
         <div className="chart">
           <PieRing data={gradeData} COLORS={COLORS} />
         </div>
         <ul className="line">
           <li id="grade01">
-            <span>새싹회원</span>
+            <span>
+              새싹회원 <strong>{gradeData[0]?.value}명</strong>
+            </span>
           </li>
           <li id="grade02">
-            <span>초급회원</span>
+            <span>
+              초급회원 <strong>{gradeData[1]?.value}명</strong>
+            </span>
           </li>
           <li id="grade03">
-            <span>중급회원</span>
+            <span>
+              중급회원 <strong>{gradeData[2]?.value}명</strong>
+            </span>
           </li>
           <li id="grade04">
-            <span>상급회원</span>
+            <span>
+              상급회원 <strong>{gradeData[3]?.value}명</strong>
+            </span>
           </li>
           <li id="grade05">
-            <span>프리미엄회원</span>
+            <span>
+              프리미엄회원 <strong>{gradeData[4]?.value}명</strong>
+            </span>
           </li>
         </ul>
       </div>
@@ -61,6 +72,11 @@ export default function UserGrade() {
   );
 }
 const UserGradeComp = styled.div`
+  h2 {
+    margin-bottom: 20px;
+    color: #333;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5); /* 살짝 반사 느낌 */
+  }
   .grade_intro {
     width: 900px;
     position: relative;
@@ -90,9 +106,10 @@ const UserGradeComp = styled.div`
         box-shadow: 1px 1px 1px 1px #888;
         cursor: pointer;
         span {
+          color: #333; /* 어두운 회색 - 순수한 검정보다는 덜 부담스러움 */
+          font-weight: 500; /* 기본보다 약간 진하게 */
+          text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5); /* 살짝 반사 느낌 */
           font-weight: bold;
-          color: #fff;
-          text-shadow: 1px 1px 1px #000;
         }
       }
       #grade01 {
