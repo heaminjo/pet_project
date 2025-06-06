@@ -55,4 +55,18 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             "GROUP BY ds.dt\n" +
             "ORDER BY ds.dt;")
     public List<Object[]> userWeekJoin();
+
+
+    //등급 회원 통계
+    @Query(nativeQuery = true, value = "SELECT g.grade, COUNT(m.grade) AS member_count\n" +
+            "FROM (\n" +
+            "  SELECT 'NEWBIE' AS grade\n" +
+            "  UNION ALL SELECT 'BLOSSOM'\n" +
+            "  UNION ALL SELECT 'BREEZE'\n" +
+            "  UNION ALL SELECT 'FLAME'\n" +
+            "  UNION ALL SELECT 'AURORA'\n" +
+            ") g\n" +
+            "LEFT JOIN member m ON g.grade = m.grade\n" +
+            "GROUP BY g.grade;")
+    public List<Object[]> gradeStatistics();
 }

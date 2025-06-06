@@ -58,7 +58,7 @@ const boardInsertFormContainer = styled.div`
       font-weight: bold;
     }
 
-    .categorySelect {  
+    .categorySelect {
       width: 100%;
       font-size: 18px;
       padding: 10px 12px;

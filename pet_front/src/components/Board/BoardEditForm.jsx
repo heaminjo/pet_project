@@ -8,12 +8,11 @@ export default function BoardEditForm() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const location = useLocation();
-   // 카테고리 기본값 설정
+  // 카테고리 기본값 설정
   const navigate = useNavigate();
 
   // 기존 게시글 데이터 불러오기 (수정 폼 진입 시 1회)
   useEffect(() => {
-    
     axios
       .get(`/board/boardDetail/${category}/${board_id}`)
       .then((response) => {
@@ -29,18 +28,17 @@ export default function BoardEditForm() {
   // 수정 폼 제출
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    let data = { board_id, title, content};
+
+    let data = { board_id, title, content };
 
     try {
       await axios.put(`/board/updateboard/${board_id}`, data, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-        }
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
       });
       alert("게시글이 수정되었습니다.");
-      navigate(`/boardDetail/${category}/${board_id}`); 
-      
+      navigate(`/boardDetail/${category}/${board_id}`);
     } catch (err) {
       alert("게시글 수정에 실패했습니다.");
     }
@@ -68,13 +66,14 @@ export default function BoardEditForm() {
             />
           </div>
           <div className="categoryRow">
-            <label htmlFor="category" className="categoryLabel">게시판</label>
+            <label htmlFor="category" className="categoryLabel">
+              게시판
+            </label>
             <select
               id="category"
               name="category"
               className="categorySelect"
               value={category}
-              
               required
               disabled
             >

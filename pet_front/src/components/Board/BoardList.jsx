@@ -4,7 +4,6 @@ import BoardListStyle from "./BoardListStyle";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import PageNumber from "../util/PageNumber";
 
-
 export default function BoardList() {
   const { category } = useParams(); // URL 파라미터에서 카테고리 추출
   const [listData, setListData] = useState([]);
@@ -41,7 +40,7 @@ export default function BoardList() {
     notice: "/board/boardList/notice",
     community: "/board/boardList/community",
     faq: "/board/boardList/faq",
-    free: "/board/boardList/free"
+    free: "/board/boardList/free",
   };
 
   // 카테고리별 게시판 이름 매핑
@@ -49,10 +48,8 @@ export default function BoardList() {
     notice: "공지사항",
     community: "커뮤니티",
     faq: "문의/FAQ",
-    free: "자유게시판"
+    free: "자유게시판",
   };
-
-  
 
   useEffect(() => {
     // 카테고리가 없으면 기본 board로 설정
@@ -67,20 +64,20 @@ export default function BoardList() {
       .then((response) => {
         setListData(response.data.content || []);
         let temp = Math.floor(page / 3) * 3;
-        setPaging(prev => ({ 
+        setPaging((prev) => ({
           ...prev,
           page: response.data.page,
           size: response.data.size,
           totalElements: response.data.totalElements,
           totalPages: response.data.totalPages,
-          isPrev: response.data.prev,                 // javaBean 규약으로 인해 boolean type의 변수는 isPrev가 아닌 prev로 되어있음
+          isPrev: response.data.prev, // javaBean 규약으로 인해 boolean type의 변수는 isPrev가 아닌 prev로 되어있음
           isNext: response.data.next,
           start: temp,
-          end: Math.min(temp +3, response.data.totalPages),
+          end: Math.min(temp + 3, response.data.totalPages),
         }));
       })
       .catch((error) => setError(error));
-      // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [category, location.search]);
 
   if (error) {
@@ -105,18 +102,15 @@ export default function BoardList() {
     });
   };
 
-
-
-
   return (
     <BoardListStyle>
       <div className="boardListContainer">
         <div className="boardListMenuContainer">
           <ul className="boardListMenu">
             {/* 클릭하면 해당 카테고리로 이동 */}
-            <li onClick={()=>navigate("/boardList/notice")}>공지사항</li>
-            <li onClick={()=>navigate("/boardList/community")}>커뮤니티</li>
-            <li onClick={()=>navigate("/boardList/faq")}>Q&A</li>
+            <li onClick={() => navigate("/boardList/notice")}>공지사항</li>
+            <li onClick={() => navigate("/boardList/community")}>커뮤니티</li>
+            <li onClick={() => navigate("/boardList/faq")}>Q&A</li>
             <li onClick={() => navigate("/boardList/free")}>게시판</li>
           </ul>
         </div>
@@ -125,7 +119,7 @@ export default function BoardList() {
             <tr>
               <td colSpan={5} height={50}>
                 {/* 해당 게시판의 종류에 따라 게시판 이름 표시 */}
-                { categoryNameMap[category] || "자유게시판"}
+                {categoryNameMap[category] || "자유게시판"}
               </td>
             </tr>
             <tr style={{ backgroundColor: " #f8e776" }}>
@@ -137,27 +131,37 @@ export default function BoardList() {
             </tr>
           </thead>
           <tbody>
-            {(!listData || listData.length === 0) ? (
+            {!listData || listData.length === 0 ? (
               <tr>
-                <td colSpan={5} className="center" style={{ textAlign: "center", padding: "20px" }}>
+                <td
+                  colSpan={5}
+                  className="center"
+                  style={{ textAlign: "center", padding: "20px" }}
+                >
                   게시글이 없습니다.
                 </td>
               </tr>
             ) : (
-            listData.map((b, index) => (
-              <tr key={index}>
-                <td className="center">{paging.totalElements -(paging.page * paging.size) - index}</td>
-                <td
-                  className="center"
-                  onClick={() => navigate(`/boardDetail/${category}/${b.board_id}${location.search}`)}
-                  style={{ cursor: "pointer" }}
-                >
-                  {b.title}
-                </td>
-                <td className="center">{b.name}</td>
-                <td className="center">{b.views}</td>
-                <td className="center">{b.reg_date}</td>
-              </tr>
+              listData.map((b, index) => (
+                <tr key={index}>
+                  <td className="center">
+                    {paging.totalElements - paging.page * paging.size - index}
+                  </td>
+                  <td
+                    className="center"
+                    onClick={() =>
+                      navigate(
+                        `/boardDetail/${category}/${b.board_id}${location.search}`
+                      )
+                    }
+                    style={{ cursor: "pointer" }}
+                  >
+                    {b.title}
+                  </td>
+                  <td className="center">{b.name}</td>
+                  <td className="center">{b.views}</td>
+                  <td className="center">{b.reg_date}</td>
+                </tr>
               ))
             )}
             <tr>
@@ -165,8 +169,10 @@ export default function BoardList() {
                 <button
                   type="button"
                   onClick={() => {
-                    if (localStorage.getItem("accessToken")!=null) {
-                      navigate(`/boardInsertForm?category=${category || "board"}`);
+                    if (localStorage.getItem("accessToken") != null) {
+                      navigate(
+                        `/boardInsertForm?category=${category || "board"}`
+                      );
                     } else {
                       alert("로그인 해주세요");
                       navigate("/login?redirectTo=/boardInsertForm");
@@ -180,19 +186,27 @@ export default function BoardList() {
           </tbody>
         </table>
         <div className="pageNumber">
-          <PageNumber page={page} setPage={(newPage) => {
+          <PageNumber
+            page={page}
+            setPage={(newPage) => {
               const params = new URLSearchParams(location.search);
               params.set("page", newPage);
               navigate({
-              pathname: location.pathname,
-              search: params.toString(),
-            });
-          }} paging={paging} />
-        </div>  
+                pathname: location.pathname,
+                search: params.toString(),
+              });
+            }}
+            paging={paging}
+          />
+        </div>
         <form
           className="search-bar"
-          style={{ display: "flex", alignItems: "center", margin: "30px 0 0 0" }}
-          onSubmit={e => {
+          style={{
+            display: "flex",
+            alignItems: "center",
+            margin: "30px 0 0 0",
+          }}
+          onSubmit={(e) => {
             e.preventDefault(); // 폼 제출 시 새로고침 방지
             handleSearch();
           }}
@@ -200,7 +214,7 @@ export default function BoardList() {
           <div className="custom-select">
             <select
               value={searchType}
-              onChange={e => {
+              onChange={(e) => {
                 const params = new URLSearchParams(location.search);
                 params.set("searchType", e.target.value);
                 params.set("page", 0);
@@ -218,13 +232,15 @@ export default function BoardList() {
           <input
             type="text"
             value={inputKeyword}
-            onChange={e => {
+            onChange={(e) => {
               setInputKeyword(e.target.value);
             }}
             placeholder="검색어를 입력하세요"
           />
           <button type="submit">
-            <span role="img" aria-label="search">🔍</span>
+            <span role="img" aria-label="search">
+              🔍
+            </span>
           </button>
         </form>
       </div>

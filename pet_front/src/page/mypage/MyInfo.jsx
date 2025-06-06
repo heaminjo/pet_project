@@ -1,10 +1,16 @@
-import { Navigate, useOutlet, useOutletContext } from "react-router-dom";
+import {
+  Navigate,
+  useNavigate,
+  useOutlet,
+  useOutletContext,
+} from "react-router-dom";
 import MyInfoComp from "./MyInfoStyle";
 import { useEffect, useState } from "react";
 import MemberApi from "../../api/MemberApi";
 
 export default function MyInfo() {
   const [user, setUser] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     getLoginUser();
   }, []);
@@ -16,7 +22,6 @@ export default function MyInfo() {
       console.log(result);
     } catch (e) {
       //401 에러 시 로그아웃 처리리
-      localStorage.clear();
     }
   };
   return (

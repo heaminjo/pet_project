@@ -3,6 +3,7 @@ package com.example.pet_back.service;
 import com.example.pet_back.config.FileUploadProperties;
 import com.example.pet_back.constant.MEMBERSTATE;
 import com.example.pet_back.constant.ROLE;
+import com.example.pet_back.domain.admin.GradeStatisticsDTO;
 import com.example.pet_back.domain.admin.MemberStatisticsDTO;
 import com.example.pet_back.domain.admin.UserStateUpdateDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
@@ -117,5 +118,20 @@ public class AdminServiceImpl implements AdminService {
                 ));
 
         return new MemberStatisticsDTO(totalUser, 0L, todayUser, male, female, map);
+    }
+
+    @Override
+    public GradeStatisticsDTO gradeStatistics() {
+        List<Object[]> list = memberRepository.gradeStatistics();
+        //map으로 변환
+        Map<String, Long> map = list.stream().collect(Collectors.toMap(
+                row -> (String) row[0],
+                row -> ((Number) row[1]).longValue(),
+                (existing, replacement) -> existing,
+                LinkedHashMap::new
+        ));
+
+
+        return new GradeStatisticsDTO(map);
     }
 }
