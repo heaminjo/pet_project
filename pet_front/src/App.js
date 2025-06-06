@@ -50,7 +50,6 @@ function App() {
             <Route path="/" element={<Main />} />
             <Route path="/login" element={<Login />} />
             <Route path="/join" element={<Join />} />
-            <Route path="/kakao/login" element={<KakaoLogin />} />
             <Route path="user/mypage" element={<MyPage />}>
               <Route path="myinfo" element={<MyInfo />} />
               <Route path="myedit" element={<MyEdit />} />
