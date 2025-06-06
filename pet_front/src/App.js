@@ -31,7 +31,6 @@ import BoardInsertForm from "./components/Board/BoardInsertForm";
 import BoardEditForm from "./components/Board/BoardEditForm";
 import Error from "./page/main/Error";
 import UserGrade from "./page/admin/UserGrade";
-import KakaoLogin from "./page/main/KakaoLogin";
 
 //컨텍스트(useContext)
 //로그인 여부부를 전역변수로 뿌리기 위한것

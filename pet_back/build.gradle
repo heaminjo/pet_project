@@ -50,6 +50,8 @@ dependencies {
 
     //유효성 검사
     implementation 'jakarta.validation:jakarta.validation-api'
+
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
 }
 
 tasks.named('test') {
