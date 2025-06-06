@@ -68,4 +68,6 @@ public class AuthController {
         log.info("로그인 기록 처리 실행");
         return memberService.loginHistory(userDetails.getMember().getId());
     }
+
+
 }

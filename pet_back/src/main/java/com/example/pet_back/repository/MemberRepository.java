@@ -69,4 +69,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             "LEFT JOIN member m ON g.grade = m.grade\n" +
             "GROUP BY g.grade;")
     public List<Object[]> gradeStatistics();
+
+    //카카오 아이디 검사
+    public Optional<Member> findByKakaoId(Long kakaoId);
 }

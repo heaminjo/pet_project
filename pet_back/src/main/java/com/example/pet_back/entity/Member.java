@@ -25,19 +25,19 @@ public class Member extends BaseEntity {
     @Column(name = "member_id", nullable = false)
     private Long id;
 
-    @Column(nullable = false, length = 50, unique = true)
+    @Column(length = 50, unique = true)
     private String email;       //이메일
 
-    @Column(nullable = false, updatable = false, length = 100)
+    @Column(updatable = false, length = 100)
     private String password;    //비밀번호
 
-    @Column(nullable = false, length = 10)
+    @Column(length = 10)
     private String name;        //이름
 
-    @Column(nullable = false, length = 11)
+    @Column(length = 11)
     private String phone;       //폰번호
 
-    @Column(nullable = false, length = 8)
+    @Column(length = 8)
     private String birth; //생년월일
 
     private double point;
@@ -68,5 +68,15 @@ public class Member extends BaseEntity {
     @Builder.Default
     private MEMBERSTATE memberState = MEMBERSTATE.ACTIVE;
 
+    private Long kakaoId;
 
+    //카카오로 회원가입
+    public Member(Long kakaoId, String name, String imageFile) {
+        this.kakaoId = kakaoId;
+        this.name = name;
+        this.imageFile = imageFile;
+        this.role = ROLE.USER;
+        this.grade = GRADE.NEWBIE;
+        this.memberState = MEMBERSTATE.ACTIVE;
+    }
 } //class

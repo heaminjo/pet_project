@@ -85,5 +85,9 @@ const MemberApi = {
     const result = await instance.put(`${KH_DOMAIN}/auth/login/history`);
     return result.data;
   },
+  kakaoLogin: async (code) => {
+    const result = await axios.get(`${KH_DOMAIN}/kakao/login?code=${code}`);
+    return result.data;
+  },
 };
 export default MemberApi;

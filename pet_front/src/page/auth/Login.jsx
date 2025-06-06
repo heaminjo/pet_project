@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import MemberApi from "../../api/MemberApi";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { PetContext } from "../../App";
 export default function Login() {
   const { setIsLogin } = useContext(PetContext);
@@ -13,6 +13,41 @@ export default function Login() {
   // 쿼리스트링에서 redirectTo 추출
   const params = new URLSearchParams(location.search);
   const redirectTo = params.get("redirectTo") || "/"; // 기본값은 홈으로 설정
+
+  const REST_API_KEY = "f61e8c06e81e7134bf354ceb1c687438";
+
+  useEffect(() => {
+    if (window.Kakao && !window.Kakao.isInitialized()) {
+      window.Kakao.init(REST_API_KEY);
+      console.log("✅ Kakao SDK Initialized");
+    }
+
+    //코드 받아왔는지 검사
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+
+    if (!code) return;
+    else {
+      kakaoLogin(code);
+    }
+  }, []);
+
+  //카카오 로그인
+  const kakaoLogin = async (code) => {
+    const result = await MemberApi.kakaoLogin(code);
+    if (result.success) {
+      alert("로그인 성공!");
+      localStorage.setItem("loginName", result.data.memberName);
+      localStorage.setItem("accessToken", result.data.accessToken);
+      localStorage.setItem("role", result.data.role);
+      //전역변수에 로그인 여부 저장
+      setIsLogin(true);
+      MemberApi.lastLogin();
+      navigate("/");
+    } else {
+      alert("로그인 실패");
+    }
+  };
 
   //유효성 조건(yup)
   const schema = yup.object({
@@ -58,6 +93,13 @@ export default function Login() {
       alert("로그인 실패");
     }
   };
+
+  //카카오에 인가 코드를 발급받아서 다시 /login으로 온다.
+  const kakaoCode = async () => {
+    window.Kakao.Auth.authorize({
+      redirectUri: "http://localhost:3000/login", //
+    });
+  };
   return (
     <LoginComp>
       <div className="login_inner">
@@ -86,7 +128,15 @@ export default function Login() {
                 )}
               </li>
             </ul>
-            <button type="submit">로그인</button>
+            <div className="login_btn">
+              <button type="submit">로그인</button>
+              <button onClick={() => kakaoCode()}>
+                <img
+                  src="http://localhost:3000/uploads/kakao_login_medium_wide.png"
+                  alt="카카오 로그인 버튼"
+                />
+              </button>
+            </div>
           </form>
         </div>
       </div>
