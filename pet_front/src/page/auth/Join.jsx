@@ -11,7 +11,7 @@ export default function Join() {
   const emailRef = useRef(null);
   const btnRef = useRef(null);
   const [popup, setPopup] = useState(false); //우편번호 팝업
-  const location = useLocation(); // 회원의 상태 확인
+  const location = useLocation();
 
   //유효성 조건(yup)
   const schema = yup.object({
@@ -21,20 +21,31 @@ export default function Join() {
       .required("필수 입력입니다."),
     password: yup
       .string()
-      .required("필수 입력입니다.")
+      .when("$isKakao", {
+        is: false,
+        then: (schema) => schema.required("비밀번호는 필수입니다."),
+        otherwise: (schema) => schema.notRequired(),
+      })
       .matches(
         /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?/~`\-=|\\]).{10,16}$/,
         "10~16자 대소문자+영문+특수 기호로 조합해주세요."
       ),
 
-    password2: yup
-      .string()
-      .oneOf([yup.ref("password")], "비밀번호가 일치하지 않습니다.")
-      .required("비밀번호 확인은 필수 입니다."),
-
+    password2: yup.string().when("$isKakao", {
+      is: false,
+      then: (schema) =>
+        schema
+          .required("비밀번호 확인은 필수입니다.")
+          .oneOf([yup.ref("password")], "비밀번호가 일치하지 않습니다."),
+      otherwise: (schema) => schema.notRequired(),
+    }),
     name: yup
       .string()
-      .required("필수 입력입니다")
+      .when("$isKakao", {
+        is: false,
+        then: (schema) => schema.required("이름은은 필수입니다."),
+        otherwise: (schema) => schema.notRequired(),
+      })
       .matches(/^[가-힣]*$/, "한글로만 입력해주세요.")
       .max(4, "4자 이내로 입력해주세요."),
     birth: yup
@@ -64,6 +75,7 @@ export default function Join() {
     defaultValues: {
       gender: "MALE",
     },
+    context: { isKakao: location.kakaoMember },
   });
 
   //중복버튼 이메일 유효성 검사사
@@ -93,10 +105,15 @@ export default function Join() {
   //회원 가입 클릭 시 유효성 검사 및 이메일 체크
   //통과 시 회원가입 진행
   const onClickSubmit = () => {
+    console.log("클릭");
     if (!isEmailCheck) {
       alert("중복 검사는 필수 입니다.");
       btnRef.current.focus();
+    } else if (location.state?.kakao) {
+      //임시회원인 경우 정보 저장 API 호출
+      socialUpdate();
     } else {
+      //회원가입 API 호출출
       saveMember();
     }
   };
@@ -114,7 +131,6 @@ export default function Join() {
       address2: watch("address2"),
       addressZip: watch("addressZip"),
     };
-
     const result = await MemberApi.join(newUser);
     console.log(result.success);
     if (result.success) {
@@ -124,6 +140,28 @@ export default function Join() {
     }
     console.log("회원가입 유저 정보 확인" + newUser.email);
   };
+
+  //카카오 유저 정보 저장
+  const socialUpdate = async () => {
+    console.log("소셜");
+    const newUser = {
+      email: watch("email"),
+      birth: watch("birth"),
+      phone: watch("phone"),
+      gender: watch("gender"),
+      address1: watch("address1"),
+      address2: watch("address2"),
+      addressZip: watch("addressZip"),
+    };
+    const result = await MemberApi.socialUpdate(newUser);
+    console.log(result.message);
+    if (result.success) {
+      alert("회원가입이 모두 완료되었습니다.");
+    } else {
+      alert("회원가입 실패");
+    }
+  };
+
   return (
     <JoinComp>
       <div className="join_inner">
@@ -163,7 +201,7 @@ export default function Join() {
                     )}
                   </td>
                 </tr>
-                {location.kakaoMember && (
+                {location.kakao && (
                   <>
                     <tr>
                       <th>
@@ -175,6 +213,7 @@ export default function Join() {
                           {...register("password")}
                           id="password"
                           name="password"
+                          disabled={location.kakaoMember}
                         />
                         {errors.password && (
                           <p className="error_message">
@@ -193,6 +232,7 @@ export default function Join() {
                           {...register("password2")}
                           id="password2"
                           name="password2"
+                          disabled={location.kakaoMember}
                         />
                         {errors.password2 && (
                           <p className="error_message">
@@ -201,24 +241,26 @@ export default function Join() {
                         )}
                       </td>
                     </tr>
+
+                    <tr>
+                      <th>
+                        <label htmlFor="email">이름</label>
+                      </th>
+                      <td>
+                        <input
+                          type="name"
+                          {...register("name")}
+                          id="name"
+                          name="name"
+                          disabled={location.kakaoMember}
+                        />
+                        {errors.name && (
+                          <p className="error_message">{errors.name.message}</p>
+                        )}
+                      </td>
+                    </tr>
                   </>
                 )}
-                <tr>
-                  <th>
-                    <label htmlFor="email">이름</label>
-                  </th>
-                  <td>
-                    <input
-                      type="name"
-                      {...register("name")}
-                      id="name"
-                      name="name"
-                    />
-                    {errors.name && (
-                      <p className="error_message">{errors.name.message}</p>
-                    )}
-                  </td>
-                </tr>
                 <tr>
                   <th>
                     <label htmlFor="text">생년월일</label>

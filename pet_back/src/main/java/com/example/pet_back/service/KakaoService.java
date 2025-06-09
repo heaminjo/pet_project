@@ -164,7 +164,7 @@ public class KakaoService {
         member.setEmail(dto.getEmail());
         member.setBirth(dto.getBirth());
         member.setPhone(dto.getPhone());
-
+        member.setMemberState(MEMBERSTATE.ACTIVE);
         Member member1 = memberRepository.save(member);
         log.info(dto.getAddress1());
         addressRepository.save(new Address(member1, dto.getAddress1(), dto.getAddress2(), dto.getAddressZip()));

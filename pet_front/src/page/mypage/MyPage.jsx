@@ -20,9 +20,10 @@ export default function MyPage() {
           "더 나은 서비스 이용을 위해 몇 가지 정보를 추가로 입력해 주세요."
         );
         navigate("/join", { state: { kakao: true } });
+      } else {
+        setUser(result);
+        console.log(result);
       }
-      setUser(result);
-      console.log(result);
     } catch (e) {
       navigate("/error", { state: { message: "권한이 없는 페이지 입니다." } });
     }
