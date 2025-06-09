@@ -3,22 +3,51 @@ import MemberApi from "../../api/MemberApi";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import AddressInsert from "../../components/mypage/AddressInsert";
+import Modal from "../../modal/Modal";
 
 export default function MyAddr() {
   const navigate = useNavigate();
-  const [isInsert, setIsInsert] = useState(false);
-  const [addrList, setAddrList] = useState([]);
+  const [isInsert, setIsInsert] = useState(false); //추가 창
+  const [addrList, setAddrList] = useState([]); //배송지 목록
+  const [modal, setModal] = useState(false);
+  const [scrollY, setScrollY] = useState(""); //현재 스크롤롤
+  const [del, setDel] = useState(0);
+  //배송지 목록 API
   const getAddrList = async () => {
     const result = await MemberApi.addrList();
     setAddrList(result);
-    console.log(addrList);
   };
 
   useEffect(() => {
     getAddrList();
-  }, [isInsert]);
+    //삭제 모달이 켜지면 현재 스크롤 위위치 가져오기
+    setScrollY(window.scrollY + "");
+  }, [isInsert, modal]);
+
+  //배송지 추가 버튼 클릭
+  const clickInsert = () => {
+    if (addrList.length == 5) {
+      alert("배송지는 최대 5개까지 저장 가능합니다.");
+    } else {
+      isInsert(true);
+    }
+  };
+
+  //삭제 버튼 클릭
+  const clickDelete = (id) => {
+    setDel(id);
+    setModal(true);
+  };
+
+  //배송지 삭제
+  const addressDelete = async () => {
+    console.log("삭제" + del);
+    const result = await MemberApi.addressDelete(del);
+    alert(result.message);
+    setModal(false);
+  };
   return (
-    <AddrComp>
+    <AddrComp scrollY={scrollY}>
       <div className="addr_inner">
         {isInsert && (
           <div className="insert_modal">
@@ -29,9 +58,22 @@ export default function MyAddr() {
             <AddressInsert setIsInsert={setIsInsert} />
           </div>
         )}
+
+        {modal && (
+          <div className="modal">
+            <Modal
+              content="정말 삭제하시겠습니까?"
+              setModal={setModal}
+              clickEvt={addressDelete}
+            />
+          </div>
+        )}
         <div className="addr_head">
-          <h2>배송지 관리</h2>
-          <button onClick={() => setIsInsert(true)}>배송지 추가</button>
+          <h2>
+            배송지 관리 <span>({addrList.length} / 5)</span>
+          </h2>
+
+          <button onClick={() => clickInsert()}>배송지 추가</button>
         </div>
         {addrList.length > 0 && (
           <ul className="addr">
@@ -56,7 +98,12 @@ export default function MyAddr() {
                 </div>
                 <div className="addr_btn">
                   <button>수정</button>
-                  <button>삭제</button>
+                  {/* 기본배송지는 삭제 불가능 */}
+                  {a.addrType == "일반배송지" && (
+                    <button onClick={() => clickDelete(a.addressId)}>
+                      삭제
+                    </button>
+                  )}
                 </div>
               </li>
             ))}
@@ -70,6 +117,12 @@ const AddrComp = styled.div`
   .addr_inner {
     width: 850px;
     position: relative;
+    .modal {
+      position: fixed;
+      left: 600px;
+      text-align: center;
+      top: 245px;
+    }
     .insert_modal {
       position: absolute;
       width: 400px;
@@ -94,6 +147,9 @@ const AddrComp = styled.div`
       justify-content: space-between;
       h2 {
         margin-bottom: 20px;
+        span {
+          font-size: 15px;
+        }
       }
       button {
         width: 150px;

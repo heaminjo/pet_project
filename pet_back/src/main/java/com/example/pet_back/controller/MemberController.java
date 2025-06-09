@@ -2,6 +2,7 @@ package com.example.pet_back.controller;
 
 import com.example.pet_back.domain.address.AddressRequestDTO;
 import com.example.pet_back.domain.address.AddressResponseDTO;
+import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.member.UpdateMemberRequestDTO;
 import com.example.pet_back.domain.member.UpdatePwRequestDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
@@ -71,5 +72,11 @@ public class MemberController {
     @PostMapping("/address/insert")
     public ResponseEntity<?> addressInsert(@AuthenticationPrincipal CustomUserDetails details, @RequestBody AddressRequestDTO dto) {
         return memberService.addressInsert(details.getMember().getId(), dto);
+    }
+
+    //배송지 삭제
+    @DeleteMapping("/address/delete")
+    public ResponseEntity<ApiResponse> addressInsert(@RequestParam("addressId") Long id) {
+        return ResponseEntity.ok(memberService.addressDelete(id));
     }
 }

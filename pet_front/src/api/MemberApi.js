@@ -101,6 +101,7 @@ const MemberApi = {
     const result = await instance.get(`${KH_DOMAIN}/user/address/list`);
     return result.data;
   },
+  //배송지 추가
   addrInsert: async (address) => {
     const result = await instance.post(
       `${KH_DOMAIN}/user/address/insert`,
@@ -108,5 +109,13 @@ const MemberApi = {
     );
     return result.data;
   },
+  //배송지 삭제
+  addressDelete: async (id) => {
+    const result = await instance.delete(
+      `${KH_DOMAIN}/user/address/delete?addressId=${id}`
+    );
+    return result.data;
+  },
 };
+
 export default MemberApi;

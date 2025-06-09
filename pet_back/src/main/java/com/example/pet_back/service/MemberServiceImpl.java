@@ -192,4 +192,14 @@ public class MemberServiceImpl implements MemberService {
             return ResponseEntity.ok(new ApiResponse<>(true, "배송지 저장 실패"));
         }
     }
+
+    @Override
+    public ApiResponse addressDelete(Long addressId) {
+        try {
+            addressRepository.deleteById(addressId);
+        } catch (Exception e) {
+            return new ApiResponse(false, "배송지 삭제를 실패하였습니다.");
+        }
+        return new ApiResponse(true, "배송지 삭제가 완료되었습니다.");
+    }
 }

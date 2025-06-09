@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import MemberApi from "../../api/MemberApi";
 import { useNavigate } from "react-router-dom";
-import Modal from "../../components/util/Modal";
+import Modal from "../../modal/Modal";
 
 export default function WithDrawal() {
   const WithDrawalComp = styled.div`
