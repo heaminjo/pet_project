@@ -1,5 +1,6 @@
 package com.example.pet_back.service;
 
+import com.example.pet_back.constant.ADDRTYPE;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.custom.ErrorResponse;
 import com.example.pet_back.domain.login.LoginRequestDTO;
@@ -117,7 +118,7 @@ public class AuthServiceImpl implements AuthService {
             //회원을 저장하고 member 엔티티를 반환
             Member member = memberRepository.save(mapper.toEntity(dto));
             //address 생성 후 저장
-            addressRepository.save(new Address(member, dto.getAddress1(), dto.getAddress2(), dto.getAddressZip()));
+            addressRepository.save(new Address(member, dto.getAddress1(), dto.getAddress2(), dto.getAddressZip(), ADDRTYPE.DEFAULT, "집"));
             log.info("저장된 회원의 식별자 => " + member.getId());
             return ResponseEntity.ok().body(new ApiResponse<>(true, "회원가입에 성공하였습니다."));
         } catch (Exception e) {

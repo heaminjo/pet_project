@@ -31,6 +31,8 @@ import BoardInsertForm from "./components/Board/BoardInsertForm";
 import BoardEditForm from "./components/Board/BoardEditForm";
 import Error from "./page/main/Error";
 import UserGrade from "./page/admin/UserGrade";
+import GoodsList from "./components/Layout/goods/GoodsList";
+import MyAddr from "./page/mypage/MyAddr";
 
 //컨텍스트(useContext)
 //로그인 여부부를 전역변수로 뿌리기 위한것
@@ -46,15 +48,16 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
-            <Route path='/' element={<Main />} />
-            <Route path='/login' element={<Login />} />
-            <Route path='/join' element={<Join />} />
-            <Route path='/goods/list' element={<GoodsList />} />
-            <Route path='user/mypage' element={<MyPage />}>
-              <Route path='myinfo' element={<MyInfo />} />
-              <Route path='myedit' element={<MyEdit />} />
-              <Route path='updatepw' element={<UpdatePw />} />
-              <Route path='withdrawal' element={<WithDrawal />} />
+            <Route path="/" element={<Main />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/join" element={<Join />} />
+            <Route path="/goods/list" element={<GoodsList />} />
+            <Route path="user/mypage" element={<MyPage />}>
+              <Route path="myinfo" element={<MyInfo />} />
+              <Route path="myedit" element={<MyEdit />} />
+              <Route path="updatepw" element={<UpdatePw />} />
+              <Route path="withdrawal" element={<WithDrawal />} />
+              <Route path="addr" element={<MyAddr />} />
             </Route>
             <Route path="/admin/page" element={<AdminPage />}>
               <Route path="statistics" element={<StatisticsPage />} />

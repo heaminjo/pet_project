@@ -1,5 +1,5 @@
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 export default function MypageMenu() {
   const navigate = useNavigate();
@@ -35,32 +35,40 @@ export default function MypageMenu() {
   `;
   return (
     <MyPageMenuComp>
-      <div className='side_menu'>
-        <div className='sub_menu' id='user_menu'>
-          <p className='menu_title'>내 정보</p>
+      <div className="side_menu">
+        <div className="sub_menu" id="user_menu">
+          <p className="menu_title">내 정보</p>
           <ul>
             <li>
-              <span onClick={() => navigate('/user/mypage/myinfo')}>내 정보</span>
+              <span onClick={() => navigate("/user/mypage/myinfo")}>
+                내 정보
+              </span>
             </li>
             <li>
-              <span onClick={() => navigate('/user/mypage/myedit')}>회원 수정</span>
+              <span onClick={() => navigate("/user/mypage/myedit")}>
+                회원 수정
+              </span>
             </li>
             <li>
-              <span onClick={() => navigate('/user/mypage/updatepw')}>비밀번호 변경</span>
+              <span onClick={() => navigate("/user/mypage/updatepw")}>
+                비밀번호 변경
+              </span>
             </li>
             <li>
-              <span onClick={() => navigate('/user/mypage/withdrawal')}>회원 탈퇴</span>
+              <span onClick={() => navigate("/user/mypage/withdrawal")}>
+                회원 탈퇴
+              </span>
             </li>
           </ul>
         </div>
-        <div className='sub_menu' id='goods_menu'>
-          <p className='menu_title'>상품</p>
+        <div className="sub_menu" id="goods_menu">
+          <p className="menu_title">상품</p>
           <ul>
             <li>
               <span>찜</span>
             </li>
             <li>
-              <span onClick={() => navigate('/user/cart/list')}>장바구니</span>
+              <span onClick={() => navigate("/user/cart/list")}>장바구니</span>
             </li>
             <li>
               <span>최근 본 목록</span>
@@ -69,23 +77,27 @@ export default function MypageMenu() {
               <span>내 후기</span>
             </li>
             <li>
-              <span>배송지 관리</span>
+              <span onClick={() => navigate("/user/mypage/addr")}>
+                배송지 관리
+              </span>
             </li>
           </ul>
         </div>
-        <div className='sub_menu' id='order_menu'>
-          <p className='menu_title'>주문 / 배송</p>
+        <div className="sub_menu" id="order_menu">
+          <p className="menu_title">주문 / 배송</p>
           <ul>
             <li>
-              <span onClick={() => navigate('/user/orderdetail')}>주문 / 배송 내역</span>
+              <span onClick={() => navigate("/user/orderdetail")}>
+                주문 / 배송 내역
+              </span>
             </li>
             <li>
               <span>취소 내역</span>
             </li>
           </ul>
         </div>
-        <div className='sub_menu' id='border_menu'>
-          <p className='menu_title'>내 게시물</p>
+        <div className="sub_menu" id="border_menu">
+          <p className="menu_title">내 게시물</p>
           <ul>
             <li>
               <span>내 게시물 목록</span>

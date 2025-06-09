@@ -3,10 +3,12 @@ package com.example.pet_back.service;
 
 import com.example.pet_back.config.FileUploadProperties;
 import com.example.pet_back.constant.MEMBERSTATE;
+import com.example.pet_back.domain.address.AddressResponseDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.domain.member.UpdateMemberRequestDTO;
 import com.example.pet_back.domain.member.UpdatePwRequestDTO;
+import com.example.pet_back.entity.Address;
 import com.example.pet_back.entity.Member;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.mapper.MemberMapper;
@@ -26,6 +28,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -160,5 +163,17 @@ public class MemberServiceImpl implements MemberService {
         member.setLastLogin(LocalDateTime.now());
 
         return ResponseEntity.ok(new ApiResponse<>(true, "마지막 로그인 업데이트 완료"));
+    }
+
+    //배송지 리스트
+    @Override
+    public List<AddressResponseDTO> addressList(Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        List<Address> addressList = addressRepository.findAllByMemberId(id);
+
+        //dto 변환
+        List<AddressResponseDTO> response = addressList.stream().map(mapper::toAddressDTO).toList();
+
+        return response;
     }
 }

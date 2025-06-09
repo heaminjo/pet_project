@@ -95,5 +95,11 @@ const MemberApi = {
     const result = await instance.put(`${KH_DOMAIN}/kakao/social/update`, user);
     return result.data;
   },
+
+  //배송지 목록
+  addrList: async () => {
+    const result = await instance.get(`${KH_DOMAIN}/user/address/list`);
+    return result.data;
+  },
 };
 export default MemberApi;
