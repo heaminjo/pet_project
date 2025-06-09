@@ -16,10 +16,11 @@ export default function Login() {
 
   const REST_API_KEY = "f61e8c06e81e7134bf354ceb1c687438";
 
+  //카카오오
   useEffect(() => {
     if (window.Kakao && !window.Kakao.isInitialized()) {
       window.Kakao.init(REST_API_KEY);
-      console.log("✅ Kakao SDK Initialized");
+      console.log("카카오 code를 받아옵니다.");
     }
 
     //코드 받아왔는지 검사

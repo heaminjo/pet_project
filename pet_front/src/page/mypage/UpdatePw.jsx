@@ -51,7 +51,7 @@ export default function UpdatePw() {
       navigate("/login");
     } else {
       alert("비밀번호 변경에 실패하였습니다.");
-      navigate("/updatepw");
+      navigate("/user/mypage/updatepw");
       //gngn
     }
   };

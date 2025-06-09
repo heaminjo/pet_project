@@ -56,4 +56,5 @@ public class MemberController {
         return memberService.memberUploadImage(userDetails.getMember().getId(), file);
     }
 
+
 }

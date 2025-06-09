@@ -1,12 +1,16 @@
 package com.example.pet_back.service;
 
+import com.example.pet_back.constant.MEMBERSTATE;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.kakao.KakaoTokenResponseDTO;
 import com.example.pet_back.domain.kakao.KakaoUserResponseDTO;
+import com.example.pet_back.domain.login.SocialUpdateDTO;
 import com.example.pet_back.domain.login.TokenDTO;
+import com.example.pet_back.entity.Address;
 import com.example.pet_back.entity.Member;
 import com.example.pet_back.entity.RefreshToken;
 import com.example.pet_back.jwt.TokenProvider;
+import com.example.pet_back.repository.AddressRepository;
 import com.example.pet_back.repository.MemberRepository;
 import com.example.pet_back.repository.RefreshTokenRepository;
 import io.netty.handler.codec.http.HttpHeaderValues;
@@ -16,10 +20,14 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
 import java.util.Optional;
@@ -38,10 +46,11 @@ public class KakaoService {
     private final MemberRepository memberRepository;
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final AddressRepository addressRepository;
 
     //초기화
     @Autowired
-    public KakaoService(@Value("${kakao.client-id}") String clientId, @Value("${kakao.redirect-uri}") String redirectUri, @Value("${kakao.token-host}") String tokenHost, @Value("${kakao.user-host}") String userHost, MemberRepository memberRepository, TokenProvider tokenProvider, RefreshTokenRepository refreshTokenRepository) {
+    public KakaoService(@Value("${kakao.client-id}") String clientId, @Value("${kakao.redirect-uri}") String redirectUri, @Value("${kakao.token-host}") String tokenHost, @Value("${kakao.user-host}") String userHost, MemberRepository memberRepository, TokenProvider tokenProvider, RefreshTokenRepository refreshTokenRepository, AddressRepository addressRepository) {
         this.clientId = clientId;
         this.redirectUri = redirectUri;
         this.TOKEN_URL_HOST = tokenHost;
@@ -49,6 +58,8 @@ public class KakaoService {
         this.memberRepository = memberRepository;
         this.tokenProvider = tokenProvider;
         this.refreshTokenRepository = refreshTokenRepository;
+        this.addressRepository = addressRepository;
+
     }
 
     //access토큰 받아오기
@@ -108,18 +119,18 @@ public class KakaoService {
                 log.info("카카오 계정이 없습니다. 회원가입 진행");
                 //회원 가입
                 Member newMember = new Member(dto.getId(), dto.getKakaoAccount().getProfile().getNickName(), dto.getKakaoAccount().getProfile().getProfileImageUrl());
+                newMember.setMemberState(MEMBERSTATE.INCOMPLETE); //임시회원으로 저장
                 Member user = memberRepository.save(newMember);
-                log.info("회원 가입 성공 => " + user.toString());
+                log.info("회원 가입 성공 회원의 상태 => " + user.getMemberState());
 
                 //인증 객체 생성
                 authentication = tokenProvider.getAuthentication(user.getId());
             } else {
-                log.info("카카오 계정이 존재합니다. 로그인 처리합니다.");
+                log.info("카카오 계정이 존재합니다. 로그인 처리합니다.");//존재하는 경우 이메일 true
                 authentication = tokenProvider.getAuthentication(member.get().getId());
             }
 
-            TokenDTO tokenDTO = tokenProvider.generateTokenDto(authentication);
-
+            TokenDTO tokenDTO = tokenProvider.generateTokenDto(authentication);//이메일의 존재 여부를 넣어준다.
             log.info("토큰 발급 => " + tokenDTO);
 
 
@@ -141,5 +152,23 @@ public class KakaoService {
             log.info("로그인 중 에러 발생 =>" + e.getMessage());
             return new ApiResponse<>(false, "잘못된 아이디 또는 비밀번호를 입력하셨습니다.");
         }
+    }
+
+    //소셜 로그인 추가 정보 업데이트
+    @Transactional
+    public ResponseEntity<?> socialUpdate(Long id, SocialUpdateDTO dto) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        //멤버 업데이트 저장
+        member.setGender(dto.getGender());
+        member.setEmail(dto.getEmail());
+        member.setBirth(dto.getBirth());
+        member.setPhone(dto.getPhone());
+        member.setMemberState(MEMBERSTATE.ACTIVE);
+        Member member1 = memberRepository.save(member);
+        log.info(dto.getAddress1());
+        addressRepository.save(new Address(member1, dto.getAddress1(), dto.getAddress2(), dto.getAddressZip()));
+
+        return ResponseEntity.ok(new ApiResponse<>(true, "필수 정보 업데이트 완료"));
     }
 }

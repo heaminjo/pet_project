@@ -85,8 +85,14 @@ const MemberApi = {
     const result = await instance.put(`${KH_DOMAIN}/auth/login/history`);
     return result.data;
   },
+  //카카오 로그인인
   kakaoLogin: async (code) => {
     const result = await axios.get(`${KH_DOMAIN}/kakao/login?code=${code}`);
+    return result.data;
+  },
+  //소셜 로그인 추가 정보 업데이트트
+  socialUpdate: async (user) => {
+    const result = await instance.put(`${KH_DOMAIN}/kakao/social/update`, user);
     return result.data;
   },
 };
