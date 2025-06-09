@@ -1,5 +1,6 @@
 package com.example.pet_back.controller;
 
+import com.example.pet_back.domain.address.AddressResponseDTO;
 import com.example.pet_back.domain.member.UpdateMemberRequestDTO;
 import com.example.pet_back.domain.member.UpdatePwRequestDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
@@ -11,6 +12,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -56,5 +59,11 @@ public class MemberController {
         return memberService.memberUploadImage(userDetails.getMember().getId(), file);
     }
 
+    //배송지 목록
+    @GetMapping("/address/list")
+    public ResponseEntity<List<AddressResponseDTO>> addressList(@AuthenticationPrincipal CustomUserDetails details) {
+        log.info("배송지 목록 API 호출 ");
+        return ResponseEntity.ok(memberService.addressList(details.getMember().getId()));
+    }
 
 }
