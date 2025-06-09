@@ -24,19 +24,13 @@ export default function BoardInsertForm() {
       alert("게시글이 등록되었습니다.");
       console.log("category:", category, "url:", url);
 
-<<<<<<< HEAD
-      // 등록 후 해당 게시판 목록으로 이동
-      if (category === "notice") navigate(`/boardList/${category}`);
-      else if (category === "community") navigate(`/boardList/${category}`);
-      else if (category === "faq") navigate(`/boardList/${category}`);
-      else if (category === "board") navigate(`/boardList/${category}`);
-=======
+
       // 등록 후 해당 게시판 목록으로 이동  
       if(category==="notice") navigate(`/boardList/${category}`); 
       else if(category==="community") navigate(`/boardList/${category}`);
       else if(category==="faq") navigate(`/boardList/${category}`);
       else if(category==="free") navigate(`/boardList/${category}`);
->>>>>>> 남장욱-branch
+
     } catch (err) {
       alert("게시글 등록에 실패했습니다.");
     }

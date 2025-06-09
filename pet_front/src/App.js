@@ -26,6 +26,7 @@ import WithDrawalComplete from "./page/main/WithDrawalComplete";
 import UserStatistics from "./components/admin/UserStatistics";
 import Statistice from "./page/admin/StatisticsPage";
 import StatisticsPage from "./page/admin/StatisticsPage";
+import GoodsList from "./components/Layout/goods/GoodsList";
 
 import BoardDetail from "./components/Board/BoardDetail";
 import BoardInsertForm from "./components/Board/BoardInsertForm";
@@ -46,28 +47,17 @@ function App() {
     <PetContext.Provider value={{ isLogin, setIsLogin }}>
       <BrowserRouter>
         <Routes>
-          <Route element={<Layout />}>
-<<<<<<< HEAD
-            <Route path='/' element={<Main />} />
-            <Route path='/login' element={<Login />} />
-            <Route path='/join' element={<Join />} />
-            <Route path='/goods/list' element={<GoodsList />} />
-            <Route path='user/mypage' element={<MyPage />}>
-              <Route path='myinfo' element={<MyInfo />} />
-              <Route path='myedit' element={<MyEdit />} />
-              <Route path='updatepw' element={<UpdatePw />} />
-              <Route path='withdrawal' element={<WithDrawal />} />
-=======
+          <Route element={<Layout />}>            
             <Route path="/" element={<Main />} />
             <Route path="/login" element={<Login />} />
             <Route path="/join" element={<Join />} />
+            <Route path='/goods/list' element={<GoodsList />} />
             <Route path="user/mypage" element={<MyPage />}>
               <Route path="myinfo" element={<MyInfo />} />
               <Route path="myedit" element={<MyEdit />} />
               <Route path="updatepw" element={<UpdatePw />} />
               <Route path="withdrawal" element={<WithDrawal />} />
               <Route path="myboardlist" element={<MyBoardList />} />
->>>>>>> 남장욱-branch
             </Route>
             <Route path="/admin/page" element={<AdminPage />}>
               <Route path="statistics" element={<StatisticsPage />} />
