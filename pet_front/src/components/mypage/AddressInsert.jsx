@@ -1,13 +1,33 @@
 import styled from "styled-components";
 import AddressModal from "../../modal/AddressModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import MemberApi from "../../api/MemberApi";
-export default function AddressInsert({ setIsInsert }) {
+export default function AddressInsert({ setIs, data }) {
   const [popup, setPopup] = useState(false); //우편번호 팝업
+  const [type, setType] = useState("");
   //유효성 조건(yup)
+  //수정과 추가를 구분하는 컴포넌트
+
+  //수정인지 추가인지 데이터 존재를 통하여 구별
+  useEffect(() => {
+    if (data != null) {
+      //수정하기
+      setType("수정");
+      //값을 초기화
+      reset({
+        addressName: data?.addressName,
+        address1: data?.address1,
+        address2: data?.address2,
+        addressZip: data?.addressZip,
+      });
+    } else {
+      //추가하기
+      setType("추가");
+    }
+  }, [setIs]);
 
   const schema = yup.object({
     addressName: yup.string().required("필수 입력입니다."),
@@ -18,29 +38,38 @@ export default function AddressInsert({ setIsInsert }) {
     register, //폼 필드와 리액트 훅 폼을 연결
     watch, //특정 watch("email") 입력값들을 실시간 감시
     handleSubmit,
-    trigger, //실시간 검사
+    reset,
     setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onBlur", // 실시간 검사
   });
+
+  //버튼 클릭
+  //수정인지 추가인지 구별한다.
   const onClickSubmit = async () => {
-    const address = {
+    //정보 담기
+    let address = {
       addressName: watch("addressName"),
       addrType: "NORMAL",
       address1: watch("address1"),
       address2: watch("address2"),
       addressZip: watch("addressZip"),
     };
-    const result = await MemberApi.addrInsert(address);
 
-    if (result.success) {
-      alert("배송지 추가가 완료되었습니다.");
-      setIsInsert(false);
-    } else {
-      alert("실패");
+    let result;
+    if (type == "추가") result = await MemberApi.addrInsert(address);
+    else {
+      //수정이라면 id를 넣어 API
+      address = {
+        ...address,
+        addressId: data.addressId,
+      };
+      result = await MemberApi.addrUpdate(address);
     }
+    alert(result.message);
+    setIs(false);
   };
   return (
     <InsertComp>
@@ -104,7 +133,7 @@ export default function AddressInsert({ setIsInsert }) {
             </li>
           </ul>
           <div className="sub_btn">
-            <button type="submit">추가</button>
+            <button type="submit">{type}</button>
           </div>
         </form>
       </div>

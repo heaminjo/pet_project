@@ -8,9 +8,10 @@ import Modal from "../../modal/Modal";
 export default function MyAddr() {
   const navigate = useNavigate();
   const [isInsert, setIsInsert] = useState(false); //추가 창
+  const [isUpdate, setIsUpdate] = useState(false); //추가 창
+  const [addressData, setAddressData] = useState([]); //배송지 상세세
   const [addrList, setAddrList] = useState([]); //배송지 목록
-  const [modal, setModal] = useState(false);
-  const [scrollY, setScrollY] = useState(""); //현재 스크롤롤
+  const [modal, setModal] = useState(false); //삭제 모달달
   const [del, setDel] = useState(0);
   //배송지 목록 API
   const getAddrList = async () => {
@@ -20,16 +21,14 @@ export default function MyAddr() {
 
   useEffect(() => {
     getAddrList();
-    //삭제 모달이 켜지면 현재 스크롤 위위치 가져오기
-    setScrollY(window.scrollY + "");
-  }, [isInsert, modal]);
+  }, [isInsert, isUpdate, modal]);
 
   //배송지 추가 버튼 클릭
   const clickInsert = () => {
     if (addrList.length == 5) {
       alert("배송지는 최대 5개까지 저장 가능합니다.");
     } else {
-      isInsert(true);
+      setIsInsert(true);
     }
   };
 
@@ -46,16 +45,33 @@ export default function MyAddr() {
     alert(result.message);
     setModal(false);
   };
+
+  //배송지 수정 클릭
+  const clickUpdate = async (id) => {
+    const result = await MemberApi.addrDetail(id);
+    setAddressData(result.data);
+    console.log(result.data);
+    setIsUpdate(true);
+  };
   return (
-    <AddrComp scrollY={scrollY}>
+    <AddrComp>
       <div className="addr_inner">
+        {isUpdate && (
+          <div className="insert_modal">
+            <div className="modal_head">
+              <h4>배송지 수정</h4>
+              <button onClick={() => setIsUpdate(false)}>❌</button>
+            </div>
+            <AddressInsert setIs={setIsUpdate} data={addressData} />
+          </div>
+        )}
         {isInsert && (
           <div className="insert_modal">
             <div className="modal_head">
               <h4>배송지 추가</h4>
               <button onClick={() => setIsInsert(false)}>❌</button>
             </div>
-            <AddressInsert setIsInsert={setIsInsert} />
+            <AddressInsert setIs={setIsInsert} />
           </div>
         )}
 
@@ -97,7 +113,7 @@ export default function MyAddr() {
                   </div>
                 </div>
                 <div className="addr_btn">
-                  <button>수정</button>
+                  <button onClick={() => clickUpdate(a.addressId)}>수정</button>
                   {/* 기본배송지는 삭제 불가능 */}
                   {a.addrType == "일반배송지" && (
                     <button onClick={() => clickDelete(a.addressId)}>

@@ -34,4 +34,9 @@ public interface MemberService {
     public ResponseEntity<?> addressInsert(Long id, AddressRequestDTO dto);
 
     public ApiResponse addressDelete(Long addressId);
+
+    public ApiResponse addressDetail(Long addressId);
+
+    public ApiResponse addressUpdate(Long userId, AddressRequestDTO dto);
+
 }

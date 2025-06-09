@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddressRequestDTO {
+    private Long addressId;
     private String addressName;
     private ADDRTYPE addrType;
     private String address1;

@@ -193,6 +193,7 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    // 배송지 삭제
     @Override
     public ApiResponse addressDelete(Long addressId) {
         try {
@@ -201,5 +202,28 @@ public class MemberServiceImpl implements MemberService {
             return new ApiResponse(false, "배송지 삭제를 실패하였습니다.");
         }
         return new ApiResponse(true, "배송지 삭제가 완료되었습니다.");
+    }
+
+    //배송지 조회
+    @Override
+    public ApiResponse addressDetail(Long addressId) {
+        Address address = addressRepository.findById(addressId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return new ApiResponse<AddressResponseDTO>(true, mapper.toAddressDTO(address), "배송지 조회 성공");
+    }
+
+    //배송지 수정
+    @Transactional
+    @Override
+    public ApiResponse addressUpdate(Long userId, AddressRequestDTO dto) {
+        Address address = addressRepository.findById(dto.getAddressId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Member member = memberRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        address.setAddress1(dto.getAddress1());
+        address.setAddress2(dto.getAddress2());
+        address.setAddressZip(dto.getAddressZip());
+        address.setAddressName(dto.getAddressName());
+
+        return new ApiResponse(true, "배송지 수정이 완료되었습니다.");
     }
 }

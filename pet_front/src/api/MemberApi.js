@@ -116,6 +116,21 @@ const MemberApi = {
     );
     return result.data;
   },
+  //배송지 조회
+  addrDetail: async (id) => {
+    const result = await instance.get(
+      `${KH_DOMAIN}/user/address/detail?addressId=${id}`
+    );
+    return result.data;
+  },
+  //배송지 수정
+  addrUpdate: async (address) => {
+    const result = await instance.put(
+      `${KH_DOMAIN}/user/address/update`,
+      address
+    );
+    return result.data;
+  },
 };
 
 export default MemberApi;

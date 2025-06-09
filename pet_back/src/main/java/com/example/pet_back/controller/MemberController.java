@@ -79,4 +79,16 @@ public class MemberController {
     public ResponseEntity<ApiResponse> addressInsert(@RequestParam("addressId") Long id) {
         return ResponseEntity.ok(memberService.addressDelete(id));
     }
+
+    //배송지 조회
+    @GetMapping("/address/detail")
+    public ResponseEntity<ApiResponse> addressDetail(@RequestParam("addressId") Long id) {
+        return ResponseEntity.ok(memberService.addressDetail(id));
+    }
+
+    //배송지 수정
+    @PutMapping("/address/update")
+    public ResponseEntity<ApiResponse> addressDetail(@AuthenticationPrincipal CustomUserDetails details, @RequestBody AddressRequestDTO dto) {
+        return ResponseEntity.ok(memberService.addressUpdate(details.getMember().getId(), dto));
+    }
 }
