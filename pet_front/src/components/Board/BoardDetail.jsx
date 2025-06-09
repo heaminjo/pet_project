@@ -57,7 +57,7 @@ export default function BoardDetail() {
   //const loginRole = localStorage.getItem("role"); // "ADMIN" 또는 "USER"
 
   // 작성자(member_id) 또는 관리자(ADMIN)만 버튼 보이게
-  const canEditOrDelete = String(post.member_id) === String(loginMemberId); // || loginRole === "ADMIN"
+  const canEditOrDelete = String(post.member_id) === String(loginMemberId) || localStorage.getItem("role") === "ROLE_ADMIN";
 
   console.log("board_Id:", board_id);
 
@@ -120,6 +120,7 @@ export default function BoardDetail() {
             <button onClick={handleDelete}>삭제</button>
           </div>
         )}
+        <br></br>
         <hr></hr>
       </div>
     </BoardDetailStyle>

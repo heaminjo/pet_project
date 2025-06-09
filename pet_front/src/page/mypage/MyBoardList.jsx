@@ -43,6 +43,7 @@ export default function MyBoardList() {
     });
   };
 
+  // JWT 토큰에서 member_id 추출
   const token = localStorage.getItem("accessToken");
   function getMember_idFromToken(token) {
     if (!token) return null;

@@ -42,7 +42,8 @@ public interface BoardMapper {
             @Param("size") int size,
             @Param("offset") int offset,
             @Param("type") String type,
-            @Param("keyword") String keyword
+            @Param("keyword") String keyword,
+            @Param("sort") String sort
     );
 
     // [추가] 내 게시글 전체 개수(검색 포함)

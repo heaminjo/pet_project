@@ -1,5 +1,5 @@
 import BoardInsertFormStyle from "./BoardInsertFormStyle";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -7,7 +7,15 @@ export default function BoardInsertForm() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const navigate = useNavigate();
-  const [category, setCategory] = useState("notice");
+  const [category, setCategory] = useState("default"); // 기본값 설정
+
+  const [role, setRole] = useState(localStorage.getItem("role") || "");
+  
+  useEffect(() => {
+    const handleStorage = () => setRole(localStorage.getItem("role") || "");
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,7 +76,10 @@ export default function BoardInsertForm() {
               onChange={(e) => setCategory(e.target.value)}
               required
             >
-              <option value="notice">공지사항</option>
+              <option value="default" disabled>게시판 선택</option>
+              {role === "ROLE_ADMIN" && (
+                <option value="notice">공지사항</option>
+              )}
               <option value="community">커뮤니티</option>
               <option value="faq">Q&A</option>
               <option value="free">자유게시판</option>

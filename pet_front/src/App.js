@@ -65,6 +65,7 @@ function App() {
 
               <Route path="userlist" element={<UserList />} />
               <Route path="userdetail" element={<UserDetail />} />
+              <Route path="myboardlist" element={<MyBoardList />} />
             </Route>
             <Route path="/withcomplete" element={<WithDrawalComplete />} />
             <Route path="/boardList/:category" element={<BoardList />} />

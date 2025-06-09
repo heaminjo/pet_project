@@ -99,7 +99,14 @@
             OR b.content LIKE CONCAT('%', #{keyword}, '%')
             )
         </if>
-        order by b.board_id desc
+        <choose>
+            <when test="sort == 'asc'">
+                order by b.board_id asc
+            </when>
+            <otherwise>
+                order by b.board_id desc
+            </otherwise>
+        </choose>
         limit #{size} offset #{offset}
     </select>
 

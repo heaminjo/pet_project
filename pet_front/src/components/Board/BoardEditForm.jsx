@@ -11,6 +11,14 @@ export default function BoardEditForm() {
   // 카테고리 기본값 설정
   const navigate = useNavigate();
 
+  const [role, setRole] = useState(localStorage.getItem("role") || "");
+
+  useEffect(() => {
+    const handleStorage = () => setRole(localStorage.getItem("role") || "");
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
+
   // 기존 게시글 데이터 불러오기 (수정 폼 진입 시 1회)
   useEffect(() => {
     axios
@@ -79,7 +87,9 @@ export default function BoardEditForm() {
               required
               disabled
             >
-              <option value="notice">공지사항</option>
+              {role === "ROLE_ADMIN" && (
+                <option value="notice">공지사항</option>
+              )}
               <option value="community">커뮤니티</option>
               <option value="faq">Q&A</option>
               <option value="free">자유게시판</option>
