@@ -21,6 +21,7 @@ import UserList from "./page/admin/UserList";
 import UserDetail from "./page/admin/UserDetail";
 import WithDrawal from "./page/mypage/WithDrawal";
 import MyInfo from "./page/mypage/MyInfo";
+import MyBoardList from "./page/mypage/MyBoardList";
 import WithDrawalComplete from "./page/main/WithDrawalComplete";
 import UserStatistics from "./components/admin/UserStatistics";
 import Statistice from "./page/admin/StatisticsPage";
@@ -46,6 +47,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
+<<<<<<< HEAD
             <Route path='/' element={<Main />} />
             <Route path='/login' element={<Login />} />
             <Route path='/join' element={<Join />} />
@@ -55,6 +57,17 @@ function App() {
               <Route path='myedit' element={<MyEdit />} />
               <Route path='updatepw' element={<UpdatePw />} />
               <Route path='withdrawal' element={<WithDrawal />} />
+=======
+            <Route path="/" element={<Main />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/join" element={<Join />} />
+            <Route path="user/mypage" element={<MyPage />}>
+              <Route path="myinfo" element={<MyInfo />} />
+              <Route path="myedit" element={<MyEdit />} />
+              <Route path="updatepw" element={<UpdatePw />} />
+              <Route path="withdrawal" element={<WithDrawal />} />
+              <Route path="myboardlist" element={<MyBoardList />} />
+>>>>>>> 남장욱-branch
             </Route>
             <Route path="/admin/page" element={<AdminPage />}>
               <Route path="statistics" element={<StatisticsPage />} />

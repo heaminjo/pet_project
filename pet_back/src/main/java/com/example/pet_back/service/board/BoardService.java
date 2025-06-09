@@ -24,4 +24,7 @@ public interface BoardService {
 
     //** 게시글 삭제
     int deleteBoard(int board_id);
+
+    //** 내 게시글 목록
+    PageResponseDTO<BoardDTO> selectMyBoardList(int member_id, PageRequestDTO pageRequestDTO, String type, String keyword);
 }

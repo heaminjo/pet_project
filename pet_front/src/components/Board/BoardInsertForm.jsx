@@ -24,11 +24,19 @@ export default function BoardInsertForm() {
       alert("게시글이 등록되었습니다.");
       console.log("category:", category, "url:", url);
 
+<<<<<<< HEAD
       // 등록 후 해당 게시판 목록으로 이동
       if (category === "notice") navigate(`/boardList/${category}`);
       else if (category === "community") navigate(`/boardList/${category}`);
       else if (category === "faq") navigate(`/boardList/${category}`);
       else if (category === "board") navigate(`/boardList/${category}`);
+=======
+      // 등록 후 해당 게시판 목록으로 이동  
+      if(category==="notice") navigate(`/boardList/${category}`); 
+      else if(category==="community") navigate(`/boardList/${category}`);
+      else if(category==="faq") navigate(`/boardList/${category}`);
+      else if(category==="free") navigate(`/boardList/${category}`);
+>>>>>>> 남장욱-branch
     } catch (err) {
       alert("게시글 등록에 실패했습니다.");
     }
@@ -68,8 +76,8 @@ export default function BoardInsertForm() {
             >
               <option value="notice">공지사항</option>
               <option value="community">커뮤니티</option>
-              <option value="faq">FAQ</option>
-              <option value="free">게시판</option>
+              <option value="faq">Q&A</option>
+              <option value="free">자유게시판</option>
               {/* 필요시 더 추가 */}
             </select>
           </div>
