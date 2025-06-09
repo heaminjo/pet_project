@@ -101,5 +101,12 @@ const MemberApi = {
     const result = await instance.get(`${KH_DOMAIN}/user/address/list`);
     return result.data;
   },
+  addrInsert: async (address) => {
+    const result = await instance.post(
+      `${KH_DOMAIN}/user/address/insert`,
+      address
+    );
+    return result.data;
+  },
 };
 export default MemberApi;

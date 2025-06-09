@@ -11,9 +11,9 @@ export default function MyBoardList() {
   const [listData, setListData] = useState([]);
   const [error, setError] = useState(null);
   const [sort, setSort] = useState("desc");
-  const [type, setType] = useState("all");        
-  const [keyword, setKeyword] = useState("");     // 실제 검색에 사용되는 값
-  const [inputKeyword , setInputKeyword] = useState(""); 
+  const [type, setType] = useState("all");
+  const [keyword, setKeyword] = useState(""); // 실제 검색에 사용되는 값
+  const [inputKeyword, setInputKeyword] = useState("");
   const [page, setPage] = useState(0);
 
   const params = new URLSearchParams(location.search);
@@ -47,13 +47,13 @@ export default function MyBoardList() {
   function getMember_idFromToken(token) {
     if (!token) return null;
     try {
-      const base64Payload = token.split('.')[1];
-      const base64 = base64Payload.replace(/-/g, '+').replace(/_/g, '/');
+      const base64Payload = token.split(".")[1];
+      const base64 = base64Payload.replace(/-/g, "+").replace(/_/g, "/");
       const jsonPayload = decodeURIComponent(
         atob(base64)
-          .split('')
-          .map(c => `%${('00' + c.charCodeAt(0).toString(16)).slice(-2)}`)
-          .join('')
+          .split("")
+          .map((c) => `%${("00" + c.charCodeAt(0).toString(16)).slice(-2)}`)
+          .join("")
       );
       const payload = JSON.parse(jsonPayload);
       return payload.member_id || payload.sub || null;
@@ -62,8 +62,6 @@ export default function MyBoardList() {
     }
   }
   const member_id = getMember_idFromToken(token);
-
-  
 
   //페이징 정보
   const [paging, setPaging] = useState({
@@ -76,9 +74,6 @@ export default function MyBoardList() {
     start: 0,
     end: 1,
   });
-
- 
-
 
   useEffect(() => {
     // [수정] 내 게시글만 조회하는 API 호출
@@ -96,7 +91,7 @@ export default function MyBoardList() {
       .then((response) => {
         setListData(response.data.content || []);
         let temp = Math.floor(page / 3) * 3;
-        setPaging(prev => ({
+        setPaging((prev) => ({
           ...prev,
           page: response.data.page,
           size: response.data.size,
@@ -115,7 +110,6 @@ export default function MyBoardList() {
     return <div>내 게시글을 불러오지 못했습니다. =&gt; {error.message}</div>;
   }
 
-    
   return (
     <MyBoardListComp>
       <div className="list_container">
@@ -169,16 +163,22 @@ export default function MyBoardList() {
               </tr>
             </thead>
             <tbody>
-              {(!listData || listData.length === 0) ? (
+              {!listData || listData.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="center" style={{ textAlign: "center", padding: "20px" }}>
+                  <td
+                    colSpan={5}
+                    className="center"
+                    style={{ textAlign: "center", padding: "20px" }}
+                  >
                     작성한 게시물이 없습니다.
                   </td>
                 </tr>
               ) : (
                 listData.map((b, index) => (
                   <tr key={b.board_id}>
-                    <td className="center">{paging.totalElements - (paging.page * paging.size) - index}</td>
+                    <td className="center">
+                      {paging.totalElements - paging.page * paging.size - index}
+                    </td>
                     <td className="center">
                       {b.category === "notice"
                         ? "공지사항"
@@ -192,7 +192,11 @@ export default function MyBoardList() {
                     </td>
                     <td
                       className="center"
-                      onClick={() => navigate(`/boardDetail/${b.category}/${b.board_id}${location.search}`)}
+                      onClick={() =>
+                        navigate(
+                          `/boardDetail/${b.category}/${b.board_id}${location.search}`
+                        )
+                      }
                       style={{ cursor: "pointer" }}
                     >
                       {b.title}
@@ -206,14 +210,18 @@ export default function MyBoardList() {
           </table>
         </div>
         <div className="pageNumber">
-          <PageNumber page={page} setPage={(newPage) => {
-            const params = new URLSearchParams(location.search);
-            params.set("page", newPage);
-            navigate({
-              pathname: location.pathname,
-              search: params.toString(),
-            });
-          }} paging={paging} />
+          <PageNumber
+            page={page}
+            setPage={(newPage) => {
+              const params = new URLSearchParams(location.search);
+              params.set("page", newPage);
+              navigate({
+                pathname: location.pathname,
+                search: params.toString(),
+              });
+            }}
+            paging={paging}
+          />
         </div>
       </div>
     </MyBoardListComp>

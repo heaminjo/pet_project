@@ -34,6 +34,7 @@ import Error from "./page/main/Error";
 import UserGrade from "./page/admin/UserGrade";
 import GoodsList from "./components/Layout/goods/GoodsList";
 import MyAddr from "./page/mypage/MyAddr";
+import AddressInsert from "./components/mypage/AddressInsert";
 
 //컨텍스트(useContext)
 //로그인 여부부를 전역변수로 뿌리기 위한것

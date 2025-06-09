@@ -383,6 +383,8 @@ export default function Join() {
                           watch={watch}
                           setValue={setValue}
                           setPopup={setPopup}
+                          rigth="-350px"
+                          bottom="13px"
                         ></AddressModal>
                       )}
                     </ul>

@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import MemberApi from "../../api/MemberApi";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import AddressInsert from "../../components/mypage/AddressInsert";
 
 export default function MyAddr() {
+  const navigate = useNavigate();
+  const [isInsert, setIsInsert] = useState(false);
   const [addrList, setAddrList] = useState([]);
   const getAddrList = async () => {
     const result = await MemberApi.addrList();
@@ -16,9 +20,21 @@ export default function MyAddr() {
   return (
     <AddrComp>
       <div className="addr_inner">
-        <h2>배송지 관리</h2>
+        {isInsert && (
+          <div className="insert_modal">
+            <div className="modal_head">
+              <h4>배송지 추가</h4>
+              <button>❌</button>
+            </div>
+            <AddressInsert />
+          </div>
+        )}
+        <div className="addr_head">
+          <h2>배송지 관리</h2>
+          <button onClick={() => setIsInsert(true)}>배송지 추가</button>
+        </div>
         {addrList.length > 0 && (
-          <ul>
+          <ul className="addr">
             {addrList.map((a, index) => (
               <li>
                 <div className="addr_item">
@@ -53,11 +69,43 @@ export default function MyAddr() {
 const AddrComp = styled.div`
   .addr_inner {
     width: 850px;
-
-    h2 {
-      margin-bottom: 20px;
+    position: relative;
+    .insert_modal {
+      position: absolute;
+      width: 400px;
+      height: 500px;
+      background-color: #fff;
+      border: 1px solid #000;
+      z-index: 100;
+      left: 180px;
+      top: 30px;
+      .modal_head {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        button {
+          width: 30px;
+          border: 1px solid #ccc;
+        }
+      }
     }
-    ul {
+    .addr_head {
+      display: flex;
+      justify-content: space-between;
+      h2 {
+        margin-bottom: 20px;
+      }
+      button {
+        width: 150px;
+        font-size: 15px;
+        height: 40px;
+        background-color: #eee;
+        border: none;
+        box-shadow: 2px 2px 2px #ccc;
+        cursor: pointer;
+      }
+    }
+    .addr {
       display: flex;
       flex-direction: column;
       gap: 10px;
