@@ -3,6 +3,7 @@ package com.example.pet_back.mapper;
 import com.example.pet_back.constant.ADDRTYPE;
 import com.example.pet_back.constant.GRADE;
 import com.example.pet_back.constant.MEMBERSTATE;
+import com.example.pet_back.domain.address.AddressRequestDTO;
 import com.example.pet_back.domain.address.AddressResponseDTO;
 import com.example.pet_back.domain.admin.UserDetailResponseDTO;
 import com.example.pet_back.domain.member.MemberRequestDTO;
@@ -21,6 +22,8 @@ import java.time.format.DateTimeFormatter;
 public interface MemberMapper {
     //dto -> entity
     public Member toEntity(MemberRequestDTO dto);
+
+    public Address addressToEntity(AddressRequestDTO dto);
 
     @Mapping(source = "addrType", target = "addrType", qualifiedByName = "addrToString")
     public AddressResponseDTO toAddressDTO(Address address);

@@ -9,6 +9,7 @@ import java.util.List;
 public interface AddressRepository extends JpaRepository<Address, Long> {
     Address findByMemberId(Long id);
 
+    //기본 배송지 최 상단
     @Query(nativeQuery = true, value = "SELECT *\n" +
             "FROM address\n" +
             "WHERE member_id = :id\n" +

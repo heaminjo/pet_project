@@ -1,5 +1,6 @@
 package com.example.pet_back.controller;
 
+import com.example.pet_back.domain.address.AddressRequestDTO;
 import com.example.pet_back.domain.address.AddressResponseDTO;
 import com.example.pet_back.domain.member.UpdateMemberRequestDTO;
 import com.example.pet_back.domain.member.UpdatePwRequestDTO;
@@ -66,4 +67,9 @@ public class MemberController {
         return ResponseEntity.ok(memberService.addressList(details.getMember().getId()));
     }
 
+    //배송지 추가
+    @PostMapping("/address/insert")
+    public ResponseEntity<?> addressInsert(@AuthenticationPrincipal CustomUserDetails details, @RequestBody AddressRequestDTO dto) {
+        return memberService.addressInsert(details.getMember().getId(), dto);
+    }
 }

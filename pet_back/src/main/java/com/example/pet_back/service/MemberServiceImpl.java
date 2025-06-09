@@ -3,6 +3,7 @@ package com.example.pet_back.service;
 
 import com.example.pet_back.config.FileUploadProperties;
 import com.example.pet_back.constant.MEMBERSTATE;
+import com.example.pet_back.domain.address.AddressRequestDTO;
 import com.example.pet_back.domain.address.AddressResponseDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.member.MemberResponseDTO;
@@ -175,5 +176,20 @@ public class MemberServiceImpl implements MemberService {
         List<AddressResponseDTO> response = addressList.stream().map(mapper::toAddressDTO).toList();
 
         return response;
+    }
+
+    //배송지 추가
+    @Override
+    public ResponseEntity<?> addressInsert(Long id, AddressRequestDTO dto) {
+        Optional<Member> member = memberRepository.findById(id);
+
+        if (member.isPresent()) {
+            Address address = mapper.addressToEntity(dto);
+            address.setMember(member.get());
+            addressRepository.save(address);
+            return ResponseEntity.ok(new ApiResponse<>(true, "배송지 저장 성공"));
+        } else {
+            return ResponseEntity.ok(new ApiResponse<>(true, "배송지 저장 실패"));
+        }
     }
 }

@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import MemberApi from "../../api/MemberApi";
-export default function AddressInsert() {
+export default function AddressInsert({ setIsInsert }) {
   const [popup, setPopup] = useState(false); //우편번호 팝업
   //유효성 조건(yup)
 
@@ -25,7 +25,7 @@ export default function AddressInsert() {
     resolver: yupResolver(schema),
     mode: "onBlur", // 실시간 검사
   });
-  const onClickSubmit = () => {
+  const onClickSubmit = async () => {
     const address = {
       addressName: watch("addressName"),
       addrType: "NORMAL",
@@ -33,11 +33,13 @@ export default function AddressInsert() {
       address2: watch("address2"),
       addressZip: watch("addressZip"),
     };
-    const result = MemberApi.addrInsert(address);
+    const result = await MemberApi.addrInsert(address);
 
     if (result.success) {
       alert("배송지 추가가 완료되었습니다.");
-      setPopup(false);
+      setIsInsert(false);
+    } else {
+      alert("실패");
     }
   };
   return (
@@ -102,7 +104,7 @@ export default function AddressInsert() {
             </li>
           </ul>
           <div className="sub_btn">
-            <button>추가</button>
+            <button type="submit">추가</button>
           </div>
         </form>
       </div>

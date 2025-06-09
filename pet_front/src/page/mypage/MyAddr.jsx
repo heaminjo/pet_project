@@ -16,7 +16,7 @@ export default function MyAddr() {
 
   useEffect(() => {
     getAddrList();
-  }, []);
+  }, [isInsert]);
   return (
     <AddrComp>
       <div className="addr_inner">
@@ -24,9 +24,9 @@ export default function MyAddr() {
           <div className="insert_modal">
             <div className="modal_head">
               <h4>배송지 추가</h4>
-              <button>❌</button>
+              <button onClick={() => setIsInsert(false)}>❌</button>
             </div>
-            <AddressInsert />
+            <AddressInsert setIsInsert={setIsInsert} />
           </div>
         )}
         <div className="addr_head">
