@@ -15,6 +15,9 @@ const GoodsListComp = styled.div`
       display: flex;
       flex-direction: column;
       justify-content: center;
+      h2 {
+        margin-top: 30px;
+      }
 
       .list {
         flex-wrap: wrap; /* 줄바꿈 허용 */

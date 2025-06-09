@@ -9,9 +9,9 @@ const OrderDetailComp = styled.div`
     padding: 150px;
 
     .orderlist {
-      border: 1px solid rgb(200, 200, 200);
+      // border: 1px solid rgb(200, 200, 200);
       .ordertitle {
-        border: 1px solid rgb(200, 200, 200);
+        //border: 1px solid rgb(200, 200, 200);
         font-weight: bold;
         font-size: larger;
       }
@@ -24,16 +24,22 @@ const OrderDetailComp = styled.div`
         justify-content: center;
 
         .orderdesc {
+          width: 100%;
+          height: 150px;
           display: flex;
           flex-direction: row;
           align-items: center;
           border: 1px solid rgb(200, 200, 200);
+          margin: 10px 0;
+          padding: 20px;
+          box-sizing: border-box; /* 패딩 포함한 width로 계산 */
 
           .prodimg {
-            width: 50px;
+            width: 150px;
+            height: 100px;
           }
           .proddesc {
-            width: 350px;
+            width: 500px;
             margin: 10px 50px;
           }
           .btn {

@@ -22,7 +22,7 @@ const GoodsApi = {
       alert('장바구니 추가 중 에러가 발생했습니다.');
     }
   },
-  // 장바구니 출력 (완료)
+  // <Cart />
   cartList: async () => {
     const result = await instance.get('/cart/list');
     alert(`GoodsApi의 cartList 호출완료 => ${JSON.stringify(result.data)} `);
@@ -30,7 +30,7 @@ const GoodsApi = {
   },
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상  품 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // 전체 상품 리스트 출력 (메인) (완료)
+  // <GoodsList /> 전체 상품 리스트 출력 (메인) (완료)
   showGoods: async () => {
     try {
       const result = await instance.get('/goods/list');
@@ -41,7 +41,7 @@ const GoodsApi = {
     } catch (err) {}
   },
 
-  // Order Detail 페이지 (order_id)로 주문한 상품의 오더정보 / 상품정보
+  // (order_id)로 주문한 상품의 오더정보 / 상품정보
   customerGoodsHistory: async (orderIds) => {
     console.log('🔥 주문 ID 리스트:', orderIds);
     alert('GoodsApi customerGoodsHistory');
@@ -54,10 +54,14 @@ const GoodsApi = {
     } catch (err) {}
   },
 
-  // 상품등록 (완료)
-  regGoods: async (goods) => {
+  // <Goods />
+  regGoods: async (formData) => {
     try {
-      const result = await instance.post('/goods/register', goods);
+      const result = await instance.post('/goods/register', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       if (result.data != null) {
         alert(`상품등록 완료 => ${result.data}`);
         return result.data;
@@ -72,13 +76,13 @@ const GoodsApi = {
   goodsDetail: async (goods_id) => {},
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 주  문 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // 주문등록
+  // <Order />
   order: async () => {
     const result = await instance.post(`/goods/order`);
     return result.data;
   },
 
-  // 주문리스트
+  // <OrderDetail />
   orderList: async () => {
     const result = await instance.get('/goods/ordered');
     return result.data;
@@ -105,6 +109,11 @@ const GoodsApi = {
     return result.data;
     //console.log(JSON.stringify(payload, null, 2));
   },
+  findAddress: async () => {
+    const result = await instance.get(`/goods/findaddress`);
+  },
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 끝 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   // // 상품등록 (기존 axios 사용한 코드 - 예시)
   // regGoods: async (goods) => {

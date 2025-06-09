@@ -1,11 +1,17 @@
 import OrderDetailComp from './OrderDetailStyle';
 import GoodsApi from '../../../api/GoodsApi';
 import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function OrderDetail() {
   const prodImg = process.env.PUBLIC_URL + '/images/pic1.png';
+  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [info, setInfo] = useState([]);
+
+  const location = useLocation();
+  const { goods } = location.state || {};
+  const [buyQuantity, setBuyQuantity] = useState(1);
 
   // 주문 정보 가져옴 - Return Type : OrderResponseDTO List ~~~~~~~~~~~~~~
   const orderList = () => {
@@ -20,6 +26,18 @@ export default function OrderDetail() {
       .catch((err) => {
         alert(`GoodsApi.orderList() 에러 => ${err}`);
       });
+  };
+
+  // 장바구니 담기
+  const addToCart = async (goods) => {
+    const goodsWithQuantity = { ...goods, quantity: buyQuantity };
+    alert(`addToCart => ${goodsWithQuantity.quantity}`);
+    GoodsApi.addToCart(goodsWithQuantity)
+      .then((response) => {
+        alert(`장바구니 담기 성공, 상품ID:  => ${response.goods_id}`);
+        console.log(response);
+      })
+      .catch((err) => {});
   };
 
   // 전체 정보 가져옴 - Return Type : OrderDetailResponseDTO List
@@ -74,19 +92,23 @@ export default function OrderDetail() {
               {groupedInfo[date].map((item, index) => (
                 <div className='orderlist2'>
                   <div className='orderdesc'>
-                    <img src={prodImg} alt='' className='prodimg' />
+                    <img src={`http://localhost:8080/uploads/${item.image_file}`} alt={item.goods_name} className='prodimg' onClick={() => navigate('/user/order', { state: { goods: item } })} />
                     <br />
                     <div className='proddesc'>
                       <b>결제완료</b> <br />
                       {item.goods_name} <br />
                       {item.goods_price} 원 / {item.goods_quantity} 개
-                      <br />
-                      <button>장바구니 담기</button>
                     </div>
                     <div className='btn'>
-                      <button className='btn1'>배송조회</button>
-                      <button className='btn2'>주문취소</button>
-                      <button className='btn3'>제품문의</button>
+                      <button className='btn1' onClick={() => addToCart(goods)}>
+                        장바구니 담기
+                      </button>
+                      <button className='btn2' onClick={() => navigate('/user/delivery')}>
+                        배송조회
+                      </button>
+                      <button className='btn3' onClick={() => navigate('/user/withdraw')}>
+                        주문취소
+                      </button>
                     </div>
                   </div>
                 </div>

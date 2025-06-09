@@ -1,8 +1,24 @@
+import { useEffect, useState } from 'react';
+import MemberApi from '../../../api/MemberApi';
 import DeliveryComp from './DeliveryStyle';
 // import './delivery.css';
 
 export default function Delivery() {
   const deliverImg = process.env.PUBLIC_URL + '/images/delivery.png';
+  const [member, setMember] = useState();
+
+  // 회원정보 가져오기기
+  const memberInfo = () => {
+    MemberApi.detail()
+      .then((response) => {
+        return response.data;
+      })
+      .catch((err) => {});
+  };
+
+  useEffect(() => {
+    memberInfo();
+  }, []);
 
   return (
     <DeliveryComp>
