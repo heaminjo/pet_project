@@ -102,7 +102,7 @@ export default function Cart() {
                     <input type='checkbox' checked={checked[index] || false} onChange={() => handleCheckboxChange(index)} style={{ width: '20px', height: '20px', cursor: 'pointer' }} required />
                     &nbsp;&nbsp;&nbsp;
                   </label>
-                  <img src={cartImage1} alt='상품1이미지' className='cartimage' onClick={() => navigate('/user/order', { state: { goods: item } })} />
+                  <img src={`http://localhost:8080/uploads/${item.image_file}`} alt={item.goods_name} className='prodimg' onClick={() => navigate('/user/order', { state: { goods: item } })} />
                 </div>
                 <div className='prodright'>
                   <div>
@@ -112,7 +112,7 @@ export default function Cart() {
                     <b>상세정보</b>&nbsp;&nbsp;{item.description}
                   </div>
                   <div>
-                    <b>가격</b>&nbsp;&nbsp; {item.price}
+                    <b>가격</b>&nbsp;&nbsp; {item.price} 원
                   </div>
                   <div>
                     <b>최대 구매 가능 수량</b>&nbsp;&nbsp; {item.quantity}

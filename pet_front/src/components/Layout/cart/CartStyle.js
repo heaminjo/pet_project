@@ -43,7 +43,7 @@ const CartComp = styled.div`
             align-items: center;
             // flex-direction: column;
 
-            .cartimage {
+            .prodimg {
               width: 120px;
               height: 150px;
             }

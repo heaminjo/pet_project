@@ -5,9 +5,13 @@ import GoodsApi from '../../../api/GoodsApi';
 
 export default function Goods() {
   const navigate = useNavigate();
-  const goodsImg = process.env.PUBLIC_URL + '/images/pic1.png';
+  //const goodsImg = process.env.PUBLIC_URL + '/images/pic1.png';
+  const goodsImg = 'C:\\uploads\\basicimg.png';
+  // 이미지 미리보기 위한 상태변수 추가
+  const [prevImg, setPrevImg] = useState();
+
   // form의 input 값들을 state로 관리하고
-  //submit 버튼 클릭 시 axios.post()로 데이터 전송
+  // submit 버튼 클릭 시 axios.post()로 데이터 전송
   const [goods, setGoods] = useState({
     // input 값 연결용
     goods_name: '',
@@ -19,11 +23,27 @@ export default function Goods() {
     price: '',
   });
 
+  // 상품등록 폼 제출
   const register = async (e) => {
     e.preventDefault(); // form 기본 제출 막기
-    const response = GoodsApi.regGoods(goods);
-    console.log('등록 결과:', response);
-    navigate('/');
+
+    const formData = new FormData();
+    formData.append('goods_name', goods.goods_name);
+    formData.append('category_id', goods.category_id);
+    formData.append('price', goods.price);
+    formData.append('description', goods.description);
+    formData.append('goods_state', goods.goods_state);
+    formData.append('quantity', goods.quantity);
+    if (goods.upload_img) {
+      formData.append('upload_img', goods.upload_img);
+    }
+    try {
+      const response = GoodsApi.regGoods(goods);
+      console.log('등록 결과:', response);
+      navigate('/');
+    } catch (error) {
+      console.log('등록 중 에러 발생생:', error);
+    }
   };
 
   return (
@@ -46,8 +66,20 @@ export default function Goods() {
                   <tr>
                     <td>상품이미지</td>
                     <td>
-                      <input type='text' value={goodsImg} readOnly />
-                      {/* <button onClick={() => {}}>등록</button> */}
+                      <input
+                        type='file'
+                        accept='image/*'
+                        onChange={(e) => {
+                          const file = e.target.files[0];
+                          setGoods({ ...goods, upload_img: file });
+                          if (file) {
+                            const imgUrl = URL.createObjectURL(file);
+                            setPrevImg(imgUrl); // 미리보기용 이미지주소
+                          } else {
+                            setPrevImg(null);
+                          }
+                        }}
+                      />
                     </td>
                   </tr>
                   <tr>
@@ -64,7 +96,13 @@ export default function Goods() {
                   <tr>
                     <td>상품 Description</td>
                     <td>
-                      <input type='text' value={goods.description} onChange={(e) => setGoods({ ...goods, description: e.target.value })} />
+                      <input
+                        type='text'
+                        value={goods.description}
+                        onChange={(e) => {
+                          setGoods({ ...goods, description: e.target.value });
+                        }}
+                      />
                     </td>
                   </tr>
                   <tr>
@@ -95,6 +133,7 @@ export default function Goods() {
                       <button className='btn' id='sub_btn' type='submit'>
                         등록
                       </button>
+                      &nbsp;&nbsp;
                       <button className='btn' id='reset_btn' type='reset'>
                         취소
                       </button>
@@ -105,7 +144,7 @@ export default function Goods() {
             </form>
           </div>
           <div className='right'>
-            <img src={goodsImg} alt='' className='goodsImg' />
+            <img src={prevImg || goodsImg} alt='이미지 미리보기' className='goodsImg' />
             <br />
             상품이미지 미리보기
           </div>

@@ -1,6 +1,6 @@
 import GoodsListComp from './GoodsListStyle.js';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import GoodsApi from '../../../api/GoodsApi';
 
 export default function GoodsList() {
@@ -8,17 +8,19 @@ export default function GoodsList() {
   const goodsImg = process.env.PUBLIC_URL + '/images/pic1.png';
   const [goods, setGoods] = useState([]);
 
+  // 전체 상품 리스트 조회
   const goodsList = async () => {
     GoodsApi.showGoods()
       .then((response) => {
-        setGoods(response.body);
+        setGoods(response);
       })
       .catch((err) => {});
   };
 
+  // 상품1개 클릭시
   const clickProd = (item) => {
     alert(`clickProd 선택된 상품: ${item.goods_id}, ${item.goods_name}, ${item.goods_state}, ${item.description}, ${item.price}`);
-    navigate('/order', { state: { goods: item } });
+    navigate('/user/order', { state: { goods: item } });
   };
 
   useEffect(() => {
@@ -34,7 +36,7 @@ export default function GoodsList() {
           <section className='list'>
             {goods.map((item, index) => (
               <div className='goodslist' key={index} onClick={() => clickProd(item)}>
-                <img src={goodsImg} alt='' className='prodimg' />
+                <img src={`http://localhost:8080/uploads/${item.image_file}`} alt={item.goods_name} className='prodimg' />
                 <div>{item.goods_name}</div>
                 <div>{item.description}</div>
               </div>

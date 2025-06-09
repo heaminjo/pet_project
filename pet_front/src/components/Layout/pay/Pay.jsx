@@ -8,16 +8,30 @@ export default function Pay() {
   const location = useLocation();
   const navigate = useNavigate();
   const [goods, setGoods] = useState([]);
+  const [requestNote, setRequestNote] = useState('');
 
   // const goodsList = location.state?.goods || []; // Order -> Pay 이동위해 변경 (rawGoods 추가)
   const rawGoods = location.state?.goods;
   const goodsList = Array.isArray(rawGoods) ? rawGoods : rawGoods ? [rawGoods] : []; // 단일 상품이 오더라도 강제로 배열로 감싸기
 
-  const quantities = location.state?.quantity || [];
-  const [payment, setPayment] = useState();
-  const goodsImg = process.env.PUBLIC_URL + '/images/pic1.png';
+  const handleOpenPopup = () => {
+    window.open();
+  };
 
+  // 수량
+  const quantities = location.state?.quantity || [];
+
+  // 결제수단
+  const [payment, setPayment] = useState();
+
+  // 회원정보 & 회원 주소정보 가져오기
   const [member, setMember] = useState([]);
+  const address = () => {
+    GoodsApi.findAddress();
+  };
+
+  // 수정 버튼
+  const [popup, setPopup] = useState(false);
 
   // 사용자(구매자) 정보
   const memdetail = async () => {
@@ -27,8 +41,6 @@ export default function Pay() {
       })
       .catch((err) => {});
   };
-
-  // 사용자의 주소정보 (추가예정)
 
   // 총 구매가격
   const totalPrice = goodsList.reduce((acc, item) => {
@@ -104,7 +116,7 @@ export default function Pay() {
           <h2>배 송 지</h2>
           <hr />
           <div className='title'>
-            수령인&nbsp;&nbsp; <button onClick={() => {}}>수정</button>
+            수령인&nbsp;&nbsp; <button onClick={() => setPopup(true)}>수정</button>
           </div>
           <table>
             <tbody>

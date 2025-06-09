@@ -10,12 +10,14 @@ export default function Order() {
   const prodImage = process.env.PUBLIC_URL + '/images/pic2.png';
   const [buyQuantity, setBuyQuantity] = useState(1);
 
+  // 결제
   const pay = async (goods) => {
     alert(`결제페이지 이동 성공, 상품ID:  => ${goods.goods_id}`);
     const goodsWithQuantity = { ...goods, quantity: buyQuantity };
     navigate('/user/pay', { state: { goods: goodsWithQuantity } });
   };
 
+  // 장바구니 담기
   const addToCart = async (goods) => {
     const goodsWithQuantity = { ...goods, quantity: buyQuantity };
     alert(`addToCart => ${goodsWithQuantity.quantity}`);
@@ -37,7 +39,7 @@ export default function Order() {
         <h2>주문 페이지</h2>
         <section className='product'>
           <div className='left'>
-            <img src={prodImage} alt='상품이미지' className='prodimage' />
+            <img src={`http://localhost:8080/uploads/${goods.image_file}`} alt={goods.goods_name} className='prodimg' style={{ width: '300px' }} />
           </div>
           <div className='right'>
             <div className='prodname'>{goods.goods_name}</div>
