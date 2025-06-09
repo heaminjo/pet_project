@@ -10,7 +10,6 @@ import javax.management.relation.Role;
 @AllArgsConstructor
 @Builder
 public class LoginResponseDTO {
-    //토큰 추가
     private String token;
     private Long id;
     private String name;

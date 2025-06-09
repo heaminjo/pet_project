@@ -3,13 +3,11 @@ package com.example.pet_back.mapper;
 import com.example.pet_back.constant.GRADE;
 import com.example.pet_back.constant.MEMBERSTATE;
 import com.example.pet_back.domain.admin.UserDetailResponseDTO;
+import com.example.pet_back.domain.login.SocialUpdateDTO;
 import com.example.pet_back.domain.member.MemberRequestDTO;
 import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.entity.Member;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,6 +16,8 @@ import java.time.format.DateTimeFormatter;
 public interface MemberMapper {
     //dto -> entity
     public Member toEntity(MemberRequestDTO dto);
+
+    void updateFromSocialDto(SocialUpdateDTO dto, @MappingTarget Member member);
 
     //entity -> dto
 //grade 한글로

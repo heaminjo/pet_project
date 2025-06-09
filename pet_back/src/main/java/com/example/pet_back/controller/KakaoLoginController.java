@@ -1,16 +1,16 @@
 package com.example.pet_back.controller;
 
 import com.example.pet_back.domain.kakao.KakaoUserResponseDTO;
+import com.example.pet_back.domain.login.SocialUpdateDTO;
+import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.service.KakaoService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/kakao")
@@ -35,5 +35,12 @@ public class KakaoLoginController {
         String token = kakaoService.getAccessToken(code);
         KakaoUserResponseDTO userInfo = kakaoService.getUserInfo(token);
         return ResponseEntity.ok(kakaoService.LoginAndJoin(userInfo, response));
+    }
+
+    //소셜 로그인 필수정보 저장
+    @PutMapping("/social/update")
+    public ResponseEntity<?> socialUpdate(@AuthenticationPrincipal CustomUserDetails details, @RequestBody SocialUpdateDTO dto) {
+        log.info("address=>" + dto.getAddress1());
+        return kakaoService.socialUpdate(details.getMember().getId(), dto);
     }
 }

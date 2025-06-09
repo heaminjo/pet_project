@@ -15,6 +15,12 @@ export default function MyPage() {
   const getLoginUser = async () => {
     try {
       const result = await MemberApi.detail();
+      if (result.memberState == "임시회원") {
+        alert(
+          "더 나은 서비스 이용을 위해 몇 가지 정보를 추가로 입력해 주세요."
+        );
+        navigate("/join", { state: { kakao: true } });
+      }
       setUser(result);
       console.log(result);
     } catch (e) {

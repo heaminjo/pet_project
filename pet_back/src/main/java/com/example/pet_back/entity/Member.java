@@ -5,6 +5,7 @@ import com.example.pet_back.constant.GENDER;
 import com.example.pet_back.constant.GRADE;
 import com.example.pet_back.constant.MEMBERSTATE;
 import com.example.pet_back.constant.ROLE;
+import com.example.pet_back.domain.login.SocialUpdateDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -78,5 +79,14 @@ public class Member extends BaseEntity {
         this.role = ROLE.USER;
         this.grade = GRADE.NEWBIE;
         this.memberState = MEMBERSTATE.ACTIVE;
+    }
+
+    public Member setSocial(Member m, SocialUpdateDTO dto) {
+        m.setEmail(dto.getEmail());
+        m.setPhone(dto.getPhone());
+        m.setBirth(dto.getBirth());
+        m.setGender(dto.getGender());
+        m.setMemberState(MEMBERSTATE.ACTIVE);
+        return m;
     }
 } //class

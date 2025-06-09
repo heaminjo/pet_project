@@ -5,11 +5,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import MemberApi from "../../api/MemberApi";
 import AddressModal from "../../modal/AddressModal";
+import { useLocation } from "react-router-dom";
 export default function Join() {
   const [isEmailCheck, setIsEmailCheck] = useState(false); //이메일 중복 체크
   const emailRef = useRef(null);
   const btnRef = useRef(null);
   const [popup, setPopup] = useState(false); //우편번호 팝업
+  const location = useLocation(); // 회원의 상태 확인
 
   //유효성 조건(yup)
   const schema = yup.object({
@@ -161,40 +163,46 @@ export default function Join() {
                     )}
                   </td>
                 </tr>
-                <tr>
-                  <th>
-                    <label htmlFor="email">비밀번호</label>
-                  </th>
-                  <td>
-                    <input
-                      type="password"
-                      {...register("password")}
-                      id="password"
-                      name="password"
-                    />
-                    {errors.password && (
-                      <p className="error_message">{errors.password.message}</p>
-                    )}
-                  </td>
-                </tr>
-                <tr>
-                  <th>
-                    <label htmlFor="password2">비밀번호 확인</label>
-                  </th>
-                  <td>
-                    <input
-                      type="password"
-                      {...register("password2")}
-                      id="password2"
-                      name="password2"
-                    />
-                    {errors.password2 && (
-                      <p className="error_message">
-                        {errors.password2.message}
-                      </p>
-                    )}
-                  </td>
-                </tr>
+                {location.kakaoMember && (
+                  <>
+                    <tr>
+                      <th>
+                        <label htmlFor="email">비밀번호</label>
+                      </th>
+                      <td>
+                        <input
+                          type="password"
+                          {...register("password")}
+                          id="password"
+                          name="password"
+                        />
+                        {errors.password && (
+                          <p className="error_message">
+                            {errors.password.message}
+                          </p>
+                        )}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>
+                        <label htmlFor="password2">비밀번호 확인</label>
+                      </th>
+                      <td>
+                        <input
+                          type="password"
+                          {...register("password2")}
+                          id="password2"
+                          name="password2"
+                        />
+                        {errors.password2 && (
+                          <p className="error_message">
+                            {errors.password2.message}
+                          </p>
+                        )}
+                      </td>
+                    </tr>
+                  </>
+                )}
                 <tr>
                   <th>
                     <label htmlFor="email">이름</label>
