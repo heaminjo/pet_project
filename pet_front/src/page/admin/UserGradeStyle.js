@@ -116,12 +116,12 @@ const UserGradeComp = styled.div`
     }
     table {
       margin-top: 10px;
-      width: 543px;
+      width: 540px;
       text-align: center;
       border-collapse: collapse;
       tr {
         height: 40px;
-        border-bottom: 1px solid #ccc;
+        position: relative;
         td:nth-child(1) {
           width: 50px;
         }
@@ -133,6 +133,21 @@ const UserGradeComp = styled.div`
         }
         td:nth-child(4) {
           width: 100px;
+        }
+        .btn_td {
+          position: absolute;
+          top: 10px;
+          button {
+            margin-left: 10px;
+            height: 30px;
+            width: 70px;
+            border: none;
+            background-color: rgb(255, 89, 78);
+            border-radius: 20px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+          }
         }
       }
     }

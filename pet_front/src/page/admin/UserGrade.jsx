@@ -31,7 +31,8 @@ export default function UserGrade() {
   const getGradeStatistics = async () => {
     const result = await AdminApi.getGradeStatistics();
     console.log(result);
-    // //한글로 매핑핑
+
+    // //한글로 매핑
     const gradeKoreanMap = {
       NEWBIE: "새싹회원",
       BLOSSOM: "초급회원",
@@ -63,6 +64,39 @@ export default function UserGrade() {
     setBackColor(backColor);
   };
 
+  //업그레이드 클릭
+  const clickUpgrade = (user) => {
+    //index를 통하여 등급 배열에서 다음 등급이 무엇인지 가져온다.
+
+    //먼저 인덱스 찾기
+    const nextGradeindex = gradeKoreaList.indexOf(user.grade);
+    //다음 등급 인덱스로 구하기
+    const nextGrade = gradeList[nextGradeindex + 1];
+
+    const newGrade = {
+      userId: user.id,
+      nextGrade: nextGrade,
+    };
+
+    gradeUpgrade(newGrade);
+  };
+
+  //등급 업그레이드 API
+  const gradeUpgrade = async (newGrade) => {
+    const result = await AdminApi.gradeUpgrade(newGrade);
+
+    alert(result.massage);
+  };
+
+  //다음 등급을 알기위한 배열
+  const gradeList = ["NEWBIE", "BLOSSOM", "BREEZE", "FLAME", "AURORA"];
+  const gradeKoreaList = [
+    "새싹회원",
+    "초급회원",
+    "중급회원",
+    "상급회원",
+    "프리미엄 회원",
+  ];
   return (
     <UserGradeComp>
       <h2>등급별 회원 통계</h2>
@@ -161,6 +195,13 @@ export default function UserGrade() {
                 <td>{user.email}</td>
                 <td>{user.name}</td>
                 <td>{user.point}</td>
+                {user.grade != "프리미엄 회원" && (
+                  <td className="btn_td">
+                    <button onClick={() => clickUpgrade(user)}>
+                      업그레이드
+                    </button>
+                  </td>
+                )}
               </tr>
             ))
           ) : (
