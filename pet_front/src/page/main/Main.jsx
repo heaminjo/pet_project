@@ -37,7 +37,6 @@ export default function Main() {
   return (
     <MainComp>
       <div className="mainInner">
-        <h2>d</h2>
         <Banner />
       </div>
     </MainComp>
