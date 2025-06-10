@@ -77,6 +77,8 @@ export default function UserList() {
         return "lightcoral";
       case "탈퇴회원":
         return "lightgray";
+      case "임시회원":
+        return "lightpink";
       default:
         return "white";
     }

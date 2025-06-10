@@ -16,6 +16,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -57,7 +59,7 @@ public class AdminController {
     }
 
     @GetMapping("/statistics/grade")
-    public ResponseEntity<GradeStatisticsDTO> gradeStatistics() {
+    public ResponseEntity<Map<String, GradeStatisticsDTO>> gradeStatistics() {
         return ResponseEntity.ok(adminService.gradeStatistics());
     }
 }

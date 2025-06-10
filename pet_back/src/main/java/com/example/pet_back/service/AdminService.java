@@ -8,6 +8,8 @@ import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Map;
+
 public interface AdminService {
     //회원 검색 리스트
     public PageResponseDTO<MemberResponseDTO> memberSearchList(PageRequestDTO dto);
@@ -22,5 +24,5 @@ public interface AdminService {
     public MemberStatisticsDTO memberStatistics();
 
     //등급 통계
-    public GradeStatisticsDTO gradeStatistics();
+    public Map<String, GradeStatisticsDTO> gradeStatistics();
 }

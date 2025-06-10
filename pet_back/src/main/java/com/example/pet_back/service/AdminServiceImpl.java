@@ -82,9 +82,17 @@ public class AdminServiceImpl implements AdminService {
         //키워드의 여부
         if (dto.getKeyword().isEmpty()) {
             //검색 x 전체 조회
+            log.info("전체 조회 합니다.");
             page = memberRepository.findAllUser(pageable);
+        } else if (dto.getType().equals("all")) {
+            //검색 필터 전체로 할 경우
+            log.info("전체 필터로 검색합니다. keyword => ");
+
+            page = memberRepository.findAllSearchList("%" + dto.getKeyword() + "%", ROLE.USER, pageable);
         } else {
+            //검색 필터 적용
             //검색 타입과 키워드를 포함하여 리스트를 가져온다.
+            log.info("검색 필터를 적용하여 검색합니다.");
             page = memberRepository.findSearchList(dto.getType(), "%" + dto.getKeyword() + "%", ROLE.USER, pageable);
         }
 
@@ -120,18 +128,20 @@ public class AdminServiceImpl implements AdminService {
         return new MemberStatisticsDTO(totalUser, 0L, todayUser, male, female, map);
     }
 
+    //등급 통계
     @Override
-    public GradeStatisticsDTO gradeStatistics() {
+    public Map<String, GradeStatisticsDTO> gradeStatistics() {
         List<Object[]> list = memberRepository.gradeStatistics();
+
+
         //map으로 변환
-        Map<String, Long> map = list.stream().collect(Collectors.toMap(
+        Map<String, GradeStatisticsDTO> map = list.stream().collect(Collectors.toMap(
                 row -> (String) row[0],
-                row -> ((Number) row[1]).longValue(),
+                row -> new GradeStatisticsDTO(((Number) row[1]).longValue(), ((Number) row[2]).doubleValue(), ((Number) row[3]).doubleValue()),
                 (existing, replacement) -> existing,
                 LinkedHashMap::new
         ));
 
-
-        return new GradeStatisticsDTO(map);
+        return map;
     }
 }

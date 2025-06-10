@@ -19,14 +19,21 @@ export default function UserGrade() {
 
   const getGradeStatistics = async () => {
     const result = await AdminApi.getGradeStatistics();
-
-    const transformedData = Object.entries(result.userGrade).map(
-      ([grade, count]) => ({
-        name: grade,
-        value: count,
-      })
-    );
-
+    console.log(result);
+    // //한글로 매핑핑
+    const gradeKoreanMap = {
+      NEWBIE: "새싹회원",
+      BLOSSOM: "초급회원",
+      BREEZE: "중급회원",
+      FLAME: "상급회원",
+      AURORA: "프리미엄회원",
+    };
+    const transformedData = Object.entries(result).map(([grade, dto]) => ({
+      name: gradeKoreanMap[grade] || grade,
+      value: dto.userNum,
+      avg: dto.avgPoint,
+      percent: dto.percent,
+    }));
     setGradeData(transformedData);
   };
   //등급 통계 가져오기
@@ -43,30 +50,60 @@ export default function UserGrade() {
         <ul className="line">
           <li id="grade01">
             <span>
-              새싹회원 <strong>{gradeData[0]?.value}명</strong>
+              {gradeData[0]?.percent.toFixed(1)}% {gradeData[0]?.name}
             </span>
           </li>
           <li id="grade02">
             <span>
-              초급회원 <strong>{gradeData[1]?.value}명</strong>
+              {gradeData[1]?.percent.toFixed(1)}% {gradeData[1]?.name}
             </span>
           </li>
           <li id="grade03">
             <span>
-              중급회원 <strong>{gradeData[2]?.value}명</strong>
+              {gradeData[2]?.percent.toFixed(1)}% {gradeData[2]?.name}
             </span>
           </li>
           <li id="grade04">
             <span>
-              상급회원 <strong>{gradeData[3]?.value}명</strong>
+              {gradeData[3]?.percent.toFixed(1)}% {gradeData[3]?.name}
             </span>
           </li>
           <li id="grade05">
             <span>
-              프리미엄회원 <strong>{gradeData[4]?.value}명</strong>
+              {gradeData[4]?.percent.toFixed(1)}% {gradeData[4]?.name}
             </span>
           </li>
         </ul>
+      </div>
+      <div className="grade_table">
+        <table>
+          <tr>
+            <th>
+              <span>등급</span>
+            </th>
+            <th>
+              <span>인원수</span>
+            </th>
+            <th>
+              <span>비율</span>
+            </th>
+            <th>
+              <span>평균 포인트</span>
+            </th>
+            <th>
+              <span>혜택 요약</span>
+            </th>
+          </tr>
+          {gradeData.map((g) => (
+            <tr>
+              <td>{g.name}</td>
+              <td>{g.value}명</td>
+              <td>{g.percent.toFixed(1)}%</td>
+              <td>{g.avg.toFixed(1)}P</td>
+              <td>---------------------</td>
+            </tr>
+          ))}
+        </table>
       </div>
     </UserGradeComp>
   );
@@ -126,6 +163,35 @@ const UserGradeComp = styled.div`
       }
       #grade05 {
         background-color: #ff9898;
+      }
+    }
+  }
+  .grade_table {
+    width: 100%;
+    padding: 30px 0;
+    table {
+      border-collapse: collapse;
+      text-align: center;
+      width: 900px;
+      tr {
+        height: 50px;
+
+        th {
+          height: 40px;
+          background-color: #ff9898;
+          color: #fff;
+          text-shadow: 1px 1px 1px #ccc;
+        }
+        td {
+          border-bottom: 1px solid #ccc;
+          padding-left: 5px;
+        }
+        td:nth-child(1) {
+          width: 150px;
+        }
+        td:nth-child(2) {
+          width: 50px;
+        }
       }
     }
   }
