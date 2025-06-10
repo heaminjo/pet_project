@@ -36,7 +36,7 @@ public interface BoardMapper {
     //** 게시글 삭제
     int deleteBoard(int board_id);
 
-    // [추가] 내 게시글 목록 페이징+검색
+    //** 내 게시글 목록 페이징+검색
     List<BoardDTO> selectMyBoardListPaging(
             @Param("member_id") int member_id,
             @Param("size") int size,
@@ -46,10 +46,11 @@ public interface BoardMapper {
             @Param("sort") String sort
     );
 
-    // [추가] 내 게시글 전체 개수(검색 포함)
+    //** 내 게시글 전체 개수(검색 포함)
     long countByMemberId(
             @Param("member_id") int member_id,
             @Param("type") String type,
             @Param("keyword") String keyword
     );
+
 }

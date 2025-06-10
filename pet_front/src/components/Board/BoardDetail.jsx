@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import BoardDetailStyle from "./BoardDetailStyle";
+import CommentForm from "./CommentForm";
+import CommentList from "./CommentList";
 
 // jwt 토큰에서 로그인한 회원의 ID를 가져옴
 function getMemberIdFromToken(token) {
@@ -32,6 +34,10 @@ export default function BoardDetail() {
   const [post, setPost] = useState(null);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [comment, setComment] = useState('');
+  const [comments, setComments] = useState([]);
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editingContent, setEditingContent] = useState('');
 
   useEffect(() => {
     axios
@@ -43,6 +49,107 @@ export default function BoardDetail() {
       .then((response) => setPost(response.data))
       .catch((error) => setError(error));
   }, [category, board_id]);
+
+  // 댓글 목록 조회
+  useEffect(() => {
+    axios
+      .get(`/board/${board_id}/comments`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        }
+      })
+      .then((response) => setComments(response.data || []))
+      .catch((error) => console.error("댓글 불러오기 실패:", error));
+  }, [board_id]);
+
+  // 댓글 등록 함수
+  const handleAddComment = async () => {
+    if (!comment.trim()) return; // 빈 댓글은 추가하지 않음
+    try {
+      await axios.post(
+        `/board/${board_id}/comments`,
+        { content: comment, member_id: loginMemberId, board_id: board_id },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      setComment(""); // 댓글 입력란 초기화
+      // 댓글 등록 후 다시 댓글 목록 조회
+      const res = await axios.get(`/board/${board_id}/comments`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        }
+      });
+      setComments(res.data || []);
+    } catch (error) {
+      alert("댓글 등록에 실패했습니다.");
+    }
+  };
+
+  // 댓글 삭제 함수
+  const handleDeleteComment = async (comment_id) => {
+    if (!window.confirm("정말 댓글을 삭제하시겠습니까?")) return;
+    try {
+      await axios.delete(
+        `/board/${board_id}/comments/${comment_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      // 댓글 삭제 후 다시 댓글 목록 조회
+      const res = await axios.get(`/board/${board_id}/comments`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        }
+      });
+      setComments(res.data || []);
+    } catch (error) {
+      alert("댓글 삭제에 실패했습니다.");
+    }
+  };
+
+  // 댓글 수정 시작 함수
+  const handleEditStart = (comment) => {
+    setEditingCommentId(comment.comment_id);
+    setEditingContent(comment.content);
+  }
+
+  // 댓글 수정 취소 함수
+  const handleEditCancel = () => {
+    setEditingCommentId(null);
+    setEditingContent('');
+  }
+
+  // 댓글 수정 완료 함수
+  const handleEditSubmit = async (comment_id) => {
+    if (!editingContent.trim()) return; // 빈 댓글은 수정하지 않음
+    try {
+      await axios.put(
+        `/board/${board_id}/comments/${comment_id}`,
+        { content: editingContent },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      setEditingCommentId(null);
+      setEditingContent('');
+      // 댓글 수정 후 다시 댓글 목록 조회
+      const res = await axios.get(`/board/${board_id}/comments`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        }
+      });
+      setComments(res.data || []);
+    } catch (error) {
+      alert("댓글 수정에 실패했습니다.");
+    }
+  }
 
   if (error) {
     return <div>게시글을 불러오지 못했습니다. {error.message}</div>;
@@ -85,12 +192,10 @@ export default function BoardDetail() {
     });
   };
 
-  console.log(
-    "loginMemberId:",
-    loginMemberId,
-    "post.member_id:",
-    post.member_id
-  );
+  console.log("loginMemberId:", loginMemberId, "post.member_id:", post.member_id);
+
+  
+  
 
   return (
     <BoardDetailStyle>
@@ -122,6 +227,24 @@ export default function BoardDetail() {
         )}
         <br></br>
         <hr></hr>
+        <br></br>
+        <h3>댓글</h3>
+        <CommentForm
+          comment={comment}
+          setComment={setComment}
+          onAddComment={handleAddComment}
+        />
+        <CommentList 
+          comments={comments}
+          onDeleteComment={handleDeleteComment}
+          editingCommentId={editingCommentId}
+          editingContent={editingContent}
+          setEditingContent={setEditingContent}
+          handleEditStart={handleEditStart}
+          handleEditCancel={handleEditCancel}
+          handleEditSubmit={handleEditSubmit}
+          loginMemberId={loginMemberId}
+        />
       </div>
     </BoardDetailStyle>
   );
