@@ -4,6 +4,7 @@ import PieComp from "../../components/util/PieComp";
 import { useEffect, useState } from "react";
 import AdminApi from "../../api/AdminApi";
 import UserGradeComp from "./UserGradeStyle";
+import MemberApi from "../../api/MemberApi";
 
 export default function UserGrade() {
   const data = [
@@ -17,7 +18,16 @@ export default function UserGrade() {
 
   //등급 통계 데이터
   const [gradeData, setGradeData] = useState([]);
+  const [gradeType, setGradeType] = useState("NEWBIE");
+  const [userList, setUserList] = useState([]); //초기 목록은 NEWBIE로로
+  const [backColor, setBackColor] = useState("#eaefef");
 
+  useEffect(() => {
+    getGradeStatistics();
+    getGradeUserList();
+  }, [gradeType]);
+
+  //그룹 통계 API
   const getGradeStatistics = async () => {
     const result = await AdminApi.getGradeStatistics();
     console.log(result);
@@ -39,10 +49,20 @@ export default function UserGrade() {
     );
     setGradeData(transformedData);
   };
-  //등급 통계 가져오기
-  useEffect(() => {
-    getGradeStatistics();
-  }, []);
+
+  //등급 별 회원 목록 가져오기
+  const getGradeUserList = async () => {
+    const result = await AdminApi.getGradeUserList(gradeType);
+    console.log(gradeType);
+    setUserList(result.slice(0, 5)); //처음 5개만 저장(상위 5명)
+  };
+
+  //등급 클릭
+  const clickGrade = (gradeType, backColor) => {
+    setGradeType(gradeType);
+    setBackColor(backColor);
+  };
+
   return (
     <UserGradeComp>
       <h2>등급별 회원 통계</h2>
@@ -111,29 +131,43 @@ export default function UserGrade() {
       <div className="list_table">
         <h4>등급 별 우수 회원 목록</h4>
         <ul className="line">
-          <li id="grade01">
+          <li id="grade01" onClick={() => clickGrade("NEWBIE", "#eaefef")}>
             <span>{gradeData[0]?.name}</span>
           </li>
-          <li id="grade02">
+          <li id="grade02" onClick={() => clickGrade("BLOSSOM", "#ffe99a")}>
             <span>{gradeData[1]?.name}</span>
           </li>
-          <li id="grade03">
+          <li id="grade03" onClick={() => clickGrade("BREEZE", "#ffd586")}>
             <span>{gradeData[2]?.name}</span>
           </li>
-          <li id="grade04">
+          <li id="grade04" onClick={() => clickGrade("FLAME", "#ffaaaa")}>
             <span>{gradeData[3]?.name}</span>
           </li>
-          <li id="grade05">
+          <li id="grade05" onClick={() => clickGrade("AURORA", "#ff9898")}>
             <span>{gradeData[4]?.name}</span>
           </li>
         </ul>
         <table>
-          <tr>
+          <tr style={{ backgroundColor: backColor }}>
             <th>순위</th>
             <th>이메일</th>
             <th>이름</th>
             <th>포인트</th>
           </tr>
+          {userList.length > 0 ? (
+            userList?.map((user, index) => (
+              <tr>
+                <td>{index + 1}</td>
+                <td>{user.email}</td>
+                <td>{user.name}</td>
+                <td>{user.point}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={4}>해당 등급의 회원이 존재하지않습니다.</td>
+            </tr>
+          )}
         </table>
       </div>
     </UserGradeComp>

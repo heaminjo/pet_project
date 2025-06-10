@@ -89,6 +89,7 @@ const UserGradeComp = styled.div`
   }
   .list_table {
     width: 700px;
+    height: 350px;
     h4 {
       margin: 10px 0;
     }
@@ -101,7 +102,6 @@ const UserGradeComp = styled.div`
         font-size: 14px;
         text-align: center;
         line-height: 50px;
-        box-shadow: 3px 3px 3px #aaa;
         cursor: pointer;
         span {
           color: #333; /* 어두운 회색 - 순수한 검정보다는 덜 부담스러움 */
@@ -115,8 +115,25 @@ const UserGradeComp = styled.div`
       }
     }
     table {
+      margin-top: 10px;
+      width: 543px;
+      text-align: center;
+      border-collapse: collapse;
       tr {
         height: 40px;
+        border-bottom: 1px solid #ccc;
+        td:nth-child(1) {
+          width: 50px;
+        }
+        td:nth-child(2) {
+          width: 300px;
+        }
+        td:nth-child(3) {
+          width: 100px;
+        }
+        td:nth-child(4) {
+          width: 100px;
+        }
       }
     }
   }

@@ -50,5 +50,13 @@ const AdminApi = {
     const result = await instance.get(`${KH_DOMAIN}/admin/statistics/grade`);
     return result.data;
   },
+
+  //등급 당 우수 회원 목록
+  getGradeUserList: async (gradeType) => {
+    const result = await instance.get(
+      `${KH_DOMAIN}/admin/best/list?grade=${gradeType}`
+    );
+    return result.data;
+  },
 };
 export default AdminApi;
