@@ -5,6 +5,7 @@ import com.example.pet_back.constant.MEMBERSTATE;
 import com.example.pet_back.constant.ROLE;
 import com.example.pet_back.domain.admin.GradeStatisticsDTO;
 import com.example.pet_back.domain.admin.MemberStatisticsDTO;
+import com.example.pet_back.domain.admin.UpgradeRequstDTO;
 import com.example.pet_back.domain.admin.UserStateUpdateDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.member.MemberResponseDTO;
@@ -24,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.LinkedHashMap;
@@ -153,5 +155,16 @@ public class AdminServiceImpl implements AdminService {
         List<MemberResponseDTO> response = list.stream().map(mapper::toDto).toList();
 
         return response;
+    }
+
+
+    //등급 업그레이드
+    @Override
+    @Transactional
+    public ApiResponse upgradeGrade(UpgradeRequstDTO dto) {
+        memberRepository.updateGrade(dto.getNextGrade(), dto.getUserId());
+        Member member = memberRepository.findById(dto.getUserId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return new ApiResponse<>(true, member.getName() + "님의 등급이 " + dto.getNextGrade() + "등급으로 업그레이드 되었습니다.");
     }
 }

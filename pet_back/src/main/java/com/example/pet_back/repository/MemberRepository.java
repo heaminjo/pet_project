@@ -87,4 +87,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             "where grade= :grade " +
             "order by point desc")
     public List<Member> userBestList(@Param("grade") String grade);
+
+    //등급 업데이트
+    @Modifying
+    @Query(nativeQuery = true, value = "update member set grade = :newGrade where member_id = :memberId")
+    public void updateGrade(@Param("newGrade") String newGrade, @Param("memberId") Long memberId);
 }

@@ -70,12 +70,12 @@ export default function AdminMenu() {
               <span>상품 카테고리 관리</span>
             </li>
             <li>
-              <span>옵션 및 재고 관리리</span>
+              <span>옵션 및 재고 관리</span>
             </li>
           </ul>
         </div>
         <div className="sub_menu" id="order_menu">
-          <p className="menu_title">주문 관리리</p>
+          <p className="menu_title">주문 관리</p>
           <ul>
             <li>
               <span>전체 주문 목록</span>
@@ -89,13 +89,10 @@ export default function AdminMenu() {
           </ul>
         </div>
         <div className="sub_menu" id="border_menu">
-          <p className="menu_title">내 게시물</p>
+          <p className="menu_title">메인 관리</p>
           <ul>
             <li>
-              <span>내 게시물 목록</span>
-            </li>
-            <li>
-              <span>북마크</span>
+              <span>메인 배너 관리</span>
             </li>
             <li>
               <span></span>

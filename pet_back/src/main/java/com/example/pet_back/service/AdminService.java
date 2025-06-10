@@ -2,7 +2,9 @@ package com.example.pet_back.service;
 
 import com.example.pet_back.domain.admin.GradeStatisticsDTO;
 import com.example.pet_back.domain.admin.MemberStatisticsDTO;
+import com.example.pet_back.domain.admin.UpgradeRequstDTO;
 import com.example.pet_back.domain.admin.UserStateUpdateDTO;
+import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
@@ -29,4 +31,7 @@ public interface AdminService {
 
     //각 등급 당 우수 회원
     public List<MemberResponseDTO> userBestList(String grade);
+
+    //등급 업그레이드
+    public ApiResponse upgradeGrade(UpgradeRequstDTO dto);
 }

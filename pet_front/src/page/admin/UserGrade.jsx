@@ -21,11 +21,11 @@ export default function UserGrade() {
   const [gradeType, setGradeType] = useState("NEWBIE");
   const [userList, setUserList] = useState([]); //초기 목록은 NEWBIE로로
   const [backColor, setBackColor] = useState("#eaefef");
-
+  const [render, setRender] = useState(0);
   useEffect(() => {
     getGradeStatistics();
     getGradeUserList();
-  }, [gradeType]);
+  }, [gradeType, render]);
 
   //그룹 통계 API
   const getGradeStatistics = async () => {
@@ -84,8 +84,8 @@ export default function UserGrade() {
   //등급 업그레이드 API
   const gradeUpgrade = async (newGrade) => {
     const result = await AdminApi.gradeUpgrade(newGrade);
-
-    alert(result.massage);
+    setRender(render + 1); //강제 랜더링
+    alert(result.message);
   };
 
   //다음 등급을 알기위한 배열
