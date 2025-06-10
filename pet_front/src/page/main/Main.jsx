@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import MainComp from "./MainStyle";
+import Banner from "../../components/main/Banner";
 
 export default function Main() {
   const kakao = async () => {
@@ -33,12 +34,12 @@ export default function Main() {
     }
   };
 
-  useEffect(() => {
-    kakao();
-  });
   return (
     <MainComp>
-      <div className="mainInner">d</div>
+      <div className="mainInner">
+        <h2>d</h2>
+        <Banner />
+      </div>
     </MainComp>
   );
 }
