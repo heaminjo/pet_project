@@ -8,6 +8,7 @@ import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
 import java.util.Map;
 
 public interface AdminService {
@@ -25,4 +26,7 @@ public interface AdminService {
 
     //등급 통계
     public Map<String, GradeStatisticsDTO> gradeStatistics();
+
+    //각 등급 당 우수 회원
+    public List<MemberResponseDTO> userBestList(String grade);
 }

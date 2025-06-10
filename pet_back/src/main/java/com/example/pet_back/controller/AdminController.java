@@ -16,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -58,8 +59,15 @@ public class AdminController {
         return ResponseEntity.ok(adminService.memberStatistics());
     }
 
+    //등급 통계
     @GetMapping("/statistics/grade")
     public ResponseEntity<Map<String, GradeStatisticsDTO>> gradeStatistics() {
         return ResponseEntity.ok(adminService.gradeStatistics());
+    }
+
+    //각 등급 포인트 역순 리스트
+    @GetMapping("/best/list")
+    public ResponseEntity<List<MemberResponseDTO>> userBestList(@RequestParam("grade") String grade) {
+        return ResponseEntity.ok(adminService.userBestList(grade));
     }
 }

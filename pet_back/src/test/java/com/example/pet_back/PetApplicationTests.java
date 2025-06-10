@@ -14,7 +14,6 @@ class PetApplicationTests {
     void contextLoads() {
 
 
-        System.out.println(service.gradeStatistics());
     }
 
 }

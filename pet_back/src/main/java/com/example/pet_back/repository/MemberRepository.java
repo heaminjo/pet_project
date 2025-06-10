@@ -80,4 +80,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     //카카오 아이디 검사
     public Optional<Member> findByKakaoId(Long kakaoId);
+
+    //등급 당 우수회원
+    @Query(nativeQuery = true, value = "select * " +
+            "from member " +
+            "where grade= :grade " +
+            "order by point desc")
+    public List<Member> userBestList(@Param("grade") String grade);
 }

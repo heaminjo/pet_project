@@ -3,6 +3,7 @@ import PieRing from "../../components/util/PieRing";
 import PieComp from "../../components/util/PieComp";
 import { useEffect, useState } from "react";
 import AdminApi from "../../api/AdminApi";
+import UserGradeComp from "./UserGradeStyle";
 
 export default function UserGrade() {
   const data = [
@@ -28,12 +29,14 @@ export default function UserGrade() {
       FLAME: "상급회원",
       AURORA: "프리미엄회원",
     };
-    const transformedData = Object.entries(result).map(([grade, dto]) => ({
-      name: gradeKoreanMap[grade] || grade,
-      value: dto.userNum,
-      avg: dto.avgPoint,
-      percent: dto.percent,
-    }));
+    const transformedData = Object.entries(result || {}).map(
+      ([grade, dto]) => ({
+        name: gradeKoreanMap[grade] || grade,
+        value: dto.userNum,
+        avg: dto.avgPoint,
+        percent: dto.percent,
+      })
+    );
     setGradeData(transformedData);
   };
   //등급 통계 가져오기
@@ -105,94 +108,34 @@ export default function UserGrade() {
           ))}
         </table>
       </div>
+      <div className="list_table">
+        <h4>등급 별 우수 회원 목록</h4>
+        <ul className="line">
+          <li id="grade01">
+            <span>{gradeData[0]?.name}</span>
+          </li>
+          <li id="grade02">
+            <span>{gradeData[1]?.name}</span>
+          </li>
+          <li id="grade03">
+            <span>{gradeData[2]?.name}</span>
+          </li>
+          <li id="grade04">
+            <span>{gradeData[3]?.name}</span>
+          </li>
+          <li id="grade05">
+            <span>{gradeData[4]?.name}</span>
+          </li>
+        </ul>
+        <table>
+          <tr>
+            <th>순위</th>
+            <th>이메일</th>
+            <th>이름</th>
+            <th>포인트</th>
+          </tr>
+        </table>
+      </div>
     </UserGradeComp>
   );
 }
-const UserGradeComp = styled.div`
-  h2 {
-    margin-bottom: 20px;
-    color: #333;
-    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5); /* 살짝 반사 느낌 */
-  }
-  .grade_intro {
-    width: 900px;
-    position: relative;
-    display: flex;
-    .chart {
-      border: none;
-      position: absolute;
-      width: 230px;
-      height: 250px;
-      background-color: #fff;
-      border-radius: 0 100% 100% 0;
-      top: -5px;
-      left: -20px;
-    }
-    .line {
-      width: 800px;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      li {
-        text-align: end;
-        padding-right: 10px;
-        font-size: 15px;
-        height: 40px;
-        line-height: 40px;
-        box-shadow: 1px 1px 1px 1px #888;
-        cursor: pointer;
-        span {
-          color: #333; /* 어두운 회색 - 순수한 검정보다는 덜 부담스러움 */
-          font-weight: 500; /* 기본보다 약간 진하게 */
-          text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5); /* 살짝 반사 느낌 */
-          font-weight: bold;
-        }
-      }
-      #grade01 {
-        background-color: #eaefef;
-      }
-      #grade02 {
-        background-color: #ffe99a;
-      }
-      #grade03 {
-        background-color: #ffd586;
-      }
-      #grade04 {
-        background-color: #ffaaaa;
-      }
-      #grade05 {
-        background-color: #ff9898;
-      }
-    }
-  }
-  .grade_table {
-    width: 100%;
-    padding: 30px 0;
-    table {
-      border-collapse: collapse;
-      text-align: center;
-      width: 900px;
-      tr {
-        height: 50px;
-
-        th {
-          height: 40px;
-          background-color: #ff9898;
-          color: #fff;
-          text-shadow: 1px 1px 1px #ccc;
-        }
-        td {
-          border-bottom: 1px solid #ccc;
-          padding-left: 5px;
-        }
-        td:nth-child(1) {
-          width: 150px;
-        }
-        td:nth-child(2) {
-          width: 50px;
-        }
-      }
-    }
-  }
-`;

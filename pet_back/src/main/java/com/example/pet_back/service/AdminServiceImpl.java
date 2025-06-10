@@ -144,4 +144,14 @@ public class AdminServiceImpl implements AdminService {
 
         return map;
     }
+
+    @Override
+    public List<MemberResponseDTO> userBestList(String grade) {
+        log.info(grade);
+        List<Member> list = memberRepository.userBestList(grade);
+        log.info(list.stream().toList());
+        List<MemberResponseDTO> response = list.stream().map(mapper::toDto).toList();
+
+        return response;
+    }
 }
