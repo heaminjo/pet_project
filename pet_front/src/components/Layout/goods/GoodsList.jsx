@@ -7,6 +7,8 @@ export default function GoodsList() {
   const navigate = useNavigate();
   const goodsImg = process.env.PUBLIC_URL + '/images/pic1.png';
   const [goods, setGoods] = useState([]);
+  const EMPTY_HEART = '🤍';
+  const FULL_HEART = '💖';
 
   // 전체 상품 리스트 조회
   const goodsList = async () => {
@@ -19,12 +21,20 @@ export default function GoodsList() {
 
   // 상품1개 클릭시
   const clickProd = (item) => {
-    alert(`clickProd 선택된 상품: ${item.goods_id}, ${item.goods_name}, ${item.goods_state}, ${item.description}, ${item.price}`);
-    navigate('/user/order', { state: { goods: item } });
+    alert(`clickProd 선택된 상품: ${item.goodsId}, ${item.goodsName}, ${item.goodsState}, ${item.description}, ${item.price}`);
+    navigate('/goods/order', { state: { goods: item } });
+  };
+
+  // 별점 (배열)
+  const renderStars = (rating) => {
+    return '⭐'.repeat(Math.floor(rating)); // 반올림이나 소수점 무시
   };
 
   useEffect(() => {
     goodsList();
+    if (goods) {
+      renderStars(goods.rating || 0);
+    }
   }, []);
 
   return (
@@ -36,9 +46,19 @@ export default function GoodsList() {
           <section className='list'>
             {goods.map((item, index) => (
               <div className='goodslist' key={index} onClick={() => clickProd(item)}>
-                <img src={`http://localhost:8080/uploads/${item.image_file}`} alt={item.goods_name} className='prodimg' />
-                <div>{item.goods_name}</div>
-                <div>{item.description}</div>
+                <img src={`http://localhost:8080/uploads/${item.imageFile}`} alt={item.goodsName} className='prodimg' />
+                <div>
+                  <b>{item.goodsName} </b>
+                </div>
+                <div>
+                  {item.description} {', '}
+                  {item.quantity} 개
+                </div>
+                <div>{item.price} 원</div>
+                <div>
+                  <span>{renderStars(item.rating)}</span>
+                  <span style={{ color: 'red', fontSize: '12px' }}> {'( ' + item.review_num + ' )'} </span>
+                </div>
               </div>
             ))}
           </section>

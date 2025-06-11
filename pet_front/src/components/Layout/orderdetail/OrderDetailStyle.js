@@ -5,8 +5,6 @@ const OrderDetailComp = styled.div`
     width: 900px;
     height: 800px;
     margin: 0 auto;
-    margin-top: 50px;
-    padding: 150px;
 
     .orderlist {
       // border: 1px solid rgb(200, 200, 200);

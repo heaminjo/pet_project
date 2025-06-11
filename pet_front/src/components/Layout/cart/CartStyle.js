@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const CartComp = styled.div`
   .container {
     width: 900px;
-    height: 1200px;
+    height: 1300px;
     padding: 10px;
     margin: auto;
     border: 1px solid rgb(230, 230, 230);
@@ -16,7 +16,7 @@ const CartComp = styled.div`
     }
     .body {
       width: 850px;
-      height: 900px;
+      height: 1100px;
       margin: 0 auto;
       padding: 10px;
       display: flex;

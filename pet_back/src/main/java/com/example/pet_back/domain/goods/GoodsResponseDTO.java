@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -14,35 +14,35 @@ import java.util.Date;
 @SuperBuilder
 public class GoodsResponseDTO {
 
-    private Long goods_id;
-    private Long category_id;
-    private String goods_name;
+    private Long goodsId;
+    private Long categoryId;
+    private String goodsName;
     private int price;
     private String description;
 
     // 상품 상태 (SALE, SOLDOUT, HIDDEN)
-    private GOODSSTATE goods_state = GOODSSTATE.SALE;
-    private String image_file;
+    private GOODSSTATE goodsState = GOODSSTATE.SALE;
+    private String imageFile;
     private double rating;
     private int views;
-    private int review_num;
+    private int reviewNum;
     private int quantity;
-    private Date reg_date;
+    private LocalDate regDate;
 
     // 장바구니 수량
-    private int cart_quantity;
+    private int cartQuantity;
 
 
     // 생성자 - 상품리스트 출력용 (메인)
-    public GoodsResponseDTO(Long category_id, String goods_name, int price, //
-                            String description, GOODSSTATE goods_state, //
-                            String image_file, int quantity) {
-        this.category_id = category_id;
-        this.goods_name = goods_name;
+    public GoodsResponseDTO(Long categoryId, String goodsName, int price, //
+                            String description, GOODSSTATE goodsState, //
+                            String imageFile, int quantity) {
+        this.categoryId = categoryId;
+        this.goodsName = goodsName;
         this.price = price;
         this.description = description;
-        this.goods_state = goods_state;
-        this.image_file = image_file;
+        this.goodsState = goodsState;
+        this.imageFile = imageFile;
         this.quantity = quantity;
     }
 

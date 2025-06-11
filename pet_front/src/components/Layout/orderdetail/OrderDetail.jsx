@@ -34,16 +34,16 @@ export default function OrderDetail() {
     alert(`addToCart => ${goodsWithQuantity.quantity}`);
     GoodsApi.addToCart(goodsWithQuantity)
       .then((response) => {
-        alert(`장바구니 담기 성공, 상품ID:  => ${response.goods_id}`);
+        alert(`장바구니 담기 성공, 상품ID:  => ${response.goodsId}`);
         console.log(response);
       })
       .catch((err) => {});
   };
 
   // 전체 정보 가져옴 - Return Type : OrderDetailResponseDTO List
-  // Goods List : 현재 Order의 order_id넘김 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Goods List : 현재 Order의 orderId넘김 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const goodsList = (orders) => {
-    const orderIds = orders.map((o) => o.order_id);
+    const orderIds = orders.map((o) => o.orderId);
     GoodsApi.customerGoodsHistory(orderIds)
       .then((response) => {
         //alert(`GoodsApi.customerGoodsHistory() 성공`);
@@ -63,7 +63,7 @@ export default function OrderDetail() {
   const groupByDate = (data) => {
     const grouped = {};
     data.forEach((item) => {
-      const dateKey = new Date(item.reg_date).toISOString().split('T')[0]; // 'YYYY-MM-DD'
+      const dateKey = new Date(item.regDate).toISOString().split('T')[0]; // 'YYYY-MM-DD'
       // toISOString() : 시차 방어 (UTC 기준)
       // 2025-06-05T15:57:22.427+09:00 --> '2025-06-05' 추출
       if (!grouped[dateKey]) grouped[dateKey] = []; // 빈배열 방어
@@ -92,18 +92,18 @@ export default function OrderDetail() {
               {groupedInfo[date].map((item, index) => (
                 <div className='orderlist2'>
                   <div className='orderdesc'>
-                    <img src={`http://localhost:8080/uploads/${item.image_file}`} alt={item.goods_name} className='prodimg' onClick={() => navigate('/user/order', { state: { goods: item } })} />
+                    <img src={`http://localhost:8080/uploads/${item.imageFile}`} alt={item.goodsName} className='prodimg' onClick={() => navigate('/user/order', { state: { goods: item } })} />
                     <br />
                     <div className='proddesc'>
                       <b>결제완료</b> <br />
-                      {item.goods_name} <br />
-                      {item.goods_price} 원 / {item.goods_quantity} 개
+                      {item.goodsName} <br />
+                      {item.goodsPrice} 원 / {item.goodsQuantity} 개
                     </div>
                     <div className='btn'>
-                      <button className='btn1' onClick={() => addToCart(goods)}>
+                      <button className='btn1' onClick={() => addToCart(item)}>
                         장바구니 담기
                       </button>
-                      <button className='btn2' onClick={() => navigate('/user/delivery')}>
+                      <button className='btn2' onClick={() => navigate('/user/delivery', { state: { goodsId: item.goodsId } })}>
                         배송조회
                       </button>
                       <button className='btn3' onClick={() => navigate('/user/withdraw')}>

@@ -60,7 +60,9 @@ export default function MypageMenu() {
               <span>찜</span>
             </li>
             <li>
-              <span onClick={() => navigate('/user/mypage/cart/list')}>장바구니</span>
+              <span onClick={() => navigate('/user/mypage/cart/list')} style={{ color: 'red' }}>
+                장바구니
+              </span>
             </li>
             <li>
               <span>최근 본 목록</span>
@@ -77,7 +79,9 @@ export default function MypageMenu() {
           <p className='menu_title'>주문 / 배송</p>
           <ul>
             <li>
-              <span onClick={() => navigate('/user/orderdetail')}>주문 / 배송 내역</span>
+              <span onClick={() => navigate('/user/orderdetail')} style={{ color: 'red' }}>
+                주문 / 배송 내역
+              </span>
             </li>
             <li>
               <span>취소 내역</span>

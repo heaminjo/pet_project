@@ -2,22 +2,28 @@ package com.example.pet_back.service;
 
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.domain.goods.GoodsResponseDTO;
+import com.example.pet_back.domain.page.PageRequestDTO;
+import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.entity.Cart;
 import com.example.pet_back.entity.Goods;
 import com.example.pet_back.entity.Member;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.mapper.GoodsMapper;
-import com.example.pet_back.mapper.MemberMapper;
 import com.example.pet_back.repository.CartRepository;
 import com.example.pet_back.repository.GoodsRepository;
 import com.example.pet_back.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,11 +37,10 @@ public class CartServiceImpl implements CartService {
     private final GoodsRepository goodsRepository;
     private final MemberRepository memberRepository;
     private final GoodsMapper goodsMapper;
-    private final MemberMapper memberMapper;
 
     // 장바구니 리스트 출력
     @Override
-    public ResponseEntity<?> selectList(CustomUserDetails userDetails) {
+    public ResponseEntity<?> selectList(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO) {
         log.info("** CartServiceImpl selectList 실행됨 **");
 
         // 1. 유저 details에서 id 가져와 회원을 가져온다.
@@ -44,13 +49,24 @@ public class CartServiceImpl implements CartService {
                 .orElseThrow(() //
                         -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
         System.out.println("member.getName() => " + member.getName());
+
         // 2. Cart List
-        List<Cart> cartEntities = cartRepository.findCartListByUserId(member.getId()); // Cart List
+        // 페이징
+        // 정렬 (최신)
+        Sort sort = pageRequestDTO.getSortBy().equals("desc") ? // desc라면
+                Sort.by("regDate").descending() // regDate 필드 기준으로 desc
+                : Sort.by("regDate").ascending();
+
+        // Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(), sort);
+        Page<Cart> page = cartRepository.findCartList(member.getId(), pageable); // CartList
+
 
         // 3. Goods List
+        // List<Cart> cartEntities = cartRepository.findCartListByUserId(member.getId()); // Cart List
         List<Long> goodsIdList = new ArrayList<>();
-        for (Cart cartEntity : cartEntities) {
-            Long goodsId = cartEntity.getGoods_id(); // Cart에서 goods_id 추출 => List
+        for (Cart cartEntity : page) {
+            Long goodsId = cartEntity.getGoodsId(); // Cart에서 goods_id 추출 => List
             goodsIdList.add(goodsId);
             System.out.println("cart 의 수량 => " + cartEntity.getQuantity());
         }
@@ -59,26 +75,32 @@ public class CartServiceImpl implements CartService {
         List<Goods> goodsList = goodsRepository.findAllById(goodsIdList); // Goods List
         List<GoodsResponseDTO> goodsResponseDTOList = goodsMapper.toDtoList(goodsList);
 
-        // 장바구니의 수량이 필요할시 아래 주석 해제후 사용.
-        // 4-1. Cart List 를 goodsId 기준으로 Map으로
-        Map<Long, Integer> goodsIdToQuantityMap = cartEntities.stream()
-                .collect(Collectors.toMap(Cart::getGoods_id, Cart::getQuantity)); // quantity: Cart
-        // 4.2. Goods List에 Cart 의 Quantity 반영
+        // 5, 장바구니 수량 적용 로직
+        // 5-1. Cart List 를 goodsId 기준으로 Map으로
+        Map<Long, Integer> goodsIdToQuantityMap = page.stream()
+                .collect(Collectors.toMap(Cart::getGoodsId, Cart::getQuantity)); // quantity: Cart
+        // 5.2. Goods List에 Cart 의 Quantity 반영
         for (GoodsResponseDTO dto : goodsResponseDTOList) {
-            Integer quantity = goodsIdToQuantityMap.get(dto.getGoods_id());
-            dto.setCart_quantity(quantity);
+            Integer quantity = goodsIdToQuantityMap.get(dto.getGoodsId());
+            dto.setCartQuantity(quantity);
         }
 
-        log.info(goodsResponseDTOList.toString());
+        // 6. 반환할 ResponseDTO 에 List 저장 (goodsResponseDTOList)
+        PageResponseDTO<GoodsResponseDTO> response = new PageResponseDTO<>( //
+                goodsResponseDTOList, //
+                pageRequestDTO.getPage(), pageRequestDTO.getSize(),  //
+                page.getTotalElements(), page.getTotalPages(), page.hasNext(), page.hasPrevious());
+
+        log.info(response.toString());
         log.info("** CartServiceImpl selectList 끝 **");
-        return ResponseEntity.status(HttpStatus.OK).body(goodsResponseDTOList);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     // 상품을 장바구니에 추가
     @Override
     public ResponseEntity<?> addToCart(CustomUserDetails userDetails, //
                                        GoodsRequestDTO goodsRequestDTO) {
-        System.out.println("** goodsRequestDTO goods_id : " + goodsRequestDTO.getGoods_id());
+        System.out.println("** goodsRequestDTO goods_id : " + goodsRequestDTO.getGoodsId());
         log.info("** CartServiceImpl 실행됨 **");
         // 1. 현재 상태 확인
         // member 불러옴
@@ -89,21 +111,22 @@ public class CartServiceImpl implements CartService {
         System.out.println("** member.getId() : " + member.getId());
         // goods 불러옴
         Goods goods = goodsRepository.findById( //
-                        goodsRequestDTO.getGoods_id()) //
+                        goodsRequestDTO.getGoodsId()) //
                 .orElseThrow(()  //
                         -> new IllegalArgumentException("상품이 존재하지 않습니다."));
 
         // 2. 조건 설정 (Builder 패턴 연습용, 이 부분은 해당 코드에서는 사용되지 않으므로 지워도 무방합니다.)
         // 엔티티에 값 SET
         Cart cart = Cart.builder() //
-                .goods_id(goods.getGoods_id()) //
-                .member_id(member.getId()) //
+                .goodsId(goods.getGoodsId()) //
+                .memberId(member.getId()) //
                 .quantity(goodsRequestDTO.getQuantity()) //
+                .regDate(LocalDate.now())
                 .build();
 
         // 3. 수행
         // INSERT 수행
-        if (cartRepository.addToCart(member.getId(), goods.getGoods_id(), goodsRequestDTO.getQuantity()) > 0) {
+        if (cartRepository.addToCart(member.getId(), goods.getGoodsId(), goodsRequestDTO.getQuantity(), LocalDate.now()) > 0) {
             GoodsResponseDTO goodsResponseDTO = goodsMapper.toDto(goods);
             return ResponseEntity.status(HttpStatus.OK).body(goodsResponseDTO);
         } else {

@@ -35,6 +35,8 @@ public class GoodsServiceImpl implements GoodsService {
     private final DeliveryRepository deliveryRepository;
     private final MemberRepository memberRepository;
     private final CartRepository cartRepository;
+    private final AddressRepository addressRepository;
+
     // Mapper
     private final GoodsMapper goodsMapper;
     private final OrderMapper orderMapper;
@@ -63,24 +65,23 @@ public class GoodsServiceImpl implements GoodsService {
     // 상품등록
     @Override
     public void registerGoods(GoodsRequestDTO goodsRequestDTO, //
+                              MultipartFile uploadImg, //
                               HttpServletRequest request) throws IOException {
         log.info("** GoodsServiceImpl 실행됨 **");
-        System.out.println("에러발생지점 확인용 : " + goodsRequestDTO.getGoods_state().getClass());
+        System.out.println("에러발생지점 확인용 : " + goodsRequestDTO.getGoodsState().getClass());
 
-        // 등록할 상품정보 SET
-        Long category_id = goodsRequestDTO.getCategory_id();
-        String goods_name = goodsRequestDTO.getGoods_name();
+        Long category_id = goodsRequestDTO.getCategoryId();
+        String goods_name = goodsRequestDTO.getGoodsName();
         int price = goodsRequestDTO.getPrice();
         String description = goodsRequestDTO.getDescription();
-        String goods_state = goodsRequestDTO.getGoods_state().name(); // String 변환 후 저장 필수
-        String image_file = goodsRequestDTO.getImage_file();
+        String goods_state = goodsRequestDTO.getGoodsState().name(); // String 변환 후 저장 필수
+        String image_file = goodsRequestDTO.getImageFile();
         int quantity = goodsRequestDTO.getQuantity();
 
         // 이미지 로직
         //  String realPath = "src/main/resources/static/upload/";
         // 1. 파일 저장 경로 준비
-        String realPath = request.getServletContext().getRealPath("/");
-        realPath += "resources\\uploadImages\\";
+        String realPath = "C:/uploads/";
 
         // 2. 기본 이미지 복사 처리
         File file = new File(realPath); // 파일 또는 디렉토리를 참조하는 File 객체생성
@@ -95,22 +96,32 @@ public class GoodsServiceImpl implements GoodsService {
 
         // 3. 업로드 이미지 처리
         String file1 = "", file2 = "basicman.png";
-        MultipartFile upload_img = goodsRequestDTO.getUpload_img();
-        // ㄴ HTML <input type="file" />로 업로드된 파일을 서버에서 받으면 MultipartFile 객체로 처리됨
-        // ㄴ 이 객체는 파일 이름, 크기, MIME 타입, 실제 파일 데이터 등을 포함
-
-        // 사용자가 업로드한 이미지가 있다면
-        if (upload_img != null && !upload_img.isEmpty()) {
-            file1 = realPath + upload_img.getOriginalFilename(); // 서버에 저장할 전체경로
-            upload_img.transferTo(new File(file1));
-            // 전송 메서드(실제로 저장됨). transferTo()로 실제 바이트 데이터를 복사
-
-            file2 = upload_img.getOriginalFilename();
-            // file2: DB에 저장할 용도. 업로드한 원래 경로+파일명 꺼내 저장함.
+        // 컨트롤러에서 직접 받은 uploadImg 사용
+        if (uploadImg != null && !uploadImg.isEmpty()) {
+            file1 = realPath + uploadImg.getOriginalFilename(); // 서버에 저장할 전체경로
+            uploadImg.transferTo(new File(file1)); // 전송 메서드(실제로 저장됨)
+            file2 = uploadImg.getOriginalFilename(); // DB 저장용 파일명
         }
-        goodsRequestDTO.setImage_file(file2);
+
+        // 이미지 파일명 DTO에 주입 (DB 저장용)
+        goodsRequestDTO.setImageFile(file2);
+
+//        MultipartFile upload_img = goodsRequestDTO.getUploadImg();
+//        // ㄴ HTML <input type="file" />로 업로드된 파일을 서버에서 받으면 MultipartFile 객체로 처리됨
+//        // ㄴ 이 객체는 파일 이름, 크기, MIME 타입, 실제 파일 데이터 등을 포함
+//        // 사용자가 업로드한 이미지가 있다면
+//        if (upload_img != null && !upload_img.isEmpty()) {
+//            file1 = realPath + upload_img.getOriginalFilename(); // 서버에 저장할 전체경로
+//            upload_img.transferTo(new File(file1));
+//            // 전송 메서드(실제로 저장됨). transferTo()로 실제 바이트 데이터를 복사
+//
+//            file2 = upload_img.getOriginalFilename();
+//            // file2: DB에 저장할 용도. 업로드한 원래 경로+파일명 꺼내 저장함.
+//        }
+
+        goodsRequestDTO.setImageFile(file2);
         goodsRepository.registerGoods(category_id, goods_name, price, //
-                description, goods_state, image_file, quantity);
+                description, goods_state, file2, quantity);
 
     }
 
@@ -121,7 +132,7 @@ public class GoodsServiceImpl implements GoodsService {
         System.out.println("GoodsServiceImpl 의 payGoods() 시작");
         // 1. Goods List
         List<Long> goodsIds = payRequestDTO.getGoodsList().stream()
-                .map(GoodsRequestDTO::getGoods_id)
+                .map(GoodsRequestDTO::getGoodsId)
                 .collect(Collectors.toList());
         List<Goods> goodsList = goodsRepository.findAllById(goodsIds);
 
@@ -136,9 +147,9 @@ public class GoodsServiceImpl implements GoodsService {
 
         // 3. Delivery 테이블에 저장 (delivery_id 생성) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         Delivery delivery = Delivery.builder()
-                .member(member).recipient(member.getName()).recipient_phone(member.getPhone()).build();
+                .member(member).recipient(member.getName()).recipientPhone(member.getPhone()).build();
         Delivery save = deliveryRepository.save(delivery);
-        System.out.println("GoodsServiceImpl delivery_id => " + delivery.getDelivery_id());
+        System.out.println("GoodsServiceImpl delivery_id => " + delivery.getDeliveryId());
 
         // 4. Orders 테이블에 저장 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         int totalQuantity = payRequestDTO.getGoodsList().stream()
@@ -146,7 +157,7 @@ public class GoodsServiceImpl implements GoodsService {
         int totalPrice = payRequestDTO.getGoodsList().stream()
                 .mapToInt(GoodsRequestDTO::getPrice).sum(); // 결제페이지로 넘어온 총 가격
         Orders order = Orders.builder().delivery(save)
-                .member(member).total_quantity(totalQuantity).total_price(totalPrice)
+                .member(member).totalQuantity(totalQuantity).totalPrice(totalPrice)
                 .payment(payRequestDTO.getPayment()).build();
         Orders orders = orderRepository.save(order);
 
@@ -156,15 +167,15 @@ public class GoodsServiceImpl implements GoodsService {
         for (GoodsRequestDTO requestDTO : requestGoodsList) {
             // Goods
             Goods goods = goodsList.stream()
-                    .filter(g -> g.getGoods_id().equals(requestDTO.getGoods_id()))
+                    .filter(g -> g.getGoodsId().equals(requestDTO.getGoodsId()))
                     .findFirst()
                     .orElseThrow(() -> new RuntimeException("상품이 존재하지 않습니다."));
             // OrderDetail
             OrderDetail orderDetail = OrderDetail.builder()
                     .goods(goods)
                     .orders(orders)
-                    .goods_quantity(requestDTO.getQuantity())
-                    .goods_price(requestDTO.getPrice())
+                    .goodsQuantity(requestDTO.getQuantity())
+                    .goodsPrice(requestDTO.getPrice())
                     .build();
             // OrderDetail 테이블에 저장
             orderDetailRepository.save(orderDetail);
@@ -175,12 +186,12 @@ public class GoodsServiceImpl implements GoodsService {
         for (GoodsRequestDTO requestDTO : requestGoodsList) {
             // Goods 엔티티 가져오기
             Goods goods = goodsList.stream()
-                    .filter(g -> g.getGoods_id().equals(requestDTO.getGoods_id()))
+                    .filter(g -> g.getGoodsId().equals(requestDTO.getGoodsId()))
                     .findFirst()
                     .orElseThrow(() -> new RuntimeException("상품이 존재하지 않습니다."));
 
             // goods id 로 cart 조회후 삭제 (현재 장바구니 전체에서 삭제하도록 함)
-            cartRepository.deleteByGoodsId(goods.getGoods_id());
+            cartRepository.deleteByGoodsId(goods.getGoodsId());
         }
         System.out.println("GoodsServiceImpl 의 payGoods() 끝");
         return ResponseEntity.status(HttpStatus.OK).body("결제가 정상적으로 완료되었습니다."); // orderDetail컴포넌트로 이동
@@ -200,7 +211,7 @@ public class GoodsServiceImpl implements GoodsService {
         List<Orders> orderList = orderRepository.findAllByUserId(member.getId());
         List<OrderResponseDTO> orderDtoList = orderMapper.toDtoList(orderList); // order_detail, orders, goods
         for (OrderResponseDTO o : orderDtoList) {
-            System.out.println(o.getOrder_id());
+            System.out.println(o.getOrderId());
         }
         return ResponseEntity.status(HttpStatus.OK).body(orderDtoList);
     }
@@ -224,26 +235,45 @@ public class GoodsServiceImpl implements GoodsService {
         // OrderDetailDTO SET
         List<OrderDetailResponseDTO> orderDetailResponseDTOList = orderDetailList.stream() //
                 .map(detail -> OrderDetailResponseDTO.builder() //
-                        .order_detail_id(detail.getOrder_detail_id())
-                        .goods_id(detail.getGoods().getGoods_id())
-                        .order_id(detail.getOrders().getOrder_id())
-                        .goods_quantity(detail.getGoods_quantity())
-                        .goods_price(detail.getGoods_price())
+                        .orderDetailId(detail.getOrderDetailId())
+                        .goodsId(detail.getGoods().getGoodsId())
+                        .orderId(detail.getOrders().getOrderId())
+                        .goodsQuantity(detail.getGoodsQuantity())
+                        .goodsPrice(detail.getGoodsPrice())
                         // Goods
-                        .goods_name(detail.getGoods().getGoods_name())
-                        .price(detail.getGoods_price())
+                        .goodsName(detail.getGoods().getGoodsName())
+                        .price(detail.getGoodsPrice())
                         .description(detail.getGoods().getDescription())
-                        .goodsstate(detail.getGoods().getGoods_state())
-                        .image_file(detail.getGoods().getImage_file())
+                        .goodsState(detail.getGoods().getGoodsState())
+                        .imageFile(detail.getGoods().getImageFile())
                         // Orders
-                        .total_price(detail.getOrders().getTotal_price())
-                        .total_quantity(detail.getOrders().getTotal_quantity())
-                        .reg_date(detail.getOrders().getReg_date())
+                        .totalPrice(detail.getOrders().getTotalPrice())
+                        .totalQuantity(detail.getOrders().getTotalQuantity())
+                        .regDate(detail.getOrders().getRegDate())
                         .status(detail.getOrders().getStatus())
                         .build()).collect(Collectors.toList());
 
 
         return ResponseEntity.status(HttpStatus.OK).body(orderDetailResponseDTOList);
+    }
+
+    // <Delivery /> 페이지 : OrderDetailResponseDTO
+
+
+    // 결제페이지 - 고객 주소 가져오기
+    @Override
+    public ResponseEntity<?> findMemberAddress(CustomUserDetails userDetails) {
+        // 1. 고객정보
+        Member member = memberRepository.findById( //
+                        userDetails.getMember().getId()) //
+                .orElseThrow(() //
+                        -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+        // 2. 주소
+        Address memberAddress = addressRepository.findByMemberId(member.getId());
+        String address = memberAddress.getAddress1() + " " + memberAddress.getAddress2();
+        log.info("주소: " + address);
+        return ResponseEntity.status(HttpStatus.OK).body(address);
+
     }
 
 

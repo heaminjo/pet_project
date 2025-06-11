@@ -15,9 +15,9 @@ public interface OrderMapper {
     Orders toEntity(OrderRequestDTO dto);
 
     // Orders : entity -> dto
-    @Mapping(source = "member.id", target = "member_id") // Entity <-> DTO 매핑을 위해 필요
+    @Mapping(source = "member.id", target = "memberId") // Entity <-> DTO 매핑을 위해 필요
     // Orders 엔티티의 @JoinColumn(name = "member_id", nullable = false) 는 DB <-> Entity 매핑을 위해 필요
-    @Mapping(source = "delivery.delivery_id", target = "delivery_id")
+    @Mapping(source = "delivery.deliveryId", target = "deliveryId")
     OrderResponseDTO toDto(Orders orders);
 
     // Orders : DTO 리스트 -> Entity 리스트

@@ -6,7 +6,8 @@ import GoodsApi from '../../../api/GoodsApi';
 export default function Goods() {
   const navigate = useNavigate();
   //const goodsImg = process.env.PUBLIC_URL + '/images/pic1.png';
-  const goodsImg = 'C:\\uploads\\basicimg.png';
+  const goodsImg = 'http://localhost:8080/uploads/basicimg.png';
+
   // 이미지 미리보기 위한 상태변수 추가
   const [prevImg, setPrevImg] = useState();
 
@@ -14,10 +15,10 @@ export default function Goods() {
   // submit 버튼 클릭 시 axios.post()로 데이터 전송
   const [goods, setGoods] = useState({
     // input 값 연결용
-    goods_name: '',
-    image_file: '',
-    category_id: '',
-    goods_state: 'SALE',
+    goodsName: '',
+    imageFile: '',
+    categoryId: '',
+    goodsState: 'SALE',
     description: '',
     quantity: '',
     price: '',
@@ -28,17 +29,13 @@ export default function Goods() {
     e.preventDefault(); // form 기본 제출 막기
 
     const formData = new FormData();
-    formData.append('goods_name', goods.goods_name);
-    formData.append('category_id', goods.category_id);
-    formData.append('price', goods.price);
-    formData.append('description', goods.description);
-    formData.append('goods_state', goods.goods_state);
-    formData.append('quantity', goods.quantity);
-    if (goods.upload_img) {
-      formData.append('upload_img', goods.upload_img);
+    formData.append('goods', new Blob([JSON.stringify(goods)], { type: 'application/json' })); // Blob(Binary Large Object): 파일처럼 취급되는 데이터 객체 (JSON 데이터를 서버에서 @RequestPart로 받게)
+    if (goods.uploadImg) {
+      formData.append('uploadImg', goods.uploadImg);
     }
+
     try {
-      const response = GoodsApi.regGoods(goods);
+      const response = GoodsApi.regGoods(formData);
       console.log('등록 결과:', response);
       navigate('/');
     } catch (error) {
@@ -60,7 +57,7 @@ export default function Goods() {
                   <tr>
                     <td>상품명</td>
                     <td>
-                      <input type='text' value={goods.goods_name} onChange={(e) => setGoods({ ...goods, goods_name: e.target.value })} />
+                      <input type='text' value={goods.goodsName} onChange={(e) => setGoods({ ...goods, goodsName: e.target.value })} />
                     </td>
                   </tr>
                   <tr>
@@ -71,7 +68,7 @@ export default function Goods() {
                         accept='image/*'
                         onChange={(e) => {
                           const file = e.target.files[0];
-                          setGoods({ ...goods, upload_img: file });
+                          setGoods({ ...goods, uploadImg: file });
                           if (file) {
                             const imgUrl = URL.createObjectURL(file);
                             setPrevImg(imgUrl); // 미리보기용 이미지주소
@@ -85,7 +82,7 @@ export default function Goods() {
                   <tr>
                     <td>카테고리</td>
                     <td>
-                      <select value={goods.category_id} onChange={(e) => setGoods({ ...goods, category_id: e.target.value })}>
+                      <select value={goods.categoryId} onChange={(e) => setGoods({ ...goods, categoryId: e.target.value })}>
                         <option value=''> 선택 </option>
                         <option value='1'>1 : 사료</option>
                         <option value='2'>2 : 간식</option>
@@ -108,7 +105,7 @@ export default function Goods() {
                   <tr>
                     <td>상태(SALE, SOLDOUT, HIDDEN)</td>
                     <td>
-                      <select value={goods.goods_state} onChange={(e) => setGoods({ ...goods, goods_state: e.target.value })}>
+                      <select value={goods.goodsState} onChange={(e) => setGoods({ ...goods, goodsState: e.target.value })}>
                         <option value='SALE'>SALE</option>
                         <option value='SOLDOUT'>SOLDOUT</option>
                         <option value='HIDDEN'>HIDDEN</option>
@@ -133,7 +130,15 @@ export default function Goods() {
                       <button className='btn' id='sub_btn' type='submit'>
                         등록
                       </button>
-                      &nbsp;&nbsp;
+                      &nbsp;
+                      <button className='btn' id='sub_btn' type='submit'>
+                        수정
+                      </button>
+                      &nbsp;
+                      <button className='btn' id='sub_btn' type='submit'>
+                        삭제
+                      </button>
+                      &nbsp;
                       <button className='btn' id='reset_btn' type='reset'>
                         취소
                       </button>
@@ -144,9 +149,8 @@ export default function Goods() {
             </form>
           </div>
           <div className='right'>
-            <img src={prevImg || goodsImg} alt='이미지 미리보기' className='goodsImg' />
+            <img src={prevImg || goodsImg} alt='상품 이미지' className='goodsImg' style={{ width: '300px', height: '300px' }} />
             <br />
-            상품이미지 미리보기
           </div>
         </div>
         <hr />

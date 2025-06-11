@@ -11,8 +11,8 @@ import java.util.List;
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> {
 
     @Transactional
-    @Query("SELECT od FROM OrderDetail od WHERE od.orders.order_id IN :order_id")
-    public List<OrderDetail> findAllByOrderIdList(@Param("order_id") List<Long> order_id);
+    @Query("SELECT od FROM OrderDetail od WHERE od.orders.orderId IN :order_id")
+    public List<OrderDetail> findAllByOrderIdList(@Param("order_id") List<Long> orderId);
 
 
 }

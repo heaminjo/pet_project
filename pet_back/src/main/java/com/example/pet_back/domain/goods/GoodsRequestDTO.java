@@ -2,31 +2,30 @@ package com.example.pet_back.domain.goods;
 
 import com.example.pet_back.constant.GOODSSTATE;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
+import lombok.experimental.SuperBuilder;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 public class GoodsRequestDTO {
 
-    private Long goods_id;
-    private Long category_id;
-    private String goods_name;
+    private Long goodsId;
+    private Long categoryId;
+    private String goodsName;
     private int price;
     private String description;
 
     // 상품 상태 (SALE, SOLDOUT, HIDDEN)
-    private GOODSSTATE goods_state = GOODSSTATE.SALE;
-    private String image_file;
+    private GOODSSTATE goodsState = GOODSSTATE.SALE;
+    private String imageFile;
     private int quantity;
-    private Date reg_date;
+    private LocalDate regDate;
 
-    private MultipartFile upload_img;
+    // 제거: private MultipartFile uploadImg;
 
 }

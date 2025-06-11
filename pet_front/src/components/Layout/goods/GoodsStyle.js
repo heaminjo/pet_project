@@ -13,7 +13,7 @@ const GoodsComp = styled.div`
       display: flex;
       flex-direction: row;
       height: 900px;
-      padding: 50px;
+      padding: 20px;
 
       .left {
         // background-color: aqua; /* ~~~~~ TEST 용 ~~~~~~ */
@@ -32,15 +32,14 @@ const GoodsComp = styled.div`
         }
       }
       .right {
-        height: 400px;
-        border: 1px solid rgb(230, 230, 230);
-
+        //border: 1px solid rgb(230, 230, 230);
         // display: hidden;
         .goodsImg {
-          width: 300px;
-          height: 300px;
           border: 1px solid rgb(230, 230, 230);
-          margin: 20px;
+
+          padding: 20px;
+          box-shadow: 5px 5px 10px rgb(175, 175, 175);
+          overflow: hidden;
         }
       }
     }

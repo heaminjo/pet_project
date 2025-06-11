@@ -7,39 +7,31 @@ import GoodsApi from '../../../api/GoodsApi';
 export default function Pay() {
   const location = useLocation();
   const navigate = useNavigate();
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상태변수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
   const [goods, setGoods] = useState([]);
   const [requestNote, setRequestNote] = useState('');
+
+  // 결제수단
+  const [payment, setPayment] = useState();
+
+  // 회원정보 & 주소정보
+  const [member, setMember] = useState({});
+  const [address, setAddress] = useState('');
+
+  // 수정 버튼
+  const [popup, setPopup] = useState(false);
+
+  // 수량
+  //const quantities = location.state?.quantity || [];
 
   // const goodsList = location.state?.goods || []; // Order -> Pay 이동위해 변경 (rawGoods 추가)
   const rawGoods = location.state?.goods;
   const goodsList = Array.isArray(rawGoods) ? rawGoods : rawGoods ? [rawGoods] : []; // 단일 상품이 오더라도 강제로 배열로 감싸기
 
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 로직 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const handleOpenPopup = () => {
     window.open();
-  };
-
-  // 수량
-  const quantities = location.state?.quantity || [];
-
-  // 결제수단
-  const [payment, setPayment] = useState();
-
-  // 회원정보 & 회원 주소정보 가져오기
-  const [member, setMember] = useState([]);
-  const address = () => {
-    GoodsApi.findAddress();
-  };
-
-  // 수정 버튼
-  const [popup, setPopup] = useState(false);
-
-  // 사용자(구매자) 정보
-  const memdetail = async () => {
-    MemberApi.detail()
-      .then((response) => {
-        setMember(response);
-      })
-      .catch((err) => {});
   };
 
   // 총 구매가격
@@ -68,23 +60,36 @@ export default function Pay() {
       });
   };
 
-  // 걸제수단 핸들링
+  // 걸제수단 핸들링 & 유효성 검사
   const handlePaymentChange = (e) => {
+    if (!payment) {
+      alert('결제 수단을 선택해 주세요!');
+      return;
+    }
     setPayment(e.target.value);
+    pay(goods, payment);
   };
 
-  // useEffect(() => {
-  //   console.log('goodsList:', goodsList);
-  //   memdetail();
-  //   setGoods(goodsList);
-  // }, [goodsList]);
-
   useEffect(() => {
-    console.log('goodsList:', goodsList);
-    memdetail();
+    // 사용자 정보
+    MemberApi.detail()
+      .then((response) => {
+        setMember(response);
+      })
+      .catch((err) => {});
+    // 사용자 주소
+    GoodsApi.findAddress()
+      .then((response) => {
+        setAddress(response);
+      })
+      .catch((err) => {
+        alert('주소 조회 실패');
+      });
+    // 상품 정보
     if (goodsList.length > 0) {
       setGoods(goodsList);
     }
+    console.log('goodsList:', goodsList);
   }, []);
 
   return (
@@ -113,11 +118,9 @@ export default function Pay() {
         </section>
         <br />
         <section>
-          <h2>배 송 지</h2>
+          <h2>배 송 지</h2> &nbsp;&nbsp; <button onClick={() => setPopup(true)}>배송지 수정</button>
           <hr />
-          <div className='title'>
-            수령인&nbsp;&nbsp; <button onClick={() => setPopup(true)}>수정</button>
-          </div>
+          <div className='title'>수령인</div>
           <table>
             <tbody>
               <tr>
@@ -126,7 +129,7 @@ export default function Pay() {
               </tr>
               <tr>
                 <th>배송지</th>
-                <td>경기 성남시</td>
+                <td>{address}</td>
               </tr>
               <tr>
                 <th>연락처</th>
@@ -150,7 +153,7 @@ export default function Pay() {
             <div className='goodslist' key={index}>
               <div>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {item.goods_name}
+                {item.goodsName}
                 {', '}
                 {item.description}
                 {', '}
@@ -215,7 +218,11 @@ export default function Pay() {
           </table>
         </section>
         <section>
-          <button className='pay' onClick={() => pay(goods, payment)}>
+          <button
+            className='pay'
+            onClick={() => {
+              pay(goods, payment);
+            }}>
             결제하기
           </button>
           &nbsp;&nbsp; <button className='cancel'>메인 페이지로</button>

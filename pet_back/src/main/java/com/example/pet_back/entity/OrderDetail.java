@@ -16,7 +16,7 @@ public class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_detail_id", nullable = false)
-    private Long order_detail_id;
+    private Long orderDetailId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "goods_id", nullable = false)
@@ -26,11 +26,11 @@ public class OrderDetail {
     @JoinColumn(name = "order_id", nullable = false)
     private Orders orders;
 
-    @Column(nullable = false)
-    private int goods_quantity;
+    @Column(name = "goods_quantity", nullable = false)
+    private int goodsQuantity;
 
-    @Column
-    private int goods_price;
+    @Column(name = "goods_price", nullable = false)
+    private int goodsPrice;
 
 }
 

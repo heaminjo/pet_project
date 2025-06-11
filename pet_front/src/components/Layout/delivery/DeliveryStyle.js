@@ -12,18 +12,26 @@ const DeliveryComp = styled.header`
       font-weight: bold;
       font-size: 24px;
     }
-
     .box1 {
       width: inherit;
+      font-size: 20px;
+      background-color: rgb(158, 158, 158);
+      color: white;
       height: 200px;
       margin: 30px 0 50px 0;
       line-height: 200px;
       text-align: center;
       border: 1px solid #ddd;
     }
+    .infotitle {
+      width: inherit;
+      height: 50px;
+      background-color: rgb(158, 158, 158);
+    }
     .info {
       display: flex;
       flex-direction: row;
+
       .deliver {
         width: 400px;
         margin: 50px;
