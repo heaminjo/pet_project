@@ -52,7 +52,12 @@ public class AdminServiceImpl implements AdminService {
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         MemberResponseDTO dto = mapper.toDto(member);
-        dto.setImageFile("http://localhost:8080/uploads/" + member.getImageFile());
+
+        //디렉토리에서 파일 가져오기
+        String realPath = fileUploadProperties.getUrl(); // http://localhost:8080/resources/webapp
+
+        //해당파일은 MvcConfig에 매핑되어 이미지를 매핑
+        dto.setImageFile(realPath + member.getImageFile());
         return ResponseEntity.ok(dto);
     }
 

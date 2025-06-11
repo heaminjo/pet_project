@@ -7,7 +7,6 @@ import com.example.pet_back.domain.member.UpdateMemberRequestDTO;
 import com.example.pet_back.domain.member.UpdatePwRequestDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,8 +23,6 @@ public interface MemberService {
 
 
     public ResponseEntity<?> memberWithdrawal(Long id);
-
-    public ResponseEntity<?> memberUploadImage(Long id, MultipartFile file);
 
     public ResponseEntity<?> loginHistory(Long id);
 

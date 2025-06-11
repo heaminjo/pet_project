@@ -58,5 +58,11 @@ const AdminApi = {
     );
     return result.data;
   },
+
+  //등급 업그레이드
+  gradeUpgrade: async (newGrade) => {
+    const result = await instance.put(`${KH_DOMAIN}/admin/upgrade`, newGrade);
+    return result.data;
+  },
 };
 export default AdminApi;
