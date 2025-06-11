@@ -1,16 +1,18 @@
 package com.example.pet_back.mapper;
 
+import com.example.pet_back.domain.address.AddressRequestDTO;
+import com.example.pet_back.domain.address.AddressResponseDTO;
 import com.example.pet_back.domain.admin.UserDetailResponseDTO;
-import com.example.pet_back.domain.login.SocialUpdateDTO;
 import com.example.pet_back.domain.member.MemberRequestDTO;
 import com.example.pet_back.domain.member.MemberResponseDTO;
+import com.example.pet_back.entity.Address;
 import com.example.pet_back.entity.Member;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-06-09T14:46:28+0900",
+    date = "2025-06-11T10:10:03+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.12 (Oracle Corporation)"
 )
 @Component
@@ -35,15 +37,39 @@ public class MemberMapperImpl implements MemberMapper {
     }
 
     @Override
-    public void updateFromSocialDto(SocialUpdateDTO dto, Member member) {
+    public Address addressToEntity(AddressRequestDTO dto) {
         if ( dto == null ) {
-            return;
+            return null;
         }
 
-        member.setEmail( dto.getEmail() );
-        member.setPhone( dto.getPhone() );
-        member.setBirth( dto.getBirth() );
-        member.setGender( dto.getGender() );
+        Address address = new Address();
+
+        address.setAddressId( dto.getAddressId() );
+        address.setAddress1( dto.getAddress1() );
+        address.setAddress2( dto.getAddress2() );
+        address.setAddressZip( dto.getAddressZip() );
+        address.setAddrType( dto.getAddrType() );
+        address.setAddressName( dto.getAddressName() );
+
+        return address;
+    }
+
+    @Override
+    public AddressResponseDTO toAddressDTO(Address address) {
+        if ( address == null ) {
+            return null;
+        }
+
+        AddressResponseDTO addressResponseDTO = new AddressResponseDTO();
+
+        addressResponseDTO.setAddrType( MemberMapper.addrToString( address.getAddrType() ) );
+        addressResponseDTO.setAddressId( address.getAddressId() );
+        addressResponseDTO.setAddressName( address.getAddressName() );
+        addressResponseDTO.setAddress1( address.getAddress1() );
+        addressResponseDTO.setAddress2( address.getAddress2() );
+        addressResponseDTO.setAddressZip( address.getAddressZip() );
+
+        return addressResponseDTO;
     }
 
     @Override

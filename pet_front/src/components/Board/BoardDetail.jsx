@@ -228,12 +228,13 @@ export default function BoardDetail() {
         <br></br>
         <hr></hr>
         <br></br>
-        <h3>댓글</h3>
+        <h3>댓글</h3><br></br>
         <CommentForm
           comment={comment}
           setComment={setComment}
           onAddComment={handleAddComment}
         />
+        <br></br><br></br>
         <CommentList 
           comments={comments}
           onDeleteComment={handleDeleteComment}

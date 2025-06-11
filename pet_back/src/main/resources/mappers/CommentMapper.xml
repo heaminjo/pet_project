@@ -4,7 +4,16 @@
 <mapper namespace="com.example.pet_back.mapper.board.CommentMapper">
     <!-- 댓글 목록 조회-->
     <select id="selectCommentsByBoardId" resultType="com.example.pet_back.domain.board.CommentDTO">
-        SELECT * FROM comment WHERE board_id = #{board_id}
+        SELECT
+        c.comment_id,
+        c.board_id,
+        c.member_id,
+        m.name,
+        c.content,
+        c.reg_date
+        FROM comment c
+        JOIN member m ON c.member_id = m.member_id
+        WHERE c.board_id = #{board_id}
         ORDER BY reg_date ASC
     </select>
 
