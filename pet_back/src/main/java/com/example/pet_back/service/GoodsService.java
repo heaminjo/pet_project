@@ -1,5 +1,6 @@
 package com.example.pet_back.service;
 
+import com.example.pet_back.domain.admin.BannerDTO;
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.domain.goods.PayRequestDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
@@ -32,4 +33,7 @@ public interface GoodsService {
 
     // 결제페이지 - 고객 주소 가져오기
     public ResponseEntity<?> findMemberAddress(CustomUserDetails userDetails);
+
+    //배너 가져오기
+    public List<BannerDTO> bannerList();
 }

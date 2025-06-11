@@ -8,7 +8,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BannerDTO extends GoodsResponseDTO {
+public class BannerDTO {
     private Long bannerId;
+    private Long goodsId;
+    private String goodsName;
+    private String imageFile;
     private int position;
 }

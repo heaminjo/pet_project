@@ -1,5 +1,6 @@
 package com.example.pet_back.controller;
 
+import com.example.pet_back.domain.admin.BannerDTO;
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.domain.goods.PayRequestDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
@@ -92,5 +93,9 @@ public class GoodsController {
         log.info("** GoodsController => findMemberAddress() 실행됨 **");
         return goodsService.findMemberAddress(userDetails);
     }
-
+    //배너 리스트 불러오기
+    @GetMapping("/banner/list")
+    public ResponseEntity<List<BannerDTO>> bannerList() {
+        return ResponseEntity.ok(goodsService.bannerList());
+    }
 }

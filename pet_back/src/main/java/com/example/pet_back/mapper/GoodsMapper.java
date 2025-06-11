@@ -1,9 +1,12 @@
 package com.example.pet_back.mapper;
 
+import com.example.pet_back.domain.admin.BannerDTO;
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.domain.goods.GoodsResponseDTO;
 import com.example.pet_back.entity.Goods;
+import com.example.pet_back.entity.Goodsbanner;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
@@ -22,5 +25,7 @@ public interface GoodsMapper {
 
     // DTO 리스트 -> Entity 리스트
     List<Goods> toEntityList(List<GoodsResponseDTO> goodsList);
+
+    public BannerDTO bannerToDto(Goodsbanner goodsbanner);
 
 }

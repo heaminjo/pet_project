@@ -43,7 +43,6 @@ public class AdminServiceImpl implements AdminService {
     private final AddressRepository addressRepository;
     private final PasswordEncoder passwordEncoder;
     private final FileUploadProperties fileUploadProperties;
-    private final GoodsBannerRepository goodsBannerRepository;
 
     //관리자의 회원 조회
     @Override
@@ -173,12 +172,5 @@ public class AdminServiceImpl implements AdminService {
         return new ApiResponse<>(true, member.getName() + "님의 등급이 " + dto.getNextGrade() + "등급으로 업그레이드 되었습니다.");
     }
 
-    @Override
-    public List<BannerDTO> bannerList() {
-        List<Goodsbanner> bannerList = goodsBannerRepository.findAll();
-//        List<BannerDTO> response = bannerList.stream().map(mapper::bannerToDto).toList();
-//
-//        log.info("Banner List => " + response.toString());
-        return null;
-    }
+
 }

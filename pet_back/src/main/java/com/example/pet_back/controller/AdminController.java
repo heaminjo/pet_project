@@ -76,9 +76,5 @@ public class AdminController {
         return ResponseEntity.ok(adminService.upgradeGrade(dto));
     }
 
-    //배너 리스트 불러오기
-    @GetMapping("/banner/list")
-    public ResponseEntity<List<BannerDTO>> bannerList() {
-        return ResponseEntity.ok(adminService.bannerList());
-    }
+
 }

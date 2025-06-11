@@ -1,25 +1,27 @@
-import axios from 'axios';
-import instance from '../api/axiosInstance'; // 인스턴스 불러오기
+import axios from "axios";
+import instance from "../api/axiosInstance"; // 인스턴스 불러오기
 
-const KH_DOMAIN = 'http://localhost:8080';
+const KH_DOMAIN = "http://localhost:8080";
 const GoodsApi = {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 장 바 구 니 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 장바구니 추가
   addToCart: async (goods) => {
     //alert(`장바구니 담기 => ${goods}`);
 
-    console.log(`장바구니 담기 시도 => ${goods.goodsId}, 수량: ${goods.quantity}`);
-    const result = await instance.post('/cart/add', goods);
+    console.log(
+      `장바구니 담기 시도 => ${goods.goodsId}, 수량: ${goods.quantity}`
+    );
+    const result = await instance.post("/cart/add", goods);
     try {
       if (result.data != null) {
-        console.log('장바구니 담기 완료');
+        console.log("장바구니 담기 완료");
         return result.data;
       } else {
-        console.log('장바구니 담기 실패');
+        console.log("장바구니 담기 실패");
       }
     } catch (err) {
-      console.error('장바구니 추가 실패:', err);
-      alert('장바구니 추가 중 에러가 발생했습니다.');
+      console.error("장바구니 추가 실패:", err);
+      alert("장바구니 추가 중 에러가 발생했습니다.");
     }
   },
   // // <Cart />
@@ -40,7 +42,7 @@ const GoodsApi = {
   // <GoodsList /> 전체 상품 리스트 출력 (메인) (완료)
   showGoods: async () => {
     try {
-      const result = await instance.get('/goods/list');
+      const result = await instance.get("/goods/list");
       if (result.data != null) {
         alert(`상품 리스트 호출 완료 => ${JSON.stringify(result.data)}`);
         return result.data;
@@ -50,12 +52,14 @@ const GoodsApi = {
 
   // (order_id)로 주문한 상품의 오더정보 / 상품정보
   customerGoodsHistory: async (orderIds) => {
-    console.log('🔥 주문 ID 리스트:', orderIds);
-    alert('GoodsApi customerGoodsHistory');
+    console.log("🔥 주문 ID 리스트:", orderIds);
+    alert("GoodsApi customerGoodsHistory");
     try {
-      const result = await instance.post('/goods/orderinfo', orderIds);
+      const result = await instance.post("/goods/orderinfo", orderIds);
       if (result.data != null) {
-        console.log(`구매이력 상품 호출 완료 => ${JSON.stringify(result.data)}`);
+        console.log(
+          `구매이력 상품 호출 완료 => ${JSON.stringify(result.data)}`
+        );
         return result.data;
       }
     } catch (err) {}
@@ -64,9 +68,9 @@ const GoodsApi = {
   // <Goods />
   regGoods: async (formData) => {
     try {
-      const result = await instance.post('/goods/register', formData, {
+      const result = await instance.post("/goods/register", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       });
       if (result.data != null) {
@@ -74,14 +78,14 @@ const GoodsApi = {
         return result.data;
       }
     } catch (err) {
-      console.error('상품 등록 실패:', err);
-      alert('상품 등록 중 에러가 발생했습니다.');
+      console.error("상품 등록 실패:", err);
+      alert("상품 등록 중 에러가 발생했습니다.");
     }
   },
 
   // 상품상세정보 (단일)
   goodsDetail: async () => {
-    const result = await instance.get('/goods/detail/${goods_id}');
+    const result = await instance.get("/goods/detail/${goods_id}");
     return result.data;
   },
 
@@ -94,7 +98,7 @@ const GoodsApi = {
 
   // <OrderDetail />
   orderList: async () => {
-    const result = await instance.get('/goods/ordered');
+    const result = await instance.get("/goods/ordered");
     return result.data;
   },
 
@@ -102,7 +106,9 @@ const GoodsApi = {
   // 결제
   pay: async (payload) => {
     payload.goodsList.forEach((item) => {
-      console.log(`결제 시도 => 상품 ID: ${item.goodsId}, 상품 수량: ${item.quantity}`);
+      console.log(
+        `결제 시도 => 상품 ID: ${item.goodsId}, 상품 수량: ${item.quantity}`
+      );
     });
     const result = await instance.post(`/goods/pay`, payload);
     try {
@@ -112,8 +118,8 @@ const GoodsApi = {
         alert(`GoodsApi.pay() null`);
       }
     } catch (err) {
-      console.error('오류 발생:', err);
-      alert('GoodsApi.pay() 수행중 에러발생.');
+      console.error("오류 발생:", err);
+      alert("GoodsApi.pay() 수행중 에러발생.");
     }
 
     return result.data;
@@ -128,8 +134,8 @@ const GoodsApi = {
         alert(`GoodsApi.findAddress() null`);
       }
     } catch (err) {
-      console.error('오류 발생:', err);
-      alert('GoodsApi.findAddress() 수행중 에러발생.');
+      console.error("오류 발생:", err);
+      alert("GoodsApi.findAddress() 수행중 에러발생.");
     }
     return result.data;
   },
@@ -152,6 +158,12 @@ const GoodsApi = {
   //     alert('상품 등록 중 에러가 발생했습니다.');
   //   }
   // }, // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  //배너 가져오기
+  getBanner: async () => {
+    const result = await instance.get(`${KH_DOMAIN}/goods/banner/list`);
+    return result.data;
+  },
 };
 
 export default GoodsApi;

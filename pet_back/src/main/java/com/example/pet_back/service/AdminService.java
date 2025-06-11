@@ -32,6 +32,5 @@ public interface AdminService {
     //등급 업그레이드
     public ApiResponse upgradeGrade(UpgradeRequstDTO dto);
 
-    //배너 가져오기
-    public List<BannerDTO> bannerList();
+
 }

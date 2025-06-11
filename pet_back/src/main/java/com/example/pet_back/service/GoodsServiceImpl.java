@@ -1,9 +1,12 @@
 package com.example.pet_back.service;
 
+import com.example.pet_back.config.FileUploadProperties;
+import com.example.pet_back.domain.admin.BannerDTO;
 import com.example.pet_back.domain.goods.*;
 import com.example.pet_back.entity.*;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.mapper.GoodsMapper;
+import com.example.pet_back.mapper.MemberMapper;
 import com.example.pet_back.mapper.OrderMapper;
 import com.example.pet_back.repository.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,11 +39,13 @@ public class GoodsServiceImpl implements GoodsService {
     private final MemberRepository memberRepository;
     private final CartRepository cartRepository;
     private final AddressRepository addressRepository;
+    private final GoodsBannerRepository goodsBannerRepository;
+    private final FileUploadProperties fileUploadProperties;
 
     // Mapper
     private final GoodsMapper goodsMapper;
     private final OrderMapper orderMapper;
-
+    private final MemberMapper memberMapper;
     // 상품상세정보
     @Override
     public ResponseEntity<?> selectOne(Long goods_id) {
@@ -275,6 +280,21 @@ public class GoodsServiceImpl implements GoodsService {
         return ResponseEntity.status(HttpStatus.OK).body(address);
 
     }
+    //배너 목록 가져오기
+    @Override
+    public List<BannerDTO> bannerList() {
+        List<Goodsbanner> bannerList = goodsBannerRepository.bannerListAll();
+        log.info("Banner List => " + bannerList.toString());
+        List<BannerDTO> response = new ArrayList<>();
 
+        //수동으로 매핑
+        for(Goodsbanner g : bannerList){
+            String imagePath = fileUploadProperties.getUrl()+g.getGoods().getImageFile();
 
+            response.add(new BannerDTO(g.getBannerId(),g.getGoods().getGoodsId(),g.getGoods().getGoodsName(),imagePath,g.getPosition()));
+        }
+
+        log.info("Banner List => " + response.toString());
+        return response;
+    }
 }

@@ -4,15 +4,20 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
 import AdminApi from "../../api/AdminApi";
+import GoodsApi from "../../api/GoodsApi";
 function Banner() {
+  const [banner, setBanner] = useState([]);
+
   useEffect(() => {
     getBanner();
   }, []);
 
   //배너 상품 가져오기
   const getBanner = async () => {
-    const result = await AdminApi.getBanner();
-    console.log(result);
+    const result = await GoodsApi.getBanner();
+
+    setBanner(result);
+    console.log(banner);
   };
   const sliderRef = useRef(null);
 
@@ -32,11 +37,13 @@ function Banner() {
     <BannerComp>
       <div className="slider-container">
         <Slider {...settings} ref={sliderRef}>
-          <div className="item" id="item_1">
-            <img
-              src="	http://localhost:8080/uploads/3d249c2b-4d16-459c-841d-f70422399035.png"
-              alt=""
-            />
+          {banner.map((b) => (
+            <div className="item" id="item_1">
+              <img src={b.imageFile} alt="d" />
+            </div>
+          ))}
+          {/* <div className="item" id="item_1">
+            <img src={banner.imageFile} alt="" />
           </div>
           <div className="item" id="item_2">
             <img
@@ -67,7 +74,7 @@ function Banner() {
               src="	http://localhost:8080/uploads/3d249c2b-4d16-459c-841d-f70422399035.png"
               alt=""
             />
-          </div>
+          </div> */}
         </Slider>
       </div>
     </BannerComp>
@@ -83,6 +90,7 @@ const BannerComp = styled.div`
     margin: 0 auto;
     background-color: #fff;
     border-radius: 40px;
+
     .item {
       width: 100%;
       height: 100%;
@@ -92,6 +100,12 @@ const BannerComp = styled.div`
         object-fit: contain;
       }
     }
+  }
+  .slick-slide:focus,
+  .slick-slider:focus,
+  [class*="sc-"]:focus {
+    outline: none !important;
+    box-shadow: none !important;
   }
 `;
 
