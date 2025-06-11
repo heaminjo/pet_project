@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -26,8 +27,8 @@ public class GoodsController {
     private final MemberService memberService;
 
     // 상품 상세정보
-    @GetMapping("/detail")
-    public ResponseEntity<?> selectOne(Long goods_id) {
+    @GetMapping("/detail/{goods_id}")
+    public ResponseEntity<?> selectOne(@PathVariable("goods_id") Long goods_id) {
         log.info("** GoodsController => selectOne() 실행됨 **");
         return goodsService.selectOne(goods_id);
     }
@@ -44,14 +45,17 @@ public class GoodsController {
     @PostMapping("/register")
     public ResponseEntity<?> createGoods( //
                                           @AuthenticationPrincipal CustomUserDetails userDetails, //
-                                          @RequestBody GoodsRequestDTO goodsRequestDTO, //
+                                          @RequestPart("goods") GoodsRequestDTO goodsRequestDTO, //️
+                                          @RequestPart("uploadImg") MultipartFile uploadImg,
                                           HttpServletRequest request) {
         log.info("** GoodsController => createGoods() 실행됨 **");
-        System.out.println("goodsDTO 이름: " + goodsRequestDTO.getGoods_name());
-        System.out.println("goodsDTO state: " + goodsRequestDTO.getGoods_state());
-        System.out.println("goodsDTO state 타입: " + goodsRequestDTO.getGoods_state().getClass());
+        System.out.println("goodsDTO 이름: " + goodsRequestDTO.getGoodsName());
+        System.out.println("goodsDTO state: " + goodsRequestDTO.getGoodsState());
+        System.out.println("goodsDTO state 타입: " + goodsRequestDTO.getGoodsState().getClass());
+
+
         try {
-            goodsService.registerGoods(goodsRequestDTO, request);
+            goodsService.registerGoods(goodsRequestDTO, uploadImg, request);
         } catch (Exception e) {
             log.error("** goodsService.registerGoods Exception => " + e.toString());
         }
@@ -82,6 +86,11 @@ public class GoodsController {
     }
 
 
-    // 배송
+    // 결제페이지 - 고객 주소 가져오기
+    @GetMapping("/findaddress")
+    public ResponseEntity<?> findMemberAddress(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        log.info("** GoodsController => findMemberAddress() 실행됨 **");
+        return goodsService.findMemberAddress(userDetails);
+    }
 
 }

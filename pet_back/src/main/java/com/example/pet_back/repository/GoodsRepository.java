@@ -28,7 +28,7 @@ public interface GoodsRepository extends JpaRepository<Goods, Long> {
             "JOIN od.goods g " +
             "JOIN od.orders o " +
             "WHERE o.member.id = :memberId")
-    public List<Goods> findAllByUserId(@Param("member_id") Long member_id);
+    public List<Goods> findAllByUserId(@Param("memberId") Long memberId);
 
 
 }

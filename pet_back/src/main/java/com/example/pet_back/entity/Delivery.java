@@ -17,7 +17,7 @@ public class Delivery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "delivery_id", nullable = false)
-    private Long delivery_id;
+    private Long deliveryId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false) // FK => 연관관계 매핑
@@ -30,13 +30,13 @@ public class Delivery {
     @Column(nullable = false)
     private String recipient;
 
-    @Column
-    private String delivery_name;
+    @Column(name = "delivery_name")
+    private String deliveryName;
 
-    @Column(nullable = false)
-    private String recipient_phone;
+    @Column(name = "recipient_phone", nullable = false)
+    private String recipientPhone;
 
-    @Column
-    private String request_message;
+    @Column(name = "request_message")
+    private String requestMessage;
 
 }

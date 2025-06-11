@@ -5,7 +5,7 @@ const PayComp = styled.div`
     width: 900px;
     height: 1200px;
     margin: 0 auto;
-    margin-top: 200px;
+
     .title {
       height: 50px;
       display: flex;

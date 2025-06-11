@@ -3,10 +3,9 @@ import styled from 'styled-components';
 const CartComp = styled.div`
   .container {
     width: 900px;
-    height: 1200px;
+    height: 1300px;
     padding: 10px;
     margin: auto;
-    margin-top: 150px;
     border: 1px solid rgb(230, 230, 230);
     display: flex;
     flex-direction: column;
@@ -16,8 +15,8 @@ const CartComp = styled.div`
       margin-left: 50px;
     }
     .body {
-      width: 800px;
-      height: 900px;
+      width: 850px;
+      height: 1100px;
       margin: 0 auto;
       padding: 10px;
       display: flex;
@@ -28,7 +27,7 @@ const CartComp = styled.div`
         flex-direction: column;
 
         .prod {
-          width: 500px;
+          width: 550px;
           padding: 10px;
           border: 1px solid rgb(230, 230, 230);
           display: flex;
@@ -46,10 +45,13 @@ const CartComp = styled.div`
             .prodimg {
               width: 120px;
               height: 150px;
+              padding: 10px;
+              border: 1px solid rgb(230, 230, 230);
+              box-shadow: 1px 2px 5px 1px rgb(126, 126, 126);
             }
           }
           .prodright {
-            width: 200px;
+            width: 300px;
             .seller {
               width: 30px;
               vertical-align: middle;
@@ -71,7 +73,7 @@ const CartComp = styled.div`
         .buy {
           width: 250px;
           height: 50px;
-          margin: 20px auto;
+          margin: 5px auto;
         }
       }
     }

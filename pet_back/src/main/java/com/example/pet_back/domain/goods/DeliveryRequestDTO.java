@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class DeliveryRequestDTO {
-    private Long delivery_id;
-    private Long member_id;
-    private Long address_id;
+    private Long deliveryId;
+    private Long memberId;
+    private Long addressId;
     private String recipient;
-    private String delivery_name;
-    private String recipient_phone;
-    private String request_message;
+    private String deliveryName;
+    private String recipientPhone;
+    private String requestMessage;
 }

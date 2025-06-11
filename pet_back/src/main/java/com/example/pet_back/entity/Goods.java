@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "goods")
@@ -21,13 +21,13 @@ public class Goods {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "goods_id", nullable = false)
-    private Long goods_id;
+    private Long goodsId;
 
-    @Column(nullable = false, unique = true)
-    private Long category_id;
+    @Column(name = "category_id", nullable = false, unique = true)
+    private Long categoryId;
 
-    @Column(nullable = false, length = 30)
-    private String goods_name;
+    @Column(name = "goods_name", nullable = false, length = 30)
+    private String goodsName;
 
     @Column(nullable = false)
     private int price;
@@ -38,10 +38,11 @@ public class Goods {
     // 상품 상태 (SALE, SOLDOUT, HIDDEN)
     @Enumerated(EnumType.STRING)
     @Builder.Default
-    private GOODSSTATE goods_state = GOODSSTATE.SALE;
+    @Column(name = "goods_state", nullable = false)
+    private GOODSSTATE goodsState = GOODSSTATE.SALE;
 
-    @Column(nullable = false, length = 100)
-    private String image_file;
+    @Column(name = "image_file", nullable = false, length = 100)
+    private String imageFile;
 
     @Column(nullable = false)
     private double rating;
@@ -49,23 +50,23 @@ public class Goods {
     @Column(nullable = false)
     private int views;
 
-    @Column(nullable = false)
-    private int review_num;
+    @Column(name = "review_num", nullable = false)
+    private int reviewNum;
 
     @Column(nullable = false)
     private int quantity;
 
     @Column(name = "reg_date", nullable = false)
     @Temporal(TemporalType.DATE)
-    private Date reg_date;
+    private LocalDate regDate;
 
     @Transient // SQL 구문처리시 제외시켜줌
-    private MultipartFile upload_img;
+    private MultipartFile uploadImg;
 
     // 엔티티 persist() 되기 직전에 자동 호출되는 콜백 메서드
     @PrePersist
     protected void onCreate() {
-        this.reg_date = new Date(); // save 전 reg_date 오늘 날짜로 자동 세팅됨
+        this.regDate = LocalDate.now(); // save 전 reg_date 오늘 날짜로 자동 세팅됨
     }
 
 }

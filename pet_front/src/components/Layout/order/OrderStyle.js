@@ -22,10 +22,12 @@ const OrderComp = styled.div`
         justify-content: center;
         overflow: hidden;
 
-        .prodimage {
-          width: 200px;
-          padding: 50px;
+        .prodimg {
+          width: 300px;
+          height: 300px;
+          padding: 10px;
           border: 1px solid #ddd;
+          box-shadow: 1px 1px 10px rgb(150, 150, 150);
         }
       }
 

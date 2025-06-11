@@ -54,6 +54,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/join" element={<Join />} />
             <Route path="/goods/list" element={<GoodsList />} />
+            <Route path='/goods/order' element={<Order />} />
             <Route path="user/mypage" element={<MyPage />}>
               <Route path="myinfo" element={<MyInfo />} />
               <Route path="myedit" element={<MyEdit />} />
@@ -61,43 +62,30 @@ function App() {
               <Route path="withdrawal" element={<WithDrawal />} />
               <Route path="myboardlist" element={<MyBoardList />} />
               <Route path="addr" element={<MyAddr />} />
+              <Route path='cart/list' element={<Cart />} />
+              <Route path='delivery' element={<Delivery />} />
+              <Route path='orderdetail' element={<OrderDetail />} />
+              <Route path='withdraw' element={<WithDraw />} />
+              <Route path='pay' element={<Pay />} />
             </Route>
-            <Route path="/admin/page" element={<AdminPage />}>
-              <Route path="statistics" element={<StatisticsPage />} />
-              <Route path="grade" element={<UserGrade />} />
+            <Route path='/admin/page' element={<AdminPage />}>
+              <Route path='statistics' element={<StatisticsPage />} />
+              <Route path='grade' element={<UserGrade />} />
+              <Route path='userlist' element={<UserList />} />
+              <Route path='userdetail' element={<UserDetail />} />
+            </Route>
+            <Route path='/withcomplete' element={<WithDrawalComplete />} />
+            <Route path='/boardList/:category' element={<BoardList />} />
+            <Route path='/boardInsertForm' element={<BoardInsertForm />} />
+            <Route path='/boardDetail/:category/:board_id' element={<BoardDetail />} />
+            <Route path='/boardEditForm/:category/:board_id' element={<BoardEditForm />} />
 
-              <Route path="userlist" element={<UserList />} />
-              <Route path="userdetail" element={<UserDetail />} />
-            </Route>
-            <Route path="/withcomplete" element={<WithDrawalComplete />} />
-            <Route path="/boardList/:category" element={<BoardList />} />
-            <Route path="/boardInsertForm" element={<BoardInsertForm />} />
-            <Route
-              path="/boardDetail/:category/:board_id"
-              element={<BoardDetail />}
-            />
-            <Route
-              path="/boardEditForm/:category/:board_id"
-              element={<BoardEditForm />}
-            />
-            <Route path="/user/cart/list" element={<Cart />} />
-            <Route path="/user/delivery" element={<Delivery />} />
-            <Route path="/user/order" element={<Order />} />
-            <Route path="/user/orderdetail" element={<OrderDetail />} />
-            <Route path="/user/withdraw" element={<WithDraw />} />
-            <Route path="/user/pay" element={<Pay />} />
-            <Route path="/admin/goods" element={<Goods />} />
-            <Route path="/boardList/:category" element={<BoardList />} />
-            <Route
-              path="/boardDetail/:category/:board_id"
-              element={<BoardDetail />}
-            />
-            <Route path="/boardInsertForm" element={<BoardInsertForm />} />
-            <Route
-              path="/boardEditForm/:category/:board_id"
-              element={<BoardEditForm />}
-            />
-            <Route path="/error" element={<Error />} />
+            <Route path='/admin/goods' element={<Goods />} />
+            <Route path='/boardList/:category' element={<BoardList />} />
+            <Route path='/boardDetail/:category/:board_id' element={<BoardDetail />} />
+            <Route path='/boardInsertForm' element={<BoardInsertForm />} />
+            <Route path='/boardEditForm/:category/:board_id' element={<BoardEditForm />} />
+            <Route path='/error' element={<Error />} />
           </Route>
         </Routes>
       </BrowserRouter>

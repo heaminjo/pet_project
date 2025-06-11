@@ -5,6 +5,7 @@ import com.example.pet_back.domain.goods.PayRequestDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,7 +19,7 @@ public interface GoodsService {
     ResponseEntity<?> showGoodsList();
 
     // 상품 등록
-    void registerGoods(GoodsRequestDTO goodsRequestDTO, HttpServletRequest request) throws IOException;
+    void registerGoods(GoodsRequestDTO goodsRequestDTO, MultipartFile uploadImg, HttpServletRequest request) throws IOException;
 
     // 상품 결제
     ResponseEntity<?> payGoods(CustomUserDetails userDetails, PayRequestDTO dto);
@@ -28,4 +29,7 @@ public interface GoodsService {
 
     // 특정 고객이 한번이라도 주문한 적 있는 상품의 리스트
     public ResponseEntity<?> customerGoodsHistory(CustomUserDetails userDetails, List<Long> orderIdList);
+
+    // 결제페이지 - 고객 주소 가져오기
+    public ResponseEntity<?> findMemberAddress(CustomUserDetails userDetails);
 }

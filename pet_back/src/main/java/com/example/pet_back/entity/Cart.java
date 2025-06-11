@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 // Cart 엔티티 클래스
 @Entity
@@ -19,15 +20,18 @@ import java.io.Serializable;
 public class Cart implements Serializable { // Serializable 상속
 
     @Id
-    @Column(nullable = false)
-    private Long member_id;
+    @Column(name = "member_id", nullable = false)
+    private Long memberId;
 
     @Id
-    @Column(nullable = false)
-    private Long goods_id;
+    @Column(name = "goods_id", nullable = false)
+    private Long goodsId;
 
     @Column(nullable = false)
     private int quantity;
+
+    @Column(name = "reg_date", nullable = false)
+    private LocalDate regDate;
 
 
     @ManyToOne(fetch = FetchType.LAZY)

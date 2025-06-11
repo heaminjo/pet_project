@@ -5,20 +5,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class OrderRequestDTO {
-    private Long order_id;
-    private Long delivery_id;
-    private Long member_id;
-    private int total_quantity;
-    private int total_price;
+    private Long orderId;
+    private Long deliveryId;
+    private Long memberId;
+    private int totalQuantity;
+    private int totalPrice;
     private String payment;
-    private Date reg_date;
+    private LocalDate regDate;
     private String status;
 
 }
