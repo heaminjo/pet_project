@@ -1,9 +1,6 @@
 package com.example.pet_back.controller;
 
-import com.example.pet_back.domain.admin.GradeStatisticsDTO;
-import com.example.pet_back.domain.admin.MemberStatisticsDTO;
-import com.example.pet_back.domain.admin.UpgradeRequstDTO;
-import com.example.pet_back.domain.admin.UserStateUpdateDTO;
+import com.example.pet_back.domain.admin.*;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
@@ -77,5 +74,11 @@ public class AdminController {
     @PutMapping("/upgrade")
     public ResponseEntity<ApiResponse> gradeUpgrade(@RequestBody UpgradeRequstDTO dto) {
         return ResponseEntity.ok(adminService.upgradeGrade(dto));
+    }
+
+    //배너 리스트 불러오기
+    @GetMapping("/banner/list")
+    public ResponseEntity<List<BannerDTO>> bannerList() {
+        return ResponseEntity.ok(adminService.bannerList());
     }
 }

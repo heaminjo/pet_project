@@ -3,17 +3,16 @@ package com.example.pet_back.service;
 import com.example.pet_back.config.FileUploadProperties;
 import com.example.pet_back.constant.MEMBERSTATE;
 import com.example.pet_back.constant.ROLE;
-import com.example.pet_back.domain.admin.GradeStatisticsDTO;
-import com.example.pet_back.domain.admin.MemberStatisticsDTO;
-import com.example.pet_back.domain.admin.UpgradeRequstDTO;
-import com.example.pet_back.domain.admin.UserStateUpdateDTO;
+import com.example.pet_back.domain.admin.*;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
+import com.example.pet_back.entity.Goodsbanner;
 import com.example.pet_back.entity.Member;
 import com.example.pet_back.mapper.MemberMapper;
 import com.example.pet_back.repository.AddressRepository;
+import com.example.pet_back.repository.GoodsBannerRepository;
 import com.example.pet_back.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -44,6 +43,7 @@ public class AdminServiceImpl implements AdminService {
     private final AddressRepository addressRepository;
     private final PasswordEncoder passwordEncoder;
     private final FileUploadProperties fileUploadProperties;
+    private final GoodsBannerRepository goodsBannerRepository;
 
     //관리자의 회원 조회
     @Override
@@ -171,5 +171,14 @@ public class AdminServiceImpl implements AdminService {
         Member member = memberRepository.findById(dto.getUserId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         return new ApiResponse<>(true, member.getName() + "님의 등급이 " + dto.getNextGrade() + "등급으로 업그레이드 되었습니다.");
+    }
+
+    @Override
+    public List<BannerDTO> bannerList() {
+        List<Goodsbanner> bannerList = goodsBannerRepository.findAll();
+//        List<BannerDTO> response = bannerList.stream().map(mapper::bannerToDto).toList();
+//
+//        log.info("Banner List => " + response.toString());
+        return null;
     }
 }

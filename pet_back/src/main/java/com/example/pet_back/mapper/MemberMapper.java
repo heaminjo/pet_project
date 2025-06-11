@@ -25,6 +25,10 @@ public interface MemberMapper {
 
     public Address addressToEntity(AddressRequestDTO dto);
 
+
+//    @Mapping(source = "goods.goods_id", target = "goodsId")
+//    public BannerDTO bannerToDto(Goodsbanner goodsbanner);
+
     @Mapping(source = "addrType", target = "addrType", qualifiedByName = "addrToString")
     public AddressResponseDTO toAddressDTO(Address address);
 
