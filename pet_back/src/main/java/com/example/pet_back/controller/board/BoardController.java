@@ -126,7 +126,7 @@ public class BoardController {
             @RequestParam(value = "sort", required = false) String sort
     ) {
         PageRequestDTO pageRequestDTO = new PageRequestDTO(page, size, sort, keyword, type);
-        PageResponseDTO<BoardDTO> responseDTO = boardService.selectMyBoardList(member_id, pageRequestDTO, type, keyword);
+        PageResponseDTO<BoardDTO> responseDTO = boardService.selectMyBoardList(member_id, pageRequestDTO, type, keyword, sort);
         return ResponseEntity.ok(responseDTO);
     }
 

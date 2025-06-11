@@ -1,6 +1,7 @@
 package com.example.pet_back.mapper;
 
 import com.example.pet_back.domain.admin.UserDetailResponseDTO;
+import com.example.pet_back.domain.login.SocialUpdateDTO;
 import com.example.pet_back.domain.member.MemberRequestDTO;
 import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.entity.Member;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-06-05T10:00:40+0900",
+    date = "2025-06-09T14:46:28+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.12 (Oracle Corporation)"
 )
 @Component
@@ -31,6 +32,18 @@ public class MemberMapperImpl implements MemberMapper {
         member.gender( dto.getGender() );
 
         return member.build();
+    }
+
+    @Override
+    public void updateFromSocialDto(SocialUpdateDTO dto, Member member) {
+        if ( dto == null ) {
+            return;
+        }
+
+        member.setEmail( dto.getEmail() );
+        member.setPhone( dto.getPhone() );
+        member.setBirth( dto.getBirth() );
+        member.setGender( dto.getGender() );
     }
 
     @Override

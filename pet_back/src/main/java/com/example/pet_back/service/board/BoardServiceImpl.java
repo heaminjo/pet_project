@@ -70,9 +70,9 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public PageResponseDTO<BoardDTO> selectMyBoardList(int member_id, PageRequestDTO pageRequestDTO, String type, String keyword) {
+    public PageResponseDTO<BoardDTO> selectMyBoardList(int member_id, PageRequestDTO pageRequestDTO, String type, String keyword, String sort) {
         int offset = pageRequestDTO.getPage() * pageRequestDTO.getSize();
-        List<BoardDTO> content = boardMapper.selectMyBoardListPaging(member_id, pageRequestDTO.getSize(), offset, type, keyword);
+        List<BoardDTO> content = boardMapper.selectMyBoardListPaging(member_id, pageRequestDTO.getSize(), offset, type, keyword, sort);
         long totalElements = boardMapper.countByMemberId(member_id, type, keyword);
         int totalPages = (int) Math.ceil((double) totalElements / pageRequestDTO.getSize());
         boolean isPrev = pageRequestDTO.getPage() > 0;

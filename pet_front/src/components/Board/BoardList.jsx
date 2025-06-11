@@ -154,13 +154,13 @@ export default function BoardList() {
                         `/boardDetail/${category}/${b.board_id}${location.search}`
                       )
                     }
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", width: "50%" }}
                   >
                     {b.title}
                   </td>
-                  <td className="center">{b.name}</td>
-                  <td className="center">{b.views}</td>
-                  <td className="center">{b.reg_date}</td>
+                  <td className="center" style={{width:"15%"}}>{b.name}</td>
+                  <td className="center" style={{width:"10%"}}>{b.views}</td>
+                  <td className="center" style={{width:"15%"}}>{b.reg_date}</td>
                 </tr>
               ))
             )}

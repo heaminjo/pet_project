@@ -89,7 +89,13 @@ export default function Login() {
       //전역변수에 로그인 여부 저장
       setIsLogin(true);
       MemberApi.lastLogin();
-      navigate("/");
+      if (redirectTo) {
+        // 리다이렉트할 경로가 있다면 해당 경로로 이동
+        navigate(redirectTo);
+      } else {
+        // 기본적으로 홈으로 이동
+        navigate("/");
+      }
     } else {
       alert("로그인 실패");
     }
