@@ -5,37 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce94af43-ae82-4e55-bb2b-6016175262a9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/controller/board/BoardFileUploadController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/controller/AdminController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/controller/AdminController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/admin/GradeStatisticsDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/admin/GradeStatisticsDTO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/mapper/MemberMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/mapper/MemberMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/mapper/MemberMapperImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/mapper/MemberMapperImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/repository/MemberRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/repository/MemberRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/AdminService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/AdminService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/AdminServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/AdminServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/KakaoService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/KakaoService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/generated/com/example/pet_back/mapper/MemberMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/generated/com/example/pet_back/mapper/MemberMapperImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/.eslintcache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/0.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/0.pack" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/1.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/1.pack" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/10.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/10.pack" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/11.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/11.pack" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/12.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/12.pack" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/13.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/13.pack" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/2.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/2.pack" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/3.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/3.pack" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/4.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/4.pack" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/5.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/5.pack" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/6.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/6.pack" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/7.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/7.pack" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/8.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/8.pack" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/9.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/9.pack" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/index.pack" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/index.pack" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/index.pack.old" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/node_modules/.cache/default-development/index.pack.old" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Board/BoardDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Board/BoardDetail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Board/CommentForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Board/CommentForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Board/CommentList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Board/CommentList.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
