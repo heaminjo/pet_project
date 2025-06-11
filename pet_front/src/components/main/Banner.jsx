@@ -3,9 +3,17 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
+import AdminApi from "../../api/AdminApi";
 function Banner() {
-  //배너 상품 가져오기
+  useEffect(() => {
+    getBanner();
+  }, []);
 
+  //배너 상품 가져오기
+  const getBanner = async () => {
+    const result = await AdminApi.getBanner();
+    console.log(result);
+  };
   const sliderRef = useRef(null);
 
   const settings = {

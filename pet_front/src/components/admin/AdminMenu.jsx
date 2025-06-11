@@ -92,9 +92,9 @@ export default function AdminMenu() {
           <p className="menu_title">메인 관리</p>
           <ul>
             <li>
-
-              <span>메인 배너 관리</span>
-
+              <span onClick={() => navigate("/admin/page/banner")}>
+                메인 배너 관리
+              </span>
             </li>
             <li>
               <span></span>
