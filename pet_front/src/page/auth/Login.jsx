@@ -89,7 +89,13 @@ export default function Login() {
       //전역변수에 로그인 여부 저장
       setIsLogin(true);
       MemberApi.lastLogin();
-      navigate("/");
+      if (redirectTo) {
+        // 리다이렉트할 경로가 있다면 해당 경로로 이동
+        navigate(redirectTo);
+      } else {
+        // 기본적으로 홈으로 이동
+        navigate("/");
+      }
     } else {
       alert("로그인 실패");
     }
@@ -133,7 +139,7 @@ export default function Login() {
               <button type="submit">로그인</button>
               <button onClick={() => kakaoCode()}>
                 <img
-                  src="http://localhost:3000/uploads/kakao_login_medium_wide.png"
+                  src="http://localhost:3000/resources/webapp/userUploads/kakao_login_medium_wide.png"
                   alt="카카오 로그인 버튼"
                 />
               </button>

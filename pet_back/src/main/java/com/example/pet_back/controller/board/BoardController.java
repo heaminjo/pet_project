@@ -115,5 +115,20 @@ public class BoardController {
         else return ResponseEntity.status(HttpStatus.FORBIDDEN).body("삭제 권한이 없거나 게시글이 없습니다.");
     }
 
+    // [추가] 내 게시글 목록 조회
+    @GetMapping("/myboardList")
+    public ResponseEntity<?> myBoardList(
+            @RequestParam("member_id") int member_id,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "type", required = false) String type,
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "sort", required = false) String sort
+    ) {
+        PageRequestDTO pageRequestDTO = new PageRequestDTO(page, size, sort, keyword, type);
+        PageResponseDTO<BoardDTO> responseDTO = boardService.selectMyBoardList(member_id, pageRequestDTO, type, keyword, sort);
+        return ResponseEntity.ok(responseDTO);
+    }
+
 
 }

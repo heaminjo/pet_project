@@ -4,7 +4,7 @@ const HeaderComp = styled.header`
   width: 100%;
   height: 100px;
   position: fixed;
-  z-index: 100;
+  z-index: 10000;
   top: 0;
   background-color: rgb(245, 242, 219);
   .header_inner {

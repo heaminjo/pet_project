@@ -28,7 +28,7 @@ export default function UserList() {
   //1페이지 ,최신순,전체출력을 페이징한 리스트 출력
   useEffect(() => {
     getPageList();
-  }, [page]);
+  }, [page, sort]);
 
   //검색 목록 Api
   const getPageList = async () => {
@@ -62,6 +62,14 @@ export default function UserList() {
     getPageList();
   };
 
+  //검색버튼 엔터
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      //검색
+      searchClick();
+    }
+  };
+
   //유저 상세보기 클릭
   //유저 이메일을 넘긴다.
   const userDetail = (email) => {
@@ -77,6 +85,8 @@ export default function UserList() {
         return "lightcoral";
       case "탈퇴회원":
         return "lightgray";
+      case "임시회원":
+        return "lightpink";
       default:
         return "white";
     }
@@ -89,6 +99,15 @@ export default function UserList() {
         <div className="search">
           <div className="search_type">
             <select
+              name="sort"
+              id="sort"
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+            >
+              <option value="desc">최신순</option>
+              <option value="asc">오래된 순</option>
+            </select>
+            <select
               name="type"
               id="type"
               value={type}
@@ -98,15 +117,6 @@ export default function UserList() {
               <option value="email">이메일</option>
               <option value="name">이름</option>
             </select>
-            <select
-              name="sort"
-              id="sort"
-              value={sort}
-              onChange={(e) => setSort(e.target.value)}
-            >
-              <option value="desc">최신순</option>
-              <option value="asc">오래된 순</option>
-            </select>
           </div>
 
           <div className="search_input">
@@ -114,6 +124,7 @@ export default function UserList() {
               type="text"
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
             <button className="search_btn" onClick={() => searchClick()}>
               검색

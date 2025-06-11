@@ -95,5 +95,42 @@ const MemberApi = {
     const result = await instance.put(`${KH_DOMAIN}/kakao/social/update`, user);
     return result.data;
   },
+
+  //배송지 목록
+  addrList: async () => {
+    const result = await instance.get(`${KH_DOMAIN}/user/address/list`);
+    return result.data;
+  },
+  //배송지 추가
+  addrInsert: async (address) => {
+    const result = await instance.post(
+      `${KH_DOMAIN}/user/address/insert`,
+      address
+    );
+    return result.data;
+  },
+  //배송지 삭제
+  addressDelete: async (id) => {
+    const result = await instance.delete(
+      `${KH_DOMAIN}/user/address/delete?addressId=${id}`
+    );
+    return result.data;
+  },
+  //배송지 조회
+  addrDetail: async (id) => {
+    const result = await instance.get(
+      `${KH_DOMAIN}/user/address/detail?addressId=${id}`
+    );
+    return result.data;
+  },
+  //배송지 수정
+  addrUpdate: async (address) => {
+    const result = await instance.put(
+      `${KH_DOMAIN}/user/address/update`,
+      address
+    );
+    return result.data;
+  },
 };
+
 export default MemberApi;

@@ -2,7 +2,9 @@ package com.example.pet_back.controller;
 
 import com.example.pet_back.domain.admin.GradeStatisticsDTO;
 import com.example.pet_back.domain.admin.MemberStatisticsDTO;
+import com.example.pet_back.domain.admin.UpgradeRequstDTO;
 import com.example.pet_back.domain.admin.UserStateUpdateDTO;
+import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
@@ -15,6 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -56,8 +61,21 @@ public class AdminController {
         return ResponseEntity.ok(adminService.memberStatistics());
     }
 
+    //등급 통계
     @GetMapping("/statistics/grade")
-    public ResponseEntity<GradeStatisticsDTO> gradeStatistics() {
+    public ResponseEntity<Map<String, GradeStatisticsDTO>> gradeStatistics() {
         return ResponseEntity.ok(adminService.gradeStatistics());
+    }
+
+    //각 등급 포인트 역순 리스트
+    @GetMapping("/best/list")
+    public ResponseEntity<List<MemberResponseDTO>> userBestList(@RequestParam("grade") String grade) {
+        return ResponseEntity.ok(adminService.userBestList(grade));
+    }
+
+    //등급 업그레이드
+    @PutMapping("/upgrade")
+    public ResponseEntity<ApiResponse> gradeUpgrade(@RequestBody UpgradeRequstDTO dto) {
+        return ResponseEntity.ok(adminService.upgradeGrade(dto));
     }
 }

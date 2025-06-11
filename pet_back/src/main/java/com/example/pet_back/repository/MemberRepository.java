@@ -27,6 +27,12 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             "(:type = 'email' AND m.email LIKE :keyword))")
     Page<Member> findSearchList(@Param("type") String type, @Param("keyword") String keyword, @Param("role") ROLE role, Pageable pageable);
 
+    //이름 , 이메일 둘 다로 검색
+    @Query("SELECT m FROM Member m WHERE  m.role = :role AND " +
+            "((m.name LIKE :keyword) OR " +
+            "(m.email LIKE :keyword))")
+    Page<Member> findAllSearchList(@Param("keyword") String keyword, @Param("role") ROLE role, Pageable pageable);
+
     //모든 유저
     @Query("select m from Member m where m.role = 'USER'")
     public Page<Member> findAllUser(Pageable pageable);
@@ -40,6 +46,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query(nativeQuery = true, value = "select count(*) from member where gender = 'MALE'")
     public Long MaleCount();
 
+
+    //7일 회원가입 통계
     @Query(nativeQuery = true, value = "WITH RECURSIVE date_seq AS (\n" +
             "  SELECT CURDATE() - INTERVAL 7 DAY AS dt\n" +
             "  UNION ALL\n" +
@@ -58,7 +66,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
 
     //등급 회원 통계
-    @Query(nativeQuery = true, value = "SELECT g.grade, COUNT(m.grade) AS member_count\n" +
+    @Query(nativeQuery = true, value = "SELECT g.grade, COUNT(m.grade) AS member_count, COALESCE(AVG(m.point), 0) AS avg_point,count(*) * 100 / (select count(*) from member) AS percent " +
             "FROM (\n" +
             "  SELECT 'NEWBIE' AS grade\n" +
             "  UNION ALL SELECT 'BLOSSOM'\n" +
@@ -72,4 +80,16 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     //카카오 아이디 검사
     public Optional<Member> findByKakaoId(Long kakaoId);
+
+    //등급 당 우수회원
+    @Query(nativeQuery = true, value = "select * " +
+            "from member " +
+            "where grade= :grade " +
+            "order by point desc")
+    public List<Member> userBestList(@Param("grade") String grade);
+
+    //등급 업데이트
+    @Modifying
+    @Query(nativeQuery = true, value = "update member set grade = :newGrade where member_id = :memberId")
+    public void updateGrade(@Param("newGrade") String newGrade, @Param("memberId") Long memberId);
 }

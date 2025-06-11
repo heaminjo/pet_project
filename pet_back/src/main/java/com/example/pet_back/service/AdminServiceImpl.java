@@ -5,6 +5,7 @@ import com.example.pet_back.constant.MEMBERSTATE;
 import com.example.pet_back.constant.ROLE;
 import com.example.pet_back.domain.admin.GradeStatisticsDTO;
 import com.example.pet_back.domain.admin.MemberStatisticsDTO;
+import com.example.pet_back.domain.admin.UpgradeRequstDTO;
 import com.example.pet_back.domain.admin.UserStateUpdateDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.member.MemberResponseDTO;
@@ -24,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.LinkedHashMap;
@@ -50,7 +52,12 @@ public class AdminServiceImpl implements AdminService {
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         MemberResponseDTO dto = mapper.toDto(member);
-        dto.setImageFile("http://localhost:8080/uploads/" + member.getImageFile());
+
+        //디렉토리에서 파일 가져오기
+        String realPath = fileUploadProperties.getUrl(); // http://localhost:8080/resources/webapp
+
+        //해당파일은 MvcConfig에 매핑되어 이미지를 매핑
+        dto.setImageFile(realPath + member.getImageFile());
         return ResponseEntity.ok(dto);
     }
 
@@ -82,9 +89,17 @@ public class AdminServiceImpl implements AdminService {
         //키워드의 여부
         if (dto.getKeyword().isEmpty()) {
             //검색 x 전체 조회
+            log.info("전체 조회 합니다.");
             page = memberRepository.findAllUser(pageable);
+        } else if (dto.getType().equals("all")) {
+            //검색 필터 전체로 할 경우
+            log.info("전체 필터로 검색합니다. keyword => ");
+
+            page = memberRepository.findAllSearchList("%" + dto.getKeyword() + "%", ROLE.USER, pageable);
         } else {
+            //검색 필터 적용
             //검색 타입과 키워드를 포함하여 리스트를 가져온다.
+            log.info("검색 필터를 적용하여 검색합니다.");
             page = memberRepository.findSearchList(dto.getType(), "%" + dto.getKeyword() + "%", ROLE.USER, pageable);
         }
 
@@ -120,18 +135,41 @@ public class AdminServiceImpl implements AdminService {
         return new MemberStatisticsDTO(totalUser, 0L, todayUser, male, female, map);
     }
 
+    //등급 통계
     @Override
-    public GradeStatisticsDTO gradeStatistics() {
+    public Map<String, GradeStatisticsDTO> gradeStatistics() {
         List<Object[]> list = memberRepository.gradeStatistics();
+
+
         //map으로 변환
-        Map<String, Long> map = list.stream().collect(Collectors.toMap(
+        Map<String, GradeStatisticsDTO> map = list.stream().collect(Collectors.toMap(
                 row -> (String) row[0],
-                row -> ((Number) row[1]).longValue(),
+                row -> new GradeStatisticsDTO(((Number) row[1]).longValue(), ((Number) row[2]).doubleValue(), ((Number) row[3]).doubleValue()),
                 (existing, replacement) -> existing,
                 LinkedHashMap::new
         ));
 
+        return map;
+    }
 
-        return new GradeStatisticsDTO(map);
+    @Override
+    public List<MemberResponseDTO> userBestList(String grade) {
+        log.info(grade);
+        List<Member> list = memberRepository.userBestList(grade);
+        log.info(list.stream().toList());
+        List<MemberResponseDTO> response = list.stream().map(mapper::toDto).toList();
+
+        return response;
+    }
+
+
+    //등급 업그레이드
+    @Override
+    @Transactional
+    public ApiResponse upgradeGrade(UpgradeRequstDTO dto) {
+        memberRepository.updateGrade(dto.getNextGrade(), dto.getUserId());
+        Member member = memberRepository.findById(dto.getUserId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return new ApiResponse<>(true, member.getName() + "님의 등급이 " + dto.getNextGrade() + "등급으로 업그레이드 되었습니다.");
     }
 }

@@ -13,6 +13,7 @@ export default function UserDetail() {
   const getUserData = async () => {
     const result = await AdminApi.getUserData(email);
     setUser(result);
+    console.log(user);
   };
 
   useEffect(() => {

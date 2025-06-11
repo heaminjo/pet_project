@@ -7,6 +7,7 @@ import {
 import MyInfoComp from "./MyInfoStyle";
 import { useEffect, useState } from "react";
 import MemberApi from "../../api/MemberApi";
+import gradeImage from "../../images/d1nrwjnej10dkwnrnksj423kj.jpg";
 
 export default function MyInfo() {
   const [user, setUser] = useState([]);
@@ -51,10 +52,7 @@ export default function MyInfo() {
           <div className="user_grade">
             {/* 등급별 이미지,등급 */}
             <div className="grade_image">
-              <img
-                src="https://th.bing.com/th/id/OIP.BMhVnqzc_evd72p3eiropAHaHa?w=698&h=698&rs=1&pid=ImgDetMain"
-                alt=""
-              />
+              <img src={gradeImage} alt="" />
             </div>
             <div className="grade_text">
               <p className="grade_name">{user.grade}</p>

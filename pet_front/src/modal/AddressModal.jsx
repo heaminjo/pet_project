@@ -5,8 +5,8 @@ import styled from "styled-components";
 const AddressComp = styled.div`
   position: absolute;
   border: 2px solid #ccc;
-  right: -350px;
-  bottom: 13px;
+  right: ${(props) => props.right || 0};
+  bottom: ${(props) => props.bottom || 0};
   background-color: #f8e776;
   .modal_top {
     display: flex;
@@ -26,7 +26,13 @@ const AddressComp = styled.div`
     }
   }
 `;
-export default function AddressModal({ watch, setValue, setPopup }) {
+export default function AddressModal({
+  watch,
+  setValue,
+  setPopup,
+  rigth,
+  bottom,
+}) {
   const completeHandler = (data) => {
     // {} 이 끝난 후 = 는 문법상 에러
     //구조 분해 하기 위해 괄호로 감싼다.
@@ -38,7 +44,7 @@ export default function AddressModal({ watch, setValue, setPopup }) {
     setPopup(false);
   };
   return (
-    <AddressComp>
+    <AddressComp right={rigth} bottom={bottom}>
       <div className="modal_top">
         <p>우편번호 검색</p>
         <button onClick={() => setPopup(false)}>✖️</button>

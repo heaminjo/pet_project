@@ -11,6 +11,14 @@ export default function BoardEditForm() {
   // 카테고리 기본값 설정
   const navigate = useNavigate();
 
+  const [role, setRole] = useState(localStorage.getItem("role") || "");
+
+  useEffect(() => {
+    const handleStorage = () => setRole(localStorage.getItem("role") || "");
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
+
   // 기존 게시글 데이터 불러오기 (수정 폼 진입 시 1회)
   useEffect(() => {
     axios
@@ -23,7 +31,7 @@ export default function BoardEditForm() {
         alert("게시글 정보를 불러오지 못했습니다.");
         navigate("/boardList/free");
       });
-  }, [board_id, category, title, navigate]);
+  }, [board_id, category, navigate]);
 
   // 수정 폼 제출
   const handleSubmit = async (e) => {
@@ -38,7 +46,9 @@ export default function BoardEditForm() {
         },
       });
       alert("게시글이 수정되었습니다.");
-      navigate(`/boardDetail/${category}/${board_id}`);
+
+      navigate(`/boardList/${category}`); 
+      
     } catch (err) {
       alert("게시글 수정에 실패했습니다.");
     }
@@ -77,10 +87,12 @@ export default function BoardEditForm() {
               required
               disabled
             >
-              <option value="notice">공지사항</option>
+              {role === "ROLE_ADMIN" && (
+                <option value="notice">공지사항</option>
+              )}
               <option value="community">커뮤니티</option>
-              <option value="faq">FAQ</option>
-              <option value="free">게시판</option>
+              <option value="faq">Q&A</option>
+              <option value="free">자유게시판</option>
             </select>
           </div>
           <div className="contentRow">

@@ -1,5 +1,6 @@
 package com.example.pet_back.service;
 
+import com.example.pet_back.constant.ADDRTYPE;
 import com.example.pet_back.constant.MEMBERSTATE;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.kakao.KakaoTokenResponseDTO;
@@ -167,7 +168,7 @@ public class KakaoService {
         member.setMemberState(MEMBERSTATE.ACTIVE);
         Member member1 = memberRepository.save(member);
         log.info(dto.getAddress1());
-        addressRepository.save(new Address(member1, dto.getAddress1(), dto.getAddress2(), dto.getAddressZip()));
+        addressRepository.save(new Address(member1, dto.getAddress1(), dto.getAddress2(), dto.getAddressZip(), ADDRTYPE.DEFAULT, "집"));
 
         return ResponseEntity.ok(new ApiResponse<>(true, "필수 정보 업데이트 완료"));
     }

@@ -1,13 +1,19 @@
 package com.example.pet_back.mapper;
 
+import com.example.pet_back.constant.ADDRTYPE;
 import com.example.pet_back.constant.GRADE;
 import com.example.pet_back.constant.MEMBERSTATE;
+import com.example.pet_back.domain.address.AddressRequestDTO;
+import com.example.pet_back.domain.address.AddressResponseDTO;
 import com.example.pet_back.domain.admin.UserDetailResponseDTO;
-import com.example.pet_back.domain.login.SocialUpdateDTO;
 import com.example.pet_back.domain.member.MemberRequestDTO;
 import com.example.pet_back.domain.member.MemberResponseDTO;
+import com.example.pet_back.entity.Address;
 import com.example.pet_back.entity.Member;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
+import org.mapstruct.ReportingPolicy;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -17,7 +23,10 @@ public interface MemberMapper {
     //dto -> entity
     public Member toEntity(MemberRequestDTO dto);
 
-    void updateFromSocialDto(SocialUpdateDTO dto, @MappingTarget Member member);
+    public Address addressToEntity(AddressRequestDTO dto);
+
+    @Mapping(source = "addrType", target = "addrType", qualifiedByName = "addrToString")
+    public AddressResponseDTO toAddressDTO(Address address);
 
     //entity -> dto
 //grade 한글로
@@ -46,6 +55,12 @@ public interface MemberMapper {
         }
         return lastLogin.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
+
+    @Named("addrToString")
+    public static String addrToString(ADDRTYPE addrtype) {
+        return addrtype.getAddrName();
+    }
+
 
     @Mapping(source = "lastLogin", target = "lastLogin", qualifiedByName = "lastLoginToString")
     @Mapping(source = "regDate", target = "regDate", qualifiedByName = "regDateToString")

@@ -1,10 +1,14 @@
 package com.example.pet_back.service;
 
+import com.example.pet_back.domain.address.AddressRequestDTO;
+import com.example.pet_back.domain.address.AddressResponseDTO;
+import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.member.UpdateMemberRequestDTO;
 import com.example.pet_back.domain.member.UpdatePwRequestDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public interface MemberService {
     public ResponseEntity<Boolean> emailCheck(String email);
@@ -20,7 +24,16 @@ public interface MemberService {
 
     public ResponseEntity<?> memberWithdrawal(Long id);
 
-    public ResponseEntity<?> memberUploadImage(Long id, MultipartFile file);
-
     public ResponseEntity<?> loginHistory(Long id);
+
+    public List<AddressResponseDTO> addressList(Long id);
+
+    public ResponseEntity<?> addressInsert(Long id, AddressRequestDTO dto);
+
+    public ApiResponse addressDelete(Long addressId);
+
+    public ApiResponse addressDetail(Long addressId);
+
+    public ApiResponse addressUpdate(Long userId, AddressRequestDTO dto);
+
 }

@@ -4,113 +4,6 @@ import Toggle from "../util/Toggle";
 import AdminApi from "../../api/AdminApi";
 
 export default function UserData({ user, setUser, navigate }) {
-  const UserDataComp = styled.div`
-    .title {
-      height: 80px;
-      .back {
-        font-size: 13px;
-        margin-bottom: 30px;
-        cursor: pointer;
-      }
-      h2 {
-      }
-    }
-    .detail {
-      margin-top: 20px;
-      display: flex;
-      gap: 20px;
-      .user_profile {
-        width: 300px;
-        height: 400px;
-        border: 1px solid #ccc;
-        box-shadow: 3px 3px 5px #ccc;
-        .image {
-          width: 100%;
-          height: 70%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          img {
-            width: 200px;
-            height: 200px;
-            border-radius: 100%;
-          }
-        }
-        .simple_data {
-          width: 100%;
-          height: 30%;
-          line-height: 100px;
-          text-align: center;
-          p {
-            font-size: 25px;
-          }
-        }
-      }
-      .user_detail {
-        width: 550px;
-        display: flex;
-        gap: 20px;
-        flex-direction: column;
-
-        .basic_data {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          border: 1px solid #ccc;
-          height: 250px;
-          box-shadow: 3px 5px 5px 1px #ccc;
-          .title {
-            height: 40px;
-            background-color: #999;
-            width: 100%;
-            line-height: 40px;
-            span {
-              padding-left: 10px;
-              font-weight: bold;
-              color: #eee;
-            }
-          }
-          table {
-            width: 100%;
-            padding: 10px;
-            tr {
-              height: 35px;
-              border-bottom: 1px solid #ccc;
-              th {
-                width: 100px;
-                text-align: start;
-              }
-              td {
-                border-bottom: 1px solid #ccc;
-              }
-            }
-          }
-        }
-        .sub_data {
-          height: 130px;
-          display: flex;
-          border: 1px solid #ccc;
-          box-shadow: 3px 3px 5px #ccc;
-
-          .content {
-            text-align: center;
-            width: 183px;
-            h4 {
-              height: 40px;
-              line-height: 40px;
-              background-color: #999;
-              color: #eee;
-            }
-            span {
-              line-height: 50px;
-              font-weight: bold;
-            }
-          }
-        }
-      }
-    }
-  `;
-
   //토글 클릭하면 회원의 상태를 변환한다.
   //ACTIVE = 정상회원 , BANNED = 정지회원
   const toggleClick = async () => {
@@ -163,6 +56,10 @@ export default function UserData({ user, setUser, navigate }) {
                 <td>{user.birth}</td>
               </tr>
               <tr>
+                <th>마지막 로그인</th>
+                <td>{user?.lastLogin || "로그인 기록 없음"}</td>
+              </tr>
+              <tr>
                 <th>가입날짜</th>
                 <td>{user.regDate}</td>
               </tr>
@@ -197,3 +94,109 @@ export default function UserData({ user, setUser, navigate }) {
     </UserDataComp>
   );
 }
+const UserDataComp = styled.div`
+  .title {
+    height: 80px;
+    .back {
+      font-size: 13px;
+      margin-bottom: 30px;
+      cursor: pointer;
+    }
+    h2 {
+    }
+  }
+  .detail {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+    .user_profile {
+      width: 300px;
+      height: 400px;
+      border: 1px solid #ccc;
+      box-shadow: 3px 3px 5px #ccc;
+      .image {
+        width: 100%;
+        height: 70%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        img {
+          width: 200px;
+          height: 200px;
+          border-radius: 100%;
+        }
+      }
+      .simple_data {
+        width: 100%;
+        height: 30%;
+        line-height: 100px;
+        text-align: center;
+        p {
+          font-size: 25px;
+        }
+      }
+    }
+    .user_detail {
+      width: 550px;
+      display: flex;
+      gap: 20px;
+      flex-direction: column;
+
+      .basic_data {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid #ccc;
+        height: 250px;
+        box-shadow: 3px 5px 5px 1px #ccc;
+        .title {
+          height: 40px;
+          background-color: #999;
+          width: 100%;
+          line-height: 40px;
+          span {
+            padding-left: 10px;
+            font-weight: bold;
+            color: #eee;
+          }
+        }
+        table {
+          width: 100%;
+          padding: 10px;
+          tr {
+            height: 30px;
+            border-bottom: 1px solid #ccc;
+            th {
+              width: 100px;
+              text-align: start;
+            }
+            td {
+              border-bottom: 1px solid #ccc;
+            }
+          }
+        }
+      }
+      .sub_data {
+        height: 130px;
+        display: flex;
+        border: 1px solid #ccc;
+        box-shadow: 3px 3px 5px #ccc;
+
+        .content {
+          text-align: center;
+          width: 183px;
+          h4 {
+            height: 40px;
+            line-height: 40px;
+            background-color: #999;
+            color: #eee;
+          }
+          span {
+            line-height: 50px;
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
+`;

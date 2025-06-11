@@ -20,11 +20,13 @@ const UserListComp = styled.div`
       .search_input {
         position: relative;
         input {
-          height: 40px;
+          height: 39px;
           width: 350px;
-          border-radius: 20px;
+          border-radius: 0 20px 20px 0;
+
           border: 1px solid #000;
           padding-left: 15px;
+          border-left: none;
         }
         input:focus {
           outline: none;
@@ -43,13 +45,23 @@ const UserListComp = styled.div`
       }
       .search_type {
         display: flex;
+        width: 100%;
+        justify-content: space-between;
         gap: 10px;
         select {
           height: 40px;
           width: 100px;
+          outline: none;
           option {
             width: 100px;
           }
+        }
+        #type {
+          border: 1px solid #000;
+          border-right: none;
+          border-radius: 20px 0 0 20px;
+          padding: 0 20px;
+          height: 41px;
         }
       }
     }
