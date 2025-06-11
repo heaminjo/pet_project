@@ -6,6 +6,7 @@ import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.member.UpdateMemberRequestDTO;
 import com.example.pet_back.domain.member.UpdatePwRequestDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
+import com.example.pet_back.service.ImageService;
 import com.example.pet_back.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", allowCredentials = "true")
 public class MemberController {
     private final MemberService memberService;
-
+    private final ImageService imageService;
 
     @GetMapping("/detail")
     public ResponseEntity<?> memberDetail(@AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -58,7 +59,7 @@ public class MemberController {
     public ResponseEntity<?> uploadImage(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam(value = "file", required = false) MultipartFile file) {
 
         log.info("프로필 이미지 변경 처리 실행");
-        return memberService.memberUploadImage(userDetails.getMember().getId(), file);
+        return imageService.memberUploadImage(userDetails.getMember().getId(), file);
     }
 
     //배송지 목록
