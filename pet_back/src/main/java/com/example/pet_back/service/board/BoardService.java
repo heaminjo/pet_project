@@ -4,6 +4,8 @@ import com.example.pet_back.domain.board.BoardDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
 
+import java.util.List;
+
 public interface BoardService {
 
     //** 게시글 목록
@@ -27,4 +29,10 @@ public interface BoardService {
 
     //** 내 게시글 목록
     PageResponseDTO<BoardDTO> selectMyBoardList(int member_id, PageRequestDTO pageRequestDTO, String type, String keyword, String sort);
+
+    //** 이미지 삽입
+    int insertBoardImage(int board_id, String fileName, int outputOrder);
+
+    //** 이미지 파일명 리스트 조회
+    List<String> selectImageFileNamesByBoardId(int board_id);
 }

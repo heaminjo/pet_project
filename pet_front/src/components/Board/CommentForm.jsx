@@ -1,4 +1,5 @@
-import react from "react";
+import React from "react";
+import CommentFormStyle from "./CommentFormStyle";
 
 function CommentForm({ comment, setComment, onAddComment}) {
   
@@ -11,16 +12,22 @@ function CommentForm({ comment, setComment, onAddComment}) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="comment-form">
-      <input
-        type="text"
-        value={comment}
-        onChange={(e) => setComment(e.target.value)}
-        placeholder="댓글을 입력하세요"
-        maxLength={ 200 }>
-      </input>
-      <button type="submit">등록</button>
-    </form>
+    <CommentFormStyle>
+      <div className="comment-form-container">
+        <form onSubmit={handleSubmit} className="comment-form">
+          <input
+            type="text"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="댓글을 입력하세요"
+            maxLength={ 200 }>
+          </input>
+          <div className="button-row">
+            <button type="submit">등록</button>
+          </div>
+        </form>
+      </div>
+    </CommentFormStyle>
   )
 
 
