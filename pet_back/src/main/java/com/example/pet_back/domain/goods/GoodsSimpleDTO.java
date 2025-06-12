@@ -12,5 +12,6 @@ public class GoodsSimpleDTO {
     private Long goodsId;
     private String goodsName;
     private String imageFile;
+    private String categoryName;
     private int price;
 }

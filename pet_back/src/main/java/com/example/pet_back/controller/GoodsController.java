@@ -108,7 +108,7 @@ public class GoodsController {
 
 
     //상품 페이징 목록(조해민)
-    @GetMapping("/page/list")
+    @PostMapping("/page/list")
     public ResponseEntity<PageResponseDTO<GoodsSimpleDTO>> goodsPageList(@RequestBody PageRequestDTO dto){
         return ResponseEntity.ok(goodsService.goodsPageList(dto));
     }

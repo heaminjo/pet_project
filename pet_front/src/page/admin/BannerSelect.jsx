@@ -14,16 +14,22 @@ export default function BannerSelect() {
   const [render, setRender] = useState(false); //강제 랜더링 용용
   const [categoryList, setCategoryList] = useState([]); //카테고리 리스트
   const [selectView, setSelectView] = useState(false); //상품 선택 창 여부
+  const [goodsList, setGoodsList] = useState([]);
 
   //페이지
-  const [type, setType] = useState("all");
+  const [category, setCategory] = useState(0);
   const [keyword, setKeyword] = useState("");
   const [page, setPage] = useState(0);
+  const [paging, setPaging] = useState([]);
 
   useEffect(() => {
     getBanner();
+    getCategoryList(); //카테고리 호출
   }, [render]);
 
+  useEffect(() => {
+    getGoodsList(); //상품 리스트 호출
+  }, [page, category]);
   //배너 상품 가져오기
   const getBanner = async () => {
     const result = await GoodsApi.getBanner();
@@ -47,13 +53,6 @@ export default function BannerSelect() {
     setRender(!render);
   };
 
-  //상품 검색창 열기
-  const clickSelect = () => {
-    getCategoryList(); //카테고리 호출
-    // getGoodsList(); //상품 리스트 호출
-    setSelectView(true);
-  };
-
   //카테고리 가져오기(수정 , 선택 클릭 시)
   const getCategoryList = async () => {
     const result = await GoodsApi.getCategoryList();
@@ -66,10 +65,31 @@ export default function BannerSelect() {
       page: page,
       size: 4,
       keyword: keyword,
-      type: type,
+      category: category,
     };
+
     const result = await GoodsApi.getGoodsList(pages);
-    console.log(result);
+    setGoodsList(result.content);
+
+    let temp = Math.floor(page / 5) * 5;
+
+    //페이지번호 정보 저장
+    setPaging({
+      start: temp,
+      end: Math.min(temp + 5, result.totalPages),
+      isPrev: result.prev,
+      isNext: result.next,
+      totalElement: result.totalElements,
+      totalPages: result.totalPages,
+    });
+  };
+
+  //검색버튼 엔터
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      //검색
+      getGoodsList();
+    }
   };
 
   return (
@@ -110,7 +130,7 @@ export default function BannerSelect() {
                 ) : (
                   <div className="banner_sel">
                     <button
-                      onClick={() => clickSelect()}
+                      onClick={() => setSelectView(true)}
                       className="banner_sel"
                     >
                       배너 선택
@@ -123,23 +143,56 @@ export default function BannerSelect() {
         </div>
         {selectView && (
           <div className="goods_select">
+            <h3>배너 상품 선택</h3>
             <ul className="category_list">
-              <li>전체</li>
-              {categoryList.map((c) => (
-                <li>{c.categoryName}</li>
+              <li
+                onClick={() => {
+                  setCategory(0);
+                  setPage(0);
+                }}
+              >
+                전체
+              </li>
+              {categoryList.map((c, index) => (
+                <li
+                  onClick={() => {
+                    setCategory(index + 1);
+                    setPage(0);
+                  }}
+                >
+                  {c.categoryName}
+                </li>
               ))}
             </ul>
             <div className="search">
               <input
                 type="text"
                 name="search"
+                onKeyDown={handleKeyDown}
                 onChange={(e) => setKeyword(e.target.value)}
               />
-              <button>
+              <button onClick={() => getGoodsList()}>
                 <img src={searchIcon} alt="검색 아이콘" />
               </button>
             </div>
-            <div className="goods_list">d</div>
+            <div className="goods_list">
+              {goodsList.map((g) => (
+                <div className="goods_item">
+                  <img src={g.imageFile} alt="상품 이미지" />
+                  <ul>
+                    <li>
+                      <strong>[{g.categoryName}]</strong>
+                    </li>
+                    <li>{g.goodsName}</li>
+                    <li>{g.price}원</li>
+                    <li>
+                      <button>선택</button>
+                    </li>
+                  </ul>
+                </div>
+              ))}
+            </div>
+            <PageNumber page={page} setPage={setPage} paging={paging} />
           </div>
         )}
       </div>
