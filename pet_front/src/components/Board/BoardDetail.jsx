@@ -29,7 +29,7 @@ function getMemberIdFromToken(token) {
   }
 }
 
-export default function BoardDetail() {
+export default function BoardDetail({ dto }) {
   const { category, board_id } = useParams(); // URL 파라미터에서 게시글 ID 추출
   const [post, setPost] = useState(null);
   const [error, setError] = useState(null);
@@ -217,6 +217,12 @@ export default function BoardDetail() {
         >
           {post.content}
         </div>
+        <div>
+          {/* 이미지 표시 부분 */}
+          {post?.imageFileNames && post.imageFileNames.map((fileName, idx) => (
+          <img key={idx} src={`/uploads/${fileName}`} alt={`img${idx}`} />
+          ))}
+        </div>
         {canEditOrDelete && (
           <div style={{ marginTop: "30px", textAlign: "right" }}>
             <button onClick={handleEdit} style={{ marginRight: "10px" }}>
@@ -228,13 +234,14 @@ export default function BoardDetail() {
         <br></br>
         <hr></hr>
         <br></br>
-        <h3>댓글</h3><br></br>
+        <h3>댓글쓰기</h3><br></br>
         <CommentForm
           comment={comment}
           setComment={setComment}
           onAddComment={handleAddComment}
         />
         <br></br><br></br>
+        <h3>댓글</h3><br></br>
         <CommentList 
           comments={comments}
           onDeleteComment={handleDeleteComment}

@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -17,5 +19,6 @@ public class BoardDTO {
     private int views;
     private String reg_date;
     private String name;
-    //d
+    private List<String> imageFileNames;
+
 }

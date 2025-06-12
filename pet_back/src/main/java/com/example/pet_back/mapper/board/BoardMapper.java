@@ -53,4 +53,12 @@ public interface BoardMapper {
             @Param("keyword") String keyword
     );
 
+    //** 이미지 삽입 메서드
+    int insertBoardImage(@Param("board_id") int board_id,
+                         @Param("fileName") String fileName,
+                         @Param("outputOrder") int outputOrder);
+
+    //** 이미지 파일명 리스트 조회
+    List<String> selectImageFileNamesByBoardId(@Param("board_id") int board_id);
+
 }
