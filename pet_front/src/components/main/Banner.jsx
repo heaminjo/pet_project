@@ -42,39 +42,6 @@ function Banner() {
               <img src={b.imageFile} alt="d" />
             </div>
           ))}
-          {/* <div className="item" id="item_1">
-            <img src={banner.imageFile} alt="" />
-          </div>
-          <div className="item" id="item_2">
-            <img
-              src="	http://localhost:8080/uploads/3d249c2b-4d16-459c-841d-f70422399035.png"
-              alt=""
-            />
-          </div>
-          <div className="item" id="item_3">
-            <img
-              src="	http://localhost:8080/uploads/3d249c2b-4d16-459c-841d-f70422399035.png"
-              alt=""
-            />
-          </div>
-          <div className="item" id="item_4">
-            <img
-              src="	http://localhost:8080/uploads/3d249c2b-4d16-459c-841d-f70422399035.png"
-              alt=""
-            />
-          </div>
-          <div className="item" id="item_5">
-            <img
-              src="	http://localhost:8080/uploads/3d249c2b-4d16-459c-841d-f70422399035.png"
-              alt=""
-            />
-          </div>
-          <div className="item" id="item_6">
-            <img
-              src="	http://localhost:8080/uploads/3d249c2b-4d16-459c-841d-f70422399035.png"
-              alt=""
-            />
-          </div> */}
         </Slider>
       </div>
     </BannerComp>

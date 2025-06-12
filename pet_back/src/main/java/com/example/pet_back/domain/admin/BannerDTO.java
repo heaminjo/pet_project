@@ -12,6 +12,7 @@ public class BannerDTO {
     private Long bannerId;
     private Long goodsId;
     private String goodsName;
+    private String categoryName;
     private String imageFile;
     private int position;
 }

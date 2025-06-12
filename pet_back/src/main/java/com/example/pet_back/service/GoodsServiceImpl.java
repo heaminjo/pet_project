@@ -291,7 +291,7 @@ public class GoodsServiceImpl implements GoodsService {
         for(Goodsbanner g : bannerList){
             String imagePath = fileUploadProperties.getUrl()+g.getGoods().getImageFile();
 
-            response.add(new BannerDTO(g.getBannerId(),g.getGoods().getGoodsId(),g.getGoods().getGoodsName(),imagePath,g.getPosition()));
+            response.add(new BannerDTO(g.getBannerId(),g.getGoods().getGoodsId(),g.getGoods().getGoodsName(),g.getGoods().getCategory().getCategoryName(),imagePath,g.getPosition()));
         }
 
         log.info("Banner List => " + response.toString());
