@@ -1,10 +1,13 @@
 package com.example.pet_back.mapper;
 
 import com.example.pet_back.domain.admin.BannerDTO;
+import com.example.pet_back.domain.goods.CategoryResponseDTO;
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.domain.goods.GoodsResponseDTO;
+import com.example.pet_back.entity.Category;
 import com.example.pet_back.entity.Goods;
 import com.example.pet_back.entity.Goodsbanner;
+import com.example.pet_back.repository.CategoryRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -26,6 +29,9 @@ public interface GoodsMapper {
     // DTO 리스트 -> Entity 리스트
     List<Goods> toEntityList(List<GoodsResponseDTO> goodsList);
 
+    //배너 DTO 변환
     public BannerDTO bannerToDto(Goodsbanner goodsbanner);
 
+    //카테고리 DTO 변환
+    public CategoryResponseDTO categoryToDto(Category category);
 }

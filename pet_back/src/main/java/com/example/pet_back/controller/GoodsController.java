@@ -1,6 +1,7 @@
 package com.example.pet_back.controller;
 
 import com.example.pet_back.domain.admin.BannerDTO;
+import com.example.pet_back.domain.goods.CategoryResponseDTO;
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.domain.goods.PayRequestDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
@@ -97,5 +98,11 @@ public class GoodsController {
     @GetMapping("/banner/list")
     public ResponseEntity<List<BannerDTO>> bannerList() {
         return ResponseEntity.ok(goodsService.bannerList());
+    }
+
+    //카테고리 불러오기
+    @GetMapping("/category/list")
+    public ResponseEntity<List<CategoryResponseDTO>> categoryList(){
+        return ResponseEntity.ok(goodsService.categoryList());
     }
 }

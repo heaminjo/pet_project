@@ -41,7 +41,7 @@ public class GoodsServiceImpl implements GoodsService {
     private final AddressRepository addressRepository;
     private final GoodsBannerRepository goodsBannerRepository;
     private final FileUploadProperties fileUploadProperties;
-
+    private final CategoryRepository categoryRepository;
     // Mapper
     private final GoodsMapper goodsMapper;
     private final OrderMapper orderMapper;
@@ -295,6 +295,16 @@ public class GoodsServiceImpl implements GoodsService {
         }
 
         log.info("Banner List => " + response.toString());
+        return response;
+    }
+
+    //카테고리 목록
+    @Override
+    public List<CategoryResponseDTO> categoryList() {
+        List<Category> categoryList = categoryRepository.findAll();
+
+        List<CategoryResponseDTO> response = categoryList.stream().map(goodsMapper::categoryToDto).toList();
+
         return response;
     }
 }

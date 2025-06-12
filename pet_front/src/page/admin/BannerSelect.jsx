@@ -4,6 +4,7 @@ import GoodsApi from "../../api/GoodsApi";
 import React from "react";
 import Modal from "../../modal/Modal";
 import AdminApi from "../../api/AdminApi";
+import BannerSelectComp from "./BannerSelectStyle";
 
 export default function BannerSelect() {
   const [banner, setBanner] = useState([]); //배너 데이터
@@ -14,7 +15,6 @@ export default function BannerSelect() {
 
   useEffect(() => {
     getBanner();
-    getCategoryList();
   }, [render]);
 
   //배너 상품 가져오기
@@ -40,11 +40,14 @@ export default function BannerSelect() {
     setRender(!render);
   };
 
+  //클릭 선택
+  const clickSelect = () => {
+    getCategoryList();
+  };
+
   //카테고리 가져오기(수정 , 선택 클릭 시)
   const getCategoryList = async () => {
     const result = await GoodsApi.getCategoryList();
-
-    console.log(result);
     setCategoryList(result);
   };
   return (
@@ -84,7 +87,12 @@ export default function BannerSelect() {
                     ))
                 ) : (
                   <div className="banner_sel">
-                    <button className="banner_sel">배너 선택</button>
+                    <button
+                      onClick={() => clickSelect()}
+                      className="banner_sel"
+                    >
+                      배너 선택
+                    </button>
                   </div>
                 )}
               </li>
@@ -92,84 +100,13 @@ export default function BannerSelect() {
           </ul>
         </div>
         <div className="goods_select">
-          <div className="category_list"></div>
+          <ul className="category_list">
+            {categoryList.map((c) => (
+              <li>{c.categoryName}</li>
+            ))}
+          </ul>
         </div>
       </div>
     </BannerSelectComp>
   );
 }
-const BannerSelectComp = styled.div`
-  width: 1050px;
-  .select_container {
-    width: 100%;
-    position: relative;
-    .modal {
-      position: fixed;
-      left: 600px;
-      text-align: center;
-      top: 245px;
-    }
-    .banner_list {
-      width: 100%;
-      height: 350px;
-      h3 {
-        text-align: center;
-        margin-bottom: 20px;
-      }
-      ul {
-        display: flex;
-        width: 100%;
-        gap: 10px;
-        li {
-          width: 200px;
-          height: 200px;
-          border: 1px solid #aaa;
-          box-shadow: 3px 3px 3px #aaa;
-          border-radius: 10px;
-          img {
-            width: 100%;
-            height: 100%;
-            border-radius: 10px;
-          }
-          p {
-            text-align: center;
-            /* line-height: 200px; */
-          }
-          .banner_text {
-            margin-top: 10px;
-          }
-          .banner_mod {
-            display: flex;
-            gap: 1px;
-            button {
-              margin-top: 17px;
-              width: 100px;
-              height: 41px;
-            }
-            button:nth-child(1) {
-              background-color: #ffffd0;
-              border: 2px solid #dcdc98;
-            }
-            button:nth-child(2) {
-              background-color: #eaeaea;
-              border: 2px solid #b0b0b0;
-            }
-          }
-          .banner_sel {
-            width: 100%;
-            height: 100%;
-            border-radius: 10px;
-          }
-        }
-        button {
-          font-weight: bold;
-          border: none;
-          cursor: pointer;
-        }
-        button:hover {
-          background-color: #bbb;
-        }
-      }
-    }
-  }
-`;

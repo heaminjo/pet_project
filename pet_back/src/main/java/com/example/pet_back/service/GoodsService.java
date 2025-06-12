@@ -1,6 +1,7 @@
 package com.example.pet_back.service;
 
 import com.example.pet_back.domain.admin.BannerDTO;
+import com.example.pet_back.domain.goods.CategoryResponseDTO;
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.domain.goods.PayRequestDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
@@ -36,4 +37,7 @@ public interface GoodsService {
 
     //배너 가져오기
     public List<BannerDTO> bannerList();
+
+    //카테고리 목록
+    public List<CategoryResponseDTO> categoryList();
 }
