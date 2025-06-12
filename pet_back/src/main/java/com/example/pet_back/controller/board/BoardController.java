@@ -39,7 +39,7 @@ public class BoardController {
                                         @RequestParam(value = "searchKeyword", required = false) String searchKeyword) {
         //List<BoardDTO> list = boardService.selectList(category);
         //return ResponseEntity.ok(list != null ? list : new ArrayList<>());
-        PageRequestDTO pageRequestDTO = new PageRequestDTO(page, size, null, searchKeyword, searchType);
+        PageRequestDTO pageRequestDTO = new PageRequestDTO(page, size, null, searchKeyword, searchType,null);
         PageResponseDTO<BoardDTO> responseDTO = boardService.selectList(category, pageRequestDTO, searchType, searchKeyword);
         return ResponseEntity.ok(responseDTO);
     } //selectList()
@@ -125,7 +125,7 @@ public class BoardController {
             @RequestParam(value = "keyword", required = false) String keyword,
             @RequestParam(value = "sort", required = false) String sort
     ) {
-        PageRequestDTO pageRequestDTO = new PageRequestDTO(page, size, sort, keyword, type);
+        PageRequestDTO pageRequestDTO = new PageRequestDTO(page, size, sort, keyword, type,null);
         PageResponseDTO<BoardDTO> responseDTO = boardService.selectMyBoardList(member_id, pageRequestDTO, type, keyword, sort);
         return ResponseEntity.ok(responseDTO);
     }

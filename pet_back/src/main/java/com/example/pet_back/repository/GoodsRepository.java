@@ -1,7 +1,11 @@
 package com.example.pet_back.repository;
 
+import com.example.pet_back.constant.ROLE;
 import com.example.pet_back.entity.Goods;
+import com.example.pet_back.entity.Member;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -30,5 +34,11 @@ public interface GoodsRepository extends JpaRepository<Goods, Long> {
             "WHERE o.member.id = :memberId")
     public List<Goods> findAllByUserId(@Param("memberId") Long memberId);
 
-
+    //검색
+    @Query("SELECT g FROM Goods g " +
+            "WHERE (:category IS NULL OR g.category.categoryId = :category) " +
+            "AND (:keyword IS NULL OR g.goodsName LIKE :keyword)")
+    Page<Goods> findSearchList(@Param("keyword") String keyword,
+                               @Param("category") Long category,
+                               Pageable pageable);
 }

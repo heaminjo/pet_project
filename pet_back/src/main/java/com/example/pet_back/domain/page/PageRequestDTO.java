@@ -13,4 +13,5 @@ public class PageRequestDTO {
     private String sortBy; //정렬 기준
     private String keyword; //키워드
     private String type;    //검색 타입
+    private Long category; //카테고리
 }

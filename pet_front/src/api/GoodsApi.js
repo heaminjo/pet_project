@@ -170,6 +170,11 @@ const GoodsApi = {
     const result = await axios.get(`${KH_DOMAIN}/goods/category/list`);
     return result.data;
   },
+  //상품 페이징 목록록
+  getGoodsList: async (pages) => {
+    const result = await axios.get(`${KH_DOMAIN}/goods/page/list`, pages);
+    return result.data;
+  },
 };
 
 export default GoodsApi;

@@ -1,9 +1,9 @@
 package com.example.pet_back.controller;
 
 import com.example.pet_back.domain.admin.BannerDTO;
-import com.example.pet_back.domain.goods.CategoryResponseDTO;
-import com.example.pet_back.domain.goods.GoodsRequestDTO;
-import com.example.pet_back.domain.goods.PayRequestDTO;
+import com.example.pet_back.domain.goods.*;
+import com.example.pet_back.domain.page.PageRequestDTO;
+import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.service.GoodsService;
 import com.example.pet_back.service.MemberService;
@@ -94,15 +94,22 @@ public class GoodsController {
         log.info("** GoodsController => findMemberAddress() 실행됨 **");
         return goodsService.findMemberAddress(userDetails);
     }
-    //배너 리스트 불러오기
+    //배너 리스트 불러오기(조해민)
     @GetMapping("/banner/list")
     public ResponseEntity<List<BannerDTO>> bannerList() {
         return ResponseEntity.ok(goodsService.bannerList());
     }
 
-    //카테고리 불러오기
+    //카테고리 불러오기(조해민)
     @GetMapping("/category/list")
     public ResponseEntity<List<CategoryResponseDTO>> categoryList(){
         return ResponseEntity.ok(goodsService.categoryList());
+    }
+
+
+    //상품 페이징 목록(조해민)
+    @GetMapping("/page/list")
+    public ResponseEntity<PageResponseDTO<GoodsSimpleDTO>> goodsPageList(@RequestBody PageRequestDTO dto){
+        return ResponseEntity.ok(goodsService.goodsPageList(dto));
     }
 }

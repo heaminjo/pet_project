@@ -81,10 +81,11 @@ const BannerSelectComp = styled.div`
     }
     .goods_select {
       width: 930px;
-      height: 500px;
+      height: 700px;
       box-shadow: 3px 3px 3px #ccc;
       border: 1px solid #ccc;
       padding: 20px;
+      /* gap: 10px; */
       .category_list {
         display: flex;
         justify-content: center;
@@ -98,6 +99,35 @@ const BannerSelectComp = styled.div`
           border-radius: 20px;
           line-height: 40px;
           cursor: pointer;
+        }
+      }
+      .search {
+        width: 100%;
+        display: flex;
+        height: 70px;
+        justify-content: center;
+        align-items: center;
+        input {
+          height: 40px;
+          width: 300px;
+          border: none;
+          border-bottom: 2px solid #000;
+          outline: none;
+          padding-left: 10px;
+        }
+        button {
+          height: 41px;
+          width: 41px;
+          border: none;
+          padding: 10px;
+          right: 0;
+          border-bottom: 2px solid #000;
+          background-color: #fff;
+          cursor: pointer;
+          img {
+            width: 100%;
+            height: 100%;
+          }
         }
       }
     }

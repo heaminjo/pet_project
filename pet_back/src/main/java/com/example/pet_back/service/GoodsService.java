@@ -3,7 +3,11 @@ package com.example.pet_back.service;
 import com.example.pet_back.domain.admin.BannerDTO;
 import com.example.pet_back.domain.goods.CategoryResponseDTO;
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
+import com.example.pet_back.domain.goods.GoodsSimpleDTO;
+import com.example.pet_back.domain.goods.GoodsSimpleDTO;
 import com.example.pet_back.domain.goods.PayRequestDTO;
+import com.example.pet_back.domain.page.PageRequestDTO;
+import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
@@ -35,9 +39,12 @@ public interface GoodsService {
     // 결제페이지 - 고객 주소 가져오기
     public ResponseEntity<?> findMemberAddress(CustomUserDetails userDetails);
 
-    //배너 가져오기
+    //배너 가져오기(조해민)
     public List<BannerDTO> bannerList();
 
-    //카테고리 목록
+    //카테고리 목록(조해민)
     public List<CategoryResponseDTO> categoryList();
+
+    //상품 페이징 목록(조해민)
+    public PageResponseDTO<GoodsSimpleDTO> goodsPageList(PageRequestDTO dto);
 }

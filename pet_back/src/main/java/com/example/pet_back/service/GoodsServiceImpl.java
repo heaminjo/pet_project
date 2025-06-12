@@ -1,8 +1,12 @@
 package com.example.pet_back.service;
 
 import com.example.pet_back.config.FileUploadProperties;
+import com.example.pet_back.constant.ROLE;
 import com.example.pet_back.domain.admin.BannerDTO;
 import com.example.pet_back.domain.goods.*;
+import com.example.pet_back.domain.member.MemberResponseDTO;
+import com.example.pet_back.domain.page.PageRequestDTO;
+import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.entity.*;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.mapper.GoodsMapper;
@@ -12,6 +16,9 @@ import com.example.pet_back.repository.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -305,6 +312,38 @@ public class GoodsServiceImpl implements GoodsService {
 
         List<CategoryResponseDTO> response = categoryList.stream().map(goodsMapper::categoryToDto).toList();
 
+        return response;
+    }
+
+    //상품 페이징 목록(조해민)
+    @Override
+    public PageResponseDTO<GoodsSimpleDTO> goodsPageList(PageRequestDTO dto) {
+        //요청 페이지, 출력 개수,정렬을 담은 Pageable 객체
+        Pageable pageable = PageRequest.of(dto.getPage(), dto.getSize());
+
+        Page<Goods> page;
+
+        if (dto.getKeyword().isEmpty() && dto.getCategory()==0) {
+            //전체조회
+            log.info("전체 조회 합니다.");
+            page = goodsRepository.findSearchList(null,null,pageable);
+        } else if (dto.getKeyword().isEmpty() && dto.getCategory() > 0) {
+            //키워드는 없고 카테고리로만 검색
+            page = goodsRepository.findSearchList(null,dto.getCategory(),pageable);
+        }else if(!dto.getKeyword().isEmpty() && dto.getCategory() == 0) {
+            //키워드는 있고 카테고리가 전체인 경우
+            page = goodsRepository.findSearchList("%" + dto.getKeyword() + "%",null, pageable);
+        }else{
+            //키워드와 카테고리 모두 적용 검색
+            page = goodsRepository.findSearchList("%" + dto.getKeyword() + "%",dto.getCategory(), pageable);
+        }
+
+        //페이지의 데이터를 List에 저장
+        List<GoodsSimpleDTO> responseList = page.stream().map(goodsMapper::goodsToDto).toList();
+
+        //반환할 ResponseDTO에 데이터들 저장
+        PageResponseDTO<GoodsSimpleDTO> response = new PageResponseDTO<>(responseList, dto.getPage(), dto.getSize(), page.getTotalElements(), page.getTotalPages(), page.hasNext(), page.hasPrevious()
+        );
         return response;
     }
 }

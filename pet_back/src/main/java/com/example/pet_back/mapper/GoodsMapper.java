@@ -4,6 +4,7 @@ import com.example.pet_back.domain.admin.BannerDTO;
 import com.example.pet_back.domain.goods.CategoryResponseDTO;
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.domain.goods.GoodsResponseDTO;
+import com.example.pet_back.domain.goods.GoodsSimpleDTO;
 import com.example.pet_back.entity.Category;
 import com.example.pet_back.entity.Goods;
 import com.example.pet_back.entity.Goodsbanner;
@@ -34,4 +35,6 @@ public interface GoodsMapper {
 
     //카테고리 DTO 변환
     public CategoryResponseDTO categoryToDto(Category category);
+
+    public GoodsSimpleDTO goodsToDto(Goods goods);
 }

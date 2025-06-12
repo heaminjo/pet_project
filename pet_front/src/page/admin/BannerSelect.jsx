@@ -5,13 +5,20 @@ import React from "react";
 import Modal from "../../modal/Modal";
 import AdminApi from "../../api/AdminApi";
 import BannerSelectComp from "./BannerSelectStyle";
-
+import searchIcon from "../../images/free-icon-search-149852.png";
+import PageNumber from "../../components/util/PageNumber";
 export default function BannerSelect() {
   const [banner, setBanner] = useState([]); //배너 데이터
   const [modal, setModal] = useState(false); //삭제 확인 모달
   const [selBanner, setSelBanner] = useState(0); //선택된 배너(삭제,수정,선택)
   const [render, setRender] = useState(false); //강제 랜더링 용용
   const [categoryList, setCategoryList] = useState([]); //카테고리 리스트
+  const [selectView, setSelectView] = useState(false); //상품 선택 창 여부
+
+  //페이지
+  const [type, setType] = useState("all");
+  const [keyword, setKeyword] = useState("");
+  const [page, setPage] = useState(0);
 
   useEffect(() => {
     getBanner();
@@ -40,9 +47,11 @@ export default function BannerSelect() {
     setRender(!render);
   };
 
-  //클릭 선택
+  //상품 검색창 열기
   const clickSelect = () => {
-    getCategoryList();
+    getCategoryList(); //카테고리 호출
+    // getGoodsList(); //상품 리스트 호출
+    setSelectView(true);
   };
 
   //카테고리 가져오기(수정 , 선택 클릭 시)
@@ -50,6 +59,19 @@ export default function BannerSelect() {
     const result = await GoodsApi.getCategoryList();
     setCategoryList(result);
   };
+
+  //상품 목록 가져오기(4개씩)
+  const getGoodsList = async () => {
+    const pages = {
+      page: page,
+      size: 4,
+      keyword: keyword,
+      type: type,
+    };
+    const result = await GoodsApi.getGoodsList(pages);
+    console.log(result);
+  };
+
   return (
     <BannerSelectComp>
       <div className="select_container">
@@ -99,13 +121,27 @@ export default function BannerSelect() {
             ))}
           </ul>
         </div>
-        <div className="goods_select">
-          <ul className="category_list">
-            {categoryList.map((c) => (
-              <li>{c.categoryName}</li>
-            ))}
-          </ul>
-        </div>
+        {selectView && (
+          <div className="goods_select">
+            <ul className="category_list">
+              <li>전체</li>
+              {categoryList.map((c) => (
+                <li>{c.categoryName}</li>
+              ))}
+            </ul>
+            <div className="search">
+              <input
+                type="text"
+                name="search"
+                onChange={(e) => setKeyword(e.target.value)}
+              />
+              <button>
+                <img src={searchIcon} alt="검색 아이콘" />
+              </button>
+            </div>
+            <div className="goods_list">d</div>
+          </div>
+        )}
       </div>
     </BannerSelectComp>
   );
