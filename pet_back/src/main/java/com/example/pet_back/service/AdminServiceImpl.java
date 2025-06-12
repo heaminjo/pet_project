@@ -30,6 +30,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,7 +44,7 @@ public class AdminServiceImpl implements AdminService {
     private final AddressRepository addressRepository;
     private final PasswordEncoder passwordEncoder;
     private final FileUploadProperties fileUploadProperties;
-
+    private final GoodsBannerRepository goodsBannerRepository;
     //관리자의 회원 조회
     @Override
     public ResponseEntity<?> adminUserDetail(String email) {
@@ -172,5 +173,15 @@ public class AdminServiceImpl implements AdminService {
         return new ApiResponse<>(true, member.getName() + "님의 등급이 " + dto.getNextGrade() + "등급으로 업그레이드 되었습니다.");
     }
 
+    @Override
+    public ApiResponse bannerDelete(Long id) {
+        //존재하면 삭제
+        if(goodsBannerRepository.existsById(id)){
+            goodsBannerRepository.deleteById(id);
 
+            return new ApiResponse(true,"배너 삭제가 완료되었습니다.");
+        }else{
+            return new ApiResponse(true,"이미 존재하지 않는 배너입니다.");
+        }
+    }
 }

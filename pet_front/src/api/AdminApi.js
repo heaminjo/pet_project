@@ -64,7 +64,7 @@ const AdminApi = {
     const result = await instance.put(`${KH_DOMAIN}/admin/upgrade`, newGrade);
     return result.data;
   },
-  bannerDeleteasync: async (selBanner) => {
+  bannerDelete: async (selBanner) => {
     const result = await instance.delete(
       `${KH_DOMAIN}/admin/banner/delete?id=${selBanner}`
     );

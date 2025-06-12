@@ -76,5 +76,9 @@ public class AdminController {
         return ResponseEntity.ok(adminService.upgradeGrade(dto));
     }
 
-
+    //배너 삭제
+    @DeleteMapping("/banner/delete")
+    public ResponseEntity<ApiResponse>bannerDelete(@RequestParam("id") Long id){
+        return ResponseEntity.ok(adminService.bannerDelete(id));
+    }
 }

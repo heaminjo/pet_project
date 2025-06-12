@@ -32,5 +32,7 @@ public interface AdminService {
     //등급 업그레이드
     public ApiResponse upgradeGrade(UpgradeRequstDTO dto);
 
+    //배너 삭제
+    public ApiResponse bannerDelete(Long id);
 
 }

@@ -161,7 +161,13 @@ const GoodsApi = {
 
   //배너 가져오기
   getBanner: async () => {
-    const result = await instance.get(`${KH_DOMAIN}/goods/banner/list`);
+    const result = await axios.get(`${KH_DOMAIN}/goods/banner/list`);
+    return result.data;
+  },
+
+  //카테고리 목록 가져오기
+  getCategoryList: async () => {
+    const result = await axios.get(`${KH_DOMAIN}/goods/category/list`);
     return result.data;
   },
 };

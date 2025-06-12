@@ -9,9 +9,13 @@ export default function BannerSelect() {
   const [banner, setBanner] = useState([]); //배너 데이터
   const [modal, setModal] = useState(false); //삭제 확인 모달
   const [selBanner, setSelBanner] = useState(0); //선택된 배너(삭제,수정,선택)
+  const [render, setRender] = useState(false); //강제 랜더링 용용
+  const [categoryList, setCategoryList] = useState([]); //카테고리 리스트
+
   useEffect(() => {
     getBanner();
-  }, []);
+    getCategoryList();
+  }, [render]);
 
   //배너 상품 가져오기
   const getBanner = async () => {
@@ -29,8 +33,19 @@ export default function BannerSelect() {
   };
   //배너 삭제
   const bannerDelete = async () => {
-    await AdminApi.bannerDelete(selBanner);
+    const result = await AdminApi.bannerDelete(selBanner);
     setModal(false);
+
+    alert(result.message);
+    setRender(!render);
+  };
+
+  //카테고리 가져오기(수정 , 선택 클릭 시)
+  const getCategoryList = async () => {
+    const result = await GoodsApi.getCategoryList();
+
+    console.log(result);
+    setCategoryList(result);
   };
   return (
     <BannerSelectComp>
@@ -75,6 +90,9 @@ export default function BannerSelect() {
               </li>
             ))}
           </ul>
+        </div>
+        <div className="goods_select">
+          <div className="category_list"></div>
         </div>
       </div>
     </BannerSelectComp>
