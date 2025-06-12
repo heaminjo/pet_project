@@ -64,10 +64,10 @@ const AdminApi = {
     const result = await instance.put(`${KH_DOMAIN}/admin/upgrade`, newGrade);
     return result.data;
   },
-
-  //배너 가져오기
-  getBanner: async () => {
-    const result = await instance.get(`${KH_DOMAIN}/admin/banner/list`);
+  bannerDeleteasync: async (selBanner) => {
+    const result = await instance.delete(
+      `${KH_DOMAIN}/admin/banner/delete?id=${selBanner}`
+    );
     return result.data;
   },
 };
