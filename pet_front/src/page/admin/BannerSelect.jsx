@@ -11,7 +11,6 @@ export default function BannerSelect() {
   const [banner, setBanner] = useState([]); //배너 데이터
   const [modal, setModal] = useState(false); //삭제 확인 모달
   const [selBanner, setSelBanner] = useState(0); //선택된 배너(삭제,수정,선택)
-  const [render, setRender] = useState(false); //강제 랜더링 용용
   const [categoryList, setCategoryList] = useState([]); //카테고리 리스트
   const [selectView, setSelectView] = useState(false); //상품 선택 창 여부
   const [goodsList, setGoodsList] = useState([]);
@@ -25,7 +24,7 @@ export default function BannerSelect() {
   useEffect(() => {
     getBanner();
     getCategoryList(); //카테고리 호출
-  }, [render]);
+  }, []);
 
   useEffect(() => {
     getGoodsList(); //상품 리스트 호출
@@ -50,7 +49,7 @@ export default function BannerSelect() {
     setModal(false);
 
     alert(result.message);
-    setRender(!render);
+    getBanner();
   };
 
   //카테고리 가져오기(수정 , 선택 클릭 시)
@@ -92,6 +91,18 @@ export default function BannerSelect() {
     }
   };
 
+  //배너 상품 선택 클릭
+  const clickSelect = async (id) => {
+    console.log(setBanner);
+    const newBanner = {
+      goodsId: id,
+      position: selBanner,
+    };
+    const result = await GoodsApi.bannerInsert(newBanner);
+    alert(result.message);
+    setSelectView(false);
+    getBanner();
+  };
   return (
     <BannerSelectComp>
       <div className="select_container">
@@ -120,7 +131,6 @@ export default function BannerSelect() {
                           <p>{b.goodsName}</p>
                         </div>
                         <div className="banner_mod">
-                          <button>수정</button>
                           <button onClick={() => clickBannerDelete(b.bannerId)}>
                             삭제
                           </button>
@@ -130,7 +140,11 @@ export default function BannerSelect() {
                 ) : (
                   <div className="banner_sel">
                     <button
-                      onClick={() => setSelectView(true)}
+                      onClick={() => {
+                        setSelectView(true);
+                        setSelBanner(i + 1);
+                        console.log(i + 1);
+                      }}
                       className="banner_sel"
                     >
                       배너 선택
@@ -186,7 +200,9 @@ export default function BannerSelect() {
                     <li>{g.goodsName}</li>
                     <li>{g.price}원</li>
                     <li>
-                      <button>선택</button>
+                      <button onClick={() => clickSelect(g.goodsId)}>
+                        선택
+                      </button>
                     </li>
                   </ul>
                 </div>

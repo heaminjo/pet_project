@@ -1,6 +1,8 @@
 package com.example.pet_back.controller;
 
 import com.example.pet_back.domain.admin.BannerDTO;
+import com.example.pet_back.domain.admin.BannerInsertDTO;
+import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.goods.*;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
@@ -111,5 +113,11 @@ public class GoodsController {
     @PostMapping("/page/list")
     public ResponseEntity<PageResponseDTO<GoodsSimpleDTO>> goodsPageList(@RequestBody PageRequestDTO dto){
         return ResponseEntity.ok(goodsService.goodsPageList(dto));
+    }
+
+    //배너 추가(조해민)
+    @PostMapping("/banner/insert")
+    public ResponseEntity<ApiResponse> goodsPageList(@RequestBody BannerInsertDTO dto){
+        return ResponseEntity.ok(goodsService.bannerInsert(dto));
     }
 }

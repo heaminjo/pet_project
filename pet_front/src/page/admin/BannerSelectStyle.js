@@ -51,14 +51,8 @@ const BannerSelectComp = styled.div`
             gap: 1px;
             button {
               margin-top: 17px;
-              width: 100px;
+              width: 200px;
               height: 41px;
-            }
-            button:nth-child(1) {
-              background-color: #ffffd0;
-              border: 2px solid #dcdc98;
-            }
-            button:nth-child(2) {
               background-color: #eaeaea;
               border: 2px solid #b0b0b0;
             }

@@ -3,6 +3,8 @@ package com.example.pet_back.service;
 import com.example.pet_back.config.FileUploadProperties;
 import com.example.pet_back.constant.ROLE;
 import com.example.pet_back.domain.admin.BannerDTO;
+import com.example.pet_back.domain.admin.BannerInsertDTO;
+import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.goods.*;
 import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
@@ -32,6 +34,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -345,5 +348,19 @@ public class GoodsServiceImpl implements GoodsService {
         PageResponseDTO<GoodsSimpleDTO> response = new PageResponseDTO<>(responseList, dto.getPage(), dto.getSize(), page.getTotalElements(), page.getTotalPages(), page.hasNext(), page.hasPrevious()
         );
         return response;
+    }
+
+    @Override
+    public ApiResponse bannerInsert(BannerInsertDTO dto) {
+        Optional<Goods> goods = goodsRepository.findById(dto.getGoodsId());
+        if(goods.isPresent()){
+            Goodsbanner goodsbanner = goodsMapper.bannerToEntity(dto);
+            goodsbanner.setGoods(goods.get());
+            goodsBannerRepository.save(goodsbanner);
+            return new ApiResponse(true,dto.getPosition()+"번째 배너에 '"+goodsbanner.getGoods().getGoodsName()+"'가 추가돼었습니다.");
+        }else{
+            return new ApiResponse(false,"존재하지 않는 배너입니다.");
+        }
+
     }
 }

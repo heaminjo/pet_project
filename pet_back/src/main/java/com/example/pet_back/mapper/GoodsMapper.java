@@ -2,6 +2,7 @@ package com.example.pet_back.mapper;
 
 import com.example.pet_back.config.FileUploadProperties;
 import com.example.pet_back.domain.admin.BannerDTO;
+import com.example.pet_back.domain.admin.BannerInsertDTO;
 import com.example.pet_back.domain.goods.CategoryResponseDTO;
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.domain.goods.GoodsResponseDTO;
@@ -54,4 +55,6 @@ public interface GoodsMapper {
     public static String imageFileUrl(Category category) {
         return category.getCategoryName();
     }
+
+    public Goodsbanner bannerToEntity(BannerInsertDTO dto);
 }

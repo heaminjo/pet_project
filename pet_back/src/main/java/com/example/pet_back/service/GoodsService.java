@@ -1,6 +1,8 @@
 package com.example.pet_back.service;
 
 import com.example.pet_back.domain.admin.BannerDTO;
+import com.example.pet_back.domain.admin.BannerInsertDTO;
+import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.goods.CategoryResponseDTO;
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.domain.goods.GoodsSimpleDTO;
@@ -47,4 +49,7 @@ public interface GoodsService {
 
     //상품 페이징 목록(조해민)
     public PageResponseDTO<GoodsSimpleDTO> goodsPageList(PageRequestDTO dto);
+
+    //배너 추가
+    public ApiResponse bannerInsert(BannerInsertDTO dto);
 }

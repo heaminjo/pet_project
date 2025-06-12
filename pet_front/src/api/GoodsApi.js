@@ -175,6 +175,14 @@ const GoodsApi = {
     const result = await axios.post(`${KH_DOMAIN}/goods/page/list`, pages);
     return result.data;
   },
+  //배너 추가
+  bannerInsert: async (newBanner) => {
+    const result = await axios.post(
+      `${KH_DOMAIN}/goods/banner/insert`,
+      newBanner
+    );
+    return result.data;
+  },
 };
 
 export default GoodsApi;
