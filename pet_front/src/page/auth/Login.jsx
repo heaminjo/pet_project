@@ -33,38 +33,6 @@ export default function Login() {
     }
   }, []);
 
-  //카카오 로그인
-  const kakaoLogin = async (code) => {
-    const result = await MemberApi.kakaoLogin(code);
-    if (result.success) {
-      alert("로그인 성공!");
-
-      localStorage.setItem("loginName", result.data.memberName);
-      localStorage.setItem("accessToken", result.data.accessToken);
-      localStorage.setItem("role", result.data.role);
-
-      //전역변수에 로그인 여부 저장
-      setIsLogin(true);
-
-      //마지막 로그인 시간 업데이트 및 업그레이드 유무 확인
-      loginUpdate();
-      navigate("/");
-    } else {
-      alert(result.message);
-    }
-  };
-
-  //마지막 로그인 시간 업데이트 및 업그레이드 유무 확인
-  const loginUpdate = async () => {
-    const result = await MemberApi.lastLogin();
-    console.log(result);
-    if (result.data) {
-      console.log("다음 등급 로그인 횟수 완성!");
-    } else {
-      console.log("아직 조건이 만족 ㄴ");
-    }
-  };
-
   //유효성 조건(yup)
   const schema = yup.object({
     email: yup
@@ -96,27 +64,43 @@ export default function Login() {
   //로그인 버튼 클릭
   const clickLogin = async () => {
     const result = await MemberApi.login(watch("email"), watch("password"));
+    loginResponse(result);
+  };
+  //카카오 로그인
+  const kakaoLogin = async (code) => {
+    const result = await MemberApi.kakaoLogin(code);
+    loginResponse(result);
+  };
+
+  //로그인 응답처리
+  const loginResponse = (result) => {
     if (result.success) {
       alert("로그인 성공!");
+
       localStorage.setItem("loginName", result.data.memberName);
       localStorage.setItem("accessToken", result.data.accessToken);
       localStorage.setItem("role", result.data.role);
+
       //전역변수에 로그인 여부 저장
       setIsLogin(true);
-      loginUpdate();
 
-      if (redirectTo) {
-        // 리다이렉트할 경로가 있다면 해당 경로로 이동
-        navigate(redirectTo);
-      } else {
-        // 기본적으로 홈으로 이동
-        navigate("/");
-      }
+      //마지막 로그인 시간 업데이트 및 업그레이드 유무 확인
+      loginUpdate();
+      navigate("/");
     } else {
       alert(result.message);
     }
   };
 
+  //마지막 로그인 시간 업데이트 및 업그레이드 유무 확인
+  const loginUpdate = async () => {
+    const result = await MemberApi.lastLogin();
+    console.log(result);
+    result.data
+      ? //로그인 조건 충족
+        localStorage.setItem("loginMet", true)
+      : localStorage.setItem("loginMet", false);
+  };
   //카카오에 인가 코드를 발급받아서 다시 /login으로 온다.
   const kakaoCode = async () => {
     window.Kakao.Auth.authorize({
