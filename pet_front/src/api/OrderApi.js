@@ -14,7 +14,7 @@ const OrderApi = {
   getOrderDetailPageList: async (pages) => {
     alert(`getPageList() 호출됨, pages = ${JSON.stringify(pages)}`);
     const result = await instance.post(`/order/detail`, pages);
-    console.log('📦 응답 결과:', result);
+    console.log('응답 결과:', result);
     alert(`getPageList() 호출됨, result = ${result.data}`);
     return result.data;
   },

@@ -33,7 +33,7 @@ public interface GoodsService {
     ResponseEntity<?> findMemberAddress(CustomUserDetails userDetails);
 
     // 상품 등록
-    void registerGoods(GoodsRequestDTO goodsRequestDTO, MultipartFile uploadImg, HttpServletRequest request) throws IOException;
+    void registerGoods(GoodsRequestDTO goodsRequestDTO) throws IOException;
 
     // 상품 수정
     void updateGoods(CustomUserDetails userDetails, GoodsRequestDTO goodsRequestDTO);

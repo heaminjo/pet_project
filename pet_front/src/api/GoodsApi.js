@@ -22,12 +22,7 @@ const GoodsApi = {
       alert('장바구니 추가 중 에러가 발생했습니다.');
     }
   },
-  // // <Cart />
-  // cartList: async () => {
-  //   const result = await instance.get('/cart/list');
-  //   alert(`GoodsApi의 cartList 호출완료 => ${JSON.stringify(result.data)} `);
-  //   return result.data;
-  // },
+
   // <Cart /> : 페이징 추가
   getCartPageList: async (pages) => {
     alert(`getPageList() 호출됨, pages = ${JSON.stringify(pages)}`);
@@ -54,21 +49,17 @@ const GoodsApi = {
     try {
       const result = await instance.post(`/goods/list`, pages);
       if (result.data != null) {
-        console.log('📦 응답 결과:', result);
-        alert(`getGoodsPageList() 호출됨, result = ${result.data}`);
+        console.log('응답 결과:', result.data);
+        alert(`getGoodsPageList() 호출됨`);
         return result.data;
       }
     } catch (err) {}
   },
 
-  // <Goods />
-  regGoods: async (formData) => {
+  // <Goods /> : 상품등록
+  regGoods: async (goods) => {
     try {
-      const result = await instance.post('/goods/register', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const result = await instance.post('/goods/register', goods);
       if (result.data != null) {
         alert(`상품등록 완료 => ${result.data}`);
         return result.data;

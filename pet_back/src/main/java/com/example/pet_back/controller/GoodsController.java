@@ -55,18 +55,15 @@ public class GoodsController {
 
     // 상품등록 메서드 (관리자 페이지)
     @PostMapping("/register")
-    public ResponseEntity<?> createGoods( //
-                                          @AuthenticationPrincipal CustomUserDetails userDetails, //
-                                          @RequestPart("goods") GoodsRequestDTO goodsRequestDTO, //️
-                                          @RequestPart("uploadImg") MultipartFile uploadImg,
-                                          HttpServletRequest request) {
+    public ResponseEntity<?> createGoods( @AuthenticationPrincipal CustomUserDetails userDetails, //
+                                          @RequestBody GoodsRequestDTO goodsRequestDTO) {
         log.info("** GoodsController => createGoods() 실행됨 **");
         System.out.println("goodsDTO 이름: " + goodsRequestDTO.getGoodsName());
         System.out.println("goodsDTO state: " + goodsRequestDTO.getGoodsState());
         System.out.println("goodsDTO state 타입: " + goodsRequestDTO.getGoodsState().getClass());
 
         try {
-            goodsService.registerGoods(goodsRequestDTO, uploadImg, request);
+            goodsService.registerGoods(goodsRequestDTO);
         } catch (Exception e) {
             log.error("** goodsService.registerGoods Exception => " + e.toString());
         }

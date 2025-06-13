@@ -8,6 +8,7 @@ export default function Order() {
   const location = useLocation();
   const { goods } = location.state || {};
   const prodImage = process.env.PUBLIC_URL + '/images/avatar.png';
+  const imgUrl = 'http://localhost:8080/resources/webapp/userImages/';
   const [buyQuantity, setBuyQuantity] = useState(1);
   const EMPTY_HEART = '🤍';
   const FULL_HEART = '💖';
@@ -69,7 +70,7 @@ export default function Order() {
         <h2>주문 페이지</h2>
         <section className='product'>
           <div className='left'>
-            <img src={`http://localhost:8080/uploads/${goods.imageFile}`} alt={goods.goods_name} className='prodimg' />
+            <img src={`${imgUrl}${goods.imageFile}`} alt={goods.goods_name} className='prodimg' />
           </div>
           <div className='right'>
             <div className='prodname' onClick={() => addFavorite()}>

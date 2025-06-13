@@ -38,14 +38,6 @@ export default function GoodsList() {
   // const pageParam = parseInt(params.get('page')) || 0;
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 함 수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // 전체 상품 리스트 조회
-  const goodsList = async () => {
-    GoodsApi.showGoods()
-      .then((response) => {
-        setGoods(response);
-      })
-      .catch((err) => {});
-  };
 
   // 상품1개 클릭시
   const clickProd = (item) => {
@@ -66,11 +58,11 @@ export default function GoodsList() {
   //   setPage(pageParam);
   // }, [typeParam, keywordParam, sortParam, pageParam]);
 
-  // 페이징징
+  // 페이징
   const getPageList = async () => {
     const pages = {
       page: page,
-      size: 5,
+      size: 8,
       sortBy: sort,
       keyword: keyword,
       type: type,
@@ -107,24 +99,27 @@ export default function GoodsList() {
         <div className='body'>
           <h2>BEST SELLER</h2>
           <section className='list'>
-            {goods.map((item, index) => (
-              <div className='goodslist' key={index} onClick={() => clickProd(item)}>
-                <img src={`${imgUrl}${item.imageFile}`} alt={item.goodsName} className='prodimg' />
-                <div>
-                  <b>{item.goodsName} </b>
+            {Array.isArray(goods) &&
+              goods.map((item, index) => (
+                <div className='goodslist' key={index} onClick={() => clickProd(item)}>
+                  <img src={`${imgUrl}${item.imageFile}`} alt={item.goodsName} className='prodimg' />
+                  <div>
+                    <b>{item.goodsName} </b>
+                  </div>
+                  <div>
+                    {item.description} {', '}
+                    {item.quantity} 개
+                  </div>
+                  <div>{item.price} 원</div>
+                  <div>
+                    <span>{renderStars(item.rating)}</span>
+                    <span style={{ color: 'red', fontSize: '12px' }}> {'( ' + item.review_num + ' )'} </span>
+                  </div>
                 </div>
-                <div>
-                  {item.description} {', '}
-                  {item.quantity} 개
-                </div>
-                <div>{item.price} 원</div>
-                <div>
-                  <span>{renderStars(item.rating)}</span>
-                  <span style={{ color: 'red', fontSize: '12px' }}> {'( ' + item.review_num + ' )'} </span>
-                </div>
-              </div>
-            ))}
+              ))}
           </section>
+          <PageNumber page={page} setPage={setPage} paging={paging} />
+          <br />
           <hr />
           <h2>자주 산 상품</h2>
           <section className='list1'>
@@ -135,7 +130,6 @@ export default function GoodsList() {
           <h2>판매특가</h2>
           <section className='list2'></section>
         </div>
-        <PageNumber page={page} setPage={setPage} paging={paging} />
       </div>
     </GoodsListComp>
   );

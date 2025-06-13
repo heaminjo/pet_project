@@ -4,6 +4,7 @@ const GoodsListComp = styled.div`
   .container {
     width: 900px;
     height: 1200px;
+
     padding: 10px;
     margin: 0 auto;
     margin-top: 150px;
@@ -12,6 +13,7 @@ const GoodsListComp = styled.div`
       width: inherit;
       height: inherit;
       // border: 1px solid rgb(230, 230, 230);
+      margin-top: 50px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -29,7 +31,7 @@ const GoodsListComp = styled.div`
 
         .goodslist {
           width: 250px;
-          height: 300px;
+          height: 350px;
           margin: 2px auto;
           flex: 0 0 calc(25% - 10px); /* 한 줄에 5개 (100% / 5) */
           border: 1px solid rgb(185, 185, 185);
