@@ -2,6 +2,7 @@ package com.example.pet_back.service;
 
 
 import com.example.pet_back.config.FileUploadProperties;
+import com.example.pet_back.constant.GRADE;
 import com.example.pet_back.constant.MEMBERSTATE;
 import com.example.pet_back.domain.address.AddressRequestDTO;
 import com.example.pet_back.domain.address.AddressResponseDTO;
@@ -26,8 +27,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -128,9 +132,35 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public ResponseEntity<?> loginHistory(Long id) {
         Member member = memberRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        LocalDateTime lastLogin = member.getLastLogin();
+
+
+        //만약 마지막 로그인이 null이거나 오늘보다 전날(isBefore) 이라면 누적
+        if(lastLogin == null || lastLogin.toLocalDate().isBefore(LocalDate.now())){
+            member.setLoginCount(member.getLoginCount() + 1);
+        }
+        //그리고 난 뒤 현재 시각으로 마지막 로그인 업데이트
         member.setLastLogin(LocalDateTime.now());
 
-        return ResponseEntity.ok(new ApiResponse<>(true, "마지막 로그인 업데이트 완료"));
+        //업그레이드 요구를 충족?
+        boolean isUpgrade = false;
+
+        //등급 기준 정검
+        Map<GRADE,Integer> gradeStandard = Map.of(
+                GRADE.NEWBIE ,3, //새싹 회원 = 다음 업그레이드는 3번이상
+                GRADE.BLOSSOM,5,    //초급 회원 = 다음 업그레이드는 5번 이상
+                GRADE.BREEZE,10,     //중급 회원 =다음 업그레이드는 로그인 10번 이상
+                GRADE.FLAME,20     //상급 회원 =다음 업그레이드는 로그인 20번 이상
+        );
+
+        //현재 회원 등급에서 다음 등급으로 업그레이드 되기 위한 로그인 횟수(value)를 가져온다.
+        //
+        int userGrade = gradeStandard.get(member.getGrade());
+
+        //만약 현제 등급에서 로그인 횟수 조건을 만족한다면 업그레이드 여부를 true로
+        if(userGrade <= member.getLoginCount()) isUpgrade = true;
+
+        return ResponseEntity.ok(new ApiResponse<Boolean>(true, isUpgrade,"마지막 로그인 업데이트 완료"));
     }
 
     //배송지 리스트

@@ -27,15 +27,17 @@ import UserStatistics from './components/admin/UserStatistics';
 import Statistice from './page/admin/StatisticsPage';
 import StatisticsPage from './page/admin/StatisticsPage';
 
-import BoardDetail from './components/Board/BoardDetail';
-import BoardInsertForm from './components/Board/BoardInsertForm';
-import BoardEditForm from './components/Board/BoardEditForm';
-import Error from './page/main/Error';
-import UserGrade from './page/admin/UserGrade';
-import GoodsList from './components/Layout/goods/GoodsList';
-import MyAddr from './page/mypage/MyAddr';
-import AddressInsert from './components/mypage/AddressInsert';
+import BoardDetail from "./components/Board/BoardDetail";
+import BoardInsertForm from "./components/Board/BoardInsertForm";
+import BoardEditForm from "./components/Board/BoardEditForm";
+import Error from "./page/main/Error";
+import UserGrade from "./page/admin/UserGrade";
+import GoodsList from "./components/Layout/goods/GoodsList";
+import MyAddr from "./page/mypage/MyAddr";
+import AddressInsert from "./components/mypage/AddressInsert";
+import BannerSelect from "./page/admin/BannerSelect";
 import Favorite from './components/Layout/favorite/Favorite';
+
 
 //컨텍스트(useContext)
 //로그인 여부부를 전역변수로 뿌리기 위한것
@@ -51,43 +53,51 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
-            <Route path='/' element={<Main />} />
-            <Route path='/login' element={<Login />} />
-            <Route path='/join' element={<Join />} />
-            <Route path='/goods/list' element={<GoodsList />} />
-            <Route path='/goods/order' element={<Order />} />
-            <Route path='user/mypage' element={<MyPage />}>
-              <Route path='myinfo' element={<MyInfo />} />
-              <Route path='myedit' element={<MyEdit />} />
-              <Route path='updatepw' element={<UpdatePw />} />
-              <Route path='withdrawal' element={<WithDrawal />} />
-              <Route path='myboardlist' element={<MyBoardList />} />
-              <Route path='addr' element={<MyAddr />} />
-              <Route path='cart/list' element={<Cart />} />
-              <Route path='delivery' element={<Delivery />} />
-              <Route path='orderdetail' element={<OrderDetail />} />
+            <Route path="/" element={<Main />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/join" element={<Join />} />
+            <Route path="/goods/list" element={<GoodsList />} />
+            <Route path="/goods/order" element={<Order />} />
+            <Route path="user/mypage" element={<MyPage />}>
+              <Route path="myinfo" element={<MyInfo />} />
+              <Route path="myedit" element={<MyEdit />} />
+              <Route path="updatepw" element={<UpdatePw />} />
+              <Route path="withdrawal" element={<WithDrawal />} />
+              <Route path="myboardlist" element={<MyBoardList />} />
+              <Route path="addr" element={<MyAddr />} />
+              <Route path="cart/list" element={<Cart />} />
+              <Route path="delivery" element={<Delivery />} />
+              <Route path="orderdetail" element={<OrderDetail />} />
               <Route path='favorite' element={<Favorite />} />
-              <Route path='withdraw' element={<WithDraw />} />
-              <Route path='pay' element={<Pay />} />
+              <Route path="withdraw" element={<WithDraw />} />
+              <Route path="pay" element={<Pay />} />
             </Route>
-            <Route path='/admin/page' element={<AdminPage />}>
-              <Route path='statistics' element={<StatisticsPage />} />
-              <Route path='grade' element={<UserGrade />} />
-              <Route path='userlist' element={<UserList />} />
-              <Route path='userdetail' element={<UserDetail />} />
+            <Route path="/admin/page" element={<AdminPage />}>
+              <Route path="statistics" element={<StatisticsPage />} />
+              <Route path="grade" element={<UserGrade />} />
+              <Route path="userlist" element={<UserList />} />
+              <Route path="userdetail" element={<UserDetail />} />
+              <Route path="banner" element={<BannerSelect />} />
             </Route>
-            <Route path='/withcomplete' element={<WithDrawalComplete />} />
-            <Route path='/boardList/:category' element={<BoardList />} />
-            <Route path='/boardInsertForm' element={<BoardInsertForm />} />
-            <Route path='/boardDetail/:category/:board_id' element={<BoardDetail />} />
-            <Route path='/boardEditForm/:category/:board_id' element={<BoardEditForm />} />
-
-            <Route path='/admin/goods' element={<Goods />} />
-            <Route path='/boardList/:category' element={<BoardList />} />
-            <Route path='/boardDetail/:category/:board_id' element={<BoardDetail />} />
-            <Route path='/boardInsertForm' element={<BoardInsertForm />} />
-            <Route path='/boardEditForm/:category/:board_id' element={<BoardEditForm />} />
-            <Route path='/error' element={<Error />} />
+            <Route path="/withcomplete" element={<WithDrawalComplete />} />
+            <Route path="/admin/goods" element={<Goods />} />
+            <Route path="/boardList/:category" element={<BoardList />} />
+            <Route
+              path="/boardDetail/:category/:board_id"
+              element={<BoardDetail />}
+            />
+            <Route path="/boardInsertForm" element={<BoardInsertForm />} />
+            <Route
+              path="/boardEditForm/:category/:board_id"
+              element={<BoardEditForm />}
+            />
+            <Route path="/error" element={<Error />} />
+            <Route path="/user/cart/list" element={<Cart />} />
+            <Route path="/user/delivery" element={<Delivery />} />
+            <Route path="/user/order" element={<Order />} />
+            <Route path="/user/orderdetail" element={<OrderDetail />} />
+            <Route path="/user/withdraw" element={<WithDraw />} />
+            <Route path="/user/pay" element={<Pay />} />
           </Route>
         </Routes>
       </BrowserRouter>

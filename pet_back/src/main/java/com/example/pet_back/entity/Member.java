@@ -44,6 +44,7 @@ public class Member extends BaseEntity {
     private double point;
 
     private String imageFile = "1e1daeb3-7968-40d1-93f2-09b5ea794ae0.jpg"; //프로필 이미지
+
     @Column(name = "last_login")
     private LocalDateTime lastLogin; //마지막 로그인 시간
 
@@ -62,6 +63,12 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private ROLE role = ROLE.USER;
+
+
+    private int loginCount = 0;     //로그인 횟수
+    private int totalPurchaseCount = 0; //총 구매 횟수
+    private int totalPurchasePrice = 0; //총 구매가격
+
 
     //회원 상태(정상회원,탈퇴회원,정지회원)
     //생성 시 초기값은 정상회원이다.

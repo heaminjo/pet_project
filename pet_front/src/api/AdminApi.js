@@ -10,14 +10,12 @@ const AdminApi = {
     return result.data;
   },
 
-  userList: async () => {
-    const result = await instance.get(`${KH_DOMAIN}/admin/list/all`);
-    return result.data;
-  },
+  //회원 리스트
   getPageList: async (pages) => {
     const result = await instance.post(`${KH_DOMAIN}/admin/list/search`, pages);
     return result.data;
   },
+  //회원 상세조회
   getUserData: async (email) => {
     const result = await instance.get(
       `${KH_DOMAIN}/admin/user/detail?email=${email}`
@@ -62,6 +60,13 @@ const AdminApi = {
   //등급 업그레이드
   gradeUpgrade: async (newGrade) => {
     const result = await instance.put(`${KH_DOMAIN}/admin/upgrade`, newGrade);
+    return result.data;
+  },
+  //배너 삭제제
+  bannerDelete: async (selBanner) => {
+    const result = await instance.delete(
+      `${KH_DOMAIN}/admin/banner/delete?id=${selBanner}`
+    );
     return result.data;
   },
 };

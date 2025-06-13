@@ -101,6 +101,28 @@ const GoodsApi = {
   //     alert('상품 등록 중 에러가 발생했습니다.');
   //   }
   // }, // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  //배너 가져오기
+  getBanner: async () => {
+    const result = await axios.get(`${KH_DOMAIN}/goods/banner/list`);
+    return result.data;
+  },
+
+  //카테고리 목록 가져오기
+  getCategoryList: async () => {
+    const result = await axios.get(`${KH_DOMAIN}/goods/category/list`);
+    return result.data;
+  },
+  //상품 페이징 목록록
+  getGoodsList: async (pages) => {
+    const result = await axios.post(`${KH_DOMAIN}/goods/page/list`, pages);
+    return result.data;
+  },
+  //배너 추가
+  bannerInsert: async (newBanner) => {
+    const result = await axios.post(`${KH_DOMAIN}/goods/banner/insert`, newBanner);
+    return result.data;
+  },
 };
 
 export default GoodsApi;

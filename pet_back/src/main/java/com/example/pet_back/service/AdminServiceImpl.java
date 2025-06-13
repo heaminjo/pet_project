@@ -3,17 +3,16 @@ package com.example.pet_back.service;
 import com.example.pet_back.config.FileUploadProperties;
 import com.example.pet_back.constant.MEMBERSTATE;
 import com.example.pet_back.constant.ROLE;
-import com.example.pet_back.domain.admin.GradeStatisticsDTO;
-import com.example.pet_back.domain.admin.MemberStatisticsDTO;
-import com.example.pet_back.domain.admin.UpgradeRequstDTO;
-import com.example.pet_back.domain.admin.UserStateUpdateDTO;
+import com.example.pet_back.domain.admin.*;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
+import com.example.pet_back.entity.Goodsbanner;
 import com.example.pet_back.entity.Member;
 import com.example.pet_back.mapper.MemberMapper;
 import com.example.pet_back.repository.AddressRepository;
+import com.example.pet_back.repository.GoodsBannerRepository;
 import com.example.pet_back.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -31,6 +30,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,7 +44,7 @@ public class AdminServiceImpl implements AdminService {
     private final AddressRepository addressRepository;
     private final PasswordEncoder passwordEncoder;
     private final FileUploadProperties fileUploadProperties;
-
+    private final GoodsBannerRepository goodsBannerRepository;
     //관리자의 회원 조회
     @Override
     public ResponseEntity<?> adminUserDetail(String email) {
@@ -171,5 +171,17 @@ public class AdminServiceImpl implements AdminService {
         Member member = memberRepository.findById(dto.getUserId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         return new ApiResponse<>(true, member.getName() + "님의 등급이 " + dto.getNextGrade() + "등급으로 업그레이드 되었습니다.");
+    }
+
+    @Override
+    public ApiResponse bannerDelete(Long id) {
+        //존재하면 삭제
+        if(goodsBannerRepository.existsById(id)){
+            goodsBannerRepository.deleteById(id);
+
+            return new ApiResponse(true,"배너 삭제가 완료되었습니다.");
+        }else{
+            return new ApiResponse(true,"이미 존재하지 않는 배너입니다.");
+        }
     }
 }

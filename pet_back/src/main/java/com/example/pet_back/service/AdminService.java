@@ -1,9 +1,6 @@
 package com.example.pet_back.service;
 
-import com.example.pet_back.domain.admin.GradeStatisticsDTO;
-import com.example.pet_back.domain.admin.MemberStatisticsDTO;
-import com.example.pet_back.domain.admin.UpgradeRequstDTO;
-import com.example.pet_back.domain.admin.UserStateUpdateDTO;
+import com.example.pet_back.domain.admin.*;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
@@ -34,4 +31,8 @@ public interface AdminService {
 
     //등급 업그레이드
     public ApiResponse upgradeGrade(UpgradeRequstDTO dto);
+
+    //배너 삭제
+    public ApiResponse bannerDelete(Long id);
+
 }

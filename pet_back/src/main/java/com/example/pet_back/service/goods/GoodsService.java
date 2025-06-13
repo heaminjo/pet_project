@@ -1,8 +1,13 @@
 package com.example.pet_back.service.goods;
 
+import com.example.pet_back.domain.admin.BannerDTO;
+import com.example.pet_back.domain.admin.BannerInsertDTO;
+import com.example.pet_back.domain.custom.ApiResponse;
+import com.example.pet_back.domain.goods.CategoryResponseDTO;
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
-
 import com.example.pet_back.domain.goods.GoodsSimpleDTO;
+import com.example.pet_back.domain.goods.GoodsSimpleDTO;
+import com.example.pet_back.domain.goods.PayRequestDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
@@ -36,7 +41,6 @@ public interface GoodsService {
     // 상품 삭제
     void deleteGoods(CustomUserDetails userDetails, GoodsRequestDTO goodsRequestDTO);
 
-
     //배너 가져오기(조해민)
     public List<BannerDTO> bannerList();
 
@@ -48,6 +52,5 @@ public interface GoodsService {
 
     //배너 추가
     public ApiResponse bannerInsert(BannerInsertDTO dto);
-
 
 }

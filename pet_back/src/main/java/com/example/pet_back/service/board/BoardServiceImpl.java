@@ -6,6 +6,7 @@ import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.mapper.board.BoardMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -52,9 +53,18 @@ public class BoardServiceImpl implements BoardService {
 
 
     //** 게시글 등록
+    @Transactional
     @Override
     public int insertBoard(BoardDTO dto) {
-        return boardMapper.insertBoard(dto);
+        int result = boardMapper.insertBoard(dto);
+        // 여러 장 이미지 저장
+        List<String> fileNames = dto.getImageFileNames();
+        if (fileNames != null && !fileNames.isEmpty()) {
+            for (int i = 0; i < fileNames.size(); i++) {
+                boardMapper.insertBoardImage(dto.getBoard_id(), fileNames.get(i), i + 1);
+            }
+        }
+        return result;
     }
 
     //** 게시글 수정
@@ -86,6 +96,18 @@ public class BoardServiceImpl implements BoardService {
                 .isPrev(isPrev)
                 .isNext(isNext)
                 .build();
+    }
+
+    //** 이미지 삽입
+    @Override
+    public int insertBoardImage(int board_id, String fileName, int outputOrder) {
+        return boardMapper.insertBoardImage(board_id, fileName, outputOrder);
+    }
+
+    //** 이미지 파일명 리스트 조회
+    @Override
+    public List<String> selectImageFileNamesByBoardId(int board_id) {
+        return boardMapper.selectImageFileNamesByBoardId(board_id);
     }
 
 } //class

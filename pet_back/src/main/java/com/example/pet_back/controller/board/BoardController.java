@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/board")
 @RequiredArgsConstructor
@@ -39,7 +41,7 @@ public class BoardController {
                                         @RequestParam(value = "searchKeyword", required = false) String searchKeyword) {
         //List<BoardDTO> list = boardService.selectList(category);
         //return ResponseEntity.ok(list != null ? list : new ArrayList<>());
-        PageRequestDTO pageRequestDTO = new PageRequestDTO(page, size, null, searchKeyword, searchType);
+        PageRequestDTO pageRequestDTO = new PageRequestDTO(page, size, null, searchKeyword, searchType,null);
         PageResponseDTO<BoardDTO> responseDTO = boardService.selectList(category, pageRequestDTO, searchType, searchKeyword);
         return ResponseEntity.ok(responseDTO);
     } //selectList()
@@ -55,6 +57,8 @@ public class BoardController {
         BoardDTO dto = boardService.selectOne(category, board_id);
 
         if (dto != null) {
+            List<String> imageFileNames = boardService.selectImageFileNamesByBoardId(board_id);
+            dto.setImageFileNames(imageFileNames);
             return ResponseEntity.ok(dto);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("게시글을 찾을 수 없습니다");
@@ -73,7 +77,9 @@ public class BoardController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 정보가 없습니다.");
         }
         dto.setMember_id(memberId.intValue()); // BoardDTO에 member_id 세팅 (Long→int 변환)
+
         int result = boardService.insertBoard(dto);
+
         if (result > 0) {
             return ResponseEntity.ok("등록 성공");
         } else {
@@ -125,7 +131,7 @@ public class BoardController {
             @RequestParam(value = "keyword", required = false) String keyword,
             @RequestParam(value = "sort", required = false) String sort
     ) {
-        PageRequestDTO pageRequestDTO = new PageRequestDTO(page, size, sort, keyword, type);
+        PageRequestDTO pageRequestDTO = new PageRequestDTO(page, size, sort, keyword, type,null);
         PageResponseDTO<BoardDTO> responseDTO = boardService.selectMyBoardList(member_id, pageRequestDTO, type, keyword, sort);
         return ResponseEntity.ok(responseDTO);
     }

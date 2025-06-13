@@ -3,9 +3,22 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
+import AdminApi from "../../api/AdminApi";
+import GoodsApi from "../../api/GoodsApi";
 function Banner() {
-  //배너 상품 가져오기
+  const [banner, setBanner] = useState([]);
 
+  useEffect(() => {
+    getBanner();
+  }, []);
+
+  //배너 상품 가져오기
+  const getBanner = async () => {
+    const result = await GoodsApi.getBanner();
+
+    setBanner(result);
+    console.log(banner);
+  };
   const sliderRef = useRef(null);
 
   const settings = {
@@ -23,44 +36,19 @@ function Banner() {
   return (
     <BannerComp>
       <div className="slider-container">
-        <Slider {...settings} ref={sliderRef}>
+        {banner.length == 1 ? (
           <div className="item" id="item_1">
-            <img
-              src="	http://localhost:8080/uploads/3d249c2b-4d16-459c-841d-f70422399035.png"
-              alt=""
-            />
+            <img src={banner[0]?.imageFile} alt="배너 이미지" />
           </div>
-          <div className="item" id="item_2">
-            <img
-              src="	http://localhost:8080/uploads/3d249c2b-4d16-459c-841d-f70422399035.png"
-              alt=""
-            />
-          </div>
-          <div className="item" id="item_3">
-            <img
-              src="	http://localhost:8080/uploads/3d249c2b-4d16-459c-841d-f70422399035.png"
-              alt=""
-            />
-          </div>
-          <div className="item" id="item_4">
-            <img
-              src="	http://localhost:8080/uploads/3d249c2b-4d16-459c-841d-f70422399035.png"
-              alt=""
-            />
-          </div>
-          <div className="item" id="item_5">
-            <img
-              src="	http://localhost:8080/uploads/3d249c2b-4d16-459c-841d-f70422399035.png"
-              alt=""
-            />
-          </div>
-          <div className="item" id="item_6">
-            <img
-              src="	http://localhost:8080/uploads/3d249c2b-4d16-459c-841d-f70422399035.png"
-              alt=""
-            />
-          </div>
-        </Slider>
+        ) : (
+          <Slider {...settings} ref={sliderRef}>
+            {banner.map((b) => (
+              <div className="item" id="item_1">
+                <img src={b.imageFile} alt="배너 이미지" />
+              </div>
+            ))}
+          </Slider>
+        )}
       </div>
     </BannerComp>
   );
@@ -75,6 +63,7 @@ const BannerComp = styled.div`
     margin: 0 auto;
     background-color: #fff;
     border-radius: 40px;
+
     .item {
       width: 100%;
       height: 100%;
@@ -84,6 +73,12 @@ const BannerComp = styled.div`
         object-fit: contain;
       }
     }
+  }
+  .slick-slide:focus,
+  .slick-slider:focus,
+  [class*="sc-"]:focus {
+    outline: none !important;
+    box-shadow: none !important;
   }
 `;
 

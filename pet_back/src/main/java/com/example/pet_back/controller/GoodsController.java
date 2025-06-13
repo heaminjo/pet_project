@@ -1,5 +1,12 @@
 package com.example.pet_back.controller;
 
+
+import com.example.pet_back.domain.admin.BannerDTO;
+import com.example.pet_back.domain.admin.BannerInsertDTO;
+import com.example.pet_back.domain.custom.ApiResponse;
+import com.example.pet_back.domain.goods.*;
+import com.example.pet_back.domain.page.PageRequestDTO;
+import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.service.goods.GoodsService;
@@ -12,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Log4j2
 @RequiredArgsConstructor // private final만
@@ -91,8 +100,36 @@ public class GoodsController {
         }
         return ResponseEntity.status(HttpStatus.OK).body("성공");
     }
-    
-    
-    
-    
+
+    // 결제페이지 - 고객 주소 가져오기
+    @GetMapping("/findaddress")
+    public ResponseEntity<?> findMemberAddress(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        log.info("** GoodsController => findMemberAddress() 실행됨 **");
+        return goodsService.findMemberAddress(userDetails);
+    }
+    //배너 리스트 불러오기(조해민)
+    @GetMapping("/banner/list")
+    public ResponseEntity<List<BannerDTO>> bannerList() {
+        return ResponseEntity.ok(goodsService.bannerList());
+    }
+
+    //카테고리 불러오기(조해민)
+    @GetMapping("/category/list")
+    public ResponseEntity<List<CategoryResponseDTO>> categoryList(){
+        return ResponseEntity.ok(goodsService.categoryList());
+    }
+
+
+    //상품 페이징 목록(조해민)
+    @PostMapping("/page/list")
+    public ResponseEntity<PageResponseDTO<GoodsSimpleDTO>> goodsPageList(@RequestBody PageRequestDTO dto){
+        return ResponseEntity.ok(goodsService.goodsPageList(dto));
+    }
+
+    //배너 추가(조해민)
+    @PostMapping("/banner/insert")
+    public ResponseEntity<ApiResponse> goodsPageList(@RequestBody BannerInsertDTO dto){
+        return ResponseEntity.ok(goodsService.bannerInsert(dto));
+    }
+
 }

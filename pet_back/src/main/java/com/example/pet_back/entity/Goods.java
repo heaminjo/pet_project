@@ -23,8 +23,9 @@ public class Goods {
     @Column(name = "goods_id", nullable = false)
     private Long goodsId;
 
-    @Column(name = "category_id", nullable = false, unique = true)
-    private Long categoryId;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @Column(name = "goods_name", nullable = false, length = 30)
     private String goodsName;
