@@ -1,4 +1,4 @@
-package com.example.pet_back.service;
+package com.example.pet_back.service.goods;
 
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.domain.goods.GoodsResponseDTO;

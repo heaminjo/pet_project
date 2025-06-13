@@ -31,24 +31,6 @@ export default function Cart() {
     totalPages: 0,
   });
 
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상품 정보 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // // Goods 정보 요청 (getPageList 에 로직 포함)
-  // const cart = async () => {
-  //   GoodsApi.cartList()
-  //     .then((response) => {
-  //       setGoods(response);
-  //       // 장바구니 수량 조절기능 추가
-  //       const initialQuantityMap = {};
-  //       response.forEach((item) => {
-  //         initialQuantityMap[item.goodsId] = item.cartQuantity;
-  //         // Map - 객체의 속성(key) 동적으로 접근
-  //         // obj["name"] = "Tom" ===>	"name" 키 추가	{ name: "Tom" }
-  //       });
-  //       setQuantityMap(initialQuantityMap);
-  //     })
-  //     .catch((err) => {});
-  // };
-
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 체크박스 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 체크박스의 선택 상태를 토글
   const handleCheckboxChange = (goodsId) => {
@@ -142,7 +124,7 @@ export default function Cart() {
       type: type,
     };
     try {
-      const result = await GoodsApi.getPageList(pages);
+      const result = await GoodsApi.getCartPageList(pages);
       // 1. 상품 목록
       setGoods(result.content);
 
@@ -171,7 +153,6 @@ export default function Cart() {
   };
 
   useEffect(() => {
-    // cart(); // 호출
     getPageList();
   }, [page]);
 
@@ -190,7 +171,7 @@ export default function Cart() {
                     <input type='checkbox' checked={checked[item.goodsId] || false} onChange={() => handleCheckboxChange(item.goodsId)} style={{ width: '20px', height: '20px', cursor: 'pointer' }} required />
                     &nbsp;&nbsp;&nbsp;
                   </label>
-                  <img src={`http://localhost:8080/uploads/${item.imageFile}`} alt={item.goodsName} className='prodimg' onClick={() => navigate('/user/order', { state: { goods: item } })} />
+                  <img src={`http://localhost:8080/resources/webapp/goodsImages/${item.imageFile}`} alt={item.goodsName} className='prodimg' onClick={() => navigate('/goods/order', { state: { goods: item } })} />
                 </div>
                 <div className='prodright'>
                   <div>

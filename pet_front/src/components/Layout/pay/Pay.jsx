@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import MemberApi from '../../../api/MemberApi';
 import GoodsApi from '../../../api/GoodsApi';
+import OrderApi from '../../../api/OrderApi';
 
 export default function Pay() {
   const location = useLocation();
@@ -78,7 +79,7 @@ export default function Pay() {
       })
       .catch((err) => {});
     // 사용자 주소
-    GoodsApi.findAddress()
+    OrderApi.findAddress()
       .then((response) => {
         setAddress(response);
       })

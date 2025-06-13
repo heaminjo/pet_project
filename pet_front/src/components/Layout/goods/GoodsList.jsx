@@ -10,6 +10,13 @@ export default function GoodsList() {
   const EMPTY_HEART = '🤍';
   const FULL_HEART = '💖';
 
+  // // 검색기능
+  // const params = new URLSearchParams(location.search);
+  // const typeParam = params.get('type') || 'all';
+  // const keywordParam = params.get('keyword') || '';
+  // const sortParam = params.get('sort') || 'desc';
+  // const pageParam = parseInt(params.get('page')) || 0;
+
   // 전체 상품 리스트 조회
   const goodsList = async () => {
     GoodsApi.showGoods()
@@ -37,10 +44,19 @@ export default function GoodsList() {
     }
   }, []);
 
+  // // 검색기능
+  // useEffect(() => {
+  //   setType(typeParam);
+  //   setKeyword(keywordParam);
+  //   setSort(sortParam);
+  //   setPage(pageParam);
+  // }, [typeParam, keywordParam, sortParam, pageParam]);
+
   return (
     <GoodsListComp>
       <div className='container'>
         <h2>상품 리스트 출력 페이지</h2>
+        <div></div>
         <div className='body'>
           <h2>BEST SELLER</h2>
           <section className='list'>

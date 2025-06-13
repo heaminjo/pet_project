@@ -43,7 +43,6 @@ public class Orders {
     private PAYMENT payment;
 
     @Column(name = "reg_date", nullable = false)
-    @Temporal(TemporalType.DATE)
     private LocalDate regDate;
 
     @Column(length = 20)

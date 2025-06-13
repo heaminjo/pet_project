@@ -1,32 +1,38 @@
 import OrderDetailComp from './OrderDetailStyle';
 import GoodsApi from '../../../api/GoodsApi';
+import OrderApi from '../../../api/OrderApi';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import PageNumber from '../../util/PageNumber';
 
 export default function OrderDetail() {
-  const prodImg = process.env.PUBLIC_URL + '/images/pic1.png';
-  const navigate = useNavigate();
-  const [orders, setOrders] = useState([]);
-  const [info, setInfo] = useState([]);
-
   const location = useLocation();
-  const { goods } = location.state || {};
+  const prodImg = process.env.PUBLIC_URL + '/images/pic1.png';
+  const imgBaseUrl = 'http://localhost:8080/resources/webapp/goodsImages/';
+  const navigate = useNavigate();
+  // 페이징 위함
+  const [goodsList, setGoodsList] = useState([]);
+  const [quantityMap, setQuantityMap] = useState({}); // Map 용도( goods id : goods quantity )
+
+  const [info, setInfo] = useState([]); // OrderDetailResponseDTO List
+
   const [buyQuantity, setBuyQuantity] = useState(1);
 
-  // 주문 정보 가져옴 - Return Type : OrderResponseDTO List ~~~~~~~~~~~~~~
-  const orderList = () => {
-    alert(`orderList 실행`);
-    // 회원이 주문한 전체내역 orderList
-    GoodsApi.orderList() //
-      .then((response) => {
-        //alert(`GoodsApi.orderList() 성공`);
-        setOrders(response);
-        goodsList(response);
-      })
-      .catch((err) => {
-        alert(`GoodsApi.orderList() 에러 => ${err}`);
-      });
-  };
+  // 페이징 관련 상태변수
+  const [type, setType] = useState('all');
+  const [keyword, setKeyword] = useState('');
+  const [sort, setSort] = useState('desc');
+  const [page, setPage] = useState(0); // 1 페이지, 2 페이지, ...
+
+  // 페이징 정보 상태변수 (현재 페이징 상태 핸들링 위함)
+  const [paging, setPaging] = useState({
+    start: 0,
+    end: 4,
+    isPrev: false,
+    isNext: true,
+    totalElement: 0,
+    totalPages: 0,
+  });
 
   // 장바구니 담기
   const addToCart = async (goods) => {
@@ -40,29 +46,29 @@ export default function OrderDetail() {
       .catch((err) => {});
   };
 
-  // 전체 정보 가져옴 - Return Type : OrderDetailResponseDTO List
-  // Goods List : 현재 Order의 orderId넘김 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  const goodsList = (orders) => {
-    const orderIds = orders.map((o) => o.orderId);
-    GoodsApi.customerGoodsHistory(orderIds)
-      .then((response) => {
-        //alert(`GoodsApi.customerGoodsHistory() 성공`);
-        if (Array.isArray(response)) {
-          setInfo(response); // OrderDetail + Order + Goods 정보(일부) 리스트
-        } else {
-          console.error('비정상 응답:', response);
-          setInfo([]); // fallback
-        }
-      }) //
-      .catch((err) => {
-        alert(`GoodsApi.customerGoodsHistory() 에러`);
-      });
-  };
+  // 주문 정보 가져옴 - Return Type : OrderResponseDTO List ~~~~~~~~~~~~~~
+  // const orderDetail = () => {
+  //   alert(`orderList 실행`);
+  //   // 회원이 주문한 전체내역 orderList
+  //   OrderApi.orderDetail() // 반환: OrderResponseDTO List
+  //     .then((response) => {
+  //       alert(`OrderApi.orderDetail() 성공 => ${response}`);
+  //       if (Array.isArray(response)) {
+  //         setInfo(response); // OrderDetail + Order + Goods 정보(일부) 리스트
+  //       } else {
+  //         console.error('비정상 응답:', response);
+  //         setInfo([]); // fallback
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       alert(`OrderApi.orderList() 에러 => ${err}`);
+  //     });
+  // };
 
   // 주문내역 리스트를 순회하며 날짜별로 그룹화 ~~~~~~~~~~~~~~~~~~~~
-  const groupByDate = (data) => {
+  const groupByDate = (info) => {
     const grouped = {};
-    data.forEach((item) => {
+    info.forEach((item) => {
       const dateKey = new Date(item.regDate).toISOString().split('T')[0]; // 'YYYY-MM-DD'
       // toISOString() : 시차 방어 (UTC 기준)
       // 2025-06-05T15:57:22.427+09:00 --> '2025-06-05' 추출
@@ -71,15 +77,48 @@ export default function OrderDetail() {
     });
     return grouped;
   };
-
   // 함수 실행
   const groupedInfo = groupByDate(info);
   // 그룹화한 리스트 결과를 날짜 최신순 정렬
   const sortedDates = Object.keys(groupedInfo).sort((a, b) => new Date(b) - new Date(a));
 
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 페이징 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const getPageList = async () => {
+    const pages = {
+      page: page,
+      size: 2,
+      sortBy: 'desc',
+      keyword: keyword,
+      type: type,
+    };
+
+    try {
+      const response = await OrderApi.getOrderDetailPageList(pages); // 이건 Axios full response
+
+      if (Array.isArray(response?.content)) {
+        setInfo(response.content);
+      } else {
+        console.error('비정상 응답:', response);
+        setInfo([]);
+      }
+
+      let temp = Math.floor(page / 5) * 5;
+      setPaging({
+        start: temp,
+        end: Math.min(temp + 5, response.totalPages),
+        isPrev: response.prev,
+        isNext: response.next,
+        totalElement: response.totalElements,
+        totalPages: response.totalPages,
+      });
+    } catch (err) {
+      console.error('getPageList 실패:', err);
+    }
+  };
+
   useEffect(() => {
-    orderList();
-  }, []);
+    getPageList();
+  }, [page]);
 
   return (
     <OrderDetailComp>
@@ -88,27 +127,29 @@ export default function OrderDetail() {
         <div>
           {sortedDates.map((date) => (
             <div key={date} className='orderlist'>
-              <div className='ordertitle'>{date} 주문</div>
               {groupedInfo[date].map((item, index) => (
-                <div className='orderlist2'>
-                  <div className='orderdesc'>
-                    <img src={`http://localhost:8080/uploads/${item.imageFile}`} alt={item.goodsName} className='prodimg' onClick={() => navigate('/user/order', { state: { goods: item } })} />
-                    <br />
-                    <div className='proddesc'>
-                      <b>결제완료</b> <br />
-                      {item.goodsName} <br />
-                      {item.goodsPrice} 원 / {item.goodsQuantity} 개
-                    </div>
-                    <div className='btn'>
-                      <button className='btn1' onClick={() => addToCart(item)}>
-                        장바구니 담기
-                      </button>
-                      <button className='btn2' onClick={() => navigate('/user/delivery', { state: { goodsId: item.goodsId } })}>
-                        배송조회
-                      </button>
-                      <button className='btn3' onClick={() => navigate('/user/withdraw')}>
-                        주문취소
-                      </button>
+                <div key={item.orderDetailId} className='ordertitle'>
+                  {date} 주문
+                  <div className='orderlist2'>
+                    <div className='orderdesc'>
+                      <img src={`${imgBaseUrl}${item.imageFile}`} alt={item.goodsName} className='prodimg' onClick={() => navigate('/user/order', { state: { goods: item } })} />
+                      <br />
+                      <div className='proddesc'>
+                        <b>결제완료</b> <br />
+                        {item.goodsName} <br />
+                        {item.goodsPrice} 원 / {item.goodsQuantity} 개
+                      </div>
+                      <div className='btn'>
+                        <button className='btn1' onClick={() => addToCart(item)}>
+                          장바구니 담기
+                        </button>
+                        <button className='btn2' onClick={() => navigate('/user/delivery', { state: { goodsId: item.goodsId } })}>
+                          배송조회
+                        </button>
+                        <button className='btn3' onClick={() => navigate('/user/withdraw')}>
+                          주문취소
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -116,6 +157,7 @@ export default function OrderDetail() {
             </div>
           ))}
         </div>
+        <PageNumber page={page} setPage={setPage} paging={paging} />
       </div>
     </OrderDetailComp>
   );

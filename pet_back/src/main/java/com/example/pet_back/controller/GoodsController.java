@@ -1,13 +1,15 @@
 package com.example.pet_back.controller;
 
+
 import com.example.pet_back.domain.admin.BannerDTO;
 import com.example.pet_back.domain.admin.BannerInsertDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.goods.*;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
+import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
-import com.example.pet_back.service.GoodsService;
+import com.example.pet_back.service.goods.GoodsService;
 import com.example.pet_back.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -28,13 +30,19 @@ import java.util.List;
 public class GoodsController {
 
     private final GoodsService goodsService;
-    private final MemberService memberService;
 
     // 상품 상세정보
     @GetMapping("/detail/{goods_id}")
     public ResponseEntity<?> selectOne(@PathVariable("goods_id") Long goods_id) {
         log.info("** GoodsController => selectOne() 실행됨 **");
         return goodsService.selectOne(goods_id);
+    }
+
+    // 찜
+    @PostMapping("/favorite/{goodsId}")
+    public ResponseEntity<?> favorite(@PathVariable("goodsId") Long goodsId,  @AuthenticationPrincipal CustomUserDetails userDetails) {
+        log.info("** GoodsController => favorite() 실행됨 **");
+        return goodsService.favorite(goodsId, userDetails);
     }
 
     // 상품 리스트 출력 (메인)
@@ -57,7 +65,6 @@ public class GoodsController {
         System.out.println("goodsDTO state: " + goodsRequestDTO.getGoodsState());
         System.out.println("goodsDTO state 타입: " + goodsRequestDTO.getGoodsState().getClass());
 
-
         try {
             goodsService.registerGoods(goodsRequestDTO, uploadImg, request);
         } catch (Exception e) {
@@ -66,29 +73,33 @@ public class GoodsController {
         return ResponseEntity.status(HttpStatus.OK).body("성공");
     }
 
-    // 결제 메서드
-    @PostMapping("/pay")
-    public ResponseEntity<?> payGoods(@AuthenticationPrincipal CustomUserDetails userDetails, //
-                                      @RequestBody PayRequestDTO dto) {
-        log.info("** GoodsController => payGoods() 실행됨 **");
-        log.info("결제 user = " + userDetails.getMember().getEmail()); // 이게 null?
-        return goodsService.payGoods(userDetails, dto);
-    }
 
-    // 주문 리스트
-    @GetMapping("/ordered")
-    public ResponseEntity<?> orderList(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        log.info("** GoodsController => orderList() 실행됨 **");
-        return goodsService.orderList(userDetails);
+    // 상품 수정 메서드 (관리자 페이지)
+    @PostMapping("/update")
+    public ResponseEntity<?> updateGoods(@AuthenticationPrincipal CustomUserDetails userDetails, //
+                                         @RequestPart("goods") GoodsRequestDTO goodsRequestDTO){
+        log.info("** GoodsController => createGoods() 실행됨 **");
+        try {
+            goodsService.updateGoods(userDetails, goodsRequestDTO);
+        } catch (Exception e) {
+            log.error("** goodsService.updateGoods Exception => " + e.toString());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body("성공");
     }
+    
 
-    // 특정 고객이 한번이라도 주문한 적 있는 상품의 리스트
-    @PostMapping("/orderinfo")
-    public ResponseEntity<?> customerGoodsHistory(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody List<Long> orderIdList) {
-        log.info("** GoodsController => customerGoodsHistory() 실행됨 **");
-        return goodsService.customerGoodsHistory(userDetails, orderIdList);
+    // 상품 삭제 메서드 (관리자 페이지)
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteGoods(@AuthenticationPrincipal CustomUserDetails userDetails, //
+                                         @RequestPart("goods") GoodsRequestDTO goodsRequestDTO){
+        log.info("** GoodsController => createGoods() 실행됨 **");
+        try {
+            goodsService.deleteGoods(userDetails, goodsRequestDTO);
+        } catch (Exception e) {
+            log.error("** goodsService.createGoods Exception => " + e.toString());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body("성공");
     }
-
 
     // 결제페이지 - 고객 주소 가져오기
     @GetMapping("/findaddress")
@@ -120,4 +131,5 @@ public class GoodsController {
     public ResponseEntity<ApiResponse> goodsPageList(@RequestBody BannerInsertDTO dto){
         return ResponseEntity.ok(goodsService.bannerInsert(dto));
     }
+
 }

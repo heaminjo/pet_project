@@ -6,7 +6,7 @@ import GoodsApi from '../../../api/GoodsApi';
 export default function Goods() {
   const navigate = useNavigate();
   //const goodsImg = process.env.PUBLIC_URL + '/images/pic1.png';
-  const goodsImg = 'http://localhost:8080/uploads/basicimg.png';
+  const goodsImg = 'http://localhost:8080/resources/webapp/goodsImages/basicimg.png';
 
   // 이미지 미리보기 위한 상태변수 추가
   const [prevImg, setPrevImg] = useState();

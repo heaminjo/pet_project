@@ -11,6 +11,7 @@ export default function Order() {
   const [buyQuantity, setBuyQuantity] = useState(1);
   const EMPTY_HEART = '🤍';
   const FULL_HEART = '💖';
+  const [heart, setHeart] = useState('🤍');
   const [stars, setStars] = useState(); // ⭐
 
   // 결제
@@ -38,6 +39,23 @@ export default function Order() {
     setStars(filledStars);
   };
 
+  // 찜
+  const addFavorite = () => {
+    alert(`goods Id => ${goods.goodsId}`);
+    GoodsApi.favorite(goods.goodsId)
+      .then((response) => {
+        // 상태 토글
+        if (heart === EMPTY_HEART) {
+          setHeart('💖');
+        } else if (heart === FULL_HEART) {
+          setHeart('🤍');
+        }
+      })
+      .catch((err) => {
+        alert(`에러발생 => ${err}`);
+      });
+  };
+
   useEffect(() => {
     alert(`상품정보 확인: ${goods.goodsId}, ${goods.goodsName}, ${goods.goodsState}, ${goods.description}, ${goods.price}, 수량: ${goods.quantity}`);
     if (goods) {
@@ -54,8 +72,8 @@ export default function Order() {
             <img src={`http://localhost:8080/uploads/${goods.imageFile}`} alt={goods.goods_name} className='prodimg' />
           </div>
           <div className='right'>
-            <div className='prodname'>
-              {goods.goodsName}&nbsp;&nbsp;{FULL_HEART}
+            <div className='prodname' onClick={() => addFavorite()}>
+              {goods.goodsName}&nbsp;&nbsp;{heart}
             </div>
             <p className='rating'>{stars} 11,624개 상품평</p>
             <hr />
