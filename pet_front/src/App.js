@@ -36,6 +36,7 @@ import GoodsList from "./components/Layout/goods/GoodsList";
 import MyAddr from "./page/mypage/MyAddr";
 import AddressInsert from "./components/mypage/AddressInsert";
 import BannerSelect from "./page/admin/BannerSelect";
+import Grade from "./page/main/Grade";
 
 //컨텍스트(useContext)
 //로그인 여부부를 전역변수로 뿌리기 위한것
@@ -54,6 +55,7 @@ function App() {
             <Route path="/" element={<Main />} />
             <Route path="/login" element={<Login />} />
             <Route path="/join" element={<Join />} />
+            <Route path="/grade" element={<Grade />} />
             <Route path="/goods/list" element={<GoodsList />} />
             <Route path="/goods/order" element={<Order />} />
             <Route path="user/mypage" element={<MyPage />}>
