@@ -236,8 +236,8 @@ export default function BoardDetail() {
           </div>
         )}
         <br></br>
-        <hr></hr>
-        <br></br>
+        <hr style={{marginBottom:"100px"}}></hr>
+        
         <h3>댓글쓰기</h3><br></br>
         <CommentForm
           comment={comment}
