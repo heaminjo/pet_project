@@ -7,9 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface GoodsBannerRepository extends JpaRepository<Goodsbanner, Long> {
-    @Query(nativeQuery = true,value = "select b.banner_id ,g.goods_id,g.goods_name,g.image_file,b.position \n" +
-            "from goods_banner b,goods g \n" +
-            "where b.goods_id = g.goods_id" +
-            " order by b.position")
+    @Query(nativeQuery = true,value = "select * \n" +
+            "from goods_banner\n" +
+            " order by position")
     public List<Goodsbanner> bannerListAll();
 }

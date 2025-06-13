@@ -58,19 +58,19 @@ export default Banner;
 const BannerComp = styled.div`
   .slider-container {
     position: relative;
-    width: 900px;
+    width: 1100px;
     height: 400px;
     margin: 0 auto;
     background-color: #fff;
     border-radius: 40px;
 
     .item {
-      width: 100%;
+      width: 1000px;
       height: 100%;
       img {
-        width: 100%;
+        width: 950px;
         height: 400px;
-        object-fit: contain;
+        margin: 0 auto;
       }
     }
   }

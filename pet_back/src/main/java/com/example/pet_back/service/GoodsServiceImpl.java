@@ -3,7 +3,6 @@ package com.example.pet_back.service;
 import com.example.pet_back.config.FileUploadProperties;
 import com.example.pet_back.constant.ROLE;
 import com.example.pet_back.domain.admin.BannerDTO;
-import com.example.pet_back.domain.admin.BannerInsertDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.goods.*;
 import com.example.pet_back.domain.member.MemberResponseDTO;
@@ -299,9 +298,9 @@ public class GoodsServiceImpl implements GoodsService {
 
         //수동으로 매핑
         for(Goodsbanner g : bannerList){
-            String imagePath = fileUploadProperties.getUrl()+g.getGoods().getImageFile();
+            String imagePath = fileUploadProperties.getUrl()+g.getImageFile();
 
-            response.add(new BannerDTO(g.getBannerId(),g.getGoods().getGoodsId(),g.getGoods().getGoodsName(),g.getGoods().getCategory().getCategoryName(),imagePath,g.getPosition()));
+            response.add(new BannerDTO(g.getBannerId(),imagePath,g.getPosition()));
         }
 
         log.info("Banner List => " + response.toString());
@@ -350,17 +349,5 @@ public class GoodsServiceImpl implements GoodsService {
         return response;
     }
 
-    @Override
-    public ApiResponse bannerInsert(BannerInsertDTO dto) {
-        Optional<Goods> goods = goodsRepository.findById(dto.getGoodsId());
-        if(goods.isPresent()){
-            Goodsbanner goodsbanner = goodsMapper.bannerToEntity(dto);
-            goodsbanner.setGoods(goods.get());
-            goodsBannerRepository.save(goodsbanner);
-            return new ApiResponse(true,dto.getPosition()+"번째 배너에 '"+goodsbanner.getGoods().getGoodsName()+"'가 추가돼었습니다.");
-        }else{
-            return new ApiResponse(false,"존재하지 않는 배너입니다.");
-        }
 
-    }
 }

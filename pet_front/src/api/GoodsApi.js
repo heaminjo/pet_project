@@ -177,9 +177,12 @@ const GoodsApi = {
   },
   //배너 추가
   bannerInsert: async (newBanner) => {
+    const formData = new FormData();
+    formData.append("file", newBanner.imageFile);
+    formData.append("position", newBanner.position.toString());
     const result = await axios.post(
       `${KH_DOMAIN}/goods/banner/insert`,
-      newBanner
+      formData
     );
     return result.data;
   },
