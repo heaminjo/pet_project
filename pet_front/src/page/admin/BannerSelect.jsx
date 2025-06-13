@@ -14,8 +14,6 @@ export default function BannerSelect() {
   const [selectImage, setSelectImage] = useState(null); //선택 프로필(서버용)
   const [prevImage, setPrevImage] = useState(null); //이전 프로필필
 
-  const [selectView, setSelectView] = useState(false); //상품 선택 창 여부
-
   useEffect(() => {
     getBanner();
   }, []);
@@ -45,7 +43,6 @@ export default function BannerSelect() {
 
   //이미지 체인지
   const changeImage = (e, i) => {
-    setSelectView(true);
     console.log("클릭 배너 => ", i + 1);
     setSelBanner(i + 1);
     const file = e.target.files[0];
@@ -72,7 +69,6 @@ export default function BannerSelect() {
 
     const result = await GoodsApi.bannerInsert(newBanner);
     alert(result.message);
-    setSelectView(false);
     getBanner();
   };
   return (
@@ -138,12 +134,6 @@ export default function BannerSelect() {
             ))}
           </ul>
         </div>
-        {selectView && (
-          <div>
-            <input type="file" onChange={(e) => changeImage(e)} />
-          </div>
-        )}
-        {/* {selectView && <GoodsSelectList selectEvt={clickSelect} />} */}
       </div>
     </BannerSelectComp>
   );
