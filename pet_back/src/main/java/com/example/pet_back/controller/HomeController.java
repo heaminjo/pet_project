@@ -1,6 +1,6 @@
 package com.example.pet_back.controller;
 
-import com.example.pet_back.service.GoodsService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "http://localhost:3000")
 public class HomeController {
 
-    private final GoodsService goodsService;
 
     @GetMapping("/")
     public ResponseEntity<String> home() {

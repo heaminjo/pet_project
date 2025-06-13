@@ -29,6 +29,9 @@ public interface GoodsService {
     // 상품 리스트 출력 (메인)
     ResponseEntity<?> showGoodsList();
 
+    // 결제페이지 - 고객 주소 가져오기
+    ResponseEntity<?> findMemberAddress(CustomUserDetails userDetails);
+
     // 상품 등록
     void registerGoods(GoodsRequestDTO goodsRequestDTO, MultipartFile uploadImg, HttpServletRequest request) throws IOException;
 
@@ -37,10 +40,6 @@ public interface GoodsService {
         
     // 상품 삭제
     void deleteGoods(CustomUserDetails userDetails, GoodsRequestDTO goodsRequestDTO);
-
-
-     // 결제페이지 - 고객 주소 가져오기
-    ResponseEntity<?> findMemberAddress(CustomUserDetails userDetails);
 
     //배너 가져오기(조해민)
     public List<BannerDTO> bannerList();
