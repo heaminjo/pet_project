@@ -49,11 +49,13 @@ const GoodsApi = {
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상  품 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // <GoodsList /> 전체 상품 리스트 출력 (메인) (완료)
-  showGoods: async () => {
+  getGoodsPageList: async (pages) => {
+    alert(`getGoodsPageList() 호출됨, pages = ${JSON.stringify(pages)}`);
     try {
-      const result = await instance.get('/goods/list');
+      const result = await instance.post(`/goods/list`, pages);
       if (result.data != null) {
-        alert(`상품 리스트 호출 완료 => ${JSON.stringify(result.data)}`);
+        console.log('📦 응답 결과:', result);
+        alert(`getGoodsPageList() 호출됨, result = ${result.data}`);
         return result.data;
       }
     } catch (err) {}

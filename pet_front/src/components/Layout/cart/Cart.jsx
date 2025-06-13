@@ -8,6 +8,7 @@ export default function Cart() {
   const navigate = useNavigate();
   // const cartImage1 = process.env.PUBLIC_URL + '/images/pic1.png';
   const seller = process.env.PUBLIC_URL + '/images/avatar.png';
+  const imgUrl = 'http://localhost:8080/resources/webapp/userImages/';
   const deliverPrice = 3000; // 배달료 (현재 고정)
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상 태 변 수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -171,7 +172,7 @@ export default function Cart() {
                     <input type='checkbox' checked={checked[item.goodsId] || false} onChange={() => handleCheckboxChange(item.goodsId)} style={{ width: '20px', height: '20px', cursor: 'pointer' }} required />
                     &nbsp;&nbsp;&nbsp;
                   </label>
-                  <img src={`http://localhost:8080/resources/webapp/goodsImages/${item.imageFile}`} alt={item.goodsName} className='prodimg' onClick={() => navigate('/goods/order', { state: { goods: item } })} />
+                  <img src={`${imgUrl}${item.imageFile}`} alt={item.goodsName} className='prodimg' onClick={() => navigate('/goods/order', { state: { goods: item } })} />
                 </div>
                 <div className='prodright'>
                   <div>

@@ -27,7 +27,7 @@ public interface GoodsService {
     ResponseEntity<?> favorite(Long goods_id, CustomUserDetails userDetails);
 
     // 상품 리스트 출력 (메인)
-    ResponseEntity<?> showGoodsList();
+    ResponseEntity<?> showGoodsList(PageRequestDTO pageRequestDTO);
 
     // 결제페이지 - 고객 주소 가져오기
     ResponseEntity<?> findMemberAddress(CustomUserDetails userDetails);

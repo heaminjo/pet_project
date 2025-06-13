@@ -26,9 +26,9 @@ public class OrderController {
 
     // <OrderDetail /> : 주문 리스트
     @PostMapping("/detail")
-    public ResponseEntity<?> orderList(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody PageRequestDTO dto) {
+    public ResponseEntity<?> orderList(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody PageRequestDTO pageRequestDTO) {
         log.info("** GoodsController => orderList() 실행됨 **");
-        return orderDetailService.orderList(userDetails, dto);
+        return orderDetailService.orderList(userDetails, pageRequestDTO);
     }
 
     // 결제페이지 - 고객 주소 가져오기

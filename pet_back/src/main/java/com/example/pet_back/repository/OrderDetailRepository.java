@@ -13,5 +13,5 @@ import java.util.List;
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> {
     @Transactional
     @Query("SELECT od FROM OrderDetail od WHERE od.orders.orderId IN :order_id")
-    Page<OrderDetail> findAllByOrderIdList(@Param("order_id") List<Long> orderId);
+    Page<OrderDetail> findAllByOrderIdList(@Param("order_id") List<Long> orderId, Pageable pageable);
 }

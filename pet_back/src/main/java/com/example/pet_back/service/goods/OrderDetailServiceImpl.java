@@ -73,7 +73,7 @@ public class OrderDetailServiceImpl implements OrderDetailService{
         log.info("** GoodsServiceImpl Orders ID List **");
 
         // 페이징된 OrderDetail 목록 조회 ★★★★★
-        Page<OrderDetail> orderDetailPage = orderDetailRepository.findAllByOrderIdList(orderIdList);
+        Page<OrderDetail> orderDetailPage = orderDetailRepository.findAllByOrderIdList(orderIdList, pageable);
         log.info("** GoodsServiceImpl orderDetailPage 조회완료 **");
 
         // 5. Map (goodsId/GOODS) & (orderId/ORDERS)

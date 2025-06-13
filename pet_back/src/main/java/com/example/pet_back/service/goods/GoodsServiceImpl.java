@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -92,8 +93,21 @@ public class GoodsServiceImpl implements GoodsService {
 
     // 상품리스트 출력
     @Override
-    public ResponseEntity<?> showGoodsList() {
+    public ResponseEntity<?> showGoodsList(PageRequestDTO pageRequestDTO) {
         log.info("** GoodsServiceImpl 실행됨 **");
+        // 페이징
+        // 1. 정렬 (최신)
+        Sort sort = pageRequestDTO.getSortBy().equals("desc") ? // desc라면
+                Sort.by("regDate").descending() // regDate 필드 기준으로 desc
+                : Sort.by("regDate").ascending();
+
+        // 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(), sort);
+        Page<Goods> page = goodsRepository.findAll(pageable); // CartList
+
+        // 3. Goods
+
+
         List<Goods> goodsEntities = goodsRepository.findAll();
 
         // Entity 리스트 -> DTO 리스트 변환:  stream + map + collect 조합 사용
