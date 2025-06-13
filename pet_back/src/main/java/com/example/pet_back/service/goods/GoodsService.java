@@ -1,7 +1,6 @@
 package com.example.pet_back.service.goods;
 
 import com.example.pet_back.domain.admin.BannerDTO;
-import com.example.pet_back.domain.admin.BannerInsertDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.goods.CategoryResponseDTO;
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
@@ -13,6 +12,7 @@ import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -49,8 +49,5 @@ public interface GoodsService {
 
     //상품 페이징 목록(조해민)
     public PageResponseDTO<GoodsSimpleDTO> goodsPageList(PageRequestDTO dto);
-
-    //배너 추가
-    public ApiResponse bannerInsert(BannerInsertDTO dto);
 
 }

@@ -2,14 +2,17 @@ package com.example.pet_back.controller;
 
 
 import com.example.pet_back.domain.admin.BannerDTO;
-import com.example.pet_back.domain.admin.BannerInsertDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.goods.*;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
+
 import com.example.pet_back.service.goods.GoodsService;
+
+import com.example.pet_back.service.ImageService;
+
 import com.example.pet_back.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +33,8 @@ import java.util.List;
 public class GoodsController {
 
     private final GoodsService goodsService;
+    private final MemberService memberService;
+    private final ImageService imageService;
 
     // 상품 상세정보
     @GetMapping("/detail/{goods_id}")
@@ -128,8 +133,8 @@ public class GoodsController {
 
     //배너 추가(조해민)
     @PostMapping("/banner/insert")
-    public ResponseEntity<ApiResponse> goodsPageList(@RequestBody BannerInsertDTO dto){
-        return ResponseEntity.ok(goodsService.bannerInsert(dto));
+    public ResponseEntity<ApiResponse> goodsPageList(@RequestParam ("file") MultipartFile file,@RequestParam("position") int position){
+        return ResponseEntity.ok(imageService.bannerInsert(file,position));
     }
 
 }

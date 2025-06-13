@@ -1,25 +1,27 @@
-import axios from 'axios';
-import instance from '../api/axiosInstance'; // 인스턴스 불러오기
+import axios from "axios";
+import instance from "../api/axiosInstance"; // 인스턴스 불러오기
 
-const KH_DOMAIN = 'http://localhost:8080';
+const KH_DOMAIN = "http://localhost:8080";
 const GoodsApi = {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 장 바 구 니 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 장바구니 추가
   addToCart: async (goods) => {
     //alert(`장바구니 담기 => ${goods}`);
 
-    console.log(`장바구니 담기 시도 => ${goods.goodsId}, 수량: ${goods.quantity}`);
-    const result = await instance.post('/cart/add', goods);
+    console.log(
+      `장바구니 담기 시도 => ${goods.goodsId}, 수량: ${goods.quantity}`
+    );
+    const result = await instance.post("/cart/add", goods);
     try {
       if (result.data != null) {
-        console.log('장바구니 담기 완료');
+        console.log("장바구니 담기 완료");
         return result.data;
       } else {
-        console.log('장바구니 담기 실패');
+        console.log("장바구니 담기 실패");
       }
     } catch (err) {
-      console.error('장바구니 추가 실패:', err);
-      alert('장바구니 추가 중 에러가 발생했습니다.');
+      console.error("장바구니 추가 실패:", err);
+      alert("장바구니 추가 중 에러가 발생했습니다.");
     }
   },
   // // <Cart />
@@ -54,7 +56,7 @@ const GoodsApi = {
     try {
       const result = await instance.post(`/goods/list`, pages);
       if (result.data != null) {
-        console.log('📦 응답 결과:', result);
+        console.log("📦 응답 결과:", result);
         alert(`getGoodsPageList() 호출됨, result = ${result.data}`);
         return result.data;
       }
@@ -64,9 +66,9 @@ const GoodsApi = {
   // <Goods />
   regGoods: async (formData) => {
     try {
-      const result = await instance.post('/goods/register', formData, {
+      const result = await instance.post("/goods/register", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       });
       if (result.data != null) {
@@ -74,14 +76,14 @@ const GoodsApi = {
         return result.data;
       }
     } catch (err) {
-      console.error('상품 등록 실패:', err);
-      alert('상품 등록 중 에러가 발생했습니다.');
+      console.error("상품 등록 실패:", err);
+      alert("상품 등록 중 에러가 발생했습니다.");
     }
   },
 
   // 상품상세정보 (단일)
   goodsDetail: async () => {
-    const result = await instance.get('/goods/detail/${goods_id}');
+    const result = await instance.get("/goods/detail/${goods_id}");
     return result.data;
   },
 
@@ -122,7 +124,15 @@ const GoodsApi = {
   },
   //배너 추가
   bannerInsert: async (newBanner) => {
-    const result = await axios.post(`${KH_DOMAIN}/goods/banner/insert`, newBanner);
+    const formData = new FormData();
+    formData.append("file", newBanner.imageFile);
+    formData.append("position", newBanner.position.toString());
+
+    const result = await axios.post(
+      `${KH_DOMAIN}/goods/banner/insert`,
+      formData
+    );
+
     return result.data;
   },
 };

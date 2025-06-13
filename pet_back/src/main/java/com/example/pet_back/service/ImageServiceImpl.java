@@ -2,7 +2,10 @@ package com.example.pet_back.service;
 
 import com.example.pet_back.config.FileUploadProperties;
 import com.example.pet_back.domain.custom.ApiResponse;
+import com.example.pet_back.entity.Goodsbanner;
 import com.example.pet_back.entity.Member;
+import com.example.pet_back.repository.GoodsBannerRepository;
+import com.example.pet_back.repository.GoodsRepository;
 import com.example.pet_back.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +27,7 @@ import java.util.UUID;
 public class ImageServiceImpl implements ImageService {
     private final MemberRepository memberRepository;
     private final FileUploadProperties fileUploadProperties;
-
+    private final GoodsBannerRepository goodsBannerRepository;
     //물리적 저장 위치 경로
     public String getRealPath() {
         //반환
@@ -43,10 +46,8 @@ public class ImageServiceImpl implements ImageService {
         return realPath;
     }
 
-    //이미지 변경
-    @Override
-    public ResponseEntity<?> memberUploadImage(Long id, MultipartFile file) {
-        //비어있는지 확인
+    //파일 저장
+    public String saveImage(MultipartFile file)  {
         if (file.isEmpty()) return null;
 
         //값 제대로 받아왔는지 체크
@@ -69,17 +70,39 @@ public class ImageServiceImpl implements ImageService {
 
             //실제 파일 저장 (multipart파일을 File 객체로 복사)
             file.transferTo(new File(savePath));
+            return saveFileName;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    //이미지 변경
+    @Override
+    public ResponseEntity<?> memberUploadImage(Long id, MultipartFile file) {
+        //파일 저장 하고 파일 이름명 반환받기
+        String saveFileName = saveImage(file);
 
             //DB에 저장
             Member member = memberRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
             member.setImageFile(saveFileName);
             memberRepository.save(member);
 
-        } catch (IOException e) {
-            return ResponseEntity.ok(new ApiResponse<String>(false, "이미지 변경을 실패하였습니다."));
-        }
         String imageURL = fileUploadProperties.getUrl() + saveFileName;
         return ResponseEntity.ok(new ApiResponse<String>(true, imageURL, "이미지 변경이 완료되었습니다."));
 
+    }
+
+    //배너 추가
+    @Override
+    public ApiResponse bannerInsert(MultipartFile file,int position) {
+        String saveFileName = saveImage(file);
+
+        Goodsbanner goodsbanner = new Goodsbanner();
+        goodsbanner.setImageFile(saveFileName);
+        goodsbanner.setPosition(position);
+
+        goodsBannerRepository.save(goodsbanner);
+        return new ApiResponse(true,position+"번째 배너에 추가 돼었습니다.");
     }
 }

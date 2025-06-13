@@ -10,8 +10,9 @@ export default function MyEdit() {
   const navigate = useNavigate();
 
   const [selectImage, setSelectImage] = useState(null); //선택 프로필(서버용)
-  const [selectView, setSelectView] = useState(null); //선택택
   const [prevImage, setPrevImage] = useState(null); //이전 프로필필
+
+  const [selectView, setSelectView] = useState(null); //선택택
   const { user, setUser } = useOutletContext();
 
   // import { useNavigate, useOutletContext } from "react-router-dom";

@@ -2,7 +2,6 @@ package com.example.pet_back.mapper;
 
 import com.example.pet_back.config.FileUploadProperties;
 import com.example.pet_back.domain.admin.BannerDTO;
-import com.example.pet_back.domain.admin.BannerInsertDTO;
 import com.example.pet_back.domain.goods.CategoryResponseDTO;
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.domain.goods.GoodsResponseDTO;
@@ -37,6 +36,7 @@ public interface GoodsMapper {
     List<Goods> toEntityList(List<GoodsResponseDTO> goodsList);
 
     //배너 DTO 변환
+    @Mapping(source = "imageFile" ,target = "imageFile",qualifiedByName = "imageFileUrl")
     public BannerDTO bannerToDto(Goodsbanner goodsbanner);
 
     //카테고리 DTO 변환
@@ -56,5 +56,4 @@ public interface GoodsMapper {
         return category.getCategoryName();
     }
 
-    public Goodsbanner bannerToEntity(BannerInsertDTO dto);
 }
