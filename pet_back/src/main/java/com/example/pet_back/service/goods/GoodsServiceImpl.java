@@ -35,6 +35,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     // Reposiotory
     private final GoodsRepository goodsRepository;
+    private final OrderRepository orderRepository;
     private final MemberRepository memberRepository;
     private final FavoriteRepository favoriteRepository;
 
