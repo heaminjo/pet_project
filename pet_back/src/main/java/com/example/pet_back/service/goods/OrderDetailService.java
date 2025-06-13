@@ -1,0 +1,13 @@
+package com.example.pet_back.service.goods;
+
+import com.example.pet_back.domain.page.PageRequestDTO;
+import com.example.pet_back.jwt.CustomUserDetails;
+import org.springframework.http.ResponseEntity;
+
+public interface OrderDetailService {
+
+    // 회원이 주문한 OrderDetail
+    public ResponseEntity<?> orderList(CustomUserDetails userDetails, PageRequestDTO dto);
+
+
+}

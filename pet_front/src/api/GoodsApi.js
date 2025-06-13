@@ -29,11 +29,22 @@ const GoodsApi = {
   //   return result.data;
   // },
   // <Cart /> : 페이징 추가
-  getPageList: async (pages) => {
+  getCartPageList: async (pages) => {
     alert(`getPageList() 호출됨, pages = ${JSON.stringify(pages)}`);
     const result = await instance.post(`/cart/list`, pages);
     alert(`getPageList() 호출됨, result = ${result.data}`);
     return result.data;
+  },
+
+  // 찜
+  favorite: async (goodsId) => {
+    try {
+      const result = await instance.post(`/goods/favorite/${goodsId}`);
+      if (result.data != null) {
+        alert(`찜 등록 완료 => ${JSON.stringify(result.data)}`);
+        return result.data;
+      }
+    } catch (err) {}
   },
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상  품 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -43,19 +54,6 @@ const GoodsApi = {
       const result = await instance.get('/goods/list');
       if (result.data != null) {
         alert(`상품 리스트 호출 완료 => ${JSON.stringify(result.data)}`);
-        return result.data;
-      }
-    } catch (err) {}
-  },
-
-  // (order_id)로 주문한 상품의 오더정보 / 상품정보
-  customerGoodsHistory: async (orderIds) => {
-    console.log('🔥 주문 ID 리스트:', orderIds);
-    alert('GoodsApi customerGoodsHistory');
-    try {
-      const result = await instance.post('/goods/orderinfo', orderIds);
-      if (result.data != null) {
-        console.log(`구매이력 상품 호출 완료 => ${JSON.stringify(result.data)}`);
         return result.data;
       }
     } catch (err) {}
@@ -82,55 +80,6 @@ const GoodsApi = {
   // 상품상세정보 (단일)
   goodsDetail: async () => {
     const result = await instance.get('/goods/detail/${goods_id}');
-    return result.data;
-  },
-
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 주  문 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // <Order />
-  order: async () => {
-    const result = await instance.post(`/goods/order`);
-    return result.data;
-  },
-
-  // <OrderDetail />
-  orderList: async () => {
-    const result = await instance.get('/goods/ordered');
-    return result.data;
-  },
-
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 결  제 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // 결제
-  pay: async (payload) => {
-    payload.goodsList.forEach((item) => {
-      console.log(`결제 시도 => 상품 ID: ${item.goodsId}, 상품 수량: ${item.quantity}`);
-    });
-    const result = await instance.post(`/goods/pay`, payload);
-    try {
-      if (result != null) {
-        return result.data;
-      } else {
-        alert(`GoodsApi.pay() null`);
-      }
-    } catch (err) {
-      console.error('오류 발생:', err);
-      alert('GoodsApi.pay() 수행중 에러발생.');
-    }
-
-    return result.data;
-    //console.log(JSON.stringify(payload, null, 2));
-  },
-  findAddress: async () => {
-    const result = await instance.get(`/goods/findaddress`);
-    try {
-      if (result != null) {
-        return result.data;
-      } else {
-        alert(`GoodsApi.findAddress() null`);
-      }
-    } catch (err) {
-      console.error('오류 발생:', err);
-      alert('GoodsApi.findAddress() 수행중 에러발생.');
-    }
     return result.data;
   },
 

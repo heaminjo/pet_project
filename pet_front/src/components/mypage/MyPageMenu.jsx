@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 export default function MypageMenu() {
   const navigate = useNavigate();
@@ -35,40 +35,36 @@ export default function MypageMenu() {
   `;
   return (
     <MyPageMenuComp>
-      <div className="side_menu">
-        <div className="sub_menu" id="user_menu">
-          <p className="menu_title">내 정보</p>
+      <div className='side_menu'>
+        <div className='sub_menu' id='user_menu'>
+          <p className='menu_title'>내 정보</p>
           <ul>
             <li>
-              <span onClick={() => navigate("/user/mypage/myinfo")}>
-                내 정보
-              </span>
+              <span onClick={() => navigate('/user/mypage/myinfo')}>내 정보</span>
             </li>
             <li>
-              <span onClick={() => navigate("/user/mypage/myedit")}>
-                회원 수정
-              </span>
+              <span onClick={() => navigate('/user/mypage/myedit')}>회원 수정</span>
             </li>
             <li>
-              <span onClick={() => navigate("/user/mypage/updatepw")}>
-                비밀번호 변경
-              </span>
+              <span onClick={() => navigate('/user/mypage/updatepw')}>비밀번호 변경</span>
             </li>
             <li>
-              <span onClick={() => navigate("/user/mypage/withdrawal")}>
-                회원 탈퇴
-              </span>
+              <span onClick={() => navigate('/user/mypage/withdrawal')}>회원 탈퇴</span>
             </li>
           </ul>
         </div>
-        <div className="sub_menu" id="goods_menu">
-          <p className="menu_title">상품</p>
+        <div className='sub_menu' id='goods_menu'>
+          <p className='menu_title'>상품</p>
           <ul>
             <li>
-              <span>찜</span>
+              <span onClick={() => navigate('/user/mypage/favorite')} style={{ color: 'red', fontWeight: 'bold' }}>
+                찜
+              </span>
             </li>
             <li>
-              <span onClick={() => navigate("/user/cart/list")}>장바구니</span>
+              <span onClick={() => navigate('/user/mypage/cart/list')} style={{ color: 'red', fontWeight: 'bold' }}>
+                장바구니
+              </span>
             </li>
             <li>
               <span>최근 본 목록</span>
@@ -77,17 +73,17 @@ export default function MypageMenu() {
               <span>내 후기</span>
             </li>
             <li>
-              <span onClick={() => navigate("/user/mypage/addr")}>
+              <span onClick={() => navigate('/user/mypage/addr')} style={{ color: 'red', fontWeight: 'bold' }}>
                 배송지 관리
               </span>
             </li>
           </ul>
         </div>
-        <div className="sub_menu" id="order_menu">
-          <p className="menu_title">주문 / 배송</p>
+        <div className='sub_menu' id='order_menu'>
+          <p className='menu_title'>주문 / 배송</p>
           <ul>
             <li>
-              <span onClick={() => navigate("/user/orderdetail")}>
+              <span onClick={() => navigate('/user/mypage/orderdetail')} style={{ color: 'red', fontWeight: 'bold' }}>
                 주문 / 배송 내역
               </span>
             </li>
@@ -96,11 +92,13 @@ export default function MypageMenu() {
             </li>
           </ul>
         </div>
-        <div className="sub_menu" id="border_menu">
-          <p className="menu_title">내 게시물</p>
+        <div className='sub_menu' id='border_menu'>
+          <p className='menu_title'>내 게시물</p>
           <ul>
             <li>
-              <span onClick={() => navigate("/user/mypage/myboardlist")}>내 게시물 목록</span>
+              <span onClick={() => navigate('/user/mypage/myboardlist')} style={{ color: 'red', fontWeight: 'bold' }}>
+                내 게시물 목록
+              </span>
             </li>
             <li>
               <span>북마크</span>

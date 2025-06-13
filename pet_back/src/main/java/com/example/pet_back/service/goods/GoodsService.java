@@ -1,4 +1,4 @@
-package com.example.pet_back.service;
+package com.example.pet_back.service.goods;
 
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.domain.goods.PayRequestDTO;
@@ -13,7 +13,10 @@ import java.util.List;
 public interface GoodsService {
 
     // 상품 상세정보
-    public ResponseEntity<?> selectOne(Long goods_id);
+    ResponseEntity<?> selectOne(Long goods_id);
+
+    // 찜
+    ResponseEntity<?> favorite(Long goods_id, CustomUserDetails userDetails);
 
     // 상품 리스트 출력 (메인)
     ResponseEntity<?> showGoodsList();
@@ -21,15 +24,11 @@ public interface GoodsService {
     // 상품 등록
     void registerGoods(GoodsRequestDTO goodsRequestDTO, MultipartFile uploadImg, HttpServletRequest request) throws IOException;
 
-    // 상품 결제
-    ResponseEntity<?> payGoods(CustomUserDetails userDetails, PayRequestDTO dto);
+    // 상품 수정
+    void updateGoods(CustomUserDetails userDetails, GoodsRequestDTO goodsRequestDTO);
+        
+    // 상품 삭제
+    void deleteGoods(CustomUserDetails userDetails, GoodsRequestDTO goodsRequestDTO);
 
-    // 주문 리스트
-    ResponseEntity<?> orderList(CustomUserDetails userDetails);
 
-    // 특정 고객이 한번이라도 주문한 적 있는 상품의 리스트
-    public ResponseEntity<?> customerGoodsHistory(CustomUserDetails userDetails, List<Long> orderIdList);
-
-    // 결제페이지 - 고객 주소 가져오기
-    public ResponseEntity<?> findMemberAddress(CustomUserDetails userDetails);
 }

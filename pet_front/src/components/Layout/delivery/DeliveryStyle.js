@@ -3,7 +3,6 @@ import styled from 'styled-components';
 const DeliveryComp = styled.header`
   .container {
     margin: 0 auto;
-    margin-top: 150px;
     width: 900px;
     height: 1200px;
     display: flex;
