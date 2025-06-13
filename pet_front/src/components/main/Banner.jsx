@@ -36,13 +36,19 @@ function Banner() {
   return (
     <BannerComp>
       <div className="slider-container">
-        <Slider {...settings} ref={sliderRef}>
-          {banner.map((b) => (
-            <div className="item" id="item_1">
-              <img src={b.imageFile} alt="d" />
-            </div>
-          ))}
-        </Slider>
+        {banner.length == 1 ? (
+          <div className="item" id="item_1">
+            <img src={banner[0]?.imageFile} alt="배너 이미지" />
+          </div>
+        ) : (
+          <Slider {...settings} ref={sliderRef}>
+            {banner.map((b) => (
+              <div className="item" id="item_1">
+                <img src={b.imageFile} alt="배너 이미지" />
+              </div>
+            ))}
+          </Slider>
+        )}
       </div>
     </BannerComp>
   );
