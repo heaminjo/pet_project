@@ -2,7 +2,8 @@ const { default: styled } = require("styled-components");
 
 const boardDetailContainer = styled.div`
   margin-top: 200px;
-  height: 1000px;
+  height: auto;
+  min-height: 1500px;
   width: 100%;
   .boardDetailContainer {
     div {

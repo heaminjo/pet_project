@@ -29,7 +29,7 @@ function getMemberIdFromToken(token) {
   }
 }
 
-export default function BoardDetail({ dto }) {
+export default function BoardDetail() {
   const { category, board_id } = useParams(); // URL 파라미터에서 게시글 ID 추출
   const [post, setPost] = useState(null);
   const [error, setError] = useState(null);
@@ -213,14 +213,18 @@ export default function BoardDetail({ dto }) {
           작성자: {post.name} | 조회수: {post.views} | 작성일: {post.reg_date}
         </div>
         <div
-          style={{ minHeight: "200px", fontSize: "18px", marginTop: "20px" }}
+          style={{ minHeight: "100px", fontSize: "18px", marginTop: "20px", marginBottom: "20px" }}
         >
           {post.content}
         </div>
-        <div>
-          {/* 이미지 표시 부분 */}
+        <div className="image-gallery" style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
           {post?.imageFileNames && post.imageFileNames.map((fileName, idx) => (
-          <img key={idx} src={`/uploads/${fileName}`} alt={`img${idx}`} />
+            <img
+              key={idx}
+              src={`http://localhost:8080/resources/webapp/userImages/${fileName}`}
+              alt={`img${idx}`}
+              style={{ width: "200px", height: "auto", borderRadius: "8px", objectFit: "cover" }}
+            />
           ))}
         </div>
         {canEditOrDelete && (
@@ -241,7 +245,7 @@ export default function BoardDetail({ dto }) {
           onAddComment={handleAddComment}
         />
         <br></br><br></br>
-        <h3>댓글</h3><br></br>
+        <h3>댓글 ({comments.length})</h3><br></br>
         <CommentList 
           comments={comments}
           onDeleteComment={handleDeleteComment}

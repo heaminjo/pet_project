@@ -4,13 +4,19 @@ import com.example.pet_back.domain.board.BoardDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.jwt.TokenProvider;
+import com.example.pet_back.service.ImageServiceImpl;
 import com.example.pet_back.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/board")
@@ -20,6 +26,7 @@ public class BoardController {
     //d
     private final BoardService boardService;
     private final TokenProvider tokenProvider;
+    private final ImageServiceImpl imageService;
 
 
     // 토큰에서 member_id 추출하는 유틸 함수
@@ -136,5 +143,41 @@ public class BoardController {
         return ResponseEntity.ok(responseDTO);
     }
 
+    @PostMapping("/uploadimage")
+    public ResponseEntity<List<String>> uploadImage(@RequestParam("files") List<MultipartFile> files) {
+
+        //1. 저장 경로 지정
+        String uploadDir = imageService.getRealPath();
+
+        //2. 파일명 중복 방지 (UUID 등으로 랜덤 이름)
+        List<String> savedFileNames = new ArrayList<>();
+
+        for (MultipartFile file : files) {
+            String originalFileName = file.getOriginalFilename();
+            String extension = "";
+
+            if (originalFileName != null && originalFileName.contains(".")) {
+                extension = originalFileName.substring(originalFileName.lastIndexOf("."));
+            }
+
+            String savedFileName = UUID.randomUUID() + extension;
+
+            File dest = new File(uploadDir + savedFileName);
+
+            //3. 폴더 없으면 생성
+            dest.getParentFile().mkdirs();
+
+            try {
+                //4. 파일 저장
+                file.transferTo(dest);
+
+                savedFileNames.add(savedFileName);
+
+            } catch (IOException e) {
+                return ResponseEntity.internalServerError().body(null);
+            }
+        }
+        return ResponseEntity.ok(savedFileNames);
+    }
 
 }

@@ -9,32 +9,27 @@ export default function BoardInsertForm() {
   const navigate = useNavigate();
   const [category, setCategory] = useState("default"); // 기본값 설정
   const [role, setRole] = useState(localStorage.getItem("role") || "");
-  const [imageFile, setImageFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imageFiles, setImageFiles] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
 
   // 이미지 파일 선택 핸들러
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setImageFile(file);
+    const files = Array.from(e.target.files);
+    setImageFiles(files);
   
     // 미리보기
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => setImagePreview(reader.result);
-      reader.readAsDataURL(file);
-    } else {
-      setImagePreview(null);
-    }
+    const previews = files.map( file => URL.createObjectURL(file) );
+    setImagePreviews(previews);
   };
 
   // 이미지 업로드 함수
   const handleImageUpload = async () => {
-    if (!imageFile) return null;
+    if (!imageFiles || imageFiles.length === 0) return [];
     const formData = new FormData();
-    formData.append("file", imageFile);
+    imageFiles.forEach( file => formData.append("files", file) );
   
     try {
-      const res = await axios.post("/api/uploadimage", formData, {
+      const res = await axios.post("/board/uploadimage", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       return res.data; // 서버에서 반환한 savedFileName
@@ -55,14 +50,14 @@ export default function BoardInsertForm() {
     e.preventDefault();
 
     //1. 이미지 먼저 업로드
-    let savedFileName = null;
-    if (imageFile) {
-      savedFileName = await handleImageUpload();
-      if (!savedFileName) return;   //업로드 실패 시 중단
+    let savedFileNames = [];
+    if (imageFiles && imageFiles.length > 0) {
+      savedFileNames = await handleImageUpload();
+      if (!savedFileNames || savedFileNames.length === 0) return;   //업로드 실패 시 중단
     }
     
     //2. 게시글 정보 + 이미지 파일명 전송
-    let data = { title, content, category, imageFileNames: savedFileName ? [savedFileName] : [] };
+    let data = { title, content, category, imageFileNames: savedFileNames };
     let url = `/board/insertBoard/${category}`;
 
     try {
@@ -148,11 +143,14 @@ export default function BoardInsertForm() {
               type="file"
               id="image"
               accept="image/*"
+              multiple
               onChange={handleImageChange}
             />
-            {imagePreview && (
+            {imagePreviews.length > 0 && (
               <div className="imagePreview">
-                <img src={imagePreview} alt="미리보기" width={200} />
+                {imagePreviews.map((src, idx) => (
+                  <img key={idx} src={src} alt={`미리보기${idx}`} width={200} />
+                ))}
               </div>
             )}
           </div>

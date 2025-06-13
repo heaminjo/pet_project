@@ -19,6 +19,7 @@ function CommentForm({ comment, setComment, onAddComment}) {
             type="text"
             value={comment}
             onChange={(e) => setComment(e.target.value)}
+            onKeyDown={e => {if (e.key === "Enter") onAddComment(); }}
             placeholder="댓글을 입력하세요"
             maxLength={ 200 }>
           </input>
