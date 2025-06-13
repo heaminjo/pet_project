@@ -38,15 +38,30 @@ export default function Login() {
     const result = await MemberApi.kakaoLogin(code);
     if (result.success) {
       alert("로그인 성공!");
+
       localStorage.setItem("loginName", result.data.memberName);
       localStorage.setItem("accessToken", result.data.accessToken);
       localStorage.setItem("role", result.data.role);
+
       //전역변수에 로그인 여부 저장
       setIsLogin(true);
-      MemberApi.lastLogin();
+
+      //마지막 로그인 시간 업데이트 및 업그레이드 유무 확인
+      loginUpdate();
       navigate("/");
     } else {
-      alert("로그인 실패");
+      alert(result.message);
+    }
+  };
+
+  //마지막 로그인 시간 업데이트 및 업그레이드 유무 확인
+  const loginUpdate = async () => {
+    const result = await MemberApi.lastLogin();
+    console.log(result);
+    if (result.data) {
+      console.log("다음 등급 로그인 횟수 완성!");
+    } else {
+      console.log("아직 조건이 만족 ㄴ");
     }
   };
 
@@ -88,7 +103,8 @@ export default function Login() {
       localStorage.setItem("role", result.data.role);
       //전역변수에 로그인 여부 저장
       setIsLogin(true);
-      MemberApi.lastLogin();
+      loginUpdate();
+
       if (redirectTo) {
         // 리다이렉트할 경로가 있다면 해당 경로로 이동
         navigate(redirectTo);
@@ -97,7 +113,7 @@ export default function Login() {
         navigate("/");
       }
     } else {
-      alert("로그인 실패");
+      alert(result.message);
     }
   };
 
