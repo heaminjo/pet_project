@@ -59,6 +59,7 @@ public class BoardServiceImpl implements BoardService {
         int result = boardMapper.insertBoard(dto);
         // 여러 장 이미지 저장
         List<String> fileNames = dto.getImageFileNames();
+
         if (fileNames != null && !fileNames.isEmpty()) {
             for (int i = 0; i < fileNames.size(); i++) {
                 boardMapper.insertBoardImage(dto.getBoard_id(), fileNames.get(i), i + 1);
