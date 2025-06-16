@@ -31,7 +31,7 @@ const GoodsApi = {
     return result.data;
   },
 
-  // 찜
+  // 찜 추가/해제
   favorite: async (goodsId) => {
     try {
       const result = await instance.post(`/goods/favorite/${goodsId}`);
@@ -74,6 +74,20 @@ const GoodsApi = {
   goodsDetail: async () => {
     const result = await instance.get('/goods/detail/${goods_id}');
     return result.data;
+  },
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 리  뷰 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // 리뷰목록 (단일 상품)
+  getReviewsPageList: async (pages, goodsId) => {
+    alert(`getPageList() 호출됨, goodsId = ${JSON.stringify(goodsId)}`);
+    const result = await instance.post(`/goods/reviews/${goodsId}`, pages);
+    if (result.data != null) {
+      console.log('getReviewsPageList 응답 결과:', result.data);
+      return result.data;
+    } else {
+      console.log('getReviewsPageList 호출 중 오류 발생:', result.data);
+      return result.data;
+    }
   },
 
   // // 상품등록 (기존 axios 사용한 코드 - 예시)

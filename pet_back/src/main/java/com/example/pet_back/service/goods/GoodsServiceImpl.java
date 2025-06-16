@@ -1,6 +1,7 @@
 package com.example.pet_back.service.goods;
 
 import com.example.pet_back.config.FileUploadProperties;
+import com.example.pet_back.constant.ROLE;
 import com.example.pet_back.domain.admin.BannerDTO;
 import com.example.pet_back.domain.admin.BannerInsertDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
@@ -45,6 +46,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     // Reposiotory
     private final GoodsRepository goodsRepository;
+    private final ReviewRepository reviewRepository;
     private final OrderRepository orderRepository;
     private final MemberRepository memberRepository;
     private final FavoriteRepository favoriteRepository;
@@ -57,9 +59,9 @@ public class GoodsServiceImpl implements GoodsService {
 
     // 상품상세정보
     @Override
-    public ResponseEntity<?> selectOne(Long goods_id) {
+    public ResponseEntity<?> selectOne(Long goodsId) {
         log.info("** GoodsServiceImpl 실행됨 **");
-        Goods goods = goodsRepository.findById(goods_id).get();
+        Goods goods = goodsRepository.findById(goodsId).get();
         return ResponseEntity.status(HttpStatus.OK).body(goods);
     }
 
@@ -85,6 +87,45 @@ public class GoodsServiceImpl implements GoodsService {
         }
     }
 
+    // 리뷰
+    @Override
+    @Transactional
+    public  ResponseEntity<?> reviews(Long goodsId, PageRequestDTO pageRequestDTO){
+        log.info("** GoodsServiceImpl 실행됨 **");
+        // 페이징
+        // 1. 정렬 조건 설정 :  (최신)
+        Sort sort = pageRequestDTO.getSortBy().equals("desc") ? // desc라면
+                Sort.by("regDate").descending() // regDate 필드 기준으로 desc
+                : Sort.by("regDate").ascending();
+
+        // 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(), sort);
+
+        log.info("** 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬 **");
+        // 3. Page<Review> 의 content (DTO에 SET)
+        Page<ReviewResponseDTO> reviewPage = reviewRepository.findAllByGoodsId(goodsId, pageable); // Review List
+
+        log.info("** 3. Page<Review> 의 content (DTO에 SET) **");
+        log.info("getContent: "+reviewPage.getContent());
+         // 4. PageResponseDTO
+        PageResponseDTO<ReviewResponseDTO> response = new PageResponseDTO<>(
+                reviewPage.getContent(),
+                pageRequestDTO.getPage(), // 클라이언트가 요청한 페이지
+                pageRequestDTO.getSize(), // 클라이언트가 요청한 수
+                reviewPage.getTotalElements(),
+                reviewPage.getTotalPages(),
+                reviewPage.hasNext(),
+                reviewPage.hasPrevious()
+        );
+        log.info("** 4. PageResponseDTO **");
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
+    }
+
+
+
+    // 고객의 배송지 정보
     @Override
     public ResponseEntity<?> findMemberAddress(CustomUserDetails userDetails){
         return ResponseEntity.status(HttpStatus.OK).body("구현중");
@@ -106,8 +147,17 @@ public class GoodsServiceImpl implements GoodsService {
 
         // 3. Page<Goods> 조회 완료
         Page<Goods> page = goodsRepository.findAll(pageable); // GoodsList
-
-        // 4. 스트림 사용하여 GoodsResponseDTO 리스트로 변환
+        // 키워드 유무
+        if(pageRequestDTO.getKeyword().isEmpty()){
+            //검색 x 전체 조회
+            log.info("전체 조회 합니다.");
+            page = goodsRepository.findAll(pageable);
+        }else if(pageRequestDTO.getType().equals("all")) { // 검색필터
+            // 검색 필터 : 키워드 & 카테고리
+            log.info("전체 필터로 검색합니다. keyword => ");
+            page = goodsRepository.findSearchList("%" + pageRequestDTO.getKeyword() + "%", pageRequestDTO.getCategory(), pageable);
+        }
+            // 4. 스트림 사용하여 GoodsResponseDTO 리스트로 변환
         List<GoodsResponseDTO> goodsResponseDTOList = page.getContent().stream() //
                 .map(goods -> GoodsResponseDTO.builder() //
                         .goodsId(goods.getGoodsId())

@@ -21,10 +21,13 @@ import java.util.List;
 public interface GoodsService {
 
     // 상품 상세정보
-    ResponseEntity<?> selectOne(Long goods_id);
+    ResponseEntity<?> selectOne(Long goodsId);
 
     // 찜
-    ResponseEntity<?> favorite(Long goods_id, CustomUserDetails userDetails);
+    ResponseEntity<?> favorite(Long goodsId, CustomUserDetails userDetails);
+
+    // 리뷰
+    ResponseEntity<?> reviews(Long goodsId, PageRequestDTO pageRequestDTO);
 
     // 상품 리스트 출력 (메인)
     ResponseEntity<?> showGoodsList(PageRequestDTO pageRequestDTO);

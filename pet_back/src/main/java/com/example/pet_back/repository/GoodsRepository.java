@@ -41,4 +41,6 @@ public interface GoodsRepository extends JpaRepository<Goods, Long> {
     Page<Goods> findSearchList(@Param("keyword") String keyword,
                                @Param("category") Long category,
                                Pageable pageable);
+
+
 }

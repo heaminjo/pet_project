@@ -46,25 +46,6 @@ export default function OrderDetail() {
       .catch((err) => {});
   };
 
-  // 주문 정보 가져옴 - Return Type : OrderResponseDTO List ~~~~~~~~~~~~~~
-  // const orderDetail = () => {
-  //   alert(`orderList 실행`);
-  //   // 회원이 주문한 전체내역 orderList
-  //   OrderApi.orderDetail() // 반환: OrderResponseDTO List
-  //     .then((response) => {
-  //       alert(`OrderApi.orderDetail() 성공 => ${response}`);
-  //       if (Array.isArray(response)) {
-  //         setInfo(response); // OrderDetail + Order + Goods 정보(일부) 리스트
-  //       } else {
-  //         console.error('비정상 응답:', response);
-  //         setInfo([]); // fallback
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       alert(`OrderApi.orderList() 에러 => ${err}`);
-  //     });
-  // };
-
   // 주문내역 리스트를 순회하며 날짜별로 그룹화 ~~~~~~~~~~~~~~~~~~~~
   const groupByDate = (info) => {
     const grouped = {};
@@ -86,7 +67,7 @@ export default function OrderDetail() {
   const getPageList = async () => {
     const pages = {
       page: page,
-      size: 2,
+      size: 5,
       sortBy: 'desc',
       keyword: keyword,
       type: type,

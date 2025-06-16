@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import OrderComp from './OrderStyle.js';
 import GoodsApi from '../../../api/GoodsApi';
 import { useLocation, useNavigate } from 'react-router-dom';
+import OrderTab from './OrderTab.jsx';
+import Review from './Review.jsx';
 
 export default function Order() {
   const navigate = useNavigate();
@@ -11,9 +13,15 @@ export default function Order() {
   const imgUrl = 'http://localhost:8080/resources/webapp/userImages/';
   const [buyQuantity, setBuyQuantity] = useState(1);
   const EMPTY_HEART = '🤍';
-  const FULL_HEART = '💖';
+  const FULL_HEART = '❤️';
   const [heart, setHeart] = useState('🤍');
   const [stars, setStars] = useState(); // ⭐
+
+  const data = [
+    { label: '품명', value: goods.goodsName },
+    { label: '크기 및 중량', value: goods.description },
+    { label: '제품 구성', value: '컨텐츠 참조' },
+  ];
 
   // 결제
   const pay = async (goods) => {
@@ -34,7 +42,7 @@ export default function Order() {
       .catch((err) => {});
   };
 
-  // 별점
+  // 별점 (상품의 총 별점)
   const renderIcons = (rating) => {
     const filledStars = '⭐'.repeat(Math.floor(rating)); // 반올림이나 소수점 무시
     setStars(filledStars);
@@ -47,7 +55,7 @@ export default function Order() {
       .then((response) => {
         // 상태 토글
         if (heart === EMPTY_HEART) {
-          setHeart('💖');
+          setHeart('❤️');
         } else if (heart === FULL_HEART) {
           setHeart('🤍');
         }
@@ -67,22 +75,23 @@ export default function Order() {
   return (
     <OrderComp>
       <div className='container'>
-        <h2>주문 페이지</h2>
         <section className='product'>
           <div className='left'>
-            <img src={`${imgUrl}${goods.imageFile}`} alt={goods.goods_name} className='prodimg' />
+            <img src={`${imgUrl}${goods.imageFile}`} alt={goods.goodsName} className='prodimg' />
           </div>
           <div className='right'>
             <div className='prodname' onClick={() => addFavorite()}>
               {goods.goodsName}&nbsp;&nbsp;{heart}
             </div>
-            <p className='rating'>{stars} 11,624개 상품평</p>
+            <p className='rating' style={{ color: 'red', fontSize: '12px' }}>
+              {stars}&nbsp;&nbsp;{'( ' + goods.reviewNum + ' 개 상품평 )'}
+            </p>
             <hr />
             <div className='prodprice'>
               {goods.price} 원<span className='prodprice2'>(1kg당 1000원)</span>
             </div>
             <hr />
-            <div className='seller'>
+            <div>
               <b>
                 판매자 &nbsp;&nbsp; <img src={prodImage} alt='상품이미지' className='sellerimg' /> &nbsp;&nbsp; 몽냥마켓
               </b>
@@ -96,32 +105,41 @@ export default function Order() {
             <div>
               <b>
                 <label>구매 수량</label>&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input type='number' min={1} max={goods.quantity} value={buyQuantity} onChange={(e) => setBuyQuantity(Number(e.target.value))} />
+                <input style={{ width: '80px', height: '20px' }} type='number' min={1} max={goods.quantity} value={buyQuantity} onChange={(e) => setBuyQuantity(Number(e.target.value))} />
               </b>
             </div>
             <br />
             <hr />
             <br />
-            <button onClick={() => addToCart(goods)}>장바구니</button>&nbsp;&nbsp;
-            <button onClick={() => pay(goods)}>바로구매</button>
+            <button className='btn1' onClick={() => addToCart(goods)}>
+              장바구니
+            </button>
+            &nbsp;&nbsp;
+            <button className='btn2' onClick={() => pay(goods)}>
+              바로구매
+            </button>
           </div>
         </section>
-
-        <section className='proddetail'>
-          <h2>상세페이지</h2>
-          <p>필수 표기정보</p>
-          <table>
+        <hr />
+        <div className='product-container'>
+          <table className='product-table'>
             <tbody>
-              <tr>
-                <th>품명</th>
-              </tr>
-              <tr>
-                <td></td>
-              </tr>
+              {data.map((item, idx) => (
+                <tr key={idx}>
+                  <th className='product-th'>{item.label}</th>
+                  <td className='product-td'>{item.value}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
-        </section>
-        <div className='reviews'>후기목록</div>
+
+          <hr />
+          <br />
+          <OrderTab reviewNum={goods.reviewNum} />
+          <div className='product-more'>필수 표기정보 더보기 ▼</div>
+          <h2>리뷰</h2>
+          <Review stars={stars} goodsId={goods.goodsId} reviewNum={goods.reviewNum} imgUrl={imgUrl} />
+        </div>
       </div>
     </OrderComp>
   );

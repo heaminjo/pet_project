@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @Log4j2
 @RequiredArgsConstructor // private final만
@@ -45,9 +46,18 @@ public class GoodsController {
         return goodsService.favorite(goodsId, userDetails);
     }
 
+    // 리뷰
+    @PostMapping("/reviews/{goodsId}")
+    public ResponseEntity<?> reviews(@PathVariable Long goodsId, @RequestBody PageRequestDTO pageRequestDTO) {
+        log.info("** GoodsController => reviews() 실행됨 **");
+
+        return goodsService.reviews(goodsId, pageRequestDTO);
+    }
+
     // 상품 리스트 출력 (메인)
     @PostMapping("/list")
     public ResponseEntity<?> showGoodsList(@RequestBody PageRequestDTO pageRequestDTO) {
+        //    public ResponseEntity<PageResponseDTO<GoodsResponseDTO>> showGoodsList(@RequestBody PageRequestDTO pageRequestDTO) {
         log.info("** GoodsController => showGoodsList() 실행됨 **");
 //        System.out.println("GoodsController 상품리스트출력 : " + goodsService.showGoodsList(pageRequestDTO).toString());
         return goodsService.showGoodsList(pageRequestDTO);
