@@ -136,16 +136,24 @@ export default function BoardInsertForm() {
             ></textarea>
           </div>
           <div className="imageRow">
-            <label htmlFor="image" className="imageLabel">
-              이미지 첨부
-            </label>
-            <input
-              type="file"
-              id="image"
-              accept="image/*"
-              multiple
-              onChange={handleImageChange}
-            />
+            <div className="uploadBox">
+              <label htmlFor="image" className="imageLabel">
+                이미지 업로드
+              </label>
+              <input
+                type="file"
+                id="image"
+                accept="image/*"
+                multiple
+                onChange={handleImageChange}
+                style={{ display: "none"}}
+              />
+              <span className="fileNameText">
+                {imageFiles.length > 0
+                  ? imageFiles.map(f => f.name).join(", ")
+                  : "파일을 선택하세요."}
+              </span>
+            </div>
             {imagePreviews.length > 0 && (
               <div className="imagePreview">
                 {imagePreviews.map((src, idx) => (

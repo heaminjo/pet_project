@@ -94,6 +94,7 @@ const boardInsertFormContainer = styled.div`
     }
 
     .submitBtn {
+      width: 100%;
       padding: 10px 28px;
       font-size: 18px;
       background: #f8e776;

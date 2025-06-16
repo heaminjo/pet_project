@@ -88,12 +88,59 @@ const boardInsertFormContainer = styled.div`
       }
     }
 
+    .imageRow {
+      .uploadBox {
+        display: flex;
+        align-items: center;
+        border: 2px solid #eee;
+        border-radius: 10px;
+        background: #fafafa;
+        padding: 10px 16px;
+        min-height: 10px;
+        gap: 10px;
+      
+        .imageLabel {
+          display: inline-block;
+          background: #fafafa;
+          font-size: 16px;
+          font-weight: bold;
+          border-radius: 10px 10px 10px 10px;
+          padding: 12px 24px;
+          cursor: pointer;
+          border: none;
+          outline: none;
+          transition: background 0.2s;
+          vertical-align: middle;
+        }
+
+        .imageLabel:hover {
+          background: #f8e776;
+        }
+
+        .fileNameText {
+          display: inline-block;
+          font-size: 15px;
+          margin-left: 10px;
+          vertical-align: middle;
+        }
+
+      }
+
+      .imagePreview {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+    }
+
     .buttonRow {
       display: flex;
       justify-content: flex-end;
     }
 
     .submitBtn {
+      width: 100%;
       padding: 10px 28px;
       font-size: 18px;
       background: #f8e776;
