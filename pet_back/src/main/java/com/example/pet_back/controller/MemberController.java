@@ -3,6 +3,7 @@ package com.example.pet_back.controller;
 import com.example.pet_back.domain.address.AddressRequestDTO;
 import com.example.pet_back.domain.address.AddressResponseDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
+import com.example.pet_back.domain.member.GradeResponseDTO;
 import com.example.pet_back.domain.member.UpdateMemberRequestDTO;
 import com.example.pet_back.domain.member.UpdatePwRequestDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
@@ -92,4 +93,5 @@ public class MemberController {
     public ResponseEntity<ApiResponse> addressDetail(@AuthenticationPrincipal CustomUserDetails details, @RequestBody AddressRequestDTO dto) {
         return ResponseEntity.ok(memberService.addressUpdate(details.getMember().getId(), dto));
     }
+
 }

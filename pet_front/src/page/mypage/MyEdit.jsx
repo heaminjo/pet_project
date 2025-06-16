@@ -1,10 +1,11 @@
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import MemberApi from "../../api/MemberApi";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import MyEditComp from "./MyEditStyle";
+import { PetContext } from "./MyPage";
 //회원 수정 페이지
 export default function MyEdit() {
   const navigate = useNavigate();
@@ -12,24 +13,17 @@ export default function MyEdit() {
   const [selectImage, setSelectImage] = useState(null); //선택 프로필(서버용)
   const [prevImage, setPrevImage] = useState(null); //이전 프로필필
 
-  const [selectView, setSelectView] = useState(null); //선택택
-  const { user, setUser } = useOutletContext();
+  const { user } = useContext(PetContext);
 
-  // import { useNavigate, useOutletContext } from "react-router-dom";
-  // const { user } = useOutletContext();
   //로드 시 회원 정보 불러오기
   useEffect(() => {
-    getLoginUser();
-  }, []);
-
-  const getLoginUser = () => {
     reset({
       name: user.name,
       birth: user.birth,
       phone: user.phone,
     });
     setPrevImage(user.imageFile);
-  };
+  }, []);
 
   //회원 수정 처리
   const updateUser = async () => {

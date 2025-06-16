@@ -92,6 +92,10 @@ const MyInfoComp = styled.div`
             font-size: 20px;
             font-weight: bold;
           }
+          .grade_detail {
+            font-size: 13px;
+            cursor: pointer;
+          }
         }
       }
     }

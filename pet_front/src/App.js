@@ -40,6 +40,7 @@ import BannerSelect from "./page/admin/BannerSelect";
 import Favorite from "./components/Layout/favorite/Favorite";
 
 import Grade from "./page/main/Grade";
+import MyGrade from "./page/mypage/MyGrade";
 
 //컨텍스트(useContext)
 //로그인 여부부를 전역변수로 뿌리기 위한것
@@ -64,6 +65,7 @@ function App() {
             <Route path="user/mypage" element={<MyPage />}>
               <Route path="myinfo" element={<MyInfo />} />
               <Route path="myedit" element={<MyEdit />} />
+              <Route path="mygrade" element={<MyGrade />} />
               <Route path="updatepw" element={<UpdatePw />} />
               <Route path="withdrawal" element={<WithDrawal />} />
               <Route path="myboardlist" element={<MyBoardList />} />

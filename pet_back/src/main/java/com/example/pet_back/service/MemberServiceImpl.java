@@ -7,6 +7,7 @@ import com.example.pet_back.constant.MEMBERSTATE;
 import com.example.pet_back.domain.address.AddressRequestDTO;
 import com.example.pet_back.domain.address.AddressResponseDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
+import com.example.pet_back.domain.member.GradeResponseDTO;
 import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.domain.member.UpdateMemberRequestDTO;
 import com.example.pet_back.domain.member.UpdatePwRequestDTO;
@@ -223,4 +224,5 @@ public class MemberServiceImpl implements MemberService {
 
         return new ApiResponse(true, "배송지 수정이 완료되었습니다.");
     }
+
 }

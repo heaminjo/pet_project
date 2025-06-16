@@ -5,26 +5,14 @@ import {
   useOutletContext,
 } from "react-router-dom";
 import MyInfoComp from "./MyInfoStyle";
-import { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import MemberApi from "../../api/MemberApi";
 import gradeImage from "../../images/d1nrwjnej10dkwnrnksj423kj.jpg";
+import { PetContext } from "./MyPage";
 
 export default function MyInfo() {
-  const [user, setUser] = useState([]);
+  const { user } = useContext(PetContext);
   const navigate = useNavigate();
-  useEffect(() => {
-    getLoginUser();
-  }, []);
-
-  const getLoginUser = async () => {
-    try {
-      const result = await MemberApi.detail();
-      setUser(result);
-      console.log(result);
-    } catch (e) {
-      //401 에러 시 로그아웃 처리리
-    }
-  };
   return (
     <MyInfoComp>
       <div className="main_container">
@@ -56,7 +44,12 @@ export default function MyInfo() {
             </div>
             <div className="grade_text">
               <p className="grade_name">{user.grade}</p>
-              <p>등급 ▶</p>
+              <p
+                onClick={() => navigate("/user/mypage/mygrade")}
+                className="grade_detail"
+              >
+                내 등급 자세히 ▶
+              </p>
             </div>
           </div>
         </div>

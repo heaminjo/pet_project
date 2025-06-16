@@ -1,7 +1,20 @@
 import styled from "styled-components";
 import backImage from "../../images/1749788315496.jpg";
+import { useContext } from "react";
+import { PetContext } from "../../App";
+import { useNavigate } from "react-router-dom";
 //등급 안내 페이지
 export default function Grade() {
+  const navigate = useNavigate();
+  //내 등급 클릭 시 로그인 여부에따른 이동
+  const myGrade = () => {
+    if (localStorage.getItem("loginName") != null) {
+      navigate("/user/mypage/mygrade");
+    } else {
+      alert("로그인이 필요한 서비스 입니다.");
+      navigate("/login");
+    }
+  };
   return (
     <GradeComp backImage={backImage}>
       <div className="grade_inner">
@@ -28,7 +41,7 @@ export default function Grade() {
               </p>
             </div>
             <div className="my_grade">
-              <h4>내 등급 보러가기 ▶</h4>
+              <h4 onClick={() => myGrade()}>내 등급 보러가기 ▶</h4>
             </div>
           </div>
           <div className="grade_list">
