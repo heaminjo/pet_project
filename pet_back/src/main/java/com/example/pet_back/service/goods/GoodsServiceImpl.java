@@ -435,4 +435,17 @@ public class GoodsServiceImpl implements GoodsService {
         }
 
     }
+    //카테고리 수정
+    @Override
+    @Transactional
+    public ApiResponse categoryUpdate(Long id, String categoryName) {
+        Category category = categoryRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        //기존 이름 받아 두기
+        String prevName = category.getCategoryName();
+        //새 이름 저장
+        category.setCategoryName(categoryName);
+
+        return new ApiResponse(true,prevName + "에서 "+categoryName+"으로 이름 변경을 성공하였습니다.");
+    }
 }

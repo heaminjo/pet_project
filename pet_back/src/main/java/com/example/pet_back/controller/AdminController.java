@@ -115,4 +115,10 @@ public class AdminController {
     public ResponseEntity<ApiResponse> categoryDelete(@RequestParam ("id") Long id){
         return ResponseEntity.ok(goodsService.categoryDelete(id));
     }
+
+    //카테고리 삭제
+    @PatchMapping("/category/update")
+    public ResponseEntity<ApiResponse> categoryUpdate(@RequestParam ("id") Long id,@RequestParam("categoryName") String categoryName){
+        return ResponseEntity.ok(goodsService.categoryUpdate(id,categoryName));
+    }
 }

@@ -115,6 +115,14 @@ const AdminApi = {
     );
     return result.data;
   },
+
+  //카테고리 수정
+  categoryUpdate: async (id, categoryName) => {
+    const result = await instance.patch(
+      `${KH_DOMAIN}/admin/category/update?id=${id}&categoryName=${categoryName}`
+    );
+    return result.data;
+  },
 };
 
 export default AdminApi;

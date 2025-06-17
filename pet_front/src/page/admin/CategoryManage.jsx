@@ -1,15 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import AdminApi from "../../api/AdminApi";
 import GoodsApi from "../../api/GoodsApi";
 import Modal from "../../modal/Modal";
+import React from "react";
 
 export default function CategoryManage() {
   const [categoryList, setCategoryList] = useState([]);
   const [category, setCategory] = useState(""); //카테고리 입력
   const [insertInput, setInsertInput] = useState(false); //추가 창 숫자
   const [modal, setModal] = useState(false);
-  const [selCategory, setSelCategory] = useState(0);
+  const [selCategory, setSelCategory] = useState(0); //카테고리 선택 창 여부
+  const [updateForm, setUpdateForm] = useState(false); //업데이트 폼
+  const [updateIndex, setUpdateIndex] = useState(0); //업데이트 폼 칸 번호
+  const [updateInput, setUpdateInput] = useState("");
+
   useEffect(() => {
     getCategoryList();
   }, []);
@@ -54,6 +59,23 @@ export default function CategoryManage() {
     setModal(false);
     if (result.success) getCategoryList();
   };
+
+  //카테고리 수정 클릭
+  const clickUpdateForm = (categoryName, index) => {
+    setUpdateInput(categoryName);
+    setUpdateForm(true);
+    //수정 선택한 칸의 index를 받아와서 선택한 칸만 업데이트 폼으로 변하게끔 조건 랜더링
+    setUpdateIndex(index);
+  };
+
+  //카테고리 수정
+  const categoryUpdate = async (id) => {
+    const result = await AdminApi.categoryUpdate(id, updateInput);
+    alert(result.message);
+    setUpdateForm(false);
+
+    if (result.success) getCategoryList();
+  };
   return (
     <CategoryComp>
       {modal && (
@@ -72,16 +94,41 @@ export default function CategoryManage() {
           <p>{categoryList.length} / 10</p>
         </div>
         <ul>
-          {categoryList.map((c) => (
+          {categoryList.map((c, index) => (
             <li>
-              <span>
-                {" "}
-                {c.categoryName} ({c.goodsCount})
-              </span>
-              <div className="btn">
-                <button onClick={() => clickDelete(c.categoryId)}>삭제</button>
-                <button onClick={() => insertCategory()}>수정</button>
-              </div>
+              {updateForm && index == updateIndex ? (
+                <React.Fragment>
+                  <input
+                    type="text"
+                    value={updateInput}
+                    onChange={(e) => setUpdateInput(e.target.value)}
+                  />
+                  <div className="btn">
+                    <button onClick={() => setUpdateForm(false)}>
+                      수정취소
+                    </button>
+                    <button onClick={() => categoryUpdate(c.categoryId)}>
+                      저장하기
+                    </button>
+                  </div>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  <span>
+                    {c.categoryName} ({c.goodsCount})
+                  </span>
+                  <div className="btn">
+                    <button onClick={() => clickDelete(c.categoryId)}>
+                      삭제
+                    </button>
+                    <button
+                      onClick={() => clickUpdateForm(c.categoryName, index)}
+                    >
+                      수정
+                    </button>
+                  </div>
+                </React.Fragment>
+              )}
             </li>
           ))}
           {insertInput && (

@@ -70,4 +70,7 @@ public interface GoodsService {
 
     //카테고리 삭제
     public ApiResponse categoryDelete(Long id);
+
+    //카테고리 수정
+    public ApiResponse categoryUpdate(Long id,String categoryName);
 }
