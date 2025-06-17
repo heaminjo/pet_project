@@ -4,6 +4,8 @@ import com.example.pet_back.domain.board.BoardDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.mapper.board.BoardMapper;
+import com.example.pet_back.service.ImageService;
+import com.example.pet_back.service.ImageServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,7 @@ import java.util.List;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardMapper boardMapper;
+    private final ImageServiceImpl imageService;
 
     //** 게시글 목록
     @Override
@@ -69,9 +72,35 @@ public class BoardServiceImpl implements BoardService {
     }
 
     //** 게시글 수정
+    @Transactional
     @Override
     public int updateBoard(BoardDTO dto) {
-        return boardMapper.updateBoard(dto);
+        // 1. 게시글 내용 수정
+        int result = boardMapper.updateBoard(dto);
+        if (result <= 0) return result;
+
+        int board_id = dto.getBoard_id();
+
+        // 2. 삭제할 이미지 처리
+        List<String> deletedImages = dto.getDeletedImageFileNames();
+        if (deletedImages != null && !deletedImages.isEmpty()){
+            for (String fileName : deletedImages){
+                boardMapper.deleteBoardImage(board_id, fileName);
+                //실제 파일 시스템에서도 삭제
+                imageService.deleteImageFile(fileName);
+            }
+        }
+
+        //3. 기존 이미지 전체 삭제 후, 남길 이미지만 다시 삽입
+        boardMapper.deleteAllBoardImages(board_id);
+
+        List<String> imageFileNames = dto.getImageFileNames();
+        if (imageFileNames != null && !imageFileNames.isEmpty()){
+            for (int i = 0; i < imageFileNames.size(); i++){
+                boardMapper.insertBoardImage(board_id, imageFileNames.get(i), i+1);
+            }
+        }
+        return result;
     }
 
     //** 게시글 삭제
@@ -109,6 +138,16 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public List<String> selectImageFileNamesByBoardId(int board_id) {
         return boardMapper.selectImageFileNamesByBoardId(board_id);
+    }
+
+    //** 이미지 삭제
+    public int deleteBoardImage(int board_id, String fileName){
+        return boardMapper.deleteBoardImage(board_id, fileName);
+    }
+
+    //** 전체 이미지 삭제
+    public int deleteAllBoardImages(int board_id){
+        return boardMapper.deleteAllBoardImages(board_id);
     }
 
 } //class

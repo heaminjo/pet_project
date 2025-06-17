@@ -15,11 +15,12 @@ export default function BoardInsertForm() {
   // 이미지 파일 선택 핸들러
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    setImageFiles(files);
+    setImageFiles(prev => [...prev, ...files]); // 기존 파일에 새로 선택한 파일 추가
   
-    // 미리보기
+    // 미리보기 (기존 미리보기 + 새로 미리보기 합치기)
     const previews = files.map( file => URL.createObjectURL(file) );
-    setImagePreviews(previews);
+    setImagePreviews(prev => [...prev, ...previews]);
+    e.target.value = ""; // 파일 선택 후 input 초기화
   };
 
   // 이미지 업로드 함수

@@ -139,5 +139,15 @@
         ORDER BY output_order
     </select>
 
+    <!-- 이미지 삭제-->
+    <delete id="deleteBoardImage">
+        DELETE FROM board_image WHERE board_id = #{board_id} AND file_name = #{fileName}
+    </delete>
+
+    <!-- 전체 이미지 삭제-->
+    <delete id="deleteAllBoardImages">
+        DELETE FROM board_image WHERE board_id = #{board_id}
+    </delete>
+
 
 </mapper>

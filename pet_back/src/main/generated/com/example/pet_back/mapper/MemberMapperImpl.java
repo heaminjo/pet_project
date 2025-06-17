@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-06-13T17:07:04+0900",
+    date = "2025-06-17T10:57:59+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.12 (Oracle Corporation)"
 )
 @Component
@@ -91,6 +91,9 @@ public class MemberMapperImpl implements MemberMapper {
         memberResponseDTO.birth( member.getBirth() );
         memberResponseDTO.point( member.getPoint() );
         memberResponseDTO.imageFile( member.getImageFile() );
+        memberResponseDTO.loginCount( member.getLoginCount() );
+        memberResponseDTO.totalPurchaseCount( member.getTotalPurchaseCount() );
+        memberResponseDTO.totalPurchasePrice( member.getTotalPurchasePrice() );
 
         return memberResponseDTO.build();
     }

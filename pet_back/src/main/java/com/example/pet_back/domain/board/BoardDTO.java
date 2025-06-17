@@ -20,5 +20,6 @@ public class BoardDTO {
     private String reg_date;
     private String name;
     private List<String> imageFileNames;
+    private List<String> deletedImageFileNames;
 
 }
