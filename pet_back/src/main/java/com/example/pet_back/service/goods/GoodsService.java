@@ -65,4 +65,9 @@ public interface GoodsService {
     //베스트 상품 추가
     public ApiResponse bestInsert(BestInsertDTO dto);
 
+    //카테고리 추가
+    public ApiResponse categoryInsert(String categoryName);
+
+    //카테고리 삭제
+    public ApiResponse categoryDelete(Long id);
 }

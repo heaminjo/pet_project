@@ -10,5 +10,12 @@ import lombok.NoArgsConstructor;
 public class CategoryResponseDTO {
     private Long categoryId;
     private String categoryName;
+    private Long goodsCount;
     private String description;
+
+    public CategoryResponseDTO(Long categoryId, String categoryName, Long goodsCount) {
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+        this.goodsCount = goodsCount;
+    }
 }

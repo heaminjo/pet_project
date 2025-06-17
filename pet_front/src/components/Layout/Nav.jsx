@@ -17,18 +17,26 @@ export default function Nav() {
       navigate("/login");
     }
   };
-
+  const clickMyPage = () => {
+    if (localStorage.getItem("loginName") != null) {
+      navigate("/user/mypage/myinfo");
+    } else {
+      alert("로그인이 필요한 서비스입니다.");
+      navigate("/login");
+    }
+  };
   return (
     <NavComp>
       <div className="nav_inner">
         <ul className="nav_menu">
-          <li>메뉴</li>
-          <li>메뉴</li>
-          <li onClick={() => navigate("/grade")}> 등급</li>
           <li style={{ color: "red" }} onClick={() => navigate("/goods/list")}>
             전체 상품보기
           </li>
+          <li onClick={() => navigate("/grade")}> 등급</li>
+
           <li onClick={() => navigate("/boardList/free")}>게시판</li>
+          <li onClick={() => clickMyPage()}>마이페이지</li>
+
           {/* <li><Link to="/boardList">게시판</Link></li> */}
         </ul>
       </div>

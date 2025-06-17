@@ -1,7 +1,6 @@
 package com.example.pet_back.service.goods;
 
 import com.example.pet_back.config.FileUploadProperties;
-import com.example.pet_back.constant.ROLE;
 import com.example.pet_back.domain.admin.BannerDTO;
 import com.example.pet_back.domain.admin.BestDTO;
 import com.example.pet_back.domain.admin.BestInsertDTO;
@@ -12,9 +11,7 @@ import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.entity.*;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.mapper.GoodsMapper;
-import com.example.pet_back.mapper.OrderMapper;
 import com.example.pet_back.repository.*;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,12 +21,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
@@ -38,7 +32,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -332,11 +325,11 @@ public class GoodsServiceImpl implements GoodsService {
     //카테고리 목록
     @Override
     public List<CategoryResponseDTO> categoryList() {
-        List<Category> categoryList = categoryRepository.findAll();
+        List<CategoryResponseDTO> categoryList = goodsRepository.categoryList();
 
-        List<CategoryResponseDTO> response = categoryList.stream().map(goodsMapper::categoryToDto).toList();
+//        List<CategoryResponseDTO> response = categoryList.stream().map(goodsMapper::categoryToDto).toList();
 
-        return response;
+        return categoryList;
     }
 
     //상품 페이징 목록(조해민)
@@ -407,5 +400,39 @@ public class GoodsServiceImpl implements GoodsService {
         goodsBestRepository.save(goodsBest);
 
         return new ApiResponse(true,dto.getPosition()+"번째 자리에 베스트 상품이 추가돼었습니다.");
+    }
+
+    //카테고리 추가
+
+    @Override
+    public ApiResponse categoryInsert(String categoryName) {
+        //카테고리가 10개 인지 아닌지 체크
+        if(categoryRepository.count() >= 10){
+            return new ApiResponse(false,"카테고리는 최대 10개입니다.");
+        }else if(categoryRepository.existsByCategoryName(categoryName)){
+            return new ApiResponse(false, categoryName+"와 중복되는 카테고리가 있습니다. 다른 이름을 입력해주세요.");
+        }
+        else {
+            Category category = new Category();
+            category.setCategoryName(categoryName);
+
+            categoryRepository.save(category);
+            return new ApiResponse(true,"카테고리 ["+categoryName+"] 가 추가 돼었습니다.");
+        }
+
+    }
+    //카테고리 삭제
+    @Override
+    public ApiResponse categoryDelete(Long id) {
+        Category category = categoryRepository.findById(id).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        //만약 카테고리에 상품이 존재한다면
+        if(goodsRepository.existsByCategory(category)){
+            return new ApiResponse(false,"카테고리에 상품이 존재해 삭제가 불가능합니다.");
+        }else{
+            categoryRepository.deleteById(id);
+            return new ApiResponse(true,"카테고리 [" + category.getCategoryName()+"] 가 삭제되었습니다.");
+        }
+
     }
 }

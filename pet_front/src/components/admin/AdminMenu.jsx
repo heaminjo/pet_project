@@ -67,7 +67,9 @@ export default function AdminMenu() {
               <span>상품 등록/수정/삭제</span>
             </li>
             <li>
-              <span>상품 카테고리 관리</span>
+              <span onClick={() => navigate("/admin/page/category")}>
+                상품 카테고리 관리
+              </span>
             </li>
             <li>
               <span>옵션 및 재고 관리</span>

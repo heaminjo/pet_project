@@ -100,5 +100,21 @@ const AdminApi = {
     );
     return result.data;
   },
+
+  //카테고리 추가
+  categoryInsert: async (category) => {
+    const result = await instance.post(`${KH_DOMAIN}/admin/category/insert`, {
+      categoryName: category,
+    });
+    return result.data;
+  },
+  //카테고리 삭제
+  categoryDelete: async (id) => {
+    const result = await instance.delete(
+      `${KH_DOMAIN}/admin/category/delete?id=${id}`
+    );
+    return result.data;
+  },
 };
+
 export default AdminApi;

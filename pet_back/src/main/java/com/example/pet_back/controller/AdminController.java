@@ -102,4 +102,17 @@ public class AdminController {
     public ResponseEntity<ApiResponse>bestDelete(@RequestParam("id") Long id){
         return ResponseEntity.ok(adminService.bestDelete(id));
     }
+
+    //카테고리 추가
+    @PostMapping("/category/insert")
+    public ResponseEntity<ApiResponse> categoryInsert(@RequestBody Map<String,String> body){
+        String name = body.get("categoryName");
+        return ResponseEntity.ok(goodsService.categoryInsert(name));
+    }
+
+    //카테고리 삭제
+    @DeleteMapping("/category/delete")
+    public ResponseEntity<ApiResponse> categoryDelete(@RequestParam ("id") Long id){
+        return ResponseEntity.ok(goodsService.categoryDelete(id));
+    }
 }
