@@ -3,6 +3,8 @@ package com.example.pet_back.service.goods;
 import com.example.pet_back.config.FileUploadProperties;
 import com.example.pet_back.constant.ROLE;
 import com.example.pet_back.domain.admin.BannerDTO;
+import com.example.pet_back.domain.admin.BestDTO;
+import com.example.pet_back.domain.admin.BestInsertDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.goods.*;
 import com.example.pet_back.domain.page.PageRequestDTO;
@@ -28,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,6 +54,7 @@ public class GoodsServiceImpl implements GoodsService {
     private final MemberRepository memberRepository;
     private final FavoriteRepository favoriteRepository;
     private final GoodsBannerRepository goodsBannerRepository;
+    private final GoodsBestRepository goodsBestRepository;
     private final FileUploadProperties fileUploadProperties;
     private final CategoryRepository categoryRepository;
 
@@ -366,6 +370,42 @@ public class GoodsServiceImpl implements GoodsService {
         );
         return response;
     }
+    //베스트 상품 출력
+    @Override
+    public List<BestDTO> bestList() {
+        List<GoodsBest> list = goodsBestRepository.bestListAll();
 
 
+        List<BestDTO> response = new ArrayList<>();
+        //수동으로 매핑
+        for(GoodsBest g : list){
+            String imagePath = fileUploadProperties.getUrl()+g.getGoods().getImageFile();
+
+            response.add(new BestDTO(   g.getBestId(),
+                                        g.getGoods().getGoodsId(),
+                                        g.getGoods().getGoodsName(),
+                                        g.getGoods().getRating(),
+                                        g.getGoods().getReviewNum(),
+                                        g.getGoods().getDescription(),
+                                        imagePath,
+                                        g.getPosition()));
+        }
+
+        return response;
+    }
+
+    //베스트 상품 추가
+    @Override
+    public ApiResponse bestInsert(BestInsertDTO dto) {
+        log.info("추가할 상품 => "+dto.getGoodsId());
+        Goods goods = goodsRepository.findById(dto.getGoodsId()).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        GoodsBest goodsBest = new GoodsBest();
+        goodsBest.setGoods(goods);
+        goodsBest.setPosition(dto.getPosition());
+
+        goodsBestRepository.save(goodsBest);
+
+        return new ApiResponse(true,dto.getPosition()+"번째 자리에 베스트 상품이 추가돼었습니다.");
+    }
 }

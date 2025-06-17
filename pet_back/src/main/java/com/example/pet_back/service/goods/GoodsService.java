@@ -1,6 +1,8 @@
 package com.example.pet_back.service.goods;
 
 import com.example.pet_back.domain.admin.BannerDTO;
+import com.example.pet_back.domain.admin.BestDTO;
+import com.example.pet_back.domain.admin.BestInsertDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.goods.CategoryResponseDTO;
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
@@ -56,5 +58,11 @@ public interface GoodsService {
 
     //상품 페이징 목록(조해민)
     public PageResponseDTO<GoodsSimpleDTO> goodsPageList(PageRequestDTO dto);
+
+    //베스트 상품 목록
+    public List<BestDTO> bestList();
+
+    //베스트 상품 추가
+    public ApiResponse bestInsert(BestInsertDTO dto);
 
 }

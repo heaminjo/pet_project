@@ -2,6 +2,8 @@ package com.example.pet_back.controller;
 
 
 import com.example.pet_back.domain.admin.BannerDTO;
+import com.example.pet_back.domain.admin.BestDTO;
+import com.example.pet_back.domain.admin.BestInsertDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.goods.*;
 import com.example.pet_back.domain.page.PageRequestDTO;
@@ -148,10 +150,12 @@ public class GoodsController {
         return ResponseEntity.ok(goodsService.goodsPageList(dto));
     }
 
-    //배너 추가(조해민)
-    @PostMapping("/banner/insert")
-    public ResponseEntity<ApiResponse> goodsPageList(@RequestParam ("file") MultipartFile file,@RequestParam("position") int position){
-        return ResponseEntity.ok(imageService.bannerInsert(file,position));
+
+    //베스트 상품 리스트 불러오기(조해민)
+    @GetMapping("/best/list")
+    public ResponseEntity<List<BestDTO>> bestList() {
+        return ResponseEntity.ok(goodsService.bestList());
     }
+
 
 }

@@ -8,11 +8,13 @@ import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
+import com.example.pet_back.entity.GoodsBest;
 import com.example.pet_back.entity.Goodsbanner;
 import com.example.pet_back.entity.Member;
 import com.example.pet_back.mapper.MemberMapper;
 import com.example.pet_back.repository.AddressRepository;
 import com.example.pet_back.repository.GoodsBannerRepository;
+import com.example.pet_back.repository.GoodsBestRepository;
 import com.example.pet_back.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -45,6 +47,7 @@ public class AdminServiceImpl implements AdminService {
     private final PasswordEncoder passwordEncoder;
     private final FileUploadProperties fileUploadProperties;
     private final GoodsBannerRepository goodsBannerRepository;
+    private final GoodsBestRepository goodsBestRepository;
     //관리자의 회원 조회
     @Override
     public ResponseEntity<?> adminUserDetail(String email) {
@@ -173,6 +176,7 @@ public class AdminServiceImpl implements AdminService {
         return new ApiResponse<>(true, member.getName() + "님의 등급이 " + dto.getNextGrade() + "등급으로 업그레이드 되었습니다.");
     }
 
+    //배너 삭제
     @Override
     public ApiResponse bannerDelete(Long id) {
         //존재하면 삭제
@@ -181,7 +185,21 @@ public class AdminServiceImpl implements AdminService {
 
             return new ApiResponse(true,"배너 삭제가 완료되었습니다.");
         }else{
-            return new ApiResponse(true,"이미 존재하지 않는 배너입니다.");
+            return new ApiResponse(true,"존재하지 않는 배너입니다.");
         }
+    }
+    //베스트 삭제
+    @Override
+    public ApiResponse bestDelete(Long id) {
+        Optional<GoodsBest> goodsBest = goodsBestRepository.findById(id);
+
+        if(goodsBest.isPresent()){
+            goodsBestRepository.deleteById(id);
+            return new ApiResponse(true,"배너가 삭제돼었습니다.");
+        }else{
+            return new ApiResponse(false,"존재하지 않는 상품입니다.");
+
+        }
+
     }
 }

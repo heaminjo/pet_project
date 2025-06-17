@@ -6,6 +6,7 @@ import MemberApi from "../../api/MemberApi";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { PetContext } from "../../App";
+import kakao from "../../images/kakao_login_large_wide.png";
 export default function Login() {
   const { setIsLogin } = useContext(PetContext);
   const navigate = useNavigate();
@@ -138,10 +139,7 @@ export default function Login() {
             <div className="login_btn">
               <button type="submit">로그인</button>
               <button onClick={() => kakaoCode()}>
-                <img
-                  src="http://localhost:3000/resources/webapp/userUploads/kakao_login_medium_wide.png"
-                  alt="카카오 로그인 버튼"
-                />
+                <img src={kakao} alt="카카오 로그인 버튼" />
               </button>
             </div>
           </form>

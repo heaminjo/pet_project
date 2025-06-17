@@ -150,6 +150,23 @@ const GoodsApi = {
     );
     return result.data;
   },
+
+  //베스트 상품 가져오기
+  getBest: async () => {
+    const result = await axios.get(`${KH_DOMAIN}/goods/best/list`);
+    return result.data;
+  },
+
+  //베스트 상품 추가
+  bestInsert: async (goodsId, position) => {
+    const newBest = {
+      goodsId: goodsId,
+      position: position,
+    };
+    console.log(newBest);
+    const result = await axios.post(`${KH_DOMAIN}/goods/best/insert`, newBest);
+    return result.data;
+  },
 };
 
 export default GoodsApi;

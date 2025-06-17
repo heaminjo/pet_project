@@ -28,6 +28,7 @@ const BannerSelectComp = styled.div`
         display: flex;
         width: 100%;
         gap: 10px;
+        justify-content: center;
         li {
           width: 180px;
           height: 180px;

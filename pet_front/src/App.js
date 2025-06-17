@@ -41,6 +41,7 @@ import Favorite from "./components/Layout/favorite/Favorite";
 
 import Grade from "./page/main/Grade";
 import MyGrade from "./page/mypage/MyGrade";
+import BestSelect from "./page/admin/BestSelect";
 
 //컨텍스트(useContext)
 //로그인 여부부를 전역변수로 뿌리기 위한것
@@ -83,6 +84,7 @@ function App() {
               <Route path="userlist" element={<UserList />} />
               <Route path="userdetail" element={<UserDetail />} />
               <Route path="banner" element={<BannerSelect />} />
+              <Route path="best" element={<BestSelect />} />
             </Route>
             <Route path="/withcomplete" element={<WithDrawalComplete />} />
             <Route path="/admin/goods" element={<Goods />} />
