@@ -41,9 +41,9 @@ export default function BoardEditForm() {
   // 새 이미지 파일 선택 핸들러
   const handleNewImageChange = (e) => {
     const files = Array.from(e.target.files);
-    setNewImageFiles(files);
+    setNewImageFiles(prev => [...prev, ...files]); // 기존 파일에 새로 선택한 파일 추가
     const previews = files.map(file => URL.createObjectURL(file));
-    setNewImagePreviews(previews);
+    setNewImagePreviews(prev => [...prev, ...previews]); // 기존 미리보기 + 새로 미리보기 합치기
     e.target.value = ""; // 파일 선택 후 input 초기화
   };
 

@@ -134,6 +134,50 @@ const boardInsertFormStyle = styled.div`
         margin-top: 10px;
         max-width: 100%;
         overflow-x: auto;
+
+        .imagePreviewBox {
+          position: relative;
+          width: 100px;
+          hieght: 100px;
+          aspect-ratio: 1 / 1; /* 정사각형 유지 */
+          overflow: hidden;
+          border-radius: 10px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+          background: #fafafa;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+          }
+
+          button {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: rgba(0,0,0,0.55);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+            transition: background 0.2s, opacity 0.2s;
+          }
+
+          button:hover {
+            background: #f44336;
+            opacity: 1;
+          }
+
+        }
+
       }
 
     }
