@@ -28,7 +28,6 @@ export default function Favorite() {
     totalElement: 0,
     totalPages: 0,
   });
-  
 
   // 상품1개 클릭시
   const clickProd = (item) => {
@@ -40,7 +39,6 @@ export default function Favorite() {
   const renderStars = (rating) => {
     return '⭐'.repeat(Math.floor(rating)); // 반올림이나 소수점 무시
   };
-
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 페이징 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const getPageList = async () => {
@@ -81,7 +79,29 @@ export default function Favorite() {
         <div className='top'>
           <h2>찜 목록 리스트</h2>
         </div>
-        <div className='body'></div>
+        <div className='body'>
+          {goods.length === 0 ? (
+            <p>찜한 상품이 없습니다.</p>
+          ) : (
+            goods.map((item) => (
+              <div key={item.goodsId} className='prod' onClick={() => clickProd(item)}>
+                <div className='prod-left'>
+                  <img src={imgUrl + item.imageFile} alt={item.goodsName} width={150} />
+                </div>
+                <div className='prod-right'>
+                  <h4>{item.goodsName}</h4>
+                  <p>{item.description}</p>
+                  <p>가격: {item.price.toLocaleString()}원</p>
+                  <p>
+                    별점: {renderStars(item.rating)} ({item.rating})
+                  </p>
+                  <p>리뷰 수: {item.reviewNum}</p>
+                  <p>등록일: {item.regDate}</p>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
 
         <PageNumber page={page} setPage={setPage} paging={paging} />
       </div>
