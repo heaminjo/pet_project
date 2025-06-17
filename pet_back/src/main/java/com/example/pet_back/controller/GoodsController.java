@@ -3,6 +3,7 @@ package com.example.pet_back.controller;
 
 import com.example.pet_back.domain.admin.BannerDTO;
 import com.example.pet_back.domain.admin.BestDTO;
+import com.example.pet_back.domain.admin.BestInsertDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.goods.*;
 import com.example.pet_back.domain.page.PageRequestDTO;
@@ -160,5 +161,10 @@ public class GoodsController {
     public ResponseEntity<List<BestDTO>> bestList() {
         return ResponseEntity.ok(goodsService.bestList());
     }
+    //배너 추가(조해민)
+    @PostMapping("/best/insert")
+    public ResponseEntity<ApiResponse> goodsPageList(@RequestBody BestInsertDTO dto){
 
+        return ResponseEntity.ok(goodsService.bestInsert(dto));
+    }
 }

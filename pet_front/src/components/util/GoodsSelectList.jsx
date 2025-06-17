@@ -44,7 +44,7 @@ export default function GoodsSelectList({ selectEvt }) {
 
     const result = await GoodsApi.getGoodsList(pages);
     setGoodsList(result.content);
-
+    console.log(result.content);
     let temp = Math.floor(page / 5) * 5;
 
     //페이지번호 정보 저장
@@ -56,6 +56,11 @@ export default function GoodsSelectList({ selectEvt }) {
       totalElement: result.totalElements,
       totalPages: result.totalPages,
     });
+  };
+
+  // 별점 (배열)
+  const renderStars = (rating) => {
+    return "⭐".repeat(Math.floor(rating)); // 반올림이나 소수점 무시
   };
   return (
     <Comp>
@@ -103,7 +108,15 @@ export default function GoodsSelectList({ selectEvt }) {
                 <li>{g.goodsName}</li>
                 <li>{g.price}원</li>
                 <li>
-                  <button onClick={() => selectEvt(g.goodsId)}>선택</button>
+                  <div className="goods_rating">
+                    <span>{renderStars(g.rating)}</span>
+                    <span style={{ color: "red", fontSize: "12px" }}>
+                      {"( " + g.reviewNum + " )"}{" "}
+                    </span>
+                  </div>
+                </li>
+                <li>
+                  <button onClick={() => selectEvt(g)}>선택</button>
                 </li>
               </ul>
             </div>
@@ -117,7 +130,7 @@ export default function GoodsSelectList({ selectEvt }) {
 const Comp = styled.div`
   .goods_select {
     width: 900px;
-    height: 650px;
+    height: 700px;
     box-shadow: 3px 3px 3px #ccc;
     border: 1px solid #888;
     padding: 20px;
@@ -174,7 +187,7 @@ const Comp = styled.div`
     }
     .goods_list {
       width: 100%;
-      height: 400px;
+      height: 460px;
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr 1fr;

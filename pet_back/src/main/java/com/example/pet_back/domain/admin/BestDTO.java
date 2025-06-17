@@ -14,8 +14,9 @@ import lombok.NoArgsConstructor;
 public class BestDTO {
     private Long bestId;
     private Long goodsId;
-    private String categoryName;
     private String goodsName;
+    private double rating;
+    private int reviewNum;
     private String description; //설명
     private String imageFile;
     private int position;

@@ -41,23 +41,15 @@ export default function BestSelect() {
     getBest();
   };
 
-  //이미지 체인지
-  const changeImage = (e, i) => {
-    console.log("클릭 배너 => ", i + 1);
-    setSelBest(i + 1);
-    const file = e.target.files[0];
-    if (file) {
-      //파일 미리보기를 위한 객체
-      const reader = new FileReader();
+  //선택된 상품이 온다.
+  const selectGoods = async (g) => {
+    console.log("선택된 배너" + selBest);
+    const result = await GoodsApi.bestInsert(g.goodsId, selBest);
 
-      reader.onloadend = () => {
-        //파일 읽기가 끝났을때 자동 실행되어 선택된 이미지 저장
-        setPrevImage(reader.result);
-      };
-
-      reader.readAsDataURL(file);
-      setSelectImage(file);
-    }
+    alert(result.message);
+    console.log(result);
+    setSelectView(false);
+    getBest();
   };
 
   //배너 상품 선택 클릭
@@ -70,6 +62,11 @@ export default function BestSelect() {
     const result = await GoodsApi.bannerInsert(newBanner);
     alert(result.message);
     getBest();
+  };
+
+  // 별점 (배열)
+  const renderStars = (rating) => {
+    return "⭐".repeat(Math.floor(rating)); // 반올림이나 소수점 무시
   };
   return (
     <BannerSelectComp>
@@ -86,7 +83,7 @@ export default function BestSelect() {
         <div className="banner_list">
           <h3>베스트 상품 관리</h3>
           <ul>
-            {[...Array(5)].map((_, i) => (
+            {[...Array(4)].map((_, i) => (
               <li key={i}>
                 {best.some((b) => b.position === i + 1) ? (
                   best
@@ -132,7 +129,7 @@ export default function BestSelect() {
             ))}
           </ul>
         </div>
-        {selectView && <GoodsSelectList />}
+        {selectView && <GoodsSelectList selectEvt={selectGoods} />}
       </div>
     </BannerSelectComp>
   );

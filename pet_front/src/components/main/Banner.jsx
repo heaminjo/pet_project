@@ -58,10 +58,10 @@ export default Banner;
 const BannerComp = styled.div`
   .slider-container {
     position: relative;
-    width: 1100px;
+    width: 1200px;
     height: 400px;
     margin: 0 auto;
-    background-color: #fff;
+    background-color: rgb(255, 254, 242);
     border-radius: 40px;
 
     .item {
