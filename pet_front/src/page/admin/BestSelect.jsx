@@ -9,7 +9,7 @@ import GoodsSelectList from "../../components/util/GoodsSelectList";
 export default function BestSelect() {
   const [best, setBest] = useState([]); //배너 데이터
   const [modal, setModal] = useState(false); //삭제 확인 모달
-  const [selBest, setSelBest] = useState(0); //선택된 배너(삭제,수정,선택)
+  const [selBest, setSelBest] = useState(0); //선택된 베스트(삭제,수정,선택)
   const [selectImage, setSelectImage] = useState(null); //선택 프로필(서버용)
   const [prevImage, setPrevImage] = useState(null); //이전 프로필필
   const [selectView, setSelectView] = useState(false); //상품 선택 창 여부
@@ -26,25 +26,17 @@ export default function BestSelect() {
     console.log(result);
   };
 
-  //배너 삭제 클릭(삭제 확인)
+  //베스트 삭제 클릭(삭제 확인)
   const clickBannerDelete = (id) => {
     //현재 선택된 배너 아이디 저장
     setSelBest(id);
     setModal(true);
   };
-  //배너 삭제
-  const bannerDelete = async () => {
-    const result = await AdminApi.bannerDelete(selBest);
-    setModal(false);
-
-    alert(result.message);
-    getBest();
-  };
 
   //선택된 상품이 온다.
   const selectGoods = async (g) => {
     console.log("선택된 배너" + selBest);
-    const result = await GoodsApi.bestInsert(g.goodsId, selBest);
+    const result = await AdminApi.bestInsert(g.goodsId, selBest);
 
     alert(result.message);
     console.log(result);
@@ -68,6 +60,15 @@ export default function BestSelect() {
   const renderStars = (rating) => {
     return "⭐".repeat(Math.floor(rating)); // 반올림이나 소수점 무시
   };
+
+  //베스트 상품 삭제
+  const bestDelete = async () => {
+    const result = await AdminApi.bestDelete(selBest);
+    setModal(false);
+
+    alert(result.message);
+    getBest();
+  };
   return (
     <BannerSelectComp>
       <div className="select_container">
@@ -76,7 +77,7 @@ export default function BestSelect() {
             <Modal
               setModal={setModal}
               content={"정말 삭제하시겠습니까?"}
-              clickEvt={bannerDelete}
+              clickEvt={bestDelete}
             />
           </div>
         )}
@@ -92,7 +93,7 @@ export default function BestSelect() {
                       <React.Fragment key={b.position}>
                         <img src={b.imageFile} alt="배너 이미지" />
                         <div className="banner_mod">
-                          <button onClick={() => clickBannerDelete(b.bannerId)}>
+                          <button onClick={() => clickBannerDelete(b.bestId)}>
                             삭제
                           </button>
                         </div>

@@ -7,13 +7,16 @@ import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.service.AdminService;
+import com.example.pet_back.service.ImageService;
 import com.example.pet_back.service.MemberService;
+import com.example.pet_back.service.goods.GoodsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -26,7 +29,8 @@ import java.util.Map;
 public class AdminController {
     private final MemberService memberService;
     private final AdminService adminService;
-
+    private final GoodsService goodsService;
+    private final ImageService imageService;
     //관리자 조회
     @GetMapping("/detail")
     public ResponseEntity<?> memberDetail(@AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -80,5 +84,22 @@ public class AdminController {
     @DeleteMapping("/banner/delete")
     public ResponseEntity<ApiResponse>bannerDelete(@RequestParam("id") Long id){
         return ResponseEntity.ok(adminService.bannerDelete(id));
+    }
+    //배너 추가(조해민)
+    @PostMapping("/banner/insert")
+    public ResponseEntity<ApiResponse> goodsPageList(@RequestParam ("file") MultipartFile file, @RequestParam("position") int position){
+        return ResponseEntity.ok(imageService.bannerInsert(file,position));
+    }
+
+    //베스트 상품 추가(조해민)
+    @PostMapping("/best/insert")
+    public ResponseEntity<ApiResponse> bestInsert(@RequestBody BestInsertDTO dto){
+
+        return ResponseEntity.ok(goodsService.bestInsert(dto));
+    }
+    //베스트 삭제
+    @DeleteMapping("/best/delete")
+    public ResponseEntity<ApiResponse>bestDelete(@RequestParam("id") Long id){
+        return ResponseEntity.ok(adminService.bestDelete(id));
     }
 }

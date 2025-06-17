@@ -150,21 +150,12 @@ public class GoodsController {
         return ResponseEntity.ok(goodsService.goodsPageList(dto));
     }
 
-    //배너 추가(조해민)
-    @PostMapping("/banner/insert")
-    public ResponseEntity<ApiResponse> goodsPageList(@RequestParam ("file") MultipartFile file,@RequestParam("position") int position){
-        return ResponseEntity.ok(imageService.bannerInsert(file,position));
-    }
 
     //베스트 상품 리스트 불러오기(조해민)
     @GetMapping("/best/list")
     public ResponseEntity<List<BestDTO>> bestList() {
         return ResponseEntity.ok(goodsService.bestList());
     }
-    //배너 추가(조해민)
-    @PostMapping("/best/insert")
-    public ResponseEntity<ApiResponse> goodsPageList(@RequestBody BestInsertDTO dto){
 
-        return ResponseEntity.ok(goodsService.bestInsert(dto));
-    }
+
 }

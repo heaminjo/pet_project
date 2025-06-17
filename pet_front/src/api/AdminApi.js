@@ -69,5 +69,36 @@ const AdminApi = {
     );
     return result.data;
   },
+  //배너 추가
+  bannerInsert: async (newBanner) => {
+    const formData = new FormData();
+    formData.append("file", newBanner.imageFile);
+    formData.append("position", newBanner.position.toString());
+    const result = await instance.post(
+      `${KH_DOMAIN}/admin/banner/insert`,
+      formData
+    );
+    return result.data;
+  },
+  //베스트 상품 추가
+  bestInsert: async (goodsId, position) => {
+    const newBest = {
+      goodsId: goodsId,
+      position: position,
+    };
+    console.log(newBest);
+    const result = await instance.post(
+      `${KH_DOMAIN}/admin/best/insert`,
+      newBest
+    );
+    return result.data;
+  },
+  //베스트 상품 삭제
+  bestDelete: async (id) => {
+    const result = await instance.delete(
+      `${KH_DOMAIN}/admin/best/delete?id=${id}`
+    );
+    return result.data;
+  },
 };
 export default AdminApi;
