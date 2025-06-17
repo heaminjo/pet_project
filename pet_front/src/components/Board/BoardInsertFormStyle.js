@@ -130,6 +130,8 @@ const boardInsertFormContainer = styled.div`
         display: flex;
         gap: 10px;
         margin-top: 10px;
+        max-width: 100%;
+        overflow-x: auto;
       }
 
     }

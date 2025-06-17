@@ -2,7 +2,8 @@ const { default: styled } = require("styled-components");
 
 const boardListContainer = styled.div`
   margin-top: 150px;
-  height: 1000px;
+  height: auto;
+  min-height: 1500px;
   display: flex;
   flex-direction: column;
   min-height: 100vh;

@@ -80,6 +80,13 @@ export default function BoardInsertForm() {
     }
   };
 
+  const handleImageRemove = (idx) => {
+    // 이미지 미리보기 삭제
+    setImagePreviews(prev => prev.filter((_, i) => i !== idx));
+    // 실제 파일 배열도 같이 삭제
+    setImageFiles(prev => prev.filter((_, i) => i !== idx));
+  };
+
   return (
     <BoardInsertFormStyle>
       <div className="boardInsertFormContainer">
@@ -157,7 +164,16 @@ export default function BoardInsertForm() {
             {imagePreviews.length > 0 && (
               <div className="imagePreview">
                 {imagePreviews.map((src, idx) => (
-                  <img key={idx} src={src} alt={`미리보기${idx}`} width={200} />
+                  <div className="imagePreviewBox" key={idx}>
+                    <img src={src} alt={`미리보기${idx}`} width={200} />
+                    <button
+                      type="button"
+                      className="removeImageBtn"
+                      onClick={() => handleImageRemove(idx)}
+                    >
+                      x
+                    </button>
+                  </div>
                 ))}
               </div>
             )}
