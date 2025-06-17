@@ -1,7 +1,6 @@
 package com.example.pet_back.mapper;
 
 import com.example.pet_back.domain.admin.BannerDTO;
-import com.example.pet_back.domain.admin.BannerInsertDTO;
 import com.example.pet_back.domain.goods.CategoryResponseDTO;
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.domain.goods.GoodsResponseDTO;
@@ -16,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-06-13T17:07:04+0900",
+    date = "2025-06-17T10:57:58+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.12 (Oracle Corporation)"
 )
 @Component
@@ -101,6 +100,7 @@ public class GoodsMapperImpl implements GoodsMapper {
 
         BannerDTO bannerDTO = new BannerDTO();
 
+        bannerDTO.setImageFile( GoodsMapper.imageFileUrl( goodsbanner.getImageFile() ) );
         bannerDTO.setBannerId( goodsbanner.getBannerId() );
         bannerDTO.setPosition( goodsbanner.getPosition() );
 
@@ -137,19 +137,6 @@ public class GoodsMapperImpl implements GoodsMapper {
         goodsSimpleDTO.setPrice( goods.getPrice() );
 
         return goodsSimpleDTO;
-    }
-
-    @Override
-    public Goodsbanner bannerToEntity(BannerInsertDTO dto) {
-        if ( dto == null ) {
-            return null;
-        }
-
-        Goodsbanner.GoodsbannerBuilder<?, ?> goodsbanner = Goodsbanner.builder();
-
-        goodsbanner.position( dto.getPosition() );
-
-        return goodsbanner.build();
     }
 
     protected Goods goodsResponseDTOToGoods(GoodsResponseDTO goodsResponseDTO) {

@@ -61,4 +61,11 @@ public interface BoardMapper {
     //** 이미지 파일명 리스트 조회
     List<String> selectImageFileNamesByBoardId(@Param("board_id") int board_id);
 
+    //** 이미지 삭제
+    int deleteBoardImage(@Param("board_id") int board_id,
+                         @Param("fileName") String fileName);
+
+    //** 전체 이미지 삭제
+    int deleteAllBoardImages(@Param("board_id") int board_id);
+
 }

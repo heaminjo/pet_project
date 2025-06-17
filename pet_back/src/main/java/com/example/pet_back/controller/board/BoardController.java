@@ -96,9 +96,9 @@ public class BoardController {
 
 
     //** updateboard 게시글 수정
-    @PutMapping("/updateboard/{id}")
+    @PutMapping("/updateboard/{board_id}")
     public ResponseEntity<?> updateBoard(
-            @PathVariable("id") int id,
+            @PathVariable("board_id") int board_id,
             @RequestBody BoardDTO dto,
             @RequestHeader(value = "Authorization", required = false) String authorizationHeader) {
 
@@ -106,7 +106,7 @@ public class BoardController {
         if (memberId == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 정보가 없습니다.");
         }
-        dto.setBoard_id(id);
+        dto.setBoard_id(board_id);
         dto.setMember_id(memberId.intValue());
         if (boardService.updateBoard(dto) > 0) {
             return ResponseEntity.ok("수정 성공");

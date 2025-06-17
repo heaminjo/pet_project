@@ -1,11 +1,13 @@
 const { default: styled } = require("styled-components");
 
-const boardInsertFormContainer = styled.div`
-  margin-top: 200px;
-  min-height: 600px;
-  width: 100%;
-  height: 1000px;
+const boardInsertFormStyle = styled.div`
+  
+  margin-top: 200px;  
+  min-height: 1500px;
+  height: auto;
+
   .boardInsertFormContainer {
+    width: 100%;
     max-width: 600px;
     margin: 0 auto;
     padding: 40px 32px;
@@ -157,4 +159,4 @@ const boardInsertFormContainer = styled.div`
     }
   }
 `;
-export default boardInsertFormContainer;
+export default boardInsertFormStyle;

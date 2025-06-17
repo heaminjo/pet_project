@@ -105,4 +105,13 @@ public class ImageServiceImpl implements ImageService {
         goodsBannerRepository.save(goodsbanner);
         return new ApiResponse(true,position+"번째 배너에 추가 돼었습니다.");
     }
+
+    // 글 삭제 시 이미지 파일 실제 삭제
+    public void deleteImageFile(String fileName){
+        String uploadDir = getRealPath();
+        File file = new File(uploadDir + fileName );
+        if (file.exists()){
+            file.delete();
+        }
+    }
 }

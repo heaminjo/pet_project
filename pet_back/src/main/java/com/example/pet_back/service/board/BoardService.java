@@ -35,4 +35,10 @@ public interface BoardService {
 
     //** 이미지 파일명 리스트 조회
     List<String> selectImageFileNamesByBoardId(int board_id);
+
+    //** 이미지 삭제
+    int deleteBoardImage(int board_id, String fileName);
+
+    //** 이미지 전체 삭제
+    int deleteAllBoardImages(int board_id);
 }
