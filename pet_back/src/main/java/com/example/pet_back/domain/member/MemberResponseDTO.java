@@ -21,4 +21,7 @@ public class MemberResponseDTO {
     private String memberState;
     private String imageFile;
     private String lastLogin;
+    private int loginCount ;     //로그인 횟수
+    private int totalPurchaseCount ; //총 구매 횟수
+    private int totalPurchasePrice; //총 구매가격
 }

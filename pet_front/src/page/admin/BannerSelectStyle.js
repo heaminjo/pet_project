@@ -61,6 +61,20 @@ const BannerSelectComp = styled.div`
             width: 100%;
             height: 100%;
             border-radius: 10px;
+            .banner_input {
+              display: block;
+              width: 100%;
+              background-color: #ccc;
+              border-radius: 10px;
+              height: 100%;
+              background-color: #ddd;
+              line-height: 180px;
+              text-align: center;
+              cursor: pointer;
+            }
+            .banner_input:hover {
+              background-color: #ccc;
+            }
           }
         }
         button {
@@ -70,101 +84,6 @@ const BannerSelectComp = styled.div`
         }
         button:hover {
           background-color: #bbb;
-        }
-      }
-    }
-    .goods_select {
-      width: 900px;
-      height: 650px;
-      box-shadow: 3px 3px 3px #ccc;
-      border: 1px solid #888;
-      padding: 20px;
-      /* display: flex; */
-      /* gap: 10px; */
-      h3 {
-        text-align: center;
-        margin-bottom: 10px;
-      }
-      .category_list {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        li {
-          width: 100px;
-          height: 40px;
-          background-color: rgb(54, 54, 54);
-          color: #fff;
-          text-align: center;
-          border-radius: 20px;
-          line-height: 40px;
-          cursor: pointer;
-        }
-      }
-      .search {
-        width: 100%;
-        display: flex;
-        height: 70px;
-        justify-content: center;
-        align-items: center;
-        input {
-          height: 40px;
-          width: 300px;
-          border: none;
-          border-bottom: 2px solid #000;
-          outline: none;
-          padding-left: 10px;
-        }
-        button {
-          height: 42px;
-          width: 41px;
-          border: none;
-          padding: 10px;
-          right: 0;
-          border-bottom: 2px solid #000;
-          background-color: #fff;
-          cursor: pointer;
-          img {
-            width: 100%;
-            height: 100%;
-          }
-        }
-      }
-      .goods_list {
-        width: 100%;
-        height: 400px;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr 1fr;
-        gap: 10px;
-        .goods_item {
-          border: 1px solid #ccc;
-          box-shadow: 1px 1px 1px #888;
-          padding: 20px;
-          display: flex;
-          img {
-            width: 180px;
-            height: 160px;
-          }
-          ul {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding: 5px 20px;
-            li {
-              button {
-                margin-top: 10px;
-                width: 100px;
-                height: 40px;
-                border: 1px solid #555;
-                box-shadow: 2px 2px 2px #777;
-                cursor: pointer;
-                font-weight: bold;
-              }
-              button:hover {
-                background-color: #ddd;
-              }
-            }
-          }
         }
       }
     }

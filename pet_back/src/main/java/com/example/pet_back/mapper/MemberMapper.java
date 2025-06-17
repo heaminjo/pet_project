@@ -7,6 +7,7 @@ import com.example.pet_back.domain.address.AddressRequestDTO;
 import com.example.pet_back.domain.address.AddressResponseDTO;
 import com.example.pet_back.domain.admin.BannerDTO;
 import com.example.pet_back.domain.admin.UserDetailResponseDTO;
+import com.example.pet_back.domain.member.GradeResponseDTO;
 import com.example.pet_back.domain.member.MemberRequestDTO;
 import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.entity.Address;
@@ -26,7 +27,6 @@ public interface MemberMapper {
     public Member toEntity(MemberRequestDTO dto);
 
     public Address addressToEntity(AddressRequestDTO dto);
-
 
     @Mapping(source = "addrType", target = "addrType", qualifiedByName = "addrToString")
     public AddressResponseDTO toAddressDTO(Address address);

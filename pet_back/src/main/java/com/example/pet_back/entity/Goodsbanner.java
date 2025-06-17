@@ -18,9 +18,7 @@ public class Goodsbanner {
     @Column(name = "banner_id", nullable = false)
     private Long bannerId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "goods_id", nullable = false) // FK => 연관관계 매핑
-    private Goods goods; // 엔티티 자체 매핑 (private Long delivery_id X)
+    private String imageFile;
 
     private int position;
 

@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import MemberApi from "../../api/MemberApi";
 import MyPageComp from "./MyPageStyle";
 import MypageMenu from "../../components/mypage/MyPageMenu";
 import { Outlet, useNavigate } from "react-router-dom";
+export const PetContext = React.createContext();
 
 export default function MyPage() {
   const [modal, setModal] = useState(false);
@@ -29,11 +30,13 @@ export default function MyPage() {
     }
   };
   return (
-    <MyPageComp>
-      <div className="mypage_inner">
-        <MypageMenu setModal={setModal} />
-        <Outlet context={{ user }} />
-      </div>
-    </MyPageComp>
+    <PetContext.Provider value={{ user }}>
+      <MyPageComp>
+        <div className="mypage_inner">
+          <MypageMenu setModal={setModal} />
+          <Outlet context={{ user }} />
+        </div>
+      </MyPageComp>
+    </PetContext.Provider>
   );
 }

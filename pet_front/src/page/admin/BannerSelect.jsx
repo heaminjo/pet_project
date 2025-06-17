@@ -11,14 +11,14 @@ export default function BannerSelect() {
   const [banner, setBanner] = useState([]); //배너 데이터
   const [modal, setModal] = useState(false); //삭제 확인 모달
   const [selBanner, setSelBanner] = useState(0); //선택된 배너(삭제,수정,선택)
-
-  const [selectView, setSelectView] = useState(false); //상품 선택 창 여부
+  const [selectImage, setSelectImage] = useState(null); //선택 프로필(서버용)
+  const [prevImage, setPrevImage] = useState(null); //이전 프로필필
 
   useEffect(() => {
     getBanner();
   }, []);
 
-  //배너 상품 가져오기
+  //배너 사진진 가져오기
   const getBanner = async () => {
     const result = await GoodsApi.getBanner();
 
@@ -41,16 +41,34 @@ export default function BannerSelect() {
     getBanner();
   };
 
+  //이미지 체인지
+  const changeImage = (e, i) => {
+    console.log("클릭 배너 => ", i + 1);
+    setSelBanner(i + 1);
+    const file = e.target.files[0];
+    if (file) {
+      //파일 미리보기를 위한 객체
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        //파일 읽기가 끝났을때 자동 실행되어 선택된 이미지 저장
+        setPrevImage(reader.result);
+      };
+
+      reader.readAsDataURL(file);
+      setSelectImage(file);
+    }
+  };
+
   //배너 상품 선택 클릭
-  const clickSelect = async (id) => {
-    console.log(setBanner);
+  const clickSelect = async () => {
     const newBanner = {
-      goodsId: id,
+      imageFile: selectImage,
       position: selBanner,
     };
+
     const result = await GoodsApi.bannerInsert(newBanner);
     alert(result.message);
-    setSelectView(false);
     getBanner();
   };
   return (
@@ -76,10 +94,6 @@ export default function BannerSelect() {
                     .map((b) => (
                       <React.Fragment key={b.position}>
                         <img src={b.imageFile} alt="배너 이미지" />
-                        <div className="banner_text">
-                          <p>[{b.categoryName}]</p>
-                          <p>{b.goodsName}</p>
-                        </div>
                         <div className="banner_mod">
                           <button onClick={() => clickBannerDelete(b.bannerId)}>
                             삭제
@@ -89,23 +103,37 @@ export default function BannerSelect() {
                     ))
                 ) : (
                   <div className="banner_sel">
-                    <button
-                      onClick={() => {
-                        setSelectView(true);
-                        setSelBanner(i + 1);
-                        console.log(i + 1);
-                      }}
-                      className="banner_sel"
-                    >
-                      배너 선택
-                    </button>
+                    {prevImage != null && selBanner == i + 1 ? (
+                      <React.Fragment>
+                        <img src={prevImage} />
+                        <div className="banner_mod">
+                          <button onClick={() => clickSelect()}>
+                            저장하기
+                          </button>
+                        </div>
+                      </React.Fragment>
+                    ) : (
+                      <React.Fragment>
+                        <label
+                          className="banner_input"
+                          htmlFor={"upload__" + i}
+                        >
+                          배너 이미지 선택
+                        </label>
+                        <input
+                          id={"upload__" + i}
+                          type="file"
+                          onChange={(e) => changeImage(e, i)}
+                          hidden
+                        />
+                      </React.Fragment>
+                    )}
                   </div>
                 )}
               </li>
             ))}
           </ul>
         </div>
-        {selectView && <GoodsSelectList selectEvt={clickSelect} />}
       </div>
     </BannerSelectComp>
   );
