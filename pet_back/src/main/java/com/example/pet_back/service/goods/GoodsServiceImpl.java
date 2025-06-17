@@ -27,6 +27,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -146,18 +147,73 @@ public class GoodsServiceImpl implements GoodsService {
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(), sort);
 
         // 3. Page<Goods> 조회 완료
-        Page<Goods> page = goodsRepository.findAll(pageable); // GoodsList
-        // 키워드 유무
-        if(pageRequestDTO.getKeyword().isEmpty()){
-            //검색 x 전체 조회
-            log.info("전체 조회 합니다.");
-            page = goodsRepository.findAll(pageable);
-        }else if(pageRequestDTO.getType().equals("all")) { // 검색필터
+        Page<Goods> page;
+        // 키워드 유무에 따른 분기
+        if(pageRequestDTO.getKeyword().isEmpty() && pageRequestDTO.getType().isEmpty()){ // 키워드 & 카테고리 X
+            // 전체 조회
+            log.info("전체 조회 => Category / Keyword : All");
+            page = goodsRepository.findAll(pageable); // GoodsList
+        }else if(pageRequestDTO.getType().isEmpty()) { // 카테고리 X
+            // Type: all 전체 조회
+            log.info("전체 조회 => Category : All / Keyword : ??" );
+            page = goodsRepository.findByKeyword("%" + pageRequestDTO.getKeyword() + "%", pageable);
+        }else if(pageRequestDTO.getKeyword().isEmpty()) { // 키워드 X
+            log.info("전체 조회 => Category : ?? / Keyword : All" );
+            page = goodsRepository.findByCategory(pageRequestDTO.getCategory(), pageable);
+        }else { // 검색필터
             // 검색 필터 : 키워드 & 카테고리
-            log.info("전체 필터로 검색합니다. keyword => ");
-            page = goodsRepository.findSearchList("%" + pageRequestDTO.getKeyword() + "%", pageRequestDTO.getCategory(), pageable);
+            log.info("필터링 => Category : ??  keyword : ??");
+            page = goodsRepository.findByCategoryAndKeyword("%" + pageRequestDTO.getKeyword() + "%", pageRequestDTO.getCategory(), pageable);
         }
+        log.info("** 키워드 유무에 따른 분기 **");
             // 4. 스트림 사용하여 GoodsResponseDTO 리스트로 변환
+        List<GoodsResponseDTO> goodsResponseDTOList = page.getContent().stream() //
+                .map(goods -> GoodsResponseDTO.builder() //
+                        .goodsId(goods.getGoodsId())
+                        .goodsName(goods.getGoodsName())
+                        .price(goods.getPrice())
+                        .description(goods.getDescription())
+                        .goodsState(goods.getGoodsState())
+                        .imageFile(goods.getImageFile())
+                        .rating(goods.getRating())
+                        .views(goods.getViews())
+                        .reviewNum(goods.getReviewNum())
+                        .quantity(goods.getQuantity())
+                        .regDate(goods.getRegDate())
+                        .build()).collect(Collectors.toList());
+
+        log.info("** 스트림 사용하여 GoodsResponseDTO 리스트로 변환 **");
+        // 5. 반환할 ResponseDTO 에 List 저장 (goodsResponseDTOList)
+        PageResponseDTO<GoodsResponseDTO> response = new PageResponseDTO<>( //
+                goodsResponseDTOList, //
+                pageRequestDTO.getPage(), pageRequestDTO.getSize(),  //
+                page.getTotalElements(), page.getTotalPages(), page.hasNext(), page.hasPrevious());
+
+        log.info("** 반환할 ResponseDTO 에 List 저장 (goodsResponseDTOList) **");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    // 찜 목록
+    @Override
+    public ResponseEntity<?> favorite(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO){
+        log.info("** GoodsServiceImpl 실행됨 **");
+        Member member = memberRepository.findById(userDetails.getMember().getId()) //
+                .orElseThrow(() //
+                        -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+
+        // 페이징
+        // 1. 정렬 (최신)
+        Sort sort = pageRequestDTO.getSortBy().equals("desc") ? // desc라면
+                Sort.by("regDate").descending() // regDate 필드 기준으로 desc
+                : Sort.by("regDate").ascending();
+
+        // 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(), sort);
+
+        // 3. Page<Goods> 조회 완료 (Favorite 의 GoodsId로 Goods 정보 조회)
+        Page<Goods> page = goodsRepository.findFavoriteList(member.getId(), pageable);
+
+        // 4. 스트림 사용하여 GoodsResponseDTO 리스트로 변환
         List<GoodsResponseDTO> goodsResponseDTOList = page.getContent().stream() //
                 .map(goods -> GoodsResponseDTO.builder() //
                         .goodsId(goods.getGoodsId())
@@ -181,6 +237,7 @@ public class GoodsServiceImpl implements GoodsService {
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
 
     // 상품등록
     @Override

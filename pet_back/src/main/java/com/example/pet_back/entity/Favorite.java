@@ -25,4 +25,7 @@ public class Favorite implements Serializable {
     @Column(name = "goods_id", nullable = false)
     private Long goodsId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "goods_id", insertable = false, updatable = false)
+    private Goods goods; // JPA 가 연관관계 조회시 필요 (Join : Goods 엔티티 포함)
 }

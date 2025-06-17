@@ -26,6 +26,10 @@ public interface GoodsService {
     // 찜
     ResponseEntity<?> favorite(Long goodsId, CustomUserDetails userDetails);
 
+    // 찜 목록
+    ResponseEntity<?> favorite(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO);
+
+
     // 리뷰
     ResponseEntity<?> reviews(Long goodsId, PageRequestDTO pageRequestDTO);
 

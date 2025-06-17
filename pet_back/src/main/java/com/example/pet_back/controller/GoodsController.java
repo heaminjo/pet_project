@@ -54,6 +54,15 @@ public class GoodsController {
         return goodsService.reviews(goodsId, pageRequestDTO);
     }
 
+    //  리스트 출력
+    // @GetMapping(value = "/list") => Paging 추가로 @PostMapping으로 변경함
+    @PostMapping(value = "/favorite") // @PathVariable 시 {name} 필수
+    public ResponseEntity<?> favoriteList(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody PageRequestDTO pageRequestDTO) { // Cart entity
+        log.info("** CartController => cartList() 실행됨 **");
+        return goodsService.favorite(userDetails, pageRequestDTO);
+    }
+
+
     // 상품 리스트 출력 (메인)
     @PostMapping("/list")
     public ResponseEntity<?> showGoodsList(@RequestBody PageRequestDTO pageRequestDTO) {
@@ -61,6 +70,7 @@ public class GoodsController {
         log.info("** GoodsController => showGoodsList() 실행됨 **");
 //        System.out.println("GoodsController 상품리스트출력 : " + goodsService.showGoodsList(pageRequestDTO).toString());
         return goodsService.showGoodsList(pageRequestDTO);
+        // return ResponseEntity.ok(goodsService.goodsPageList(pageRequestDTO));
     }
 
     // 상품등록 메서드 (관리자 페이지)

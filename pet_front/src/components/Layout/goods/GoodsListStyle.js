@@ -82,7 +82,9 @@ const GoodsListComp = styled.div`
         flex-wrap: wrap; /* 줄바꿈 허용 */
         display: flex;
         flex-direction: row;
-        margin: 50px 0 auto;
+        margin: 30px 0 auto;
+        justify-content: flex-start; /* ← 가운데가 아닌 왼쪽 정렬 */
+        gap: 10px; /* 아이템 간 간격 */
 
         .goodslist {
           width: 250px;

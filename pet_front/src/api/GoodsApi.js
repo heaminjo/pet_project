@@ -49,12 +49,25 @@ const GoodsApi = {
     try {
       const result = await instance.post(`/goods/list`, pages);
       if (result.data != null) {
-        console.log('응답 결과:', result.data);
+        console.log(' getGoodsPageList 응답 결과:', result.data);
         alert(`getGoodsPageList() 호출됨`);
         return result.data;
       }
     } catch (err) {}
   },
+
+  getFavoritePageList: async (pages) => {
+    alert(`getGoodsPageList() 호출됨, pages = ${JSON.stringify(pages)}`);
+    try {
+      const result = await instance.post(`/goods/favorite`, pages);
+      if (result.data != null) {
+        console.log(' getGoodsPageList 응답 결과:', result.data);
+        alert(`getGoodsPageList() 호출됨`);
+        return result.data;
+      }
+    } catch (err) {}
+  },
+
 
   // <Goods /> : 상품등록
   regGoods: async (goods) => {

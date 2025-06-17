@@ -20,9 +20,8 @@ export default function GoodsList() {
   const [type, setType] = useState('all');
   const [keyword, setKeyword] = useState('');
   const [sort, setSort] = useState('desc');
-
-  // 페이징 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  const [page, setPage] = useState(0); // 1 페이지, 2 페이지, ...
+  // 안전하게 URL에서 직접 읽기
+  const [page, setPage] = useState(parseInt(new URLSearchParams(location.search).get('page')) || 0);
 
   // 페이징 정보 상태변수 (현재 페이징 상태 핸들링 위함)
   const [paging, setPaging] = useState({
@@ -35,37 +34,26 @@ export default function GoodsList() {
   });
 
   // 검 색 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // 검색조건 (URL에서 추출)
   const params = new URLSearchParams(location.search);
-
-  const searchKeyword = params.get('searchKeyword') || ''; // 검색어
-  const searchType = params.get('searchType') || 'all'; // 검색필터
-  const sortParam = params.get('sort') || 'desc';
-  const pageParam = parseInt(params.get('page')) || 0;
 
   // input 상태 관리 (검색어 입력창과 싱크 맞추기)
   // 검색창에 입력한 값 inputKeyword에 저장
-  const [inputKeyword, setInputKeyword] = useState(searchKeyword);
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 함 수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   //검색 기능
-  const handleSearch = (e) => {
+  //검색 버튼 클릭
+  const searchClick = (e) => {
     if (e) e.preventDefault();
     const params = new URLSearchParams();
-    params.set('searchType', searchType);
-    params.set('searchKeyword', inputKeyword);
-    params.set('page', 0); // 검색은 항상 첫 페이지로 이동
+    params.set('searchType', type);
+    params.set('searchKeyword', keyword);
+    params.set('sort', sort);
+    params.set('page', 0);
     navigate({
-      // URL에 쿼리파라미터 설정.
       pathname: location.pathname,
-      search: params.toString(), // location.search가 바뀌면 자동으로 useEffect의 axios.get 재실행.
+      search: params.toString(),
     });
-  };
-  //검색 버튼 클릭
-  const searchClick = () => {
-    setPage(0);
-    getPageList();
   };
 
   //검색버튼 엔터
@@ -89,12 +77,19 @@ export default function GoodsList() {
 
   // 페이징
   const getPageList = async () => {
+    // 검색조건 (URL에서 추출)
+    const params = new URLSearchParams(location.search);
+
+    const searchKeyword = params.get('searchKeyword') || ''; // 검색어
+    const searchType = params.get('searchType') || 'all'; // 검색필터
+    const sortParam = params.get('sort') || 'desc';
+    const pageParam = parseInt(params.get('page')) || 0;
     const pages = {
-      page: page,
+      page: pageParam,
       size: 8,
-      sortBy: sort,
-      keyword: keyword,
-      type: type,
+      sortBy: sortParam,
+      keyword: searchKeyword,
+      type: searchType,
     };
     try {
       const result = await GoodsApi.getGoodsPageList(pages);
@@ -102,7 +97,7 @@ export default function GoodsList() {
       setGoods(result.content);
 
       // 2. 페이지번호 정보
-      let temp = Math.floor(page / 5) * 5;
+      let temp = Math.floor(pageParam / 5) * 5;
       setPaging({
         start: temp,
         end: Math.min(temp + 5, result.totalPages),
@@ -116,15 +111,15 @@ export default function GoodsList() {
     }
   };
 
-  // 페이징
+  // 페이징, 검색 조건
   useEffect(() => {
+    // URL 쿼리스트링 기반으로 상태 세팅
+    const params = new URLSearchParams(location.search);
+    setKeyword(params.get('searchKeyword') || '');
+    setType(params.get('searchType') || 'all');
+    setSort(params.get('sort') || 'desc');
     getPageList();
-  }, [page]);
-
-  // 검색
-  useEffect(() => {
-    setInputKeyword(searchKeyword);
-  }, [searchKeyword]);
+  }, [page, location.search]);
 
   return (
     <GoodsListComp>
@@ -139,7 +134,7 @@ export default function GoodsList() {
             }}
             onSubmit={(e) => {
               e.preventDefault(); // 폼 제출 시 새로고침 방지
-              handleSearch();
+              searchClick();
             }}>
             <div className='custom-select'>
               <select name='sort' id='sort' value={sort} onChange={(e) => setSort(e.target.value)}>
@@ -185,7 +180,15 @@ export default function GoodsList() {
                 </div>
               ))}
           </section>
-          <PageNumber page={page} setPage={setPage} paging={paging} />
+          <PageNumber
+            page={page}
+            setPage={(p) => {
+              const newParams = new URLSearchParams(location.search);
+              newParams.set('page', p);
+              navigate({ pathname: location.pathname, search: newParams.toString() });
+            }}
+            paging={paging}
+          />
           <br />
           <hr />
           <h2>자주 산 상품</h2>
