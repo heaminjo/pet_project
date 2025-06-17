@@ -1,11 +1,13 @@
 package com.example.pet_back.repository;
 
 import com.example.pet_back.constant.ROLE;
+import com.example.pet_back.entity.Cart;
 import com.example.pet_back.entity.Goods;
 import com.example.pet_back.entity.Member;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,7 +23,7 @@ public interface GoodsRepository extends JpaRepository<Goods, Long> {
     @Query(nativeQuery = true, value = "INSERT INTO GOODS(" +
             "category_id, goods_name, price, description, goods_state, image_file, quantity) " +
             "VALUES (:category_id, :goods_name, :price, :description, :goods_state, :image_file, :quantity)")
-    public void registerGoods(@Param("category_id") Long category_id, @Param("goods_name") String goods_name, //
+    void registerGoods(@Param("category_id") Long category_id, @Param("goods_name") String goods_name, //
                               @Param("price") int price, @Param("description") String description, //
                               @Param("goods_state") String goods_state, //
                               @Param("image_file") String image_file, @Param("quantity") int quantity);
@@ -32,7 +34,36 @@ public interface GoodsRepository extends JpaRepository<Goods, Long> {
             "JOIN od.goods g " +
             "JOIN od.orders o " +
             "WHERE o.member.id = :memberId")
-    public List<Goods> findAllByUserId(@Param("memberId") Long memberId);
+    List<Goods> findAllByUserId(@Param("memberId") Long memberId);
+
+    // 찜 목록 조회 (서브쿼리 사용)
+    @Transactional
+    @Query("SELECT g FROM Goods g WHERE g.goodsId IN (SELECT f.goodsId FROM Favorite f WHERE f.memberId = :memberId)")
+    // select * from goods where goods_id IN (select goods_id from favorite where member_id=8);
+    Page<Goods> findFavoriteList(@Param("memberId") Long memberId, Pageable pageable);
+
+
+    // 검색 기능 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    @Transactional
+    @Query("SELECT g FROM Goods g " +
+            "WHERE (:keyword IS NULL OR g.goodsName LIKE :keyword)")
+    Page<Goods> findByKeyword(@Param("keyword") String keyword, Pageable pageable);
+
+    @Transactional
+    @Query("SELECT g FROM Goods g " +
+            "WHERE (:category IS NULL OR g.category.categoryId = :category)")
+    Page<Goods> findByCategory( @Param("category") Long category, Pageable pageable);
+
+
+    // Type 과 Keyword 로 조회
+    @Transactional
+    @Query("SELECT g FROM Goods g " +
+            "WHERE (:category IS NULL OR g.category.categoryId = :category) " +
+            "AND (:keyword IS NULL OR g.goodsName LIKE :keyword)")
+    Page<Goods> findByCategoryAndKeyword(@Param("keyword") String keyword,
+                               @Param("category") Long category,
+                               Pageable pageable);
+
 
     //검색
     @Query("SELECT g FROM Goods g " +
@@ -41,4 +72,5 @@ public interface GoodsRepository extends JpaRepository<Goods, Long> {
     Page<Goods> findSearchList(@Param("keyword") String keyword,
                                @Param("category") Long category,
                                Pageable pageable);
+
 }

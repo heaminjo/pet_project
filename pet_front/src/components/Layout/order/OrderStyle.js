@@ -3,20 +3,21 @@ import styled from 'styled-components';
 const OrderComp = styled.div`
   .container {
     width: 900px;
-    height: 800px;
+    height: 3000px;
     margin: 0 auto;
-    margin-top: 150px;
+    margin-top: 110px;
     padding: 0px;
     border-radius: 10px;
 
     .product {
       display: flex;
-      gap: 40px;
+      // gap: 40px;
       flex-direction: row;
       border: 1px solid #ddd;
 
       .left {
         width: 400px;
+        padding: 50px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -32,9 +33,9 @@ const OrderComp = styled.div`
       }
 
       .right {
-        width: 500px;
+        width: 700px;
         height: 400px;
-        padding: 0 50px;
+        padding: 50px;
 
         .prodname {
           margin-top: 50px;
@@ -57,17 +58,63 @@ const OrderComp = styled.div`
           color: red;
           margin: 10px;
         }
-
         .sellerimg {
           width: 30px;
           height: 30px;
           align-content: center;
         }
-        .options {
-          width: 300px;
-          height: 30px;
-          font-weight: bold;
+        .btn1,
+        .btn2 {
+          width: 120px;
+          height: 40px;
+          padding: 10px;
+          border-radius: 4px;
         }
+        .btn1 {
+          border: 1px solid #ccc;
+          background: #fff;
+          color: #222;
+        }
+        .btn2 {
+          background-color: #f8e776;
+        }
+      }
+    }
+    .product-container {
+      padding: 16px;
+      font-size: 14px;
+      /* 테이블 */
+      .product-table {
+        width: 100%;
+        margin-top: 16px;
+        border-top: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        border-collapse: collapse;
+
+        .product-th {
+          width: 25%;
+          text-align: left;
+          background-color: #f5f5f5;
+          padding: 8px;
+          vertical-align: top;
+        }
+
+        .product-td {
+          padding: 8px;
+          border-top: 1px solid #eee;
+        }
+      }
+
+      /* 더보기 텍스트 */
+      .product-more {
+        margin-top: 8px;
+        font-size: 13px;
+        color: #0073e9;
+        cursor: pointer;
+      }
+
+      .product-more:hover {
+        text-decoration: underline;
       }
     }
   }

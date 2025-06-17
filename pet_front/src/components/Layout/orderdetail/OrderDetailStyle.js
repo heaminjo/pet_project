@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const OrderDetailComp = styled.div`
   .container {
     width: 900px;
-    height: 800px;
+    height: 1100px;
     margin: 0 auto;
 
     .orderlist {

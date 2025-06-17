@@ -1,6 +1,7 @@
 package com.example.pet_back.service.goods;
 
 import com.example.pet_back.config.FileUploadProperties;
+import com.example.pet_back.constant.ROLE;
 import com.example.pet_back.domain.admin.BannerDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.goods.*;
@@ -25,6 +26,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -44,6 +46,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     // Reposiotory
     private final GoodsRepository goodsRepository;
+    private final ReviewRepository reviewRepository;
     private final OrderRepository orderRepository;
     private final MemberRepository memberRepository;
     private final FavoriteRepository favoriteRepository;
@@ -56,9 +59,9 @@ public class GoodsServiceImpl implements GoodsService {
 
     // 상품상세정보
     @Override
-    public ResponseEntity<?> selectOne(Long goods_id) {
+    public ResponseEntity<?> selectOne(Long goodsId) {
         log.info("** GoodsServiceImpl 실행됨 **");
-        Goods goods = goodsRepository.findById(goods_id).get();
+        Goods goods = goodsRepository.findById(goodsId).get();
         return ResponseEntity.status(HttpStatus.OK).body(goods);
     }
 
@@ -84,6 +87,45 @@ public class GoodsServiceImpl implements GoodsService {
         }
     }
 
+    // 리뷰
+    @Override
+    @Transactional
+    public  ResponseEntity<?> reviews(Long goodsId, PageRequestDTO pageRequestDTO){
+        log.info("** GoodsServiceImpl 실행됨 **");
+        // 페이징
+        // 1. 정렬 조건 설정 :  (최신)
+        Sort sort = pageRequestDTO.getSortBy().equals("desc") ? // desc라면
+                Sort.by("regDate").descending() // regDate 필드 기준으로 desc
+                : Sort.by("regDate").ascending();
+
+        // 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(), sort);
+
+        log.info("** 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬 **");
+        // 3. Page<Review> 의 content (DTO에 SET)
+        Page<ReviewResponseDTO> reviewPage = reviewRepository.findAllByGoodsId(goodsId, pageable); // Review List
+
+        log.info("** 3. Page<Review> 의 content (DTO에 SET) **");
+        log.info("getContent: "+reviewPage.getContent());
+         // 4. PageResponseDTO
+        PageResponseDTO<ReviewResponseDTO> response = new PageResponseDTO<>(
+                reviewPage.getContent(),
+                pageRequestDTO.getPage(), // 클라이언트가 요청한 페이지
+                pageRequestDTO.getSize(), // 클라이언트가 요청한 수
+                reviewPage.getTotalElements(),
+                reviewPage.getTotalPages(),
+                reviewPage.hasNext(),
+                reviewPage.hasPrevious()
+        );
+        log.info("** 4. PageResponseDTO **");
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
+    }
+
+
+
+    // 고객의 배송지 정보
     @Override
     public ResponseEntity<?> findMemberAddress(CustomUserDetails userDetails){
         return ResponseEntity.status(HttpStatus.OK).body("구현중");
@@ -102,71 +144,152 @@ public class GoodsServiceImpl implements GoodsService {
 
         // 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(), sort);
-        Page<Goods> page = goodsRepository.findAll(pageable); // CartList
 
-        // 3. Goods
+        // 3. Page<Goods> 조회 완료
+        Page<Goods> page;
+        // 키워드 유무에 따른 분기
+        if(pageRequestDTO.getKeyword().isEmpty() && pageRequestDTO.getType().isEmpty()){ // 키워드 & 카테고리 X
+            // 전체 조회
+            log.info("전체 조회 => Category / Keyword : All");
+            page = goodsRepository.findAll(pageable); // GoodsList
+        }else if(pageRequestDTO.getType().isEmpty()) { // 카테고리 X
+            // Type: all 전체 조회
+            log.info("전체 조회 => Category : All / Keyword : ??" );
+            page = goodsRepository.findByKeyword("%" + pageRequestDTO.getKeyword() + "%", pageable);
+        }else if(pageRequestDTO.getKeyword().isEmpty()) { // 키워드 X
+            log.info("전체 조회 => Category : ?? / Keyword : All" );
+            page = goodsRepository.findByCategory(pageRequestDTO.getCategory(), pageable);
+        }else { // 검색필터
+            // 검색 필터 : 키워드 & 카테고리
+            log.info("필터링 => Category : ??  keyword : ??");
+            page = goodsRepository.findByCategoryAndKeyword("%" + pageRequestDTO.getKeyword() + "%", pageRequestDTO.getCategory(), pageable);
+        }
+        log.info("** 키워드 유무에 따른 분기 **");
+            // 4. 스트림 사용하여 GoodsResponseDTO 리스트로 변환
+        List<GoodsResponseDTO> goodsResponseDTOList = page.getContent().stream() //
+                .map(goods -> GoodsResponseDTO.builder() //
+                        .goodsId(goods.getGoodsId())
+                        .goodsName(goods.getGoodsName())
+                        .price(goods.getPrice())
+                        .description(goods.getDescription())
+                        .goodsState(goods.getGoodsState())
+                        .imageFile(goods.getImageFile())
+                        .rating(goods.getRating())
+                        .views(goods.getViews())
+                        .reviewNum(goods.getReviewNum())
+                        .quantity(goods.getQuantity())
+                        .regDate(goods.getRegDate())
+                        .build()).collect(Collectors.toList());
 
+        log.info("** 스트림 사용하여 GoodsResponseDTO 리스트로 변환 **");
+        // 5. 반환할 ResponseDTO 에 List 저장 (goodsResponseDTOList)
+        PageResponseDTO<GoodsResponseDTO> response = new PageResponseDTO<>( //
+                goodsResponseDTOList, //
+                pageRequestDTO.getPage(), pageRequestDTO.getSize(),  //
+                page.getTotalElements(), page.getTotalPages(), page.hasNext(), page.hasPrevious());
 
-        List<Goods> goodsEntities = goodsRepository.findAll();
-
-        // Entity 리스트 -> DTO 리스트 변환:  stream + map + collect 조합 사용
-        List<GoodsResponseDTO> goodsList = goodsEntities //
-                .stream().map(goodsMapper::toDto).collect(Collectors.toList());
-        return ResponseEntity.status(HttpStatus.OK).body(goodsList);
+        log.info("** 반환할 ResponseDTO 에 List 저장 (goodsResponseDTOList) **");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
+    // 찜 목록
+    @Override
+    public ResponseEntity<?> favorite(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO){
+        log.info("** GoodsServiceImpl 실행됨 **");
+        Member member = memberRepository.findById(userDetails.getMember().getId()) //
+                .orElseThrow(() //
+                        -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+
+        // 페이징
+        // 1. 정렬 (최신)
+        Sort sort = pageRequestDTO.getSortBy().equals("desc") ? // desc라면
+                Sort.by("regDate").descending() // regDate 필드 기준으로 desc
+                : Sort.by("regDate").ascending();
+
+        // 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(), sort);
+
+        // 3. Page<Goods> 조회 완료 (Favorite 의 GoodsId로 Goods 정보 조회)
+        Page<Goods> page = goodsRepository.findFavoriteList(member.getId(), pageable);
+
+        // 4. 스트림 사용하여 GoodsResponseDTO 리스트로 변환
+        List<GoodsResponseDTO> goodsResponseDTOList = page.getContent().stream() //
+                .map(goods -> GoodsResponseDTO.builder() //
+                        .goodsId(goods.getGoodsId())
+                        .goodsName(goods.getGoodsName())
+                        .price(goods.getPrice())
+                        .description(goods.getDescription())
+                        .goodsState(goods.getGoodsState())
+                        .imageFile(goods.getImageFile())
+                        .rating(goods.getRating())
+                        .views(goods.getViews())
+                        .reviewNum(goods.getReviewNum())
+                        .quantity(goods.getQuantity())
+                        .regDate(goods.getRegDate())
+                        .build()).collect(Collectors.toList());
+
+        // 5. 반환할 ResponseDTO 에 List 저장 (goodsResponseDTOList)
+        PageResponseDTO<GoodsResponseDTO> response = new PageResponseDTO<>( //
+                goodsResponseDTOList, //
+                pageRequestDTO.getPage(), pageRequestDTO.getSize(),  //
+                page.getTotalElements(), page.getTotalPages(), page.hasNext(), page.hasPrevious());
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
 
     // 상품등록
     @Override
-    public void registerGoods(GoodsRequestDTO goodsRequestDTO, //
-                              MultipartFile uploadImg, //
-                              HttpServletRequest request) throws IOException {
+    public void registerGoods(GoodsRequestDTO goodsRequestDTO) throws IOException {
         log.info("** GoodsServiceImpl 실행됨 **");
         System.out.println("에러발생지점 확인용 : " + goodsRequestDTO.getGoodsState().getClass());
 
-        Long category_id = goodsRequestDTO.getCategoryId();
-        String goods_name = goodsRequestDTO.getGoodsName();
-
+        Long categoryId = goodsRequestDTO.getCategoryId();
+        String goodsName = goodsRequestDTO.getGoodsName();
         int price = goodsRequestDTO.getPrice();
         String description = goodsRequestDTO.getDescription();
-        String goods_state = goodsRequestDTO.getGoodsState().name(); // String 변환 후 저장 필수
+        String goodsState = goodsRequestDTO.getGoodsState().name(); // String 변환 후 저장 필수
 
-        String image_file = goodsRequestDTO.getImageFile();  //apple.jpg
+        String imageFile = goodsRequestDTO.getImageFile();  //apple.jpg
         int quantity = goodsRequestDTO.getQuantity();
 
         // 이미지 로직
-        // 1. 파일 저장 경로 준비
-        String realPath = "C:/devv/pet_project/pet_back/src/main/resources/webapp/goodsImages/";
+        // 1. 파일 저장 경로
+        String realPath = "C:/devv/pet_project/pet_back/src/main/resources/webapp/userImages/";
 
-        // 2. 기본 이미지 복사 처리
-        File file = new File(realPath); // 파일 또는 디렉토리를 참조하는 File 객체생성
-        if (!file.exists()) file.mkdir(); // null인경우 경로 생성(최초1회)
-        file = new File(realPath + "basicman.png");
-        if (!file.exists()) {
-            String basicmanPath = "C:/devv/pet_project/pet_back/src/main/resources/webapp/goodsImages/basicman.png";
-            FileInputStream fin = new FileInputStream(new File(basicmanPath));
-            FileOutputStream fout = new FileOutputStream(file);
+        // 2. 디렉터리 생성
+        File path = new File(realPath); // 파일 또는 디렉토리를 참조하는 File 객체생성
+        if (!path.exists()) path.mkdir(); // null인경우 경로 생성(최초1회)
+
+        // 3. 이미지가 제대로 넘어오지 않는 CASE 위한 방어 코드 (기본이미지 복사 저장)
+        if (!path.exists()) {
+            String basicImg = "C:/devv/pet_project/pet_back/src/main/resources/webapp/userImages/basicimg.jpg";
+            FileInputStream fin = new FileInputStream(new File(basicImg)); // 읽어오기 위한 스트림
+            FileOutputStream fout = new FileOutputStream(path); // 쓰기 위한 스트림
             FileCopyUtils.copy(fin, fout); // Spring이 제공하는 유틸리티클래스 (파일복사)
         }
 
-        // 3. 업로드 이미지 처리
-        String file1 = "", file2 = "basicman.png";
-        // 컨트롤러에서 직접 받은 uploadImg 사용
-        if (uploadImg != null && !uploadImg.isEmpty()) {
-            String originalName = uploadImg.getOriginalFilename(); // 서버에 저장할 전체경로
-            String extension = originalName.substring(originalName.lastIndexOf("."));
-            String uuid = UUID.randomUUID().toString();
-            String newFileName = uuid + extension;
-            file1 = realPath + newFileName;
-            uploadImg.transferTo(new File(file1)); // 전송 메서드(실제로 저장됨)
-
-            file2 = newFileName; // DB 저장용 파일명
+        // 4. 업로드 이미지 처리
+        String uploadImg = "basicman.png";
+        if ( imageFile!= null && !imageFile.isEmpty()) {
+            File sourceFile = new File(realPath+imageFile); // 원본파일
+            if(sourceFile.exists()){
+                String extension = imageFile.substring(imageFile.lastIndexOf("."));
+                String uuid = UUID.randomUUID().toString();
+                String newFileName = uuid + extension;
+                // 복사 대상
+                File destFile = new File(realPath+newFileName);
+                FileCopyUtils.copy(new FileInputStream(sourceFile), new FileOutputStream(destFile));
+                // 복사된 새 파일명 DB에 저장
+                uploadImg = newFileName;
+            }
         }
 
-        // 이미지 파일명 DTO에 주입 (DB 저장용)
-        goodsRequestDTO.setImageFile(file2);
+        // 5. 이미지 파일명 DTO에 주입 (DB 저장용)
+        goodsRequestDTO.setImageFile(uploadImg);
 
-        goodsRepository.registerGoods(category_id, goods_name, price, //
-                description, goods_state, file2, quantity);
+        goodsRepository.registerGoods(categoryId, goodsName, price, //
+                description, goodsState, uploadImg, quantity);
     }
 
     // 상품수정 (미완)

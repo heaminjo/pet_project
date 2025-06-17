@@ -6,10 +6,9 @@ import GoodsApi from '../../../api/GoodsApi';
 export default function Goods() {
   const navigate = useNavigate();
   //const goodsImg = process.env.PUBLIC_URL + '/images/pic1.png';
-  const goodsImg = 'http://localhost:8080/resources/webapp/goodsImages/basicimg.png';
 
   // 이미지 미리보기 위한 상태변수 추가
-  const [prevImg, setPrevImg] = useState();
+  const [prevImg, setPrevImg] = useState('http://localhost:8080/resources/webapp/userImages/basicimg.jpg');
 
   // form의 input 값들을 state로 관리하고
   // submit 버튼 클릭 시 axios.post()로 데이터 전송
@@ -26,16 +25,8 @@ export default function Goods() {
 
   // 상품등록 폼 제출
   const register = async (e) => {
-    e.preventDefault(); // form 기본 제출 막기
-
-    const formData = new FormData();
-    formData.append('goods', new Blob([JSON.stringify(goods)], { type: 'application/json' })); // Blob(Binary Large Object): 파일처럼 취급되는 데이터 객체 (JSON 데이터를 서버에서 @RequestPart로 받게)
-    if (goods.uploadImg) {
-      formData.append('uploadImg', goods.uploadImg);
-    }
-
     try {
-      const response = GoodsApi.regGoods(formData);
+      const response = GoodsApi.regGoods(goods);
       console.log('등록 결과:', response);
       navigate('/');
     } catch (error) {
@@ -130,18 +121,6 @@ export default function Goods() {
                       <button className='btn' id='sub_btn' type='submit'>
                         등록
                       </button>
-                      &nbsp;
-                      <button className='btn' id='sub_btn' type='submit'>
-                        수정
-                      </button>
-                      &nbsp;
-                      <button className='btn' id='sub_btn' type='submit'>
-                        삭제
-                      </button>
-                      &nbsp;
-                      <button className='btn' id='reset_btn' type='reset'>
-                        취소
-                      </button>
                     </td>
                   </tr>
                 </tbody>
@@ -149,7 +128,7 @@ export default function Goods() {
             </form>
           </div>
           <div className='right'>
-            <img src={prevImg || goodsImg} alt='상품 이미지' className='goodsImg' style={{ width: '300px', height: '300px' }} />
+            <img src={prevImg} alt='상품 이미지' className='goodsImg' style={{ width: '300px', height: '300px' }} />
             <br />
           </div>
         </div>

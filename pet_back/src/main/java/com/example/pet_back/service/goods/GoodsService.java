@@ -21,10 +21,17 @@ import java.util.List;
 public interface GoodsService {
 
     // 상품 상세정보
-    ResponseEntity<?> selectOne(Long goods_id);
+    ResponseEntity<?> selectOne(Long goodsId);
 
     // 찜
-    ResponseEntity<?> favorite(Long goods_id, CustomUserDetails userDetails);
+    ResponseEntity<?> favorite(Long goodsId, CustomUserDetails userDetails);
+
+    // 찜 목록
+    ResponseEntity<?> favorite(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO);
+
+
+    // 리뷰
+    ResponseEntity<?> reviews(Long goodsId, PageRequestDTO pageRequestDTO);
 
     // 상품 리스트 출력 (메인)
     ResponseEntity<?> showGoodsList(PageRequestDTO pageRequestDTO);
@@ -33,7 +40,7 @@ public interface GoodsService {
     ResponseEntity<?> findMemberAddress(CustomUserDetails userDetails);
 
     // 상품 등록
-    void registerGoods(GoodsRequestDTO goodsRequestDTO, MultipartFile uploadImg, HttpServletRequest request) throws IOException;
+    void registerGoods(GoodsRequestDTO goodsRequestDTO) throws IOException;
 
     // 상품 수정
     void updateGoods(CustomUserDetails userDetails, GoodsRequestDTO goodsRequestDTO);

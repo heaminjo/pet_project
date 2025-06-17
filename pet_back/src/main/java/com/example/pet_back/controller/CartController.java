@@ -29,9 +29,9 @@ public class CartController {
     // 장바구니 리스트 출력
     // @GetMapping(value = "/list") => Paging 추가로 @PostMapping으로 변경함
     @PostMapping(value = "/list") // @PathVariable 시 {name} 필수
-    public ResponseEntity<?> cartList(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody PageRequestDTO dto) { // Cart entity
+    public ResponseEntity<?> cartList(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody PageRequestDTO pageRequestDTO) { // Cart entity
         log.info("** CartController => cartList() 실행됨 **");
-        return cartService.selectList(userDetails, dto);
+        return cartService.selectList(userDetails, pageRequestDTO);
     }
 
     // 상품을 장바구니에 추가

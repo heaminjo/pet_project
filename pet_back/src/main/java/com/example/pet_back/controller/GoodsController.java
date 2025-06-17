@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @Log4j2
 @RequiredArgsConstructor // private final만
@@ -50,28 +51,44 @@ public class GoodsController {
         return goodsService.favorite(goodsId, userDetails);
     }
 
+    // 리뷰
+    @PostMapping("/reviews/{goodsId}")
+    public ResponseEntity<?> reviews(@PathVariable Long goodsId, @RequestBody PageRequestDTO pageRequestDTO) {
+        log.info("** GoodsController => reviews() 실행됨 **");
+
+        return goodsService.reviews(goodsId, pageRequestDTO);
+    }
+
+    //  리스트 출력
+    // @GetMapping(value = "/list") => Paging 추가로 @PostMapping으로 변경함
+    @PostMapping(value = "/favorite") // @PathVariable 시 {name} 필수
+    public ResponseEntity<?> favoriteList(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody PageRequestDTO pageRequestDTO) { // Cart entity
+        log.info("** CartController => cartList() 실행됨 **");
+        return goodsService.favorite(userDetails, pageRequestDTO);
+    }
+
+
     // 상품 리스트 출력 (메인)
     @PostMapping("/list")
     public ResponseEntity<?> showGoodsList(@RequestBody PageRequestDTO pageRequestDTO) {
+        //    public ResponseEntity<PageResponseDTO<GoodsResponseDTO>> showGoodsList(@RequestBody PageRequestDTO pageRequestDTO) {
         log.info("** GoodsController => showGoodsList() 실행됨 **");
 //        System.out.println("GoodsController 상품리스트출력 : " + goodsService.showGoodsList(pageRequestDTO).toString());
         return goodsService.showGoodsList(pageRequestDTO);
+        // return ResponseEntity.ok(goodsService.goodsPageList(pageRequestDTO));
     }
 
     // 상품등록 메서드 (관리자 페이지)
     @PostMapping("/register")
-    public ResponseEntity<?> createGoods( //
-                                          @AuthenticationPrincipal CustomUserDetails userDetails, //
-                                          @RequestPart("goods") GoodsRequestDTO goodsRequestDTO, //️
-                                          @RequestPart("uploadImg") MultipartFile uploadImg,
-                                          HttpServletRequest request) {
+    public ResponseEntity<?> createGoods( @AuthenticationPrincipal CustomUserDetails userDetails, //
+                                          @RequestBody GoodsRequestDTO goodsRequestDTO) {
         log.info("** GoodsController => createGoods() 실행됨 **");
         System.out.println("goodsDTO 이름: " + goodsRequestDTO.getGoodsName());
         System.out.println("goodsDTO state: " + goodsRequestDTO.getGoodsState());
         System.out.println("goodsDTO state 타입: " + goodsRequestDTO.getGoodsState().getClass());
 
         try {
-            goodsService.registerGoods(goodsRequestDTO, uploadImg, request);
+            goodsService.registerGoods(goodsRequestDTO);
         } catch (Exception e) {
             log.error("** goodsService.registerGoods Exception => " + e.toString());
         }
