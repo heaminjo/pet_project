@@ -1,9 +1,9 @@
-import PayComp from './PayStyle';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import MemberApi from '../../../api/MemberApi';
-import GoodsApi from '../../../api/GoodsApi';
-import OrderApi from '../../../api/OrderApi';
+import PayComp from "./PayStyle";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import MemberApi from "../../../api/MemberApi";
+import GoodsApi from "../../../api/GoodsApi";
+import OrderApi from "../../../api/OrderApi";
 
 export default function Pay() {
   const location = useLocation();
@@ -11,14 +11,14 @@ export default function Pay() {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상태변수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   const [goods, setGoods] = useState([]);
-  const [requestNote, setRequestNote] = useState('');
+  const [requestNote, setRequestNote] = useState("");
 
   // 결제수단
   const [payment, setPayment] = useState();
 
   // 회원정보 & 주소정보
   const [member, setMember] = useState({});
-  const [address, setAddress] = useState('');
+  const [address, setAddress] = useState("");
 
   // 수정 버튼
   const [popup, setPopup] = useState(false);
@@ -28,7 +28,11 @@ export default function Pay() {
 
   // const goodsList = location.state?.goods || []; // Order -> Pay 이동위해 변경 (rawGoods 추가)
   const rawGoods = location.state?.goods;
-  const goodsList = Array.isArray(rawGoods) ? rawGoods : rawGoods ? [rawGoods] : []; // 단일 상품이 오더라도 강제로 배열로 감싸기
+  const goodsList = Array.isArray(rawGoods)
+    ? rawGoods
+    : rawGoods
+    ? [rawGoods]
+    : []; // 단일 상품이 오더라도 강제로 배열로 감싸기
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 로직 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const handleOpenPopup = () => {
@@ -50,21 +54,21 @@ export default function Pay() {
       goodsList: goods,
       payment: payment,
     };
-    alert('pay 동작테스트');
-    GoodsApi.pay(payload) // 여기가 호출
+    alert("pay 동작테스트");
+    OrderApi.pay(payload) // 여기가 호출
       .then((response) => {
-        alert('GoodsApi.pay() 성공');
-        navigate('/user/orderdetail');
+        alert("GoodsApi.pay() 성공");
+        navigate("/user/orderdetail");
       })
       .catch((err) => {
-        alert('GoodsApi.pay() 에러');
+        alert("GoodsApi.pay() 에러");
       });
   };
 
   // 걸제수단 핸들링 & 유효성 검사
   const handlePaymentChange = (e) => {
     if (!payment) {
-      alert('결제 수단을 선택해 주세요!');
+      alert("결제 수단을 선택해 주세요!");
       return;
     }
     setPayment(e.target.value);
@@ -84,23 +88,23 @@ export default function Pay() {
         setAddress(response);
       })
       .catch((err) => {
-        alert('주소 조회 실패');
+        alert("주소 조회 실패");
       });
     // 상품 정보
     if (goodsList.length > 0) {
       setGoods(goodsList);
     }
-    console.log('goodsList:', goodsList);
+    console.log("goodsList:", goodsList);
   }, []);
 
   return (
     <PayComp>
-      <div className='container'>
+      <div className="container">
         <section>
           <h2>구 매 자</h2>
           <hr />
-          <div className='title'>구매자</div>
-          <table className='payment'>
+          <div className="title">구매자</div>
+          <table className="payment">
             <tbody>
               <tr>
                 <th>이름</th>
@@ -119,9 +123,10 @@ export default function Pay() {
         </section>
         <br />
         <section>
-          <h2>배 송 지</h2> &nbsp;&nbsp; <button onClick={() => setPopup(true)}>배송지 수정</button>
+          <h2>배 송 지</h2> &nbsp;&nbsp;{" "}
+          <button onClick={() => setPopup(true)}>배송지 수정</button>
           <hr />
-          <div className='title'>수령인</div>
+          <div className="title">수령인</div>
           <table>
             <tbody>
               <tr>
@@ -149,17 +154,17 @@ export default function Pay() {
         <section>
           <h2>구 매 목 록</h2>
           <hr />
-          <div className='title'>상품정보</div>
+          <div className="title">상품정보</div>
           {goods.map((item, index) => (
-            <div className='goodslist' key={index}>
+            <div className="goodslist" key={index}>
               <div>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 {item.goodsName}
-                {', '}
+                {", "}
                 {item.description}
-                {', '}
+                {", "}
                 {item.quantity}
-                {' 개'}
+                {" 개"}
               </div>
             </div>
           ))}
@@ -168,7 +173,7 @@ export default function Pay() {
         <section>
           <h2>결 제</h2>
           <hr />
-          <div className='title'>결제 정보</div>
+          <div className="title">결제 정보</div>
           <table>
             <tbody>
               <tr>
@@ -187,23 +192,65 @@ export default function Pay() {
                 <th>결제방법</th>
                 <td>
                   <label>
-                    <input type='radio' name='payment' value='ACCOUNT' checked={payment === 'ACCOUNT'} onChange={handlePaymentChange} /> 계좌이체 <br />
+                    <input
+                      type="radio"
+                      name="payment"
+                      value="ACCOUNT"
+                      checked={payment === "ACCOUNT"}
+                      onChange={handlePaymentChange}
+                    />{" "}
+                    계좌이체 <br />
                   </label>
                   <label>
-                    <input type='radio' name='payment' value='POINT' checked={payment === 'POINT'} onChange={handlePaymentChange} /> 포인트결제 &nbsp; &nbsp; &nbsp;
-                    <span className='badge'>최대 캐시적립</span> <br />
+                    <input
+                      type="radio"
+                      name="payment"
+                      value="POINT"
+                      checked={payment === "POINT"}
+                      onChange={handlePaymentChange}
+                    />{" "}
+                    포인트결제 &nbsp; &nbsp; &nbsp;
+                    <span className="badge">최대 캐시적립</span> <br />
                   </label>
                   <label>
-                    <input type='radio' name='payment' value='CARD' checked={payment === 'CARD'} onChange={handlePaymentChange} /> 신용/체크카드 <br />
+                    <input
+                      type="radio"
+                      name="payment"
+                      value="CARD"
+                      checked={payment === "CARD"}
+                      onChange={handlePaymentChange}
+                    />{" "}
+                    신용/체크카드 <br />
                   </label>
                   <label>
-                    <input type='radio' name='payment' value='CORPCARD' checked={payment === 'CORPCARD'} onChange={handlePaymentChange} /> 법인카드 <br />
+                    <input
+                      type="radio"
+                      name="payment"
+                      value="CORPCARD"
+                      checked={payment === "CORPCARD"}
+                      onChange={handlePaymentChange}
+                    />{" "}
+                    법인카드 <br />
                   </label>
                   <label>
-                    <input type='radio' name='payment' value='PHONE' checked={payment === 'PHONE'} onChange={handlePaymentChange} /> 휴대폰 <br />
+                    <input
+                      type="radio"
+                      name="payment"
+                      value="PHONE"
+                      checked={payment === "PHONE"}
+                      onChange={handlePaymentChange}
+                    />{" "}
+                    휴대폰 <br />
                   </label>
                   <label>
-                    <input type='radio' name='payment' value='NOACOUNT' checked={payment === 'NOACOUNT'} onChange={handlePaymentChange} /> 무통장입금(상세조회) <br />
+                    <input
+                      type="radio"
+                      name="payment"
+                      value="NOACOUNT"
+                      checked={payment === "NOACOUNT"}
+                      onChange={handlePaymentChange}
+                    />{" "}
+                    무통장입금(상세조회) <br />
                   </label>
                 </td>
               </tr>
@@ -220,13 +267,14 @@ export default function Pay() {
         </section>
         <section>
           <button
-            className='pay'
+            className="pay"
             onClick={() => {
               pay(goods, payment);
-            }}>
+            }}
+          >
             결제하기
           </button>
-          &nbsp;&nbsp; <button className='cancel'>메인 페이지로</button>
+          &nbsp;&nbsp; <button className="cancel">메인 페이지로</button>
         </section>
       </div>
     </PayComp>

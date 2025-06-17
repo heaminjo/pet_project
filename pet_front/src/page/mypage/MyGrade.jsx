@@ -136,10 +136,7 @@ export default function MyGrade() {
           <h3>다음 등급 ▶</h3>
           <ul>
             <li>
-              <p>
-                누적 방문일 <br />
-                {gradeData.condition1}회
-              </p>
+              <p>누적 방문일</p>
               {user.loginCount >= gradeData.condition1 ? (
                 <span>✅</span>
               ) : (
@@ -150,31 +147,25 @@ export default function MyGrade() {
               )}
             </li>
             <li>
-              <p>
-                누적 주문 수 <br />
-                {gradeData.condition2}회
-              </p>
+              <p>누적 주문 수</p>
               {user.totalPurchaseCount >= gradeData.condition2 ? (
                 <span>✅</span>
               ) : (
                 <span>
                   다음 등급까지 <br />
-                  {gradeData.condition2 - user.totalPurchaseCount}회
+                  {user.totalPurchaseCount} / {gradeData.condition2}
                 </span>
               )}
             </li>
             {gradeData.condition3 != null && (
               <li>
-                <p>
-                  누적 주문 금액
-                  <br /> {gradeData.condition3}원
-                </p>
+                <p>누적 주문 금액</p>
                 {user.totalPurchasePrice >= gradeData.condition3 ? (
                   <big>✅</big>
                 ) : (
                   <span>
                     다음 등급까지 <br />
-                    {gradeData.condition3 - user.totalPurchasePrice} 원
+                    {user.totalPurchasePrice}/{gradeData.condition3}
                   </span>
                 )}
               </li>
