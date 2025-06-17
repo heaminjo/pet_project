@@ -3,6 +3,7 @@ const { default: styled } = require("styled-components");
 const CommentFormStyle = styled.div`
   .comment-form-container {
     width: 100%;
+    margin-bottom: 50px;
 
     .comment-form {
       display: flex;
