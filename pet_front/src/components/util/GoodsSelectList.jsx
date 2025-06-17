@@ -60,7 +60,7 @@ export default function GoodsSelectList({ selectEvt }) {
   return (
     <Comp>
       <div className="goods_select">
-        <h3>배너 상품 선택</h3>
+        <h3>상품 선택</h3>
         <ul className="category_list">
           <li
             onClick={() => {
