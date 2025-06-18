@@ -104,8 +104,21 @@ public class BoardServiceImpl implements BoardService {
     }
 
     //** 게시글 삭제
+    @Transactional
     @Override
     public int deleteBoard(int board_id) {
+        // 1. 이미지 파일명 리스트 조회
+        List<String> imageFileNames = boardMapper.selectImageFileNamesByBoardId(board_id);
+
+        // 2. 이미지 테이블에서 삭제 및 파일 시스템에서 삭제
+        if (imageFileNames != null && !imageFileNames.isEmpty()){
+            for (String fileName : imageFileNames){
+                boardMapper.deleteBoardImage(board_id, fileName);
+                imageService.deleteImageFile(fileName); //실제 파일 삭제
+            }
+        }
+
+        // 3. 게시글 삭제
         return boardMapper.deleteBoard(board_id);
     }
 

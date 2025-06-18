@@ -50,6 +50,20 @@ export default function BoardInsertForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // 유효성 검사
+    if (!title.trim()) {
+      alert("제목을 입력해주세요.");
+      return;
+    }
+    if (!content.trim()) {
+      alert("내용을 입력해주세요.");
+      return;
+    }
+    if (category === "default") {
+      alert("게시판을 선택해주세요.");
+      return;
+    }
+
     //1. 이미지 먼저 업로드
     let savedFileNames = [];
     if (imageFiles && imageFiles.length > 0) {

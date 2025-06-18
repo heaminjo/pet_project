@@ -19,7 +19,7 @@ function CommentList({ comments, onDeleteComment, editingCommentId, editingConte
                 <strong>{c.name}</strong><br></br>
                 &nbsp;&nbsp;
                 {editingCommentId === c.comment_id ? (
-                  <>
+                  <div className="editRow"> 
                     <input
                       type="text"
                       value={editingContent}
@@ -30,20 +30,17 @@ function CommentList({ comments, onDeleteComment, editingCommentId, editingConte
                       }}
                       style={{ marginLeft: "5px" }}
                     />
-                    <div className="button-row">
-                      <button onClick={() => handleEditSubmit(c.comment_id)}>저장</button>
-                      <button onClick={handleEditCancel}>취소</button>
-                      {/* 본인 또는 관리자만 삭제 버튼 표시 */}
-                      {(String(c.member_id) === String(loginMemberId) || isAdmin) && (
-                        <button 
-                          style={{ marginLeft: "3px" }}
-                          onClick={() => onDeleteComment(c.comment_id)}  
-                        >
-                          삭제
-                        </button>
-                      )}
-                    </div>
-                  </>
+                    <button onClick={() => handleEditSubmit(c.comment_id)}>저장</button>
+                    <button onClick={handleEditCancel} style={{ marginLeft: "3px" }}>취소</button>
+                    {/* 본인 또는 관리자만 삭제 버튼 표시 */}
+                    {(String(c.member_id) === String(loginMemberId) || isAdmin) && (
+                      <button 
+                        style={{ marginLeft: "3px" }}
+                        onClick={() => onDeleteComment(c.comment_id)}>
+                        삭제
+                      </button>
+                    )}
+                  </div>
                 ) : (
                   <>
                     <span style={{ marginLeft: "5px" }}>{c.content}</span>&nbsp;&nbsp;

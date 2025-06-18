@@ -1,0 +1,41 @@
+��#   N o d e   ( R e a c t )  
+ n o d e _ m o d u l e s /  
+ n p m - d e b u g . l o g *  
+ y a r n - d e b u g . l o g *  
+ y a r n - e r r o r . l o g *  
+ d i s t /  
+ b u i l d /  
+  
+ #   d o t e n v  
+ . e n v  
+ . e n v . l o c a l  
+ . e n v . * . l o c a l  
+  
+ #   m a c O S  
+ . D S _ S t o r e  
+  
+ #   W i n d o w s  
+ T h u m b s . d b  
+  
+ #   L o g s  
+ l o g s /  
+ * . l o g  
+  
+ #   I D E  
+ . v s c o d e /  
+ . i d e a /  
+ * . i m l  
+  
+ #   J a v a / G r a d l e  
+ . g r a d l e /  
+ b u i l d /  
+ ! g r a d l e / w r a p p e r / g r a  
+  
+ /generated/build/out 
+  
+  
+ . i d e a / w o r k s p a c e . x m l 
+pet_front/node_modules/.bin/acorn
+/pet_front/node_modules
+pet_back/.idea/workspace.xml
+

@@ -4,37 +4,47 @@ const CommentListStyle = styled.div`
   .comment-list {
 
     li {
-      
 
-      input {
-        width: 100%;
-        height: 30px;
-        padding: 10px;
-        font-size: 16px;
-        border: none;
-        border-bottom: 2px solid #eee;
-        border-radius: 5px;
-        box-sizing: border-box;
-      }
-
-      .button-row {
-        margin-top: 10px;
+      .editRow {
         display: flex;
-        justify-content: flex-end; /* 오른쪽 정렬 */
+        align-items: center;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 2px;
+        transition: border-bottom-color 0.2s;
+        margin-bottom: 5px;
+
+        input {
+          flex: 1;
+          height: 30px;
+          padding: 10px;
+          font-size: 16px;
+          border: none;
+          border-radius: 5px;
+          box-sizing: border-box;
+        }
+
+        &:focus-within {
+          border-bottom-color: #f8e776;
+        }
+
+        input:focus {
+          outline: none;  
+          border-bottom-color: #f8e776;
+        }
 
         button {
           width: 50px;
           height: 25px;
-          line-height: 25px;
-          margin-left: 3px;
+          margin-left: 10px;
           background-color: #f8e776;
           color: #333;
           border: none;
           border-radius: 5px;
           cursor: pointer;
           font-size: 16px;
-          padding: 0;
+          padding: 0 10px;
         }
+
       }
 
       .meta-row {
