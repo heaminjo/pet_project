@@ -1,12 +1,10 @@
 package com.example.pet_back.service.goods;
 
-import com.example.pet_back.domain.goods.GoodsRequestDTO;
-import com.example.pet_back.domain.goods.OrderDetailResponseDTO;
-import com.example.pet_back.domain.goods.OrderResponseDTO;
-import com.example.pet_back.domain.goods.PayRequestDTO;
+import com.example.pet_back.domain.goods.*;
 import com.example.pet_back.entity.*;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.mapper.OrderMapper;
+import com.example.pet_back.mapper.ReviewMapper;
 import com.example.pet_back.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,13 +27,14 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderDetailRepository orderDetailRepository;
     private final DeliveryRepository deliveryRepository;
+    private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
     private final CartRepository cartRepository;
     private final AddressRepository addressRepository;
 
     // Mapper
     private final OrderMapper orderMapper;
-
+    private final ReviewMapper reviewMapper;
 
     // 결제페이지 - 고객 주소 가져오기
     @Override
@@ -125,5 +124,27 @@ public class OrderServiceImpl implements OrderService {
     }//
 
     // <Delivery /> 페이지 : OrderDetailResponseDTO
+
+    // 리뷰 작성
+    @Override
+    public ResponseEntity<?> regReview(CustomUserDetails userDetails, ReviewRequestDTO dto){
+        Member member = memberRepository.findById(dto.getMemberId()).orElseThrow();
+        Goods goods = goodsRepository.findById(dto.getGoodsId()).orElseThrow();
+        OrderDetail orderDetail = orderDetailRepository.findById(dto.getOrderDetailId()).orElseThrow();
+
+        String imagePath = null;
+//        if (dto.getImageFile() != null && !dto.getImageFile().isEmpty()) {
+//            imagePath = fileService.save(dto.getImageFile()); // 파일 저장 후 경로
+//        }
+
+        Review review = reviewMapper.toEntity(dto, member, goods, orderDetail);
+        try {
+            reviewRepository.save(review);
+            return ResponseEntity.status(HttpStatus.OK).body("리뷰가 정상적으로 등록되었습니다.");
+        }catch (Exception e){
+            return null;
+        }
+
+    }
 
 }

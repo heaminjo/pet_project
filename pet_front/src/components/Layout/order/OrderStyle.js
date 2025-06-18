@@ -83,6 +83,7 @@ const OrderComp = styled.div`
     .product-container {
       padding: 16px;
       font-size: 14px;
+    
       /* 테이블 */
       .product-table {
         width: 100%;

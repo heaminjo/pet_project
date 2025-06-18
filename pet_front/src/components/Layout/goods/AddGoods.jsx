@@ -3,7 +3,7 @@ import AddGoodsComp from './AddGoodsStyle';
 import { useEffect, useState } from 'react';
 import GoodsApi from '../../../api/GoodsApi';
 
-export default function AddGoods({ onClose }) {
+export default function AddGoods({ onClose, refreshList }) {
   const navigate = useNavigate();
   //const goodsImg = process.env.PUBLIC_URL + '/images/pic1.png';
 
@@ -16,9 +16,8 @@ export default function AddGoods({ onClose }) {
   // form의 input 값들을 state로 관리하고
   // submit 버튼 클릭 시 axios.post()로 데이터 전송
   const [goods, setGoods] = useState({
-    // input 값 연결용
     goodsName: '',
-    imageFile: '',
+    imageFile: null,
     categoryId: '',
     goodsState: 'SALE',
     description: '',
@@ -28,10 +27,17 @@ export default function AddGoods({ onClose }) {
 
   // 상품등록 폼 제출
   const register = async (e) => {
+    e.preventDefault(); // 새로고침 방지
+    const formData = new FormData();
+    for (const key in goods) {
+      formData.append(key, goods[key]);
+    }
+
     try {
-      const response = GoodsApi.regGoods(goods);
+      const response = await GoodsApi.regGoods(goods);
       console.log('등록 결과:', response);
-      onClose();
+      onClose(); // 모달 닫기
+      refreshList(); // 목록 새로고침
     } catch (error) {
       console.log('등록 중 에러 발생생:', error);
     }
@@ -40,7 +46,7 @@ export default function AddGoods({ onClose }) {
   // 카테고리 불러오기
   const category = async (e) => {
     try {
-      const response = GoodsApi.getCategoryList();
+      const response = await GoodsApi.getCategoryList();
       setCategories(response);
     } catch (error) {
       console.log('등록 중 에러 발생생:', error);

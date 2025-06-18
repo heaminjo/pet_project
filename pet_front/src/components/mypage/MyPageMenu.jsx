@@ -73,7 +73,9 @@ export default function MypageMenu() {
               <span>최근 본 목록</span>
             </li>
             <li>
-              <span>내 후기</span>
+              <span onClick={() => navigate('/user/mypage/myreview')} style={{ color: 'red', fontWeight: 'bold' }}>
+                내 후기
+              </span>
             </li>
             <li>
               <span onClick={() => navigate('/user/mypage/addr')} style={{ color: 'red', fontWeight: 'bold' }}>

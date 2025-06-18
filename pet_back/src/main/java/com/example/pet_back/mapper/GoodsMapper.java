@@ -15,6 +15,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -24,6 +25,7 @@ import java.util.List;
 public interface GoodsMapper {
 
     //dto -> entity
+    @Mapping(source = "dto.imageFile", target = "imageFile")
     public Goods toEntity(GoodsRequestDTO dto);
 
     //entity -> dto
@@ -54,6 +56,11 @@ public interface GoodsMapper {
     @Named("toCategoryName")
     public static String imageFileUrl(Category category) {
         return category.getCategoryName();
+    }
+
+    // 커스텀 매핑 메서드 추가
+    default String map(MultipartFile file) {
+        return file != null ? file.getOriginalFilename() : null;
     }
 
 }

@@ -25,8 +25,12 @@ public interface GoodsService {
     // 상품 상세정보
     ResponseEntity<?> selectOne(Long goodsId);
 
-    // 찜
+    // 찜 (추가/해제 - 단일)
     ResponseEntity<?> favorite(Long goodsId, CustomUserDetails userDetails);
+
+    // 찜 (가져오기 - 단일)
+    ResponseEntity<?> favoriteInfo(Long goodsId, CustomUserDetails userDetails);
+
 
     // 찜 목록
     ResponseEntity<?> favorite(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO);

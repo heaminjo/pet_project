@@ -39,7 +39,8 @@ import AddressInsert from './components/mypage/AddressInsert';
 import BannerSelect from './page/admin/BannerSelect';
 
 import Favorite from './components/Layout/favorite/Favorite';
-
+import Review from './components/Layout/order/Review';
+import MyReview from './components/Layout/order/MyReview';
 import Grade from './page/main/Grade';
 import MyGrade from './page/mypage/MyGrade';
 import BestSelect from './page/admin/BestSelect';
@@ -77,6 +78,8 @@ function App() {
               <Route path='delivery' element={<Delivery />} />
               <Route path='orderlist' element={<OrderList />} />
               <Route path='favorite' element={<Favorite />} />
+              <Route path='review' element={<Review />} />
+              <Route path='myreview' element={<MyReview />} />
               <Route path='withdraw' element={<WithDraw />} />
               <Route path='pay' element={<Pay />} />
             </Route>

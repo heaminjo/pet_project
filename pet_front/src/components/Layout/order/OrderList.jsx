@@ -130,6 +130,9 @@ export default function OrderDetail() {
                         <button className='btn3' onClick={() => navigate('/user/withdraw')}>
                           주문취소
                         </button>
+                        <button className='btn4' onClick={() => navigate('/user/mypage/review', { state: { goods: item } })}>
+                          리뷰작성
+                        </button>
                       </div>
                     </div>
                   </div>

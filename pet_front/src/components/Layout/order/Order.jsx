@@ -3,7 +3,7 @@ import OrderComp from './OrderStyle.js';
 import GoodsApi from '../../../api/GoodsApi';
 import { useLocation, useNavigate } from 'react-router-dom';
 import OrderTab from './OrderTab.jsx';
-import Review from './Review.jsx';
+import ReviewList from './ReviewList.jsx';
 
 export default function Order() {
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ export default function Order() {
     setStars(filledStars);
   };
 
-  // 찜
+  // 찜 (적용)
   const addFavorite = () => {
     alert(`goods Id => ${goods.goodsId}`);
     GoodsApi.favorite(goods.goodsId)
@@ -60,6 +60,22 @@ export default function Order() {
           setHeart('❤️');
         } else if (heart === FULL_HEART) {
           setHeart('🤍');
+        }
+      })
+      .catch((err) => {
+        alert(`에러발생 => ${err}`);
+      });
+  };
+
+  // 찜 (불러오기)
+  const favoriteInfo = () => {
+    GoodsApi.favoriteInfo(goods.goodsId)
+      .then((response) => {
+        // 상태 토글
+        if (response.data === 'TRUE') {
+          setHeart(FULL_HEART);
+        } else {
+          setHeart(EMPTY_HEART);
         }
       })
       .catch((err) => {
@@ -84,7 +100,8 @@ export default function Order() {
     if (goods) {
       renderIcons(goods.rating || 0);
     }
-  }, []);
+    favoriteInfo();
+  }, [goods]);
 
   return (
     <OrderComp>
@@ -150,7 +167,7 @@ export default function Order() {
           <hr />
           <br />
           <OrderTab activeTab={activeTab} setActiveTab={setActiveTab} reviewNum={goods.reviewNum} />
-          {activeTab === `상품평 (${goods.reviewNum})` && <Review stars={stars} goodsId={goods.goodsId} reviewNum={goods.reviewNum} imgUrl={imgUrl} />}
+          {activeTab === `상품평 (${goods.reviewNum})` && <ReviewList stars={stars} goodsId={goods.goodsId} reviewNum={goods.reviewNum} imgUrl={imgUrl} />}
         </div>
       </div>
     </OrderComp>

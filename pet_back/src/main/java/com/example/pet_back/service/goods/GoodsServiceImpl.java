@@ -24,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
@@ -62,7 +63,7 @@ public class GoodsServiceImpl implements GoodsService {
         return ResponseEntity.status(HttpStatus.OK).body(goods);
     }
 
-    // 찜
+    // 찜 (추가/해제 - 단일)
     @Override
     @Transactional
     public ResponseEntity<?> favorite(Long goodsId, CustomUserDetails userDetails) {
@@ -83,6 +84,28 @@ public class GoodsServiceImpl implements GoodsService {
             return ResponseEntity.ok("TRUE");
         }
     }
+
+    // 찜 (가져오기 - 단일)
+    @Override
+    @Transactional
+    public ResponseEntity<?> favoriteInfo(Long goodsId, CustomUserDetails userDetails){
+        log.info("** GoodsServiceImpl 실행됨 **");
+        Member member = memberRepository.findById(userDetails.getMember().getId()) //
+                .orElseThrow(() //
+                        -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+        boolean exists = favoriteRepository.existsByMemberIdAndGoodsId(member.getId(), goodsId);
+
+        if(exists){
+            return ResponseEntity.ok("TRUE");
+        }else{
+            return ResponseEntity.ok("FALSE");
+        }
+
+    }
+
+
+
+
 
     // 리뷰
     @Override
@@ -246,9 +269,10 @@ public class GoodsServiceImpl implements GoodsService {
         int price = goodsRequestDTO.getPrice();
         String description = goodsRequestDTO.getDescription();
         String goodsState = goodsRequestDTO.getGoodsState().name(); // String 변환 후 저장 필수
-
-        String imageFile = goodsRequestDTO.getImageFile();  //apple.jpg
         int quantity = goodsRequestDTO.getQuantity();
+        
+        MultipartFile imageFile = goodsRequestDTO.getImageFile();
+        String uploadImg = "basicimg.jpg"; // 기본이미지
 
         // 이미지 로직
         // 1. 파일 저장 경로
@@ -267,24 +291,19 @@ public class GoodsServiceImpl implements GoodsService {
         }
 
         // 4. 업로드 이미지 처리
-        String uploadImg = "basicman.png";
-        if ( imageFile!= null && !imageFile.isEmpty()) {
-            File sourceFile = new File(realPath+imageFile); // 원본파일
-            if(sourceFile.exists()){
-                String extension = imageFile.substring(imageFile.lastIndexOf("."));
-                String uuid = UUID.randomUUID().toString();
-                String newFileName = uuid + extension;
-                // 복사 대상
-                File destFile = new File(realPath+newFileName);
-                FileCopyUtils.copy(new FileInputStream(sourceFile), new FileOutputStream(destFile));
-                // 복사된 새 파일명 DB에 저장
-                uploadImg = newFileName;
-            }
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String originalFilename = imageFile.getOriginalFilename(); // ex: cat.jpg
+            String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String uuid = UUID.randomUUID().toString();
+            String newFileName = uuid + extension;
+
+            File destFile = new File(realPath + newFileName);
+            imageFile.transferTo(destFile); // MultipartFile 저장
+
+            uploadImg = newFileName;
         }
 
         // 5. 이미지 파일명 DTO에 주입 (DB 저장용)
-        goodsRequestDTO.setImageFile(uploadImg);
-
         goodsRepository.registerGoods(categoryId, goodsName, price, //
                 description, goodsState, uploadImg, quantity);
     }
