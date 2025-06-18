@@ -14,6 +14,7 @@ export default function StatisticsPage() {
 
   //로드 시 통계 자료 가져오기
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     getStatistics();
   }, []);
 

@@ -4,6 +4,9 @@ import styled from "styled-components";
 import Best from "../../components/main/Best";
 
 export default function Main() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
   return (
     <MainComp>
       <div className="main_inner">

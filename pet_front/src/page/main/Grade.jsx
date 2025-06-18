@@ -1,10 +1,13 @@
 import styled from "styled-components";
 import backImage from "../../images/1749788315496.jpg";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { PetContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 //등급 안내 페이지
 export default function Grade() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
   const navigate = useNavigate();
   //내 등급 클릭 시 로그인 여부에따른 이동
   const myGrade = () => {

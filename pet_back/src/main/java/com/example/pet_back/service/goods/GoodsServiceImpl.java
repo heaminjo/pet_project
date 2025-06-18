@@ -1,6 +1,7 @@
 package com.example.pet_back.service.goods;
 
 import com.example.pet_back.config.FileUploadProperties;
+import com.example.pet_back.constant.GOODSSTATE;
 import com.example.pet_back.domain.admin.BannerDTO;
 import com.example.pet_back.domain.admin.BestDTO;
 import com.example.pet_back.domain.admin.BestInsertDTO;
@@ -338,22 +339,17 @@ public class GoodsServiceImpl implements GoodsService {
         //요청 페이지, 출력 개수,정렬을 담은 Pageable 객체
         Pageable pageable = PageRequest.of(dto.getPage(), dto.getSize());
 
-        Page<Goods> page;
 
-        if (dto.getKeyword().isEmpty() && dto.getCategory()==0) {
-            //전체조회
-            log.info("전체 조회 합니다.");
-            page = goodsRepository.findSearchList(null,null,pageable);
-        } else if (dto.getKeyword().isEmpty() && dto.getCategory() > 0) {
-            //키워드는 없고 카테고리로만 검색
-            page = goodsRepository.findSearchList(null,dto.getCategory(),pageable);
-        }else if(!dto.getKeyword().isEmpty() && dto.getCategory() == 0) {
-            //키워드는 있고 카테고리가 전체인 경우
-            page = goodsRepository.findSearchList("%" + dto.getKeyword() + "%",null, pageable);
-        }else{
-            //키워드와 카테고리 모두 적용 검색
-            page = goodsRepository.findSearchList("%" + dto.getKeyword() + "%",dto.getCategory(), pageable);
-        }
+
+        String keyword = dto.getKeyword() != null && !dto.getKeyword().isEmpty()
+                ? "%" + dto.getKeyword() + "%" : null;
+        Long category = dto.getCategory() != null && dto.getCategory() > 0
+                ? dto.getCategory() : null;
+        GOODSSTATE state = dto.getState() != null && !dto.getState().equals("all")
+                ? GOODSSTATE.valueOf(dto.getState().toUpperCase()) : null;
+
+
+        Page<Goods> page = goodsRepository.findSearchList(keyword, category, state, pageable);
 
         //페이지의 데이터를 List에 저장
         List<GoodsSimpleDTO> responseList = page.stream().map(goodsMapper::goodsToDto).toList();

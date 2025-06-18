@@ -28,6 +28,7 @@ export default function UserList() {
   //1페이지 ,최신순,전체출력을 페이징한 리스트 출력
   useEffect(() => {
     getPageList();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [page, sort]);
 
   //검색 목록 Api
