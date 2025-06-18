@@ -3,20 +3,16 @@ import styled from 'styled-components';
 const GoodsComp = styled.div`
   .container {
     width: 900px;
-    height: 1200px;
+    height: 500px;
     padding: 10px;
     margin: 0 auto;
-    margin-top: 150px;
     border: 1px solid rgb(230, 230, 230);
-    // background-color: aqua; /* ~~~~~ TEST 용 ~~~~~~ */
     .register-form {
       display: flex;
       flex-direction: row;
-      height: 900px;
       padding: 20px;
-
+      background-color: white; /* ~~~~~ TEST 용 ~~~~~~ */
       .left {
-        // background-color: aqua; /* ~~~~~ TEST 용 ~~~~~~ */
         table {
           width: 500px;
           margin: 0 auto;
@@ -36,7 +32,6 @@ const GoodsComp = styled.div`
         // display: hidden;
         .goodsImg {
           border: 1px solid rgb(230, 230, 230);
-
           padding: 20px;
           box-shadow: 5px 5px 10px rgb(175, 175, 175);
           overflow: hidden;

@@ -25,9 +25,7 @@ const GoodsApi = {
 
   // <Cart /> : 페이징 추가
   getCartPageList: async (pages) => {
-    alert(`getPageList() 호출됨, pages = ${JSON.stringify(pages)}`);
     const result = await instance.post(`/cart/list`, pages);
-    alert(`getPageList() 호출됨, result = ${result.data}`);
     return result.data;
   },
 
@@ -44,12 +42,10 @@ const GoodsApi = {
 
   // 찜 리스트 출력
   getFavoritePageList: async (pages) => {
-    alert(`getGoodsPageList() 호출됨, pages = ${JSON.stringify(pages)}`);
     try {
       const result = await instance.post(`/goods/favorite`, pages);
       if (result.data != null) {
         console.log(' getFavoritePageList 응답 결과:', result.data);
-        alert(`getFavoritePageList() 호출됨`);
         return result.data;
       }
     } catch (err) {}
@@ -69,7 +65,7 @@ const GoodsApi = {
     } catch (err) {}
   },
 
-  // <Goods /> : 상품등록
+  // <AddGoods /> : 상품등록
   regGoods: async (goods) => {
     try {
       const result = await instance.post('/goods/register', goods);
@@ -83,9 +79,23 @@ const GoodsApi = {
     }
   },
 
+  // <ModifyGoods /> : 상품수정/삭제
+  modify: async (goods) => {
+    try {
+      const result = await instance.post('/goods/modify', goods);
+      if (result.data != null) {
+        alert(`상품수정 완료 => ${result.data}`);
+        return result.data;
+      }
+    } catch (err) {
+      console.error('상품수정 등록 실패:', err);
+      alert('상품 수정 중 에러가 발생했습니다.');
+    }
+  },
+
   // 상품상세정보 (단일)
-  goodsDetail: async () => {
-    const result = await instance.get('/goods/detail/${goods_id}');
+  goodsDetail: async (goodsId) => {
+    const result = await instance.get(`/goods/detail/${goodsId}`);
     return result.data;
   },
 
@@ -93,7 +103,7 @@ const GoodsApi = {
   // 리뷰목록 (단일 상품)
   getReviewsPageList: async (pages, goodsId) => {
     alert(`getPageList() 호출됨, goodsId = ${JSON.stringify(goodsId)}`);
-    const result = await instance.post(`/goods/reviews/${goodsId}`, pages);
+    const result = await instance.post(`/goods/reviews/list/${goodsId}`, pages);
     if (result.data != null) {
       console.log('getReviewsPageList 응답 결과:', result.data);
       return result.data;
@@ -133,11 +143,13 @@ const GoodsApi = {
     const result = await axios.get(`${KH_DOMAIN}/goods/category/list`);
     return result.data;
   },
+
   //상품 페이징 목록록
   getGoodsList: async (pages) => {
     const result = await axios.post(`${KH_DOMAIN}/goods/page/list`, pages);
     return result.data;
   },
+
   //배너 추가
   bannerInsert: async (newBanner) => {
     const formData = new FormData();

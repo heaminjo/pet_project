@@ -17,6 +17,8 @@ export default function Order() {
   const [heart, setHeart] = useState('🤍');
   const [stars, setStars] = useState(); // ⭐
 
+  const [activeTab, setActiveTab] = useState('상품상세');
+
   const data = [
     { label: '품명', value: goods.goodsName },
     { label: '크기 및 중량', value: goods.description },
@@ -65,6 +67,18 @@ export default function Order() {
       });
   };
 
+  // 구매수량 제한한
+  const setQuantity = (number) => {
+    const value = number;
+    if (value > goods.quantity) {
+      setBuyQuantity(goods.quantity);
+    } else if (value < 1) {
+      setBuyQuantity(1);
+    } else {
+      setBuyQuantity(value);
+    }
+  };
+
   useEffect(() => {
     alert(`상품정보 확인: ${goods.goodsId}, ${goods.goodsName}, ${goods.goodsState}, ${goods.description}, ${goods.price}, 수량: ${goods.quantity}`);
     if (goods) {
@@ -105,7 +119,7 @@ export default function Order() {
             <div>
               <b>
                 <label>구매 수량</label>&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input style={{ width: '80px', height: '20px' }} type='number' min={1} max={goods.quantity} value={buyQuantity} onChange={(e) => setBuyQuantity(Number(e.target.value))} />
+                <input style={{ width: '80px', height: '20px' }} type='number' min={1} max={goods.quantity} value={buyQuantity} onChange={(e) => setQuantity(Number(e.target.value))} />
               </b>
             </div>
             <br />
@@ -132,13 +146,11 @@ export default function Order() {
               ))}
             </tbody>
           </table>
-
+          <div className='product-more'>필수 표기정보 더보기 ▼</div>
           <hr />
           <br />
-          <OrderTab reviewNum={goods.reviewNum} />
-          <div className='product-more'>필수 표기정보 더보기 ▼</div>
-          <h2>리뷰</h2>
-          <Review stars={stars} goodsId={goods.goodsId} reviewNum={goods.reviewNum} imgUrl={imgUrl} />
+          <OrderTab activeTab={activeTab} setActiveTab={setActiveTab} reviewNum={goods.reviewNum} />
+          {activeTab === `상품평 (${goods.reviewNum})` && <Review stars={stars} goodsId={goods.goodsId} reviewNum={goods.reviewNum} imgUrl={imgUrl} />}
         </div>
       </div>
     </OrderComp>

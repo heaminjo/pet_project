@@ -56,6 +56,8 @@ export default function GoodsSelectList({ selectEvt }) {
       totalElement: result.totalElements,
       totalPages: result.totalPages,
     });
+
+    
   };
   return (
     <Comp>

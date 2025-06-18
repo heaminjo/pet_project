@@ -1,11 +1,14 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import GoodsComp from './GoodsStyle';
+import AddGoodsComp from './AddGoodsStyle';
 import { useEffect, useState } from 'react';
 import GoodsApi from '../../../api/GoodsApi';
 
-export default function Goods() {
+export default function AddGoods({ onClose }) {
   const navigate = useNavigate();
   //const goodsImg = process.env.PUBLIC_URL + '/images/pic1.png';
+
+  // 카테고리
+  const [categories, setCategories] = useState([]);
 
   // 이미지 미리보기 위한 상태변수 추가
   const [prevImg, setPrevImg] = useState('http://localhost:8080/resources/webapp/userImages/basicimg.jpg');
@@ -28,14 +31,39 @@ export default function Goods() {
     try {
       const response = GoodsApi.regGoods(goods);
       console.log('등록 결과:', response);
-      navigate('/');
+      onClose();
     } catch (error) {
       console.log('등록 중 에러 발생생:', error);
     }
   };
 
+  // 카테고리 불러오기
+  const category = async (e) => {
+    try {
+      const response = GoodsApi.getCategoryList();
+      setCategories(response);
+    } catch (error) {
+      console.log('등록 중 에러 발생생:', error);
+    }
+  };
+
+  // ESC 시 닫기
+  useEffect(() => {
+    const handleEsc = (event) => {
+      if (event.key === 'Escape') {
+        onClose(); // 모달 닫기
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, []);
+
+  useEffect(() => {
+    category();
+  }, []);
+
   return (
-    <GoodsComp>
+    <AddGoodsComp>
       <div className='container'>
         <h2>[관리자 페이지] 상품등록 페이지</h2>
         <span>설명: 관리자가 상품에 대한 상세정보를 입력하고 등록하는 페이지</span>
@@ -59,7 +87,7 @@ export default function Goods() {
                         accept='image/*'
                         onChange={(e) => {
                           const file = e.target.files[0];
-                          setGoods({ ...goods, uploadImg: file });
+                          setGoods({ ...goods, imageFile: file });
                           if (file) {
                             const imgUrl = URL.createObjectURL(file);
                             setPrevImg(imgUrl); // 미리보기용 이미지주소
@@ -74,10 +102,16 @@ export default function Goods() {
                     <td>카테고리</td>
                     <td>
                       <select value={goods.categoryId} onChange={(e) => setGoods({ ...goods, categoryId: e.target.value })}>
-                        <option value=''> 선택 </option>
-                        <option value='1'>1 : 사료</option>
-                        <option value='2'>2 : 간식</option>
-                        <option value='3'>3 : 장난감</option>
+                        <option value=''>카테고리를 선택하세요</option>
+                        {categories.length > 0 ? (
+                          categories.map((cat) => (
+                            <option value={cat.categoryId} key={cat.categoryId}>
+                              {cat.categoryName}
+                            </option>
+                          ))
+                        ) : (
+                          <option disabled>등록된 카테고리가 없습니다</option>
+                        )}
                       </select>
                     </td>
                   </tr>
@@ -121,6 +155,9 @@ export default function Goods() {
                       <button className='btn' id='sub_btn' type='submit'>
                         등록
                       </button>
+                      <button type='button' onClick={onClose}>
+                        닫기
+                      </button>
                     </td>
                   </tr>
                 </tbody>
@@ -132,8 +169,7 @@ export default function Goods() {
             <br />
           </div>
         </div>
-        <hr />
       </div>
-    </GoodsComp>
+    </AddGoodsComp>
   );
 }

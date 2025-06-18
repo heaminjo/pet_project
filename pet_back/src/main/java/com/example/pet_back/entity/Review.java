@@ -42,7 +42,7 @@ public class Review extends BaseEntity{
     @Column(name = "content", nullable = false, length = 1000)
     private String content;
 
-    @Column(name = "image_file", nullable = false, length = 100)
+    @Column(name = "image_file", length = 100)
     private String imageFile;
 
 

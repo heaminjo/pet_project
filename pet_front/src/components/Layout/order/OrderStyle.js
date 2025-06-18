@@ -34,8 +34,8 @@ const OrderComp = styled.div`
 
       .right {
         width: 700px;
-        height: 400px;
-        padding: 50px;
+        height: 300px;
+        padding: 30px;
 
         .prodname {
           margin-top: 50px;
