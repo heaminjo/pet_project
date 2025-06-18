@@ -15,6 +15,7 @@ export default function BannerSelect() {
   const [prevImage, setPrevImage] = useState(null); //이전 프로필필
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     getBanner();
   }, []);
 

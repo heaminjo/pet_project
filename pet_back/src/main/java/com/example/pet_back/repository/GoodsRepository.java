@@ -1,5 +1,6 @@
 package com.example.pet_back.repository;
 
+import com.example.pet_back.constant.GOODSSTATE;
 import com.example.pet_back.constant.ROLE;
 import com.example.pet_back.domain.goods.CategoryResponseDTO;
 import com.example.pet_back.entity.Cart;
@@ -70,14 +71,13 @@ public interface GoodsRepository extends JpaRepository<Goods, Long> {
     //검색
     @Query("SELECT g FROM Goods g " +
             "WHERE (:category IS NULL OR g.category.categoryId = :category) " +
-            "AND (:keyword IS NULL OR g.goodsName LIKE :keyword)")
+            "AND (:keyword IS NULL OR g.goodsName LIKE :keyword) "+
+            "AND (:state IS NULL OR g.goodsState LIKE :state)")
     Page<Goods> findSearchList(@Param("keyword") String keyword,
                                @Param("category") Long category,
+                               @Param("state") GOODSSTATE state,
                                Pageable pageable);
 
-    @Query("SELECT new com.example.pet_back.domain.goods.CategoryResponseDTO(g.category.categoryId,g.category.categoryName,COUNT(g)) "+
-            ("from Goods g GROUP BY g.category.categoryId"))
-    List<CategoryResponseDTO> categoryList();
 
     //카테고리에 상품이있는지 확인
     public boolean existsByCategory(Category category);

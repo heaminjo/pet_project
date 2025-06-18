@@ -73,4 +73,7 @@ public interface GoodsService {
 
     //카테고리 수정
     public ApiResponse categoryUpdate(Long id,String categoryName);
+
+    //재고 수량 수정
+    public ApiResponse quantityUpdate(Long id,int quantity);
 }

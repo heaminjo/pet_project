@@ -13,6 +13,8 @@ public class GoodsSimpleDTO {
     private String goodsName;
     private String imageFile;
     private String categoryName;
+    private String goodsState;
+    private int quantity;
     private double rating;
     private int reviewNum;
     private int price;

@@ -121,4 +121,11 @@ public class AdminController {
     public ResponseEntity<ApiResponse> categoryUpdate(@RequestParam ("id") Long id,@RequestParam("categoryName") String categoryName){
         return ResponseEntity.ok(goodsService.categoryUpdate(id,categoryName));
     }
+
+    //상품 재고 수정
+    @PatchMapping("/goods/quantity/update")
+    public ResponseEntity<ApiResponse> quantityUpdate(@RequestParam ("id") Long id,@RequestParam("quantity")int  quantity){
+        return ResponseEntity.ok(goodsService.quantityUpdate(id,quantity));
+    }
+
 }

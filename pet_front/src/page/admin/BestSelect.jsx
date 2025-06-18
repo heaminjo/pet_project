@@ -16,6 +16,7 @@ export default function BestSelect() {
 
   useEffect(() => {
     getBest();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   //베스트 상품 리스트 가져오기

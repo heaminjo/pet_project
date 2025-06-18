@@ -66,7 +66,9 @@ export default function AdminMenu() {
               <span onClick={() => navigate('/admin/page/category')}>상품 카테고리 관리</span>
             </li>
             <li>
-              <span>옵션 및 재고 관리</span>
+              <span onClick={() => navigate("/admin/page/inventory")}>
+                상품 재고 관리
+              </span>
             </li>
           </ul>
         </div>

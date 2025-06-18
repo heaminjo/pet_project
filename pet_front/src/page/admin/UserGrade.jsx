@@ -23,6 +23,7 @@ export default function UserGrade() {
   const [backColor, setBackColor] = useState("#eaefef");
   const [render, setRender] = useState(0);
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     getGradeStatistics();
     getGradeUserList();
   }, [gradeType, render]);

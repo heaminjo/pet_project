@@ -123,6 +123,13 @@ const AdminApi = {
     );
     return result.data;
   },
+  //상품 재고 수정
+  updateQuantity: async (id, quantity) => {
+    const result = await instance.patch(
+      `${KH_DOMAIN}/admin/goods/quantity/update?id=${id}&quantity=${quantity}`
+    );
+    return result.data;
+  },
 };
 
 export default AdminApi;

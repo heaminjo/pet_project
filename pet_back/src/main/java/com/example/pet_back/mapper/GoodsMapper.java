@@ -1,6 +1,8 @@
 package com.example.pet_back.mapper;
 
 import com.example.pet_back.config.FileUploadProperties;
+import com.example.pet_back.constant.GOODSSTATE;
+import com.example.pet_back.constant.MEMBERSTATE;
 import com.example.pet_back.domain.admin.BannerDTO;
 import com.example.pet_back.domain.goods.CategoryResponseDTO;
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
@@ -44,6 +46,7 @@ public interface GoodsMapper {
 
     @Mapping(source = "category" ,target="categoryName",qualifiedByName = "toCategoryName")
     @Mapping(source = "imageFile" ,target = "imageFile",qualifiedByName = "imageFileUrl")
+    @Mapping(source = "goodsState", target = "goodsState", qualifiedByName = "stateToString")
     public GoodsSimpleDTO goodsToDto(Goods goods);
 
 
@@ -56,4 +59,9 @@ public interface GoodsMapper {
         return category.getCategoryName();
     }
 
+    //state 한글로
+    @Named("stateToString")
+    public static String gradeToString(GOODSSTATE goodsState) {
+        return goodsState.getGradeName();
+    }
 }
