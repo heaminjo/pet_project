@@ -40,6 +40,17 @@ const GoodsApi = {
     } catch (err) {}
   },
 
+  // 현재 상품의 찜 상태 불러오기
+  favoriteInfo: async (goodsId) => {
+    try {
+      const result = await instance.post(`/goods/favoriteinfo/${goodsId}`);
+      if (result.data != null) {
+        alert(`찜 상태 가져오기 => ${JSON.stringify(result.data)}`);
+        return result;
+      }
+    } catch (err) {}
+  },
+
   // 찜 리스트 출력
   getFavoritePageList: async (pages) => {
     try {
@@ -67,8 +78,23 @@ const GoodsApi = {
 
   // <AddGoods /> : 상품등록
   regGoods: async (goods) => {
+    const formData = new FormData();
+    formData.append('goodsName', goods.goodsName);
+    formData.append('categoryId', goods.categoryId);
+    formData.append('goodsState', goods.goodsState);
+    formData.append('description', goods.description);
+    formData.append('quantity', goods.quantity);
+    formData.append('price', goods.price);
+    if (goods.imageFile) {
+      formData.append('imageFile', goods.imageFile); // 실제 파일 객체
+    }
+
     try {
-      const result = await instance.post('/goods/register', goods);
+      const result = await instance.post('/goods/register', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       if (result.data != null) {
         alert(`상품등록 완료 => ${result.data}`);
         return result.data;
@@ -144,7 +170,7 @@ const GoodsApi = {
     return result.data;
   },
 
-  //상품 페이징 목록록
+  //상품 페이징 목록
   getGoodsList: async (pages) => {
     const result = await axios.post(`${KH_DOMAIN}/goods/page/list`, pages);
     return result.data;

@@ -37,15 +37,16 @@ import GoodsList from "./components/Layout/goods/GoodsList";
 import MyAddr from "./page/mypage/MyAddr";
 import AddressInsert from "./components/mypage/AddressInsert";
 import BannerSelect from "./page/admin/BannerSelect";
-
 import Favorite from "./components/Layout/favorite/Favorite";
-
+import Review from './components/Layout/order/Review';
+import MyReview from './components/Layout/order/MyReview';
 import Grade from "./page/main/Grade";
 import MyGrade from "./page/mypage/MyGrade";
 import BestSelect from "./page/admin/BestSelect";
 import CategoryManage from "./page/admin/CategoryManage";
 import Inventory from "./page/admin/Inventory";
 import GoodsState from "./page/admin/GoodsState";
+
 
 //컨텍스트(useContext)
 //로그인 여부부를 전역변수로 뿌리기 위한것
@@ -79,6 +80,8 @@ function App() {
               <Route path="delivery" element={<Delivery />} />
               <Route path="orderlist" element={<OrderList />} />
               <Route path="favorite" element={<Favorite />} />
+              <Route path='review' element={<Review />} />
+              <Route path='myreview' element={<MyReview />} />
               <Route path="withdraw" element={<WithDraw />} />
               <Route path="pay" element={<Pay />} />
             </Route>

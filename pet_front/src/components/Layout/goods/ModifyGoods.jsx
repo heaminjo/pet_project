@@ -87,7 +87,7 @@ export default function ModifyGoods() {
   // 상품 목록
   const [goods, setGoods] = useState([]); // 페이지에 사용되는 goods
   // 안전하게 URL에서 직접 읽기
-  const [page, setPage] = useState([]);
+  const [page, setPage] = useState();
 
   // 페이징 정보 상태변수 (현재 페이징 상태 핸들링 위함)
   const [paging, setPaging] = useState({
@@ -187,7 +187,10 @@ export default function ModifyGoods() {
           {showModal && (
             <div className='modal-backdrop' onClick={() => setShowModal(false)}>
               <div className='modal-content' onClick={(e) => e.stopPropagation()}>
-                <AddGoods onClose={() => setShowModal(false)} />
+                <AddGoods
+                  onClose={() => setShowModal(false)}
+                  refreshList={getPageList} // ← 리스트 새로고침 함수 전달
+                />
               </div>
             </div>
           )}

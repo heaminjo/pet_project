@@ -16,12 +16,16 @@ export default function GoodsList() {
   const [goods, setGoods] = useState([]); // 페이지에 사용되는 goods
   // const [inputKeyword, setInputKeyword] = useState(searchKeyword); // searchKeyword의 초기값을 inputKeyword로 설정
 
+  // 카테고리
+  const [categories, setCategories] = useState([]);
+
   // 검색 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  const [type, setType] = useState('all');
-  const [keyword, setKeyword] = useState('');
-  const [sort, setSort] = useState('desc');
-  // 안전하게 URL에서 직접 읽기
-  const [page, setPage] = useState(parseInt(new URLSearchParams(location.search).get('page')) || 0);
+  // 쿼리스트링에서 현재 상태값 추출
+  const queryParams = new URLSearchParams(location.search);
+  const page = parseInt(queryParams.get('page')) || 0;
+  const keyword = queryParams.get('searchKeyword') || '';
+  const type = queryParams.get('searchType') || 'all';
+  const sort = queryParams.get('sort') || 'desc';
 
   // 페이징 정보 상태변수 (현재 페이징 상태 핸들링 위함)
   const [paging, setPaging] = useState({
@@ -44,16 +48,8 @@ export default function GoodsList() {
   //검색 기능
   //검색 버튼 클릭
   const searchClick = (e) => {
-    if (e) e.preventDefault();
-    const params = new URLSearchParams();
-    params.set('searchType', type);
-    params.set('searchKeyword', keyword);
-    params.set('sort', sort);
-    params.set('page', 0);
-    navigate({
-      pathname: location.pathname,
-      search: params.toString(),
-    });
+    e.preventDefault();
+    handleChangeQuery('searchKeyword', keyword);
   };
 
   //검색버튼 엔터
@@ -76,28 +72,21 @@ export default function GoodsList() {
   };
 
   // 페이징
+  // 상품 데이터 조회 함수
   const getPageList = async () => {
-    // 검색조건 (URL에서 추출)
-    const params = new URLSearchParams(location.search);
-
-    const searchKeyword = params.get('searchKeyword') || ''; // 검색어
-    const searchType = params.get('searchType') || 'all'; // 검색필터
-    const sortParam = params.get('sort') || 'desc';
-    const pageParam = parseInt(params.get('page')) || 0;
     const pages = {
-      page: pageParam,
+      page,
       size: 8,
-      sortBy: sortParam,
-      keyword: searchKeyword,
-      type: searchType,
+      sortBy: sort,
+      keyword,
+      type,
     };
+
     try {
       const result = await GoodsApi.getGoodsPageList(pages);
-      // 1. 상품 목록
       setGoods(result.content);
 
-      // 2. 페이지번호 정보
-      let temp = Math.floor(pageParam / 5) * 5;
+      let temp = Math.floor(page / 5) * 5;
       setPaging({
         start: temp,
         end: Math.min(temp + 5, result.totalPages),
@@ -111,15 +100,35 @@ export default function GoodsList() {
     }
   };
 
+  // 카테고리 로딩
+  const loadCategories = async () => {
+    try {
+      const response = await GoodsApi.getCategoryList();
+      setCategories(response);
+    } catch (error) {
+      console.error('카테고리 불러오기 실패:', error);
+    }
+  };
+
   // 페이징, 검색 조건
   useEffect(() => {
-    // URL 쿼리스트링 기반으로 상태 세팅
-    const params = new URLSearchParams(location.search);
-    setKeyword(params.get('searchKeyword') || '');
-    setType(params.get('searchType') || 'all');
-    setSort(params.get('sort') || 'desc');
     getPageList();
-  }, [page, location.search]);
+  }, [location.search]);
+
+  const handleChangeQuery = (key, value) => {
+    queryParams.set(key, value);
+    if (key !== 'page') queryParams.set('page', 0);
+    navigate(`?${queryParams.toString()}`);
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    handleChangeQuery('searchKeyword', keyword);
+  };
+
+  useEffect(() => {
+    loadCategories();
+  }, []);
 
   return (
     <GoodsListComp>
@@ -137,17 +146,21 @@ export default function GoodsList() {
               searchClick();
             }}>
             <div className='custom-select'>
-              <select name='sort' id='sort' value={sort} onChange={(e) => setSort(e.target.value)}>
+              <select value={sort} onChange={(e) => handleChangeQuery('sort', e.target.value)}>
                 <option value='desc'>최신순</option>
                 <option value='asc'>오래된 순</option>
               </select>
-              <select name='type' id='type' value={type} onChange={(e) => setType(e.target.value)}>
+              <select value={type} onChange={(e) => handleChangeQuery('searchType', e.target.value)}>
                 <option value='all'>전체</option>
-                <option value='food'>사료</option>
-                <option value='snack'>간식</option>
+                {categories.map((cat) => (
+                  <option key={cat.categoryId} value={cat.categoryId}>
+                    {cat.categoryName}
+                  </option>
+                ))}
               </select>
             </div>
-            <input type='text' value={keyword} onChange={(e) => setKeyword(e.target.value)} onKeyDown={handleKeyDown} />
+            <input type='text' defaultValue={keyword} onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)} onBlur={(e) => handleChangeQuery('searchKeyword', e.target.value)} />
+
             <button className='search_btn' onClick={() => searchClick()}>
               <span role='img' aria-label='search'>
                 🔍
@@ -155,7 +168,6 @@ export default function GoodsList() {
             </button>
           </form>
         </div>
-        <br />
         <br />
         <hr />
         <div className='body'>
@@ -180,18 +192,7 @@ export default function GoodsList() {
                 </div>
               ))}
           </section>
-          <PageNumber
-            page={page}
-            setPage={(p) => {
-              const newParams = new URLSearchParams(location.search);
-              newParams.set('page', p);
-              navigate({
-                pathname: location.pathname,
-                search: newParams.toString(),
-              });
-            }}
-            paging={paging}
-          />
+          <PageNumber page={page} setPage={(p) => handleChangeQuery('page', p)} paging={paging} />
           <br />
           <hr />
           <h2>자주 산 상품</h2>

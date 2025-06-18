@@ -1,6 +1,7 @@
 package com.example.pet_back.controller;
 
 import com.example.pet_back.domain.goods.PayRequestDTO;
+import com.example.pet_back.domain.goods.ReviewRequestDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.service.goods.GoodsService;
@@ -46,5 +47,16 @@ public class OrderController {
         log.info("결제 user = " + userDetails.getMember().getEmail()); // 이게 null?
         return orderService.payGoods(userDetails, dto);
     }
+
+    // 리뷰 작성
+    @PostMapping("/review/register")
+    public ResponseEntity<?> regReview(@AuthenticationPrincipal CustomUserDetails userDetails, //
+                                       @ModelAttribute ReviewRequestDTO dto) {
+        log.info("** GoodsController => payGoods() 실행됨 **");
+
+        return orderService.regReview(userDetails, dto);
+    }
+
+
 
 }

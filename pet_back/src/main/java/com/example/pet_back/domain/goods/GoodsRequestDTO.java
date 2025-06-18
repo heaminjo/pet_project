@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -22,7 +23,7 @@ public class GoodsRequestDTO {
 
     // 상품 상태 (SALE, SOLDOUT, HIDDEN)
     private GOODSSTATE goodsState = GOODSSTATE.SALE;
-    private String imageFile;
+    private MultipartFile imageFile;
     private int quantity;
     private LocalDate regDate;
 

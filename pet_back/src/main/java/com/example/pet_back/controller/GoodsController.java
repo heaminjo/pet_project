@@ -46,11 +46,18 @@ public class GoodsController {
         return goodsService.selectOne(goods_id);
     }
 
-    // 찜
+    // 찜 (추가/해제)
     @PostMapping("/favorite/{goodsId}")
     public ResponseEntity<?> favorite(@PathVariable("goodsId") Long goodsId,  @AuthenticationPrincipal CustomUserDetails userDetails) {
         log.info("** GoodsController => favorite() 실행됨 **");
         return goodsService.favorite(goodsId, userDetails);
+    }
+
+    // 찜 (단일상품, 찜 여부 가져오기)
+    @PostMapping("/favoriteinfo/{goodsId}")
+    public ResponseEntity<?> favoriteInfo(@PathVariable("goodsId") Long goodsId,  @AuthenticationPrincipal CustomUserDetails userDetails) {
+        log.info("** GoodsController => favorite() 실행됨 **");
+        return goodsService.favoriteInfo(goodsId, userDetails);
     }
 
     // 리뷰
@@ -83,7 +90,8 @@ public class GoodsController {
     // 상품등록 메서드 (관리자 페이지)
     @PostMapping("/register")
     public ResponseEntity<?> createGoods( @AuthenticationPrincipal CustomUserDetails userDetails, //
-                                          @RequestBody GoodsRequestDTO goodsRequestDTO) {
+                                          @ModelAttribute GoodsRequestDTO goodsRequestDTO) {
+        //  @ModelAttribute ReviewRequestDTO dto
         log.info("** GoodsController => createGoods() 실행됨 **");
         System.out.println("goodsDTO 이름: " + goodsRequestDTO.getGoodsName());
         System.out.println("goodsDTO state: " + goodsRequestDTO.getGoodsState());

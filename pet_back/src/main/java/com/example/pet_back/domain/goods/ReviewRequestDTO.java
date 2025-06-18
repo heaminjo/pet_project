@@ -1,0 +1,24 @@
+package com.example.pet_back.domain.goods;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ReviewRequestDTO {
+
+    private Long memberId;         // 로그인 사용자 정보
+    private Long goodsId;          // 상품 ID
+    private Long orderDetailId;    // 주문 상세 ID
+
+    private int score;             // 별점 (1~5)
+    private String title;          // 한줄 요약
+    private String content;        // 상세 리뷰
+    private MultipartFile imageFile;
+
+}
