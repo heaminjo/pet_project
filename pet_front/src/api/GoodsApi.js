@@ -34,10 +34,12 @@ const GoodsApi = {
     try {
       const result = await instance.post(`/goods/favorite/${goodsId}`);
       if (result.data != null) {
-        alert(`찜 등록 완료 => ${JSON.stringify(result.data)}`);
+        console.log(`찜 추가/제거 동작(추가T/F) => ${JSON.stringify(result.data)}`);
         return result.data;
       }
-    } catch (err) {}
+    } catch (err) {
+      alert('favorite 중 에러가 발생했습니다.');
+    }
   },
 
   // 현재 상품의 찜 상태 불러오기
@@ -45,10 +47,12 @@ const GoodsApi = {
     try {
       const result = await instance.post(`/goods/favoriteinfo/${goodsId}`);
       if (result.data != null) {
-        alert(`찜 상태 가져오기 => ${JSON.stringify(result.data)}`);
+        console.log(`찜 상태 가져오기 => ${JSON.stringify(result.data)}`);
         return result;
       }
-    } catch (err) {}
+    } catch (err) {
+      alert('favoriteInfo 중 에러가 발생했습니다.');
+    }
   },
 
   // 찜 리스트 출력
@@ -59,44 +63,54 @@ const GoodsApi = {
         console.log(' getFavoritePageList 응답 결과:', result.data);
         return result.data;
       }
-    } catch (err) {}
+    } catch (err) {
+      alert('getFavoritePageList 중 에러가 발생했습니다.');
+    }
   },
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상  품 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // <GoodsList /> 전체 상품 리스트 출력 (메인) (완료)
   getGoodsPageList: async (pages) => {
-    alert(`getGoodsPageList() 호출됨, pages = ${JSON.stringify(pages)}`);
+    console.log(`getGoodsPageList() 호출됨, pages = ${JSON.stringify(pages)}`);
     try {
       const result = await instance.post(`/goods/list`, pages);
       if (result.data != null) {
-        console.log(' getGoodsPageList 응답 결과:', result.data);
-        alert(`getGoodsPageList() 호출됨`);
+        console.log('getGoodsPageList 응답 결과:', result.data);
         return result.data;
       }
-    } catch (err) {}
+    } catch (err) {
+      alert('getGoodsPageList 중 에러가 발생했습니다.');
+    }
   },
 
   // <AddGoods /> : 상품등록
   regGoods: async (goods) => {
     const formData = new FormData();
-    formData.append('goodsName', goods.goodsName);
-    formData.append('categoryId', goods.categoryId);
-    formData.append('goodsState', goods.goodsState);
-    formData.append('description', goods.description);
-    formData.append('quantity', goods.quantity);
-    formData.append('price', goods.price);
+    formData.append(
+      'goods',
+      new Blob(
+        [
+          JSON.stringify({
+            goodsName: goods.goodsName,
+            categoryId: goods.categoryId,
+            goodsState: goods.goodsState,
+            description: goods.description,
+            quantity: goods.quantity,
+            price: goods.price,
+          }),
+        ],
+        { type: 'application/json' }
+      )
+    );
     if (goods.imageFile) {
       formData.append('imageFile', goods.imageFile); // 실제 파일 객체
     }
 
     try {
-      const result = await instance.post('/goods/register', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const result = await instance.post('/goods/register', formData);
       if (result.data != null) {
-        alert(`상품등록 완료 => ${result.data}`);
+        //alert(`상품등록 완료 => ${result.data}`);
+        console.log(`상품등록 완료 => ${result.data}`);
         return result.data;
       }
     } catch (err) {

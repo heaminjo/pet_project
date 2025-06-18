@@ -35,38 +35,97 @@ const ModifyGoodsComp = styled.div`
     height: 1200px;
     margin: 0 auto;
     margin-top: 150px;
-    border: 1px solid rgb(230, 230, 230);
-    .list {
-      width: 100%;
+    font-family: 'Noto Sans KR', sans-serif;
 
-      border: 1px solid rgb(230, 230, 230);
+    h2 {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    span {
+      display: block;
+      margin-bottom: 20px;
+      color: #666;
+    }
+
+    button {
+      background-color: #f6e96c;
+      color: #333;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #f1d700;
+    }
+
+    .list {
+      margin-top: 30px;
+      border-top: 2px solid #eee;
+
       .goodslist {
-        width: 100%;
-        height: 150px;
-        border: 1px solid rgb(230, 230, 230);
         display: flex;
-        flex-direction: row;
+        align-items: center;
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        background-color: #fff;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background-color: #fcfcf5;
+        }
+
         .prodimg {
           width: 150px;
-          height: inherit;
-          border: 1px solid rgb(230, 230, 230);
+          height: 150px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid #ddd;
+          border-radius: 10px;
+          overflow: hidden;
+
           img {
             width: 100px;
             height: 100px;
-            margin: 5px auto;
-            border: 1px solid rgb(230, 230, 230);
+            object-fit: cover;
           }
         }
+
         .goodsdetail {
-          width: 600px;
-          margin: 0 auto;
-          border: 1px solid rgb(230, 230, 230);
+          flex: 1;
+          padding: 0 20px;
+          font-size: 14px;
+
+          b {
+            font-size: 16px;
+            display: block;
+            margin-bottom: 5px;
+          }
+
+          div {
+            margin-bottom: 5px;
+            color: #444;
+          }
         }
+
         .modify {
-          width: 300px;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          align-items: center;
+          justify-content: center;
+
           button {
-            width: 200px;
-            height: 40px;
+            width: 120px;
+            height: 36px;
+            font-size: 14px;
           }
         }
       }
@@ -87,12 +146,14 @@ export default function ModifyGoods() {
   // 상품 목록
   const [goods, setGoods] = useState([]); // 페이지에 사용되는 goods
   // 안전하게 URL에서 직접 읽기
-  const [page, setPage] = useState();
+  const query = new URLSearchParams(location.search);
+  const initialPage = parseInt(query.get('page')) || 0;
+  const [page, setPage] = useState(initialPage);
 
   // 페이징 정보 상태변수 (현재 페이징 상태 핸들링 위함)
   const [paging, setPaging] = useState({
     start: 0,
-    end: 4,
+    end: 3,
     isPrev: false,
     isNext: true,
     totalElement: 0,
@@ -159,7 +220,7 @@ export default function ModifyGoods() {
   // 페이징
   useEffect(() => {
     getPageList();
-  }, [page]);
+  }, [location.search]);
 
   // 모달
   useEffect(() => {
@@ -179,7 +240,6 @@ export default function ModifyGoods() {
       <div className='container'>
         <h2>[관리자 페이지] 상품 등록 내역 (수정/삭제) 페이지 </h2>
         <span>설명: 관리자가 상품에 대한 상세정보를 입력하고 등록하는 페이지</span>
-        <hr />
         <button style={{ width: '200px', height: '50px' }} onClick={() => setShowModal(true)}>
           + 상품 추가
         </button>
@@ -225,7 +285,18 @@ export default function ModifyGoods() {
             ))}
         </section>
 
-        <PageNumber page={page} setPage={setPage} paging={paging} />
+        <PageNumber
+          page={page}
+          setPage={(p) => {
+            const params = new URLSearchParams(location.search);
+            params.set('page', p);
+            navigate({
+              pathname: location.pathname,
+              search: params.toString(),
+            });
+          }}
+          paging={paging}
+        />
       </div>
     </ModifyGoodsComp>
   );

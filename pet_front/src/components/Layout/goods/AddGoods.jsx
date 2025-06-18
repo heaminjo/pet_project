@@ -28,15 +28,10 @@ export default function AddGoods({ onClose, refreshList }) {
   // 상품등록 폼 제출
   const register = async (e) => {
     e.preventDefault(); // 새로고침 방지
-    const formData = new FormData();
-    for (const key in goods) {
-      formData.append(key, goods[key]);
-    }
-
     try {
       const response = await GoodsApi.regGoods(goods);
       console.log('등록 결과:', response);
-      onClose(); // 모달 닫기
+      onClose();
       refreshList(); // 목록 새로고침
     } catch (error) {
       console.log('등록 중 에러 발생생:', error);

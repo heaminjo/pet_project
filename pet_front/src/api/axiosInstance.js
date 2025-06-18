@@ -1,18 +1,18 @@
-import axios from "axios";
-import MemberApi from "./MemberApi";
-import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+import MemberApi from './MemberApi';
+import { useNavigate } from 'react-router-dom';
 
 //공통 설정을 갖는 axios 인스턴스
 const instance = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: 'http://localhost:8080',
 });
 
 //요청 인터셉터 설정(header에 토큰큰)
 instance.interceptors.request.use((config) => {
-  const token = localStorage.getItem("accessToken");
+  const token = localStorage.getItem('accessToken');
   //토큰이 존재하면
   if (token != null) {
-    config.headers["authorization"] = `Bearer ${token}`;
+    config.headers['authorization'] = `Bearer ${token}`;
   }
   return config;
 });
@@ -39,9 +39,9 @@ instance.interceptors.response.use(
         console.log(response);
         const newToken = response.data.accessToken;
 
-        localStorage.setItem("accessToken", newToken);
+        localStorage.setItem('accessToken', newToken);
         //요청 헤더에 새토큰 업데이트트
-        originalRequest.headers["authorization"] = `Bearer ${newToken}`;
+        originalRequest.headers['authorization'] = `Bearer ${newToken}`;
 
         //원래 실패했던 요청에 토큰를 다시 갱신 후 다시 요청청
         return instance(originalRequest);
