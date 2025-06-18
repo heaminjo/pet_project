@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3733d33e-44d5-4aae-a945-8dbce959f5d6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/board/BoardServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/board/BoardServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/resources/webapp/userImages/348256b1-51cf-4e46-9112-c1d4165f287f.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/resources/webapp/userImages/8154fe9e-a07c-4c71-957a-9a3d6da690b5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/generated/com/example/pet_back/mapper/GoodsMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/generated/com/example/pet_back/mapper/GoodsMapperImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/generated/com/example/pet_back/mapper/MemberMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/generated/com/example/pet_back/mapper/MemberMapperImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/generated/com/example/pet_back/mapper/OrderMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/generated/com/example/pet_back/mapper/OrderMapperImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/pet_back/service/board/BoardServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/pet_back/service/board/BoardServiceImpl.java" afterDir="false" />
-    </list>
+    <list default="true" id="3733d33e-44d5-4aae-a945-8dbce959f5d6" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -26,12 +17,12 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "git-widget-placeholder": "남장욱-branch",
-    "애플리케이션.PetBackApplication.executor": "Run"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;git-widget-placeholder&quot;: &quot;남장욱-branch&quot;,
+    &quot;애플리케이션.PetBackApplication.executor&quot;: &quot;Run&quot;
   }
-}]]></component>
+}</component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="3733d33e-44d5-4aae-a945-8dbce959f5d6" name="Changes" comment="" />
