@@ -3,9 +3,13 @@ import styled from "styled-components";
 import GoodsApi from "../../api/GoodsApi";
 import searchIcon from "../../images/searchmagnifierinterfacesymbol_79894.png";
 import PageNumber from "../../components/util/PageNumber";
+import React from "react";
+import AdminApi from "../../api/AdminApi";
 export default function Inventory() {
   const [categoryList, setCategoryList] = useState([]);
   const [goodsList, setGoodsList] = useState([]);
+  const [quantity, setQuantity] = useState(0); // 수정될 수량
+  const [btn, setBtn] = useState([]);
 
   //페이지
   const [category, setCategory] = useState(0);
@@ -59,6 +63,33 @@ export default function Inventory() {
     });
   };
 
+  //수량 버튼 클릭
+  const updateClick = (quantity, select, type) => {
+    //활성화 할 버튼 자리 추가
+    setBtn([...btn, { index: select }]);
+
+    //버튼 클릭 시 goddsList에 해당 상품 수량이 변하게 함
+    setGoodsList((prevList) => {
+      //기존 배열 값 복사 하여 타입에 따라 값 변경한 배열을 return 하여 set
+      const newList = [...prevList];
+      if (type === "plus") {
+        newList[select].quantity = quantity + 1;
+      } else if (type === "minus") {
+        newList[select].quantity = quantity - 1;
+      }
+      return newList;
+    });
+  };
+
+  //수량 업데이트
+  const updateQuantity = async (goodsId, quantity, index) => {
+    setBtn([]);
+
+    const result = await AdminApi.updateQuantity(goodsId, quantity);
+
+    alert(result.message);
+    getGoodsList();
+  };
   return (
     <InventoryComp>
       <h2>재고관리</h2>
@@ -113,28 +144,60 @@ export default function Inventory() {
               <th>출고</th>
               <th>재고 수정</th>
             </tr>
-            {goodsList.map((g, index) => (
+            {goodsList.length > 0 ? (
+              <React.Fragment>
+                {goodsList.map((g, index) => (
+                  <tr>
+                    <td>{index + 1}</td>
+                    <td>{g.goodsName}</td>
+                    <td>
+                      <img src={g.imageFile} alt="상품 이미지" />
+                    </td>
+                    <td>{g.goodsState}</td>
+                    <td>{g.quantity}</td>
+                    <td>
+                      <button
+                        id="plus"
+                        onClick={() => updateClick(g.quantity, index, "plus")}
+                      >
+                        +
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        id="minus"
+                        onClick={() => updateClick(g.quantity, index, "minus")}
+                      >
+                        -
+                      </button>
+                    </td>
+                    <td>
+                      {btn.some((item) => item.index === index) ? (
+                        <button
+                          className="update_btn"
+                          onClick={() =>
+                            updateQuantity(g.goodsId, g.quantity, index)
+                          }
+                        >
+                          재고 수정
+                        </button>
+                      ) : (
+                        <button disabled className="update_btn not">
+                          재고 수정
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </React.Fragment>
+            ) : (
               <tr>
-                <td>{index + 1}</td>
-                <td>{g.goodsName}</td>
-                <td>
-                  <img src={g.imageFile} alt="상품 이미지" />
-                </td>
-                <td>{g.goodsState}</td>
-                <td>{g.quantity}</td>
-                <td>
-                  <button id="plus">+</button>
-                </td>
-                <td>
-                  <button id="minus">-</button>
-                </td>
-                <td>
-                  <button id="update_btn">재고 수정</button>
-                </td>
+                <td colSpan={8}>조회되는 상품이 없습니다.</td>
               </tr>
-            ))}
+            )}
           </table>
         </div>
+
         <PageNumber page={page} setPage={setPage} paging={paging} />
       </div>
     </InventoryComp>
@@ -211,7 +274,7 @@ const InventoryComp = styled.div`
       width: 1000px;
       table {
         border: 1px solid #000;
-        width: 900px;
+        width: 1000px;
         text-align: center;
         border-collapse: collapse;
         padding-bottom: 20px;
@@ -226,7 +289,7 @@ const InventoryComp = styled.div`
               width: 80px;
               height: 80px;
             }
-            button:not(#update_btn) {
+            button:not(.update_btn) {
               width: 40px;
               height: 40px;
               font-size: 20px;
@@ -235,7 +298,7 @@ const InventoryComp = styled.div`
               box-shadow: 1px 1px 1px #555;
               cursor: pointer;
             }
-            #update_btn {
+            .update_btn {
               width: 80px;
               height: 40px;
               border: none;
@@ -244,6 +307,9 @@ const InventoryComp = styled.div`
               cursor: pointer;
               font-weight: bold;
               color: #fff;
+            }
+            .not {
+              background-color: #ccc;
             }
           }
         }

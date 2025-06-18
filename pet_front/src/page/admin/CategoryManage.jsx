@@ -17,6 +17,7 @@ export default function CategoryManage() {
 
   useEffect(() => {
     getCategoryList();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   const getCategoryList = async () => {

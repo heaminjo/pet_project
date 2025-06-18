@@ -25,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
@@ -443,5 +444,18 @@ public class GoodsServiceImpl implements GoodsService {
         category.setCategoryName(categoryName);
 
         return new ApiResponse(true,prevName + "에서 "+categoryName+"으로 이름 변경을 성공하였습니다.");
+    }
+    //재고수량 수정
+    @Override
+    @Transactional
+    public ApiResponse quantityUpdate(Long id, int quantity) {
+        Goods goods = goodsRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        //수정 전 수량 저장
+        int prev = goods.getQuantity();
+        goods.setQuantity(quantity);
+
+        String message = "상품 ["+goods.getGoodsName()+"] 의 수량이 "+prev+" -> "+quantity+" 으로 변경 완료되었습니다.";
+        return new ApiResponse(true,message);
     }
 }

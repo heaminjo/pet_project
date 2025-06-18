@@ -17,6 +17,7 @@ export default function UserDetail() {
   };
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     getUserData();
   }, []);
 
