@@ -35,9 +35,7 @@ const OrderTabComp = styled.div`
     border-bottom: 2px solid #000;
   }
 `;
-
-const OrderTab = ({ reviewNum }) => {
-  const [activeTab, setActiveTab] = useState('상품상세');
+export default function OrderTab({ activeTab, setActiveTab, reviewNum }) {
   const tabs = ['상품상세', `상품평 (${reviewNum})`, '상품문의', '배송/교환/반품 안내'];
 
   return (
@@ -51,11 +49,6 @@ const OrderTab = ({ reviewNum }) => {
           ))}
         </div>
       </div>
-
-      {/* 콘텐츠 렌더링 */}
-      <div style={{ marginTop: '16px', padding: '10px', border: '1px solid #ddd' }}>{activeTab} 내용이 여기에 표시됩니다.</div>
     </OrderTabComp>
   );
-};
-
-export default OrderTab;
+}

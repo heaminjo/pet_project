@@ -165,70 +165,74 @@ export default function Cart() {
         </div>
         <div className='body'>
           <div className='left'>
-            {goods.map((item, index) => (
-              <div className='prod' key={index}>
-                <div className='prodleft'>
-                  <label>
-                    <input type='checkbox' checked={checked[item.goodsId] || false} onChange={() => handleCheckboxChange(item.goodsId)} style={{ width: '20px', height: '20px', cursor: 'pointer' }} required />
-                    &nbsp;&nbsp;&nbsp;
-                  </label>
-                  <img src={`${imgUrl}${item.imageFile}`} alt={item.goodsName} className='prodimg' onClick={() => navigate('/goods/order', { state: { goods: item } })} />
-                </div>
-                <div className='prodright'>
-                  <div>
-                    <b>상품명</b>&nbsp;&nbsp;{item.goodsName}
+            {goods.length === 0 ? (
+              <div style={{ padding: '20px', textAlign: 'center', color: '#888' }}>아직 장바구니에 담긴 상품이 없습니다.</div>
+            ) : (
+              goods.map((item, index) => (
+                <div className='prod' key={index}>
+                  <div className='prodleft'>
+                    <label>
+                      <input type='checkbox' checked={checked[item.goodsId] || false} onChange={() => handleCheckboxChange(item.goodsId)} style={{ width: '20px', height: '20px', cursor: 'pointer' }} required />
+                      &nbsp;&nbsp;&nbsp;
+                    </label>
+                    <img src={`${imgUrl}${item.imageFile}`} alt={item.goodsName} className='prodimg' onClick={() => navigate('/goods/order', { state: { goods: item } })} />
                   </div>
-                  <div>
-                    <b>상세정보</b>&nbsp;&nbsp;{item.description}
-                  </div>
-                  <div>
-                    <b>가격</b>&nbsp;&nbsp; {item.price} 원
-                  </div>
+                  <div className='prodright'>
+                    <div>
+                      <b>상품명</b>&nbsp;&nbsp;{item.goodsName}
+                    </div>
+                    <div>
+                      <b>상세정보</b>&nbsp;&nbsp;{item.description}
+                    </div>
+                    <div>
+                      <b>가격</b>&nbsp;&nbsp; {item.price} 원
+                    </div>
 
-                  {item.quantity < (quantityMap[item.goodsId] || 1) ? (
-                    <>
-                      <div>
-                        <b>최대 구매 가능 수량</b>&nbsp;&nbsp;<b style={{ color: 'red' }}> {item.quantity} </b>&nbsp;
-                      </div>
-                      <div>
-                        <b>구매 수량 </b>&nbsp;&nbsp;
-                        <button onClick={() => decrease(item.goodsId)} style={{ width: '20px', height: '20px' }}>
-                          -
-                        </button>
-                        &nbsp;&nbsp;<b style={{ color: 'red' }}> {quantityMap[item.goodsId] || 1}</b>&nbsp;&nbsp;
-                        <button onClick={() => increase(item.goodsId)} style={{ width: '20px', height: '20px' }}>
-                          +
-                        </button>
-                        &nbsp;&nbsp;
-                        <span style={{ color: 'red', fontSize: '12px' }}>수량을 조절해 주세요. </span>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div>
-                        <b>최대 구매 가능 수량&nbsp;&nbsp; {item.quantity} </b>
-                      </div>
-                      <div>
-                        <b>구매 수량 </b>&nbsp;&nbsp;
-                        <button onClick={() => decrease(item.goodsId)} style={{ width: '20px', height: '20px' }}>
-                          -
-                        </button>
-                        &nbsp;&nbsp;<b> {quantityMap[item.goodsId] || 1}</b>&nbsp;&nbsp;
-                        <button onClick={() => increase(item.goodsId)} style={{ width: '20px', height: '20px' }}>
-                          +
-                        </button>
-                      </div>
-                    </>
-                  )}
+                    {item.quantity < (quantityMap[item.goodsId] || 1) ? (
+                      <>
+                        <div>
+                          <b>최대 구매 가능 수량</b>&nbsp;&nbsp;<b style={{ color: 'red' }}> {item.quantity} </b>&nbsp;
+                        </div>
+                        <div>
+                          <b>구매 수량 </b>&nbsp;&nbsp;
+                          <button onClick={() => decrease(item.goodsId)} style={{ width: '20px', height: '20px' }}>
+                            -
+                          </button>
+                          &nbsp;&nbsp;<b style={{ color: 'red' }}> {quantityMap[item.goodsId] || 1}</b>&nbsp;&nbsp;
+                          <button onClick={() => increase(item.goodsId)} style={{ width: '20px', height: '20px' }}>
+                            +
+                          </button>
+                          &nbsp;&nbsp;
+                          <span style={{ color: 'red', fontSize: '12px' }}>수량을 조절해 주세요. </span>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div>
+                          <b>최대 구매 가능 수량&nbsp;&nbsp; {item.quantity} </b>
+                        </div>
+                        <div>
+                          <b>구매 수량 </b>&nbsp;&nbsp;
+                          <button onClick={() => decrease(item.goodsId)} style={{ width: '20px', height: '20px' }}>
+                            -
+                          </button>
+                          &nbsp;&nbsp;<b> {quantityMap[item.goodsId] || 1}</b>&nbsp;&nbsp;
+                          <button onClick={() => increase(item.goodsId)} style={{ width: '20px', height: '20px' }}>
+                            +
+                          </button>
+                        </div>
+                      </>
+                    )}
 
-                  <div>
-                    <b>판매원</b>&nbsp;&nbsp;
-                    <img src={seller} className='seller' alt='판매원원' /> 몽냥마켓
+                    <div>
+                      <b>판매원</b>&nbsp;&nbsp;
+                      <img src={seller} className='seller' alt='판매원원' /> 몽냥마켓
+                    </div>
+                    <div>내일 7시 도착</div>
                   </div>
-                  <div>내일 7시 도착</div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
           <div className='right'>
             <table>

@@ -9,12 +9,15 @@ const ReviewComp = styled.div`
     width: 100%;
     .reviews {
       width: 100%;
-      height: 400px;
+      height: 600px;
       border: 1px solid #ddd;
       .review {
+        margin: 10px auto;
+        border: 1px solid #ddd;
         .prodimg {
           width: 100px;
           height: 100px;
+          margin: 10px auto;
           border: 1px solid #ddd;
         }
       }
@@ -57,7 +60,7 @@ export default function Review({ stars, goodsId, reviewNum, imgUrl }) {
     }
     const pages = {
       page: page,
-      size: 10,
+      size: 3,
       sortBy: sort,
       keyword: keyword,
       type: type,
@@ -82,19 +85,18 @@ export default function Review({ stars, goodsId, reviewNum, imgUrl }) {
     }
   };
 
-  // 유저가 매긴 별점점
+  // 유저가 매긴 별점
   const getStars = (rating) => {
     return '⭐'.repeat(Math.floor(rating)); // 반올림이나 소수점 무시
   };
 
   useEffect(() => {
-    getPageList(goodsId);
-  }, [page]);
+    if (goodsId) getPageList(goodsId);
+  }, [page, goodsId]);
 
   return (
     <ReviewComp>
       <div className='container'>
-        <div>상품평</div>
         <div>동일한 상품에 대한 상품평으로, 판매자는 다를 수 있습니다.</div>
         <div className='rating' style={{ color: 'red', fontSize: '24px' }}>
           {stars}&nbsp;&nbsp;{'( ' + reviewNum + ' )'}
@@ -102,17 +104,21 @@ export default function Review({ stars, goodsId, reviewNum, imgUrl }) {
         <br />
         <hr />
         <div className='reviews'>
-          {reviews.map((item, index) => (
-            <div className='review' key={index}>
-              <div>{getStars(item.score)}</div>
-              <img src={`${imgUrl}${item.imageFile}`} alt={item.goodsName} className='prodimg' />
+          {reviews.length === 0 ? (
+            <div style={{ padding: '20px', textAlign: 'center', color: '#888' }}>아직 작성된 리뷰가 없습니다.</div>
+          ) : (
+            reviews.map((item, index) => (
+              <div className='review' key={index}>
+                <div>{getStars(item.score)}</div>
+                <img src={`${imgUrl}${item.imageFile}`} alt={item.goodsName} className='prodimg' />
 
-              <div>{item.title}</div>
-              <div>{item.content}</div>
-            </div>
-          ))}
+                <div>{item.title}</div>
+                <div>{item.content}</div>
+              </div>
+            ))
+          )}
         </div>
-        {/* <PageNumber page={page} setPage={setPage} paging={paging} /> */}
+        <PageNumber page={page} setPage={setPage} paging={paging} />
       </div>
     </ReviewComp>
   );

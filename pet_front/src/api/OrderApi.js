@@ -12,10 +12,8 @@ const OrderApi = {
 
   // <OrderDetail /> 페이징
   getOrderDetailPageList: async (pages) => {
-    alert(`getPageList() 호출됨, pages = ${JSON.stringify(pages)}`);
     const result = await instance.post(`/order/detail`, pages);
     console.log('응답 결과:', result);
-    alert(`getPageList() 호출됨, result = ${result.data}`);
     return result.data;
   },
 
@@ -34,7 +32,6 @@ const OrderApi = {
       }
     } catch (err) {
       console.error('오류 발생:', err);
-      alert('OrderApi.pay() 수행중 에러발생.');
     }
 
     return result.data;
@@ -50,7 +47,6 @@ const OrderApi = {
       }
     } catch (err) {
       console.error('오류 발생:', err);
-      alert('OrderApi.findAddress() 수행중 에러발생.');
     }
     return result.data;
   },

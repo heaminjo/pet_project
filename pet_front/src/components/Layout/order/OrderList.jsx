@@ -1,4 +1,4 @@
-import OrderDetailComp from './OrderDetailStyle';
+import OrderListComp from './OrderListStyle';
 import GoodsApi from '../../../api/GoodsApi';
 import OrderApi from '../../../api/OrderApi';
 import { useEffect, useState } from 'react';
@@ -8,7 +8,7 @@ import PageNumber from '../../util/PageNumber';
 export default function OrderDetail() {
   const location = useLocation();
   const prodImg = process.env.PUBLIC_URL + '/images/pic1.png';
-  const imgBaseUrl = 'http://localhost:8080/resources/webapp/goodsImages/';
+  const imgUrl = 'http://localhost:8080/resources/webapp/userImages/';
   const navigate = useNavigate();
   // 페이징 위함
   const [goodsList, setGoodsList] = useState([]);
@@ -102,9 +102,9 @@ export default function OrderDetail() {
   }, [page]);
 
   return (
-    <OrderDetailComp>
+    <OrderListComp>
       <div className='container'>
-        <h2>주문내역 페이지</h2>
+        <h2>주문내역</h2>
         <div>
           {sortedDates.map((date) => (
             <div key={date} className='orderlist'>
@@ -113,7 +113,7 @@ export default function OrderDetail() {
                   {date} 주문
                   <div className='orderlist2'>
                     <div className='orderdesc'>
-                      <img src={`${imgBaseUrl}${item.imageFile}`} alt={item.goodsName} className='prodimg' onClick={() => navigate('/user/order', { state: { goods: item } })} />
+                      <img src={`${imgUrl}${item.imageFile}`} alt={item.goodsName} className='prodimg' onClick={() => navigate('/user/order', { state: { goods: item } })} />
                       <br />
                       <div className='proddesc'>
                         <b>결제완료</b> <br />
@@ -124,7 +124,7 @@ export default function OrderDetail() {
                         <button className='btn1' onClick={() => addToCart(item)}>
                           장바구니 담기
                         </button>
-                        <button className='btn2' onClick={() => navigate('/user/delivery', { state: { goodsId: item.goodsId } })}>
+                        <button className='btn2' onClick={() => navigate('/user/mypage/delivery', { state: { goodsId: item.goodsId } })}>
                           배송조회
                         </button>
                         <button className='btn3' onClick={() => navigate('/user/withdraw')}>
@@ -140,6 +140,6 @@ export default function OrderDetail() {
         </div>
         <PageNumber page={page} setPage={setPage} paging={paging} />
       </div>
-    </OrderDetailComp>
+    </OrderListComp>
   );
 }
