@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import GoodsApi from '../../api/GoodsApi';
-import React from 'react';
-import Modal from '../../modal/Modal';
-import AdminApi from '../../api/AdminApi';
-import BannerSelectComp from './BannerSelectStyle';
-import PageNumber from '../../components/util/PageNumber';
-import GoodsSelectList from '../../components/util/GoodsSelectList';
+import { useEffect, useState } from "react";
+import styled from "styled-components";
+import GoodsApi from "../../api/GoodsApi";
+import React from "react";
+import Modal from "../../modal/Modal";
+import AdminApi from "../../api/AdminApi";
+import BannerSelectComp from "./BannerSelectStyle";
+import PageNumber from "../../components/util/PageNumber";
+import GoodsSelectList from "../../components/util/GoodsSelectList";
 export default function BannerSelect() {
   const [banner, setBanner] = useState([]); //배너 데이터
   const [modal, setModal] = useState(false); //삭제 확인 모달
@@ -15,7 +15,7 @@ export default function BannerSelect() {
   const [prevImage, setPrevImage] = useState(null); //이전 프로필필
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
     getBanner();
   }, []);
 
@@ -44,7 +44,7 @@ export default function BannerSelect() {
 
   //이미지 체인지
   const changeImage = (e, i) => {
-    console.log('클릭 배너 => ', i + 1);
+    console.log("클릭 배너 => ", i + 1);
     setSelBanner(i + 1);
     const file = e.target.files[0];
     if (file) {
@@ -68,19 +68,23 @@ export default function BannerSelect() {
       position: selBanner,
     };
 
-    const result = await AdminApi.bannerInsert(newBanner);
+    const result = await GoodsApi.bannerInsert(newBanner);
     alert(result.message);
     getBanner();
   };
   return (
     <BannerSelectComp>
-      <div className='select_container'>
+      <div className="select_container">
         {modal && (
-          <div className='modal'>
-            <Modal setModal={setModal} content={'정말 삭제하시겠습니까?'} clickEvt={bannerDelete} />
+          <div className="modal">
+            <Modal
+              setModal={setModal}
+              content={"정말 삭제하시겠습니까?"}
+              clickEvt={bannerDelete}
+            />
           </div>
         )}
-        <div className='banner_list'>
+        <div className="banner_list">
           <h3>배너 상품 관리</h3>
           <ul>
             {[...Array(5)].map((_, i) => (
@@ -90,27 +94,39 @@ export default function BannerSelect() {
                     .filter((b) => b.position === i + 1)
                     .map((b) => (
                       <React.Fragment key={b.position}>
-                        <img src={b.imageFile} alt='배너 이미지' />
-                        <div className='banner_mod'>
-                          <button onClick={() => clickBannerDelete(b.bannerId)}>삭제</button>
+                        <img src={b.imageFile} alt="배너 이미지" />
+                        <div className="banner_mod">
+                          <button onClick={() => clickBannerDelete(b.bannerId)}>
+                            삭제
+                          </button>
                         </div>
                       </React.Fragment>
                     ))
                 ) : (
-                  <div className='banner_sel'>
+                  <div className="banner_sel">
                     {prevImage != null && selBanner == i + 1 ? (
                       <React.Fragment>
                         <img src={prevImage} />
-                        <div className='banner_mod'>
-                          <button onClick={() => clickSelect()}>저장하기</button>
+                        <div className="banner_mod">
+                          <button onClick={() => clickSelect()}>
+                            저장하기
+                          </button>
                         </div>
                       </React.Fragment>
                     ) : (
                       <React.Fragment>
-                        <label className='banner_input' htmlFor={'upload__' + i}>
+                        <label
+                          className="banner_input"
+                          htmlFor={"upload__" + i}
+                        >
                           배너 이미지 선택
                         </label>
-                        <input id={'upload__' + i} type='file' onChange={(e) => changeImage(e, i)} hidden />
+                        <input
+                          id={"upload__" + i}
+                          type="file"
+                          onChange={(e) => changeImage(e, i)}
+                          hidden
+                        />
                       </React.Fragment>
                     )}
                   </div>

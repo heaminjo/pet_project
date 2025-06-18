@@ -62,7 +62,7 @@ export default function GoodsList() {
 
   // 상품1개 클릭시
   const clickProd = (item) => {
-    console.log(`clickProd 선택된 상품: ${item.goodsId}, ${item.goodsName}, ${item.goodsState}, ${item.description}, ${item.price}`);
+    alert(`clickProd 선택된 상품: ${item.goodsId}, ${item.goodsName}, ${item.goodsState}, ${item.description}, ${item.price}`);
     navigate('/goods/order', { state: { goods: item } });
   };
 

@@ -33,7 +33,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -309,7 +308,7 @@ public class GoodsServiceImpl implements GoodsService {
 
         // 5. 이미지 파일명 DTO에 주입 (DB 저장용)
         goodsRepository.registerGoods(categoryId, goodsName, price, //
-                description, goodsState, uploadImg, quantity, LocalDate.now());
+                description, goodsState, uploadImg, quantity);
     }
 
     // 상품수정 (미완)
