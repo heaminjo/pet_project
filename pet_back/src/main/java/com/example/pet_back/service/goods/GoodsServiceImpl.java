@@ -325,7 +325,7 @@ public class GoodsServiceImpl implements GoodsService {
     //카테고리 목록
     @Override
     public List<CategoryResponseDTO> categoryList() {
-        List<CategoryResponseDTO> categoryList = goodsRepository.categoryList();
+        List<CategoryResponseDTO> categoryList = categoryRepository.categoryList();
 
 //        List<CategoryResponseDTO> response = categoryList.stream().map(goodsMapper::categoryToDto).toList();
 

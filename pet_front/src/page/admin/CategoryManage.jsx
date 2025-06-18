@@ -35,15 +35,19 @@ export default function CategoryManage() {
 
   //카테고리 추가
   const insertCategory = async () => {
-    const result = await AdminApi.categoryInsert(category);
+    if (category.length < 2 || category.length > 6) {
+      alert("카테고리는 2~6자로 입력해주세요");
+    } else {
+      const result = await AdminApi.categoryInsert(category);
 
-    alert(result.message);
+      alert(result.message);
 
-    //추가 성공일 경우 카테고리 목록 다시 불러오기
-    if (result.success) {
-      getCategoryList();
-      setInsertInput(false); // input창 닫기
-      setCategory(""); //카테고리 입력값 초기화
+      //추가 성공일 경우 카테고리 목록 다시 불러오기
+      if (result.success) {
+        getCategoryList();
+        setInsertInput(false); // input창 닫기
+        setCategory(""); //카테고리 입력값 초기화
+      }
     }
   };
 
@@ -135,7 +139,7 @@ export default function CategoryManage() {
             <li>
               <input
                 type="text"
-                placeholder="추가할 카테고리 이름을 입력해주세요"
+                placeholder="추가할 카테고리 이름을 입력해주세요(2 ~ 6자 이내로)"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               />
@@ -191,7 +195,7 @@ const CategoryComp = styled.div`
         display: flex;
         justify-content: space-between;
         input {
-          width: 300px;
+          width: 400px;
           height: 40px;
           border: none;
           border-bottom: 1px solid #ccc;

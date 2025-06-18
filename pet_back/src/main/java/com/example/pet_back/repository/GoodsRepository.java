@@ -75,9 +75,6 @@ public interface GoodsRepository extends JpaRepository<Goods, Long> {
                                @Param("category") Long category,
                                Pageable pageable);
 
-    @Query("SELECT new com.example.pet_back.domain.goods.CategoryResponseDTO(g.category.categoryId,g.category.categoryName,COUNT(g)) "+
-            ("from Goods g GROUP BY g.category.categoryId"))
-    List<CategoryResponseDTO> categoryList();
 
     //카테고리에 상품이있는지 확인
     public boolean existsByCategory(Category category);
