@@ -7,24 +7,30 @@ const CommentFormStyle = styled.div`
 
     .comment-form {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      align-items: center;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 2px;
+
+      &:focus-within {
+        border-bottom-color: #f8e776;
+      }
       
       input {
-        width: 100%;
+        flex: 1;
         height: 30px;
         padding: 10px;
         font-size: 16px;
         border: none;
-        border-bottom: 2px solid #eee;
         border-radius: 5px;
         box-sizing: border-box;
       }
-
-      .button-row {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 10px;
+      
+      input:focus {
+        outline: none;
       }
+
+      
 
       button {
         width: 5%;

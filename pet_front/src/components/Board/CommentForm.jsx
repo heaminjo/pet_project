@@ -23,9 +23,7 @@ function CommentForm({ comment, setComment, onAddComment}) {
             placeholder="댓글을 입력하세요"
             maxLength={ 200 }>
           </input>
-          <div className="button-row">
-            <button type="submit">등록</button>
-          </div>
+          <button type="submit">등록</button>
         </form>
       </div>
     </CommentFormStyle>
