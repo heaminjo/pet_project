@@ -56,8 +56,6 @@ export default function GoodsSelectList({ selectEvt }) {
       totalElement: result.totalElements,
       totalPages: result.totalPages,
     });
-
-    
   };
 
   // 별점 (배열)

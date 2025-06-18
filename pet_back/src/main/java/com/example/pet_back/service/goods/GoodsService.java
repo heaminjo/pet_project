@@ -76,4 +76,7 @@ public interface GoodsService {
 
     //재고 수량 수정
     public ApiResponse quantityUpdate(Long id,int quantity);
+
+    //재고 상태 수정
+    public ApiResponse goodsStateUpdate(Long id,String state);
 }

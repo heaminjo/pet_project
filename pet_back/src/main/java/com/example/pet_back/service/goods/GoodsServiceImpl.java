@@ -34,6 +34,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -457,5 +458,21 @@ public class GoodsServiceImpl implements GoodsService {
 
         String message = "상품 ["+goods.getGoodsName()+"] 의 수량이 "+prev+" -> "+quantity+" 으로 변경 완료되었습니다.";
         return new ApiResponse(true,message);
+    }
+    //상품 상태 수정
+    @Override
+    @Transactional
+    public ApiResponse goodsStateUpdate(Long id, String state) {
+        Goods goods = goodsRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        Map<String,GOODSSTATE > map = Map.of(
+          "판매",GOODSSTATE.SALE,
+          "품절",GOODSSTATE.SOLDOUT,
+          "숨김",GOODSSTATE.HIDDEN
+        );
+
+        goods.setGoodsState(map.get(state));
+
+        return new ApiResponse(true,"상품 상태가 ["+state+"] 로 변경되었습니다");
     }
 }

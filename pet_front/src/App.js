@@ -45,6 +45,7 @@ import MyGrade from "./page/mypage/MyGrade";
 import BestSelect from "./page/admin/BestSelect";
 import CategoryManage from "./page/admin/CategoryManage";
 import Inventory from "./page/admin/Inventory";
+import GoodsState from "./page/admin/GoodsState";
 
 //컨텍스트(useContext)
 //로그인 여부부를 전역변수로 뿌리기 위한것
@@ -90,6 +91,7 @@ function App() {
               <Route path="best" element={<BestSelect />} />
               <Route path="category" element={<CategoryManage />} />
               <Route path="inventory" element={<Inventory />} />
+              <Route path="goods/state" element={<GoodsState />} />
             </Route>
             <Route path="/withcomplete" element={<WithDrawalComplete />} />
             <Route path="/admin/goods/add" element={<AddGoods />} />

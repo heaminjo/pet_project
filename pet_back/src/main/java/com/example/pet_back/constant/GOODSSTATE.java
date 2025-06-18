@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 // @JsonFormat(shape = JsonFormat.Shape.STRING) => 아래 @JsonProperty("SALE") 제거하고 일괄적용시
 public enum GOODSSTATE {
-    SALE("정상 판매"),
+    SALE("판매"),
     SOLDOUT("품절"),
     HIDDEN("숨김");
 

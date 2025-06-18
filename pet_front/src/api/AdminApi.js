@@ -130,6 +130,14 @@ const AdminApi = {
     );
     return result.data;
   },
+
+  //상품 상태 수정
+  updateGoodsState: async (id, newState) => {
+    const result = await instance.patch(
+      `${KH_DOMAIN}/admin/goods/state/update?id=${id}&state=${newState}`
+    );
+    return result.data;
+  },
 };
 
 export default AdminApi;
