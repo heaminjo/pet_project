@@ -29,11 +29,46 @@ export default function Pay() {
   const goodsList = Array.isArray(rawGoods) ? rawGoods : rawGoods ? [rawGoods] : []; // 단일 상품이 오더라도 강제로 배열로 감싸기
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 팝 업 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // 모달 사용 (요청사항) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // 모달 사용 (연락처 변경) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const [isPhoneOpen, setIsPhoneOpen] = useState(false);
+  const [phone, setPhone] = useState('');
+
+  // 연락처 유효성 검사
+  const handlePhoneChange = (e) => {
+    const value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 허용
+    if (value.length <= 11) {
+      setPhone(value);
+    }
+  };
+
+  // 팝업 Open / Close
+  const handlePhoneSave = () => {
+    console.log('수정된 연락처:', phone);
+    const phoneRegex = /^010\d{8}$/;
+    if (!phoneRegex.test(phone)) {
+      alert('유효한 연락처를 입력해주세요. (예: 01012345678)');
+      return;
+    }
+    setIsPhoneOpen(false); // 팝업창 닫음
+  };
+
+  // 연락처 변경경 창
+  const handleOpenPopupPhone = () => {
+    return (
+      <Popup isOpen={isPhoneOpen} onClose={() => setIsPhoneOpen(false)}>
+        <h3>연락처 변경</h3>
+        <textarea value={phone} onChange={(e) => setPhone(e.target.value)} rows={4} style={{ width: '100%' }} />
+        <br />
+        <button onClick={handlePhoneSave}>저장</button>
+      </Popup>
+    );
+  };
+
+  // 모달 사용 (요청메시지 변경) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const [isReqOpen, setIsReqOpen] = useState(false); // 배송요청사항 Open / Close
   const [note, setNote] = useState(''); // 배송요청 메시지
 
-  // 요청사항 저장
+  // 팝업 Open / Close
   const handleReqSave = () => {
     console.log('요청사항 저장:', note);
     setIsReqOpen(false); // 팝업창 닫음
@@ -62,7 +97,7 @@ export default function Pay() {
     setAddrList(response);
   };
 
-  // 배송지 상태
+  // 팝업 Open / Close
   const handleDestSave = () => {
     console.log('요청사항 저장:', note);
     setIsDestOpen(false); // 팝업창 닫음
@@ -86,13 +121,14 @@ export default function Pay() {
   const deliverPrice = 3000;
 
   // 결제 로직 수행(BackEnd)
-  const pay = async (goods, payment, addressName, note, addrId) => {
+  const pay = async (goods, payment, addressName, note, addrId, phone) => {
     const payload = {
       goodsList: goods,
       payment: payment,
       deliveryName: addressName,
       requestMessage: note,
       addressId: addrId,
+      recipientPhone: phone,
     };
     alert('pay 동작테스트');
     OrderApi.pay(payload) // 여기가 호출
@@ -155,7 +191,7 @@ export default function Pay() {
     <PayComp>
       <div className='container'>
         <section>
-          <div className='title'>구매자</div>
+          <div className='title'>구매자 정보</div>
           <hr />
           <table className='payment'>
             <tbody>
@@ -237,10 +273,15 @@ export default function Pay() {
               </tr>
               <tr>
                 <th>연락처</th>
-                <td>{member.phone}</td>
+                <td>
+                  {phone || member.phone}
+                  &nbsp;&nbsp;
+                  <button onClick={() => setIsPhoneOpen(true)}>수정</button>
+                  {isPhoneOpen && handleOpenPopupPhone()}
+                </td>
               </tr>
               <tr>
-                <th>요청사항</th>
+                <th>요청메시지</th>
                 <td>
                   {note || '배송 요청사항을 입력해주세요.'}
                   &nbsp;&nbsp;
@@ -340,7 +381,7 @@ export default function Pay() {
                 alert('결제 수단을 선택해 주세요!');
                 return;
               }
-              pay(goods, payment, addrName, note, addrId);
+              pay(goods, payment, addrName, note, addrId, phone);
             }}>
             결제하기
           </button>

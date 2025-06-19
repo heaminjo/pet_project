@@ -19,5 +19,6 @@ public class PayRequestDTO {
     String deliveryName;
     String requestMessage;
     Long addressId;
+    String recipientPhone;
 
 }
