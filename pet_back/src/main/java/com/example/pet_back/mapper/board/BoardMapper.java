@@ -3,6 +3,7 @@ package com.example.pet_back.mapper.board;
 import com.example.pet_back.domain.board.BoardDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 
@@ -56,6 +57,8 @@ public interface BoardMapper {
     //** 이미지 삽입 메서드
     int insertBoardImage(@Param("board_id") int board_id,
                          @Param("fileName") String fileName,
+                         @Param("origin_name") String originName,
+                         @Param("file_type") String fileType,
                          @Param("outputOrder") int outputOrder);
 
     //** 이미지 파일명 리스트 조회

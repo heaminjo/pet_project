@@ -39,3 +39,4 @@ pet_front/node_modules/.bin/acorn
 /pet_front/node_modules
 pet_back/.idea/workspace.xml
 
+/pet_back/out

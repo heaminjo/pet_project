@@ -235,9 +235,7 @@ export default function BoardDetail() {
             <button onClick={handleDelete}>삭제</button>
           </div>
         )}
-        <br></br>
-        <hr style={{marginBottom:"100px"}}></hr>
-        
+        <hr style={{marginBottom:"100px", marginTop:"5px"}}></hr>
         <h3>댓글쓰기</h3><br></br>
         <CommentForm
           comment={comment}

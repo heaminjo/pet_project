@@ -47,7 +47,7 @@ export default function BoardList() {
   const categoryNameMap = {
     notice: "공지사항",
     community: "커뮤니티",
-    faq: "문의/FAQ",
+    faq: "Q&A",
     free: "자유게시판",
   };
 

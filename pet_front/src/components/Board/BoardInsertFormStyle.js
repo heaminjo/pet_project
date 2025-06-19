@@ -90,7 +90,7 @@ const boardInsertFormStyle = styled.div`
       }
     }
 
-    .imageRow {
+    .fileRow {
       .uploadBox {
         display: flex;
         align-items: center;
@@ -101,7 +101,7 @@ const boardInsertFormStyle = styled.div`
         min-height: 10px;
         gap: 10px;
       
-        .imageLabel {
+        .fileLabel {
           display: inline-block;
           background: #fafafa;
           font-size: 16px;
@@ -115,7 +115,7 @@ const boardInsertFormStyle = styled.div`
           vertical-align: middle;
         }
 
-        .imageLabel:hover {
+        .fileLabel:hover {
           background: #f8e776;
         }
 

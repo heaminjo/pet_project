@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import BoardInsertFormStyle from "./BoardInsertFormStyle";
 import axios from "axios";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function BoardEditForm() {
   const { category, board_id } = useParams(); // URL에서 게시글 id 추출
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const location = useLocation();
   // 카테고리 기본값 설정
   const navigate = useNavigate();
   const [existingImages, setExistingImages] = useState([]); // 기존 이미지 파일명 배열
