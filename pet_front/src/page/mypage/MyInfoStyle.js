@@ -169,6 +169,79 @@ const MyInfoComp = styled.div`
       }
       padding: 10px 0;
     }
+    .order_list {
+      width: 100%;
+      padding: 20px 0;
+      ul {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        .order_title {
+          display: flex;
+          justify-content: space-between;
+        }
+        li {
+          width: 600px;
+          height: 200px;
+          padding: 20px;
+          border: 1px solid #999;
+          border-radius: 10px;
+          h4 {
+            font-size: 25px;
+            margin-bottom: 20px;
+          }
+          h4:nth-last-child(1) {
+            font-size: 17px;
+            color: #333;
+          }
+          .order_data {
+            display: flex;
+            gap: 20px;
+            .image_ {
+              img {
+                width: 150px;
+                height: 150px;
+                border-radius: 20px;
+              }
+            }
+            .text_ {
+              font-size: 18px;
+              width: 300px;
+              span {
+                font-size: 13px;
+                color: #555;
+              }
+              .detail {
+                margin-top: 60px;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                span {
+                  margin: 0;
+                  font-size: 16px;
+                  color: #000;
+                }
+              }
+            }
+            .menu_ {
+              display: flex;
+              flex-direction: column;
+              justify-content: end;
+              margin-bottom: 20px;
+              gap: 10px;
+              button {
+                border: none;
+                font-weight: bold;
+                box-shadow: 2px 2px 2px #555;
+                cursor: pointer;
+                width: 100px;
+                height: 40px;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 `;
 export default MyInfoComp;
