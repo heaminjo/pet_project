@@ -27,6 +27,7 @@ public class GoodsRequestDTO {
     private int quantity;
     private LocalDate regDate;
 
+
     // 제거: private MultipartFile uploadImg;
 
 }

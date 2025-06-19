@@ -27,21 +27,21 @@ export default function Order() {
 
   // 결제
   const pay = async (goods) => {
-    alert(`결제페이지 이동 성공, 상품ID:  => ${goods.goodsId}`);
+    console.log(`결제페이지 이동 성공, 상품ID:  => ${goods.goodsId}`);
     const goodsWithQuantity = { ...goods, quantity: buyQuantity };
     navigate('/user/mypage/pay', { state: { goods: goodsWithQuantity } });
   };
 
   // 장바구니 담기
-  const addToCart = async (goods) => {
-    const goodsWithQuantity = { ...goods, quantity: buyQuantity };
-    alert(`addToCart => ${goodsWithQuantity.quantity}`);
-    GoodsApi.addToCart(goodsWithQuantity)
+  const addToCart = async (goods, buyQuantity) => {
+    console.log(`addToCart 수량 => ${buyQuantity}`);
+    GoodsApi.addToCart(goods, buyQuantity)
       .then((response) => {
-        alert(`장바구니 담기 성공, 상품ID:  => ${response.goodsId}`);
-        console.log(response);
+        console.log(`장바구니 담기 성공, 상품ID:  => ${response}`);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        alert('GoodsApi.addToCart() 중 오류발생');
+      });
   };
 
   // 별점 (상품의 총 별점)
@@ -52,7 +52,7 @@ export default function Order() {
 
   // 찜 (적용)
   const addFavorite = () => {
-    alert(`goods Id => ${goods.goodsId}`);
+    console.log(`찜한 상품의 goods Id => ${goods.goodsId}`);
     GoodsApi.favorite(goods.goodsId)
       .then((response) => {
         // 상태 토글
@@ -85,18 +85,17 @@ export default function Order() {
 
   // 구매수량 제한한
   const setQuantity = (number) => {
-    const value = number;
-    if (value > goods.quantity) {
+    if (number > goods.quantity) {
       setBuyQuantity(goods.quantity);
-    } else if (value < 1) {
+    } else if (number < 1) {
       setBuyQuantity(1);
     } else {
-      setBuyQuantity(value);
+      setBuyQuantity(number);
     }
   };
 
   useEffect(() => {
-    alert(`상품정보 확인: ${goods.goodsId}, ${goods.goodsName}, ${goods.goodsState}, ${goods.description}, ${goods.price}, 수량: ${goods.quantity}`);
+    console.log(`상품정보 확인: ${goods.goodsId}, ${goods.goodsName}, ${goods.goodsState}, ${goods.description}, ${goods.price}, 수량: ${goods.quantity}`);
     if (goods) {
       renderIcons(goods.rating || 0);
     }
@@ -142,7 +141,7 @@ export default function Order() {
             <br />
             <hr />
             <br />
-            <button className='btn1' onClick={() => addToCart(goods)}>
+            <button className='btn1' onClick={() => addToCart(goods, buyQuantity)}>
               장바구니
             </button>
             &nbsp;&nbsp;
