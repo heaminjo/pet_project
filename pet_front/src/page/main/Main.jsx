@@ -19,7 +19,7 @@ export default function Main() {
 const MainComp = styled.div`
   .main_inner {
     margin-top: 150px;
-    padding: 100px 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
     gap: 100px;

@@ -56,20 +56,21 @@ function Banner() {
 
 export default Banner;
 const BannerComp = styled.div`
+  margin-bottom: 100px;
   .slider-container {
     position: relative;
-    width: 1200px;
+    width: 100vw;
     height: 400px;
     margin: 0 auto;
     background-color: rgb(255, 254, 242);
     border-radius: 40px;
 
     .item {
-      width: 1000px;
+      width: 100%;
       height: 100%;
       img {
-        width: 950px;
-        height: 400px;
+        width: 100%;
+        height: 450px;
         margin: 0 auto;
       }
     }
@@ -127,9 +128,9 @@ const ArrowComp = styled.div`
     cursor: pointer;
   }
   .prev {
-    left: 10px;
+    left: 30px;
   }
   .next {
-    right: 10px;
+    right: 30px;
   }
 `;

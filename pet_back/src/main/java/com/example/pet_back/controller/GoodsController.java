@@ -93,6 +93,7 @@ public class GoodsController {
                                           @RequestPart("goods") GoodsUploadDTO goodsUploadDTO, //
                                           @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) {
         log.info("** GoodsController => createGoods() 실행됨 **");
+
         try {
             goodsUploadDTO.setImageFile(imageFile); // DTO에 setter로 주입
             goodsService.registerGoods(goodsUploadDTO);
