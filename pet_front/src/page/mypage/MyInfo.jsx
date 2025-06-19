@@ -1,5 +1,6 @@
 import {
   Navigate,
+  useLocation,
   useNavigate,
   useOutlet,
   useOutletContext,
@@ -15,11 +16,17 @@ import { TbHandFingerRight } from "react-icons/tb";
 
 export default function MyInfo() {
   const { user } = useContext(PetContext);
+  const location = useLocation();
   const navigate = useNavigate();
   const [orderList, setOrderList] = useState([]);
 
   useEffect(() => {
     getOrderList();
+
+    //만약 수정된 이미지가 있다면 그 이미지로 수정
+    if (location.state?.newImage != null) {
+      user.imageFile = location.state?.newImage;
+    }
   }, []);
 
   const getOrderList = async () => {

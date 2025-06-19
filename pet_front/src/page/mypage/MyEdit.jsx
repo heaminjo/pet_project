@@ -98,7 +98,10 @@ export default function MyEdit() {
         if (result.success) {
           alert(result.message);
           // setUser({...user})
-          navigate("/user/mypage/myinfo", { replace: true });
+          console.log(result.data.imageURL);
+          navigate("/user/mypage/myinfo", {
+            state: { newImage: result.data },
+          });
         }
       } catch (e) {
         console.log(e);
