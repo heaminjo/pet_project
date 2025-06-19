@@ -17,5 +17,6 @@ public interface OrderRepository extends JpaRepository<Orders, Long> {
             " WHERE o.member.id = :memberId")
     List<Orders> findAllByUserId(@Param("memberId") Long member_id);
 
-
+    @Query(nativeQuery = true, value = "select * from orders where member_id = :id order by reg_date desc limit 3")
+    List<Orders> recentOrderList(@Param("id") Long member_id);
 }

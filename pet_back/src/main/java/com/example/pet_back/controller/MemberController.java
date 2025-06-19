@@ -3,12 +3,14 @@ package com.example.pet_back.controller;
 import com.example.pet_back.domain.address.AddressRequestDTO;
 import com.example.pet_back.domain.address.AddressResponseDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
+import com.example.pet_back.domain.goods.OrderResponseDTO;
 import com.example.pet_back.domain.member.GradeResponseDTO;
 import com.example.pet_back.domain.member.UpdateMemberRequestDTO;
 import com.example.pet_back.domain.member.UpdatePwRequestDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.service.ImageService;
 import com.example.pet_back.service.MemberService;
+import com.example.pet_back.service.goods.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +30,7 @@ import java.util.List;
 public class MemberController {
     private final MemberService memberService;
     private final ImageService imageService;
-
+    private final OrderService orderService;
     @GetMapping("/detail")
     public ResponseEntity<?> memberDetail(@AuthenticationPrincipal CustomUserDetails userDetails) {
         return memberService.selectOne(userDetails);
@@ -94,4 +96,9 @@ public class MemberController {
         return ResponseEntity.ok(memberService.addressUpdate(details.getMember().getId(), dto));
     }
 
+    //유저 주문 내역
+    @GetMapping("/order/list")
+    public ResponseEntity< List<OrderResponseDTO>> userOrderList(@AuthenticationPrincipal CustomUserDetails details) {
+        return ResponseEntity.ok(orderService.userOrderList(details.getMember().getId()));
+    }
 }

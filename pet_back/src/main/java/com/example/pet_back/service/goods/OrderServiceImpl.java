@@ -1,5 +1,6 @@
 package com.example.pet_back.service.goods;
 
+import com.example.pet_back.config.FileUploadProperties;
 import com.example.pet_back.domain.goods.*;
 import com.example.pet_back.entity.*;
 import com.example.pet_back.jwt.CustomUserDetails;
@@ -35,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
     // Mapper
     private final OrderMapper orderMapper;
     private final ReviewMapper reviewMapper;
-
+    private final FileUploadProperties fileUploadProperties;
     // 결제페이지 - 고객 주소 가져오기
     @Override
     public ResponseEntity<?> findMemberAddress(CustomUserDetails userDetails) {
@@ -147,4 +148,32 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    //주문 리스트 3건
+    @Override
+    public  List<OrderResponseDTO> userOrderList(Long userId) {
+
+        //최근 목록 3개를 가져온다.
+        List<Orders> orders = orderRepository.recentOrderList(userId);
+
+        //반환할 리스트
+        List<OrderResponseDTO> response = new ArrayList<>();
+
+        for(Orders o : orders){
+            //각 주문건에 상품들을 가져온다.
+            List<OrderDetail> list = orderDetailRepository.orderDetailList(o.getOrderId());
+
+            log.info(list.toString());
+            OrderResponseDTO dto = orderMapper.toDto(o);
+            dto.setTotalGoods(list.size());  //총 상품 건 수 저장
+            //만약 비어있지않다면
+            if(!list.isEmpty()){
+                dto.setImageFile(fileUploadProperties.getUrl()+list.get(0).getGoods().getImageFile());
+                dto.setGoodsName(list.get(0).getGoods().getGoodsName());
+            }
+
+            response.add(dto);
+        }
+
+        return response;
+    }
 }

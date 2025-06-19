@@ -1,5 +1,6 @@
 package com.example.pet_back.service.goods;
 
+import com.example.pet_back.domain.goods.OrderResponseDTO;
 import com.example.pet_back.domain.goods.PayRequestDTO;
 import com.example.pet_back.domain.goods.ReviewRequestDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
@@ -18,6 +19,8 @@ public interface OrderService {
     // 리뷰 작성
     ResponseEntity<?> regReview(CustomUserDetails userDetails, ReviewRequestDTO dto);
 
+    //주문 리스트
+    public  List<OrderResponseDTO> userOrderList(Long userId);
 
 
 }

@@ -131,6 +131,12 @@ const MemberApi = {
     );
     return result.data;
   },
+
+  //주문 내역
+  getOrderList: async () => {
+    const result = await instance.get(`${KH_DOMAIN}/user/order/list`);
+    return result.data;
+  },
 };
 
 export default MemberApi;

@@ -43,5 +43,7 @@ public interface CartRepository extends JpaRepository<Cart, CartId> {
     @Query(nativeQuery = true, value = "DELETE FROM Cart WHERE goods_id = :goods_id")
     void deleteByGoodsId(@Param("goods_id") Long goods_id);
 
+    @Query(nativeQuery = true,value = "select count(*) from cart where member_id = :id")
+    public int cartCount(@Param("id")Long id);
 
 }

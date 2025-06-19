@@ -21,4 +21,7 @@ public class OrderResponseDTO {
     private LocalDate regDate;
     private String status;
 
+    private String imageFile;   //썸네일용 상품 이미지 하나
+    private String goodsName; // 썸네일용 상품 이름
+    private int totalGoods;   //총 주문 상품건 (수량 말고)
 }

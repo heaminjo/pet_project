@@ -9,10 +9,25 @@ import React, { useContext, useEffect, useState } from "react";
 import MemberApi from "../../api/MemberApi";
 import gradeImage from "../../images/d1nrwjnej10dkwnrnksj423kj.jpg";
 import { PetContext } from "./MyPage";
+import { PiShoppingCartFill } from "react-icons/pi";
+import { LuMoveRight } from "react-icons/lu";
+import { TbHandFingerRight } from "react-icons/tb";
 
 export default function MyInfo() {
   const { user } = useContext(PetContext);
   const navigate = useNavigate();
+  const [orderList, setOrderList] = useState([]);
+
+  useEffect(() => {
+    getOrderList();
+  }, []);
+
+  const getOrderList = async () => {
+    const result = await MemberApi.getOrderList();
+    console.log(result);
+
+    setOrderList(result);
+  };
   return (
     <MyInfoComp>
       <div className="main_container">
@@ -53,25 +68,61 @@ export default function MyInfo() {
             </div>
           </div>
         </div>
-        <div className="order_state">
-          <ul>
-            <li>
-              <big>최근 주문 내역</big>
-              <span>0</span>
-            </li>
-            <li>
-              <big>현재 배송중</big>
-              <span>2</span>
-            </li>
-            <li>
-              <big>배송 완료</big>
-              <span>0</span>
-            </li>
-            <li>
-              <big>장바구니</big>
-              <span>0</span>
-            </li>
-          </ul>
+
+        <div className="cart_">
+          <i>{user.cartCount}개의 상품이 장바구니에서 기다리고있어요~</i>
+          <div
+            className="cart_icon"
+            onClick={() => navigate("/user/mypage/cart/list")}
+          >
+            <PiShoppingCartFill />
+            <LuMoveRight />
+          </div>
+        </div>
+      </div>
+      <div className="order_">
+        <h2>
+          주문 목록 <span>최근 주문 3건</span>
+        </h2>
+        <hr />
+        <div className="order_list">
+          {orderList.length > 0 ? (
+            <ul>
+              {orderList.map((o) => (
+                <li>
+                  <div className="order_title">
+                    <h4>{o.regDate}</h4>
+                    <h4>{o.status}</h4>
+                  </div>
+                  <h3></h3>
+                  <div className="order_data">
+                    <div className="image_">
+                      <img src={o.imageFile} alt="상품 이미지" />
+                    </div>
+                    <div className="text_">
+                      <p>
+                        {o.goodsName} <span>외 {o.totalGoods - 1}개</span>
+                      </p>
+                      <p>{o.totalPrice} 원</p>
+                      <div className="detail">
+                        <span>상세보기</span>
+                        <TbHandFingerRight />
+                      </div>
+                    </div>
+                    <div className="menu_">
+                      <button>배송 조회</button>
+                      <button>장바구니 담기</button>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div>
+              <p>아직 주문한 상품이 없습니다.</p>
+              <p onClick={() => navigate("/goods/list")}>상품 보러가기 </p>
+            </div>
+          )}
         </div>
       </div>
     </MyInfoComp>
