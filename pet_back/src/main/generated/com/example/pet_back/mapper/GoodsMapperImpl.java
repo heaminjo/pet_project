@@ -15,8 +15,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-06-18T14:54:16+0900",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.11 (Oracle Corporation)"
+    date = "2025-06-19T10:05:06+0900",
+    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.12 (Oracle Corporation)"
 )
 @Component
 public class GoodsMapperImpl implements GoodsMapper {
@@ -132,8 +132,10 @@ public class GoodsMapperImpl implements GoodsMapper {
 
         goodsSimpleDTO.setCategoryName( GoodsMapper.imageFileUrl( goods.getCategory() ) );
         goodsSimpleDTO.setImageFile( GoodsMapper.imageFileUrl( goods.getImageFile() ) );
+        goodsSimpleDTO.setGoodsState( GoodsMapper.gradeToString( goods.getGoodsState() ) );
         goodsSimpleDTO.setGoodsId( goods.getGoodsId() );
         goodsSimpleDTO.setGoodsName( goods.getGoodsName() );
+        goodsSimpleDTO.setQuantity( goods.getQuantity() );
         goodsSimpleDTO.setRating( goods.getRating() );
         goodsSimpleDTO.setReviewNum( goods.getReviewNum() );
         goodsSimpleDTO.setPrice( goods.getPrice() );
