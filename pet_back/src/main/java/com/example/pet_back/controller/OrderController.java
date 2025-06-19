@@ -30,14 +30,14 @@ public class OrderController {
     // <OrderDetail /> : 주문 리스트
     @PostMapping("/detail")
     public ResponseEntity<?> orderList(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody PageRequestDTO pageRequestDTO) {
-        log.info("** GoodsController => orderList() 실행됨 **");
+        log.info("** OrderController => orderList() 실행됨 **");
         return orderDetailService.orderList(userDetails, pageRequestDTO);
     }
 
     // 고객 주소 가져오기
     @GetMapping("/findaddress")
     public ResponseEntity<?> findMemberAddress(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        log.info("** GoodsController => findMemberAddress() 실행됨 **");
+        log.info("** OrderController => findMemberAddress() 실행됨 **");
         return orderService.findMemberAddress(userDetails);
     }
 
@@ -45,7 +45,7 @@ public class OrderController {
     @PostMapping("/pay")
     public ResponseEntity<?> payGoods(@AuthenticationPrincipal CustomUserDetails userDetails, //
                                       @RequestBody PayRequestDTO dto) {
-        log.info("** GoodsController => payGoods() 실행됨 **");
+        log.info("** OrderController => payGoods() 실행됨 **");
         log.info("결제 user = " + userDetails.getMember().getEmail()); // 이게 null?
         return orderService.payGoods(userDetails, dto);
     }
@@ -54,7 +54,7 @@ public class OrderController {
     @PostMapping("/review/register")
     public ResponseEntity<?> regReview(@AuthenticationPrincipal CustomUserDetails userDetails, //
                                        @ModelAttribute ReviewRequestDTO dto) {
-        log.info("** GoodsController => payGoods() 실행됨 **");
+        log.info("** OrderController => regReview() 실행됨 **");
 
         return orderService.regReview(userDetails, dto);
     }

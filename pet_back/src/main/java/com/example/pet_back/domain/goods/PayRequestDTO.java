@@ -18,5 +18,6 @@ public class PayRequestDTO {
     // 배송정보
     String deliveryName;
     String requestMessage;
+    Long addressId;
 
 }

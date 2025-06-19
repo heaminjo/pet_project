@@ -1,12 +1,14 @@
 import axios from 'axios';
 import instance from '../api/axiosInstance'; // 인스턴스 불러오기
+import { useNavigate } from 'react-router-dom';
 
 const KH_DOMAIN = 'http://localhost:8080';
+
 const GoodsApi = {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 장 바 구 니 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 장바구니 추가
   addToCart: async (goods, buyQuantity) => {
-    //alert(`장바구니 담기 => ${goods}`);
+    alert(`장바구니 담기 => ${goods.goodsName}`);
     const { goodsId } = goods;
     const query = `goodsId=${goodsId}&quantity=${buyQuantity}`;
     console.log(`장바구니 담기 시도 => ${goodsId}, 수량: ${buyQuantity}`);
@@ -66,7 +68,7 @@ const GoodsApi = {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상  품 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // <GoodsList /> 전체 상품 리스트 출력 (메인) (완료)
   getGoodsPageList: async (pages) => {
-    alert(`getGoodsPageList() 호출됨, pages = ${JSON.stringify(pages)}`);
+    console.log(`getGoodsPageList() 호출됨, pages = ${JSON.stringify(pages)}`);
     try {
       const result = await instance.post(`/goods/list`, pages);
       if (result.data != null) {
@@ -128,7 +130,7 @@ const GoodsApi = {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 리  뷰 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 리뷰목록 (단일 상품)
   getReviewsPageList: async (pages, goodsId) => {
-    alert(`getPageList() 호출됨, goodsId = ${JSON.stringify(goodsId)}`);
+    console.log(`getPageList() 호출됨, goodsId = ${JSON.stringify(goodsId)}`);
     const result = await instance.post(`/goods/reviews/list/${goodsId}`, pages);
     if (result.data != null) {
       console.log('getReviewsPageList 응답 결과:', result.data);

@@ -7,6 +7,81 @@ const PayComp = styled.div`
     font-family: 'Arial', sans-serif;
     color: #222;
   }
+  section {
+    .goods {
+      display: flex;
+      flex-direction: column;
+      .prod {
+        width: 800px;
+        display: flex;
+        border: 1px solid #ddd;
+        background-color: #fff;
+        border-radius: 6px;
+        padding: 15px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        transition: box-shadow 0.2s ease;
+
+        &:hover {
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .prodleft {
+          display: flex;
+          padding-left: 30px;
+          align-items: center;
+          gap: 10px;
+
+          .prodimg {
+            width: 120px;
+            height: 150px;
+            object-fit: cover;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+          }
+        }
+
+        .prodright {
+          flex: 1;
+          padding-left: 50px;
+          font-size: 14px;
+          color: #444;
+
+          div {
+            margin: 6px 0;
+          }
+
+          b {
+            font-weight: bold;
+            margin-right: 5px;
+          }
+
+          .seller {
+            width: 24px;
+            vertical-align: middle;
+            margin-right: 5px;
+          }
+
+          button {
+            width: 24px;
+            height: 24px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f6e96c;
+            cursor: pointer;
+            font-weight: bold;
+          }
+
+          span {
+            font-size: 12px;
+            color: red;
+            margin-left: 10px;
+          }
+        }
+      }
+    }
+  }
 
   h2 {
     font-size: 1.5rem;
@@ -41,6 +116,55 @@ const PayComp = styled.div`
     background-color: #fff;
     border: 1px solid #ddd;
     padding: 10px;
+    .addr {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      li {
+        border: 1px solid #ccc;
+        height: 150px;
+        display: flex;
+        justify-content: space-between;
+        box-shadow: 3px 3px 3px #ccc;
+        .addr_item {
+          display: flex;
+          .addr1 {
+            display: flex;
+            width: 150px;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            border-right: 2px dashed #ccc;
+            span {
+              margin-top: 30px;
+              font-size: 20px;
+            }
+          }
+          .addr2 {
+            width: 450px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-left: 20px;
+            font-size: 16px;
+          }
+        }
+        .addr_btn {
+          display: flex;
+          flex-direction: column;
+          width: 100px;
+          button {
+            height: 100%;
+            cursor: pointer;
+            border: none;
+            font-weight: bold;
+          }
+          button:nth-child(2) {
+            background-color: lightslategrey;
+          }
+        }
+      }
+    }
   }
 
   .badge {

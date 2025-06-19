@@ -10,12 +10,16 @@ export default function Pay() {
   const location = useLocation();
   const navigate = useNavigate();
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상태변수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const seller = process.env.PUBLIC_URL + '/images/avatar.png';
+  const imgUrl = 'http://localhost:8080/resources/webapp/userImages/';
   const [goods, setGoods] = useState([]);
   const [payment, setPayment] = useState(); // 결제수단
   // 회원정보 & 주소정보
   const [member, setMember] = useState({});
-  const [address, setAddress] = useState('');
-  const [addressName, setAddressName] = useState('');
+  const [addr, setAddr] = useState('');
+  const [addrId, setAddrId] = useState('');
+  const [addrName, setAddrName] = useState('');
+  const [addrType, setAddrType] = useState('');
 
   // 수량
   //const quantities = location.state?.quantity || [];
@@ -53,8 +57,9 @@ export default function Pay() {
 
   //배송지 목록 호출하는 API
   const getAddrList = async () => {
-    const result = await MemberApi.addrList();
-    setAddrList(result);
+    const response = await MemberApi.addrList();
+    console.log(`Array.isArray(response) = ${Array.isArray(response)}`); // false라면 .data 확인
+    setAddrList(response);
   };
 
   // 배송지 상태
@@ -63,38 +68,12 @@ export default function Pay() {
     setIsDestOpen(false); // 팝업창 닫음
   };
 
-  // 배송지 수정 창
-  const handleOpenPopupDestination = () => {
-    getAddrList();
-    return (
-      <Popup isOpen={isDestOpen} onClose={() => setIsDestOpen(false)}>
-        <h3>배송지 변경 창</h3>
-        <br />
-        {addrList.length > 0 && (
-          <ul className='addr'>
-            {addrList.map((a, index) => (
-              <li>
-                <div className='addr_item'>
-                  <div className='addr1'>
-                    {index == 0 ? <p style={{ fontWeight: 'bold' }}>{a.addrType}</p> : <p>{a.addrType}</p>}
-                    <span>{a.addressName}</span>
-                  </div>
-
-                  <div className='addr2'>
-                    <p>[우편번호]{a.addressZip}</p>
-                    <span>
-                      {a.address1} {a.address2}
-                    </span>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-        <button onClick={handleDestSave}>저장</button>
-      </Popup>
-    );
-  };
+  // 배송지 목록 팝업 오픈시 배송지 전체조회 수행
+  useEffect(() => {
+    if (isDestOpen) {
+      getAddrList();
+    }
+  }, [isDestOpen]);
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 결 제 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 총 구매가격
@@ -107,12 +86,13 @@ export default function Pay() {
   const deliverPrice = 3000;
 
   // 결제 로직 수행(BackEnd)
-  const pay = async (goods, payment, addressName, note) => {
+  const pay = async (goods, payment, addressName, note, addrId) => {
     const payload = {
       goodsList: goods,
       payment: payment,
       deliveryName: addressName,
       requestMessage: note,
+      addressId: addrId,
     };
     alert('pay 동작테스트');
     OrderApi.pay(payload) // 여기가 호출
@@ -130,6 +110,19 @@ export default function Pay() {
     setPayment(e.target.value);
   };
 
+  // 새로고침 방지
+  useEffect(() => {
+    if (!addrId || addrList.length === 0) return;
+    // addrId가 바뀌었을 때, addrList에서 찾아서 주소정보 반영
+    const selected = addrList.find((a) => a.addressId === addrId);
+    if (selected) {
+      setAddr(`${selected.address1} ${selected.address2}`);
+      setAddrName(selected.addressName);
+      setAddrType(selected.addrType);
+    }
+  }, [addrId, addrList]);
+
+  // 기본정보
   useEffect(() => {
     // 사용자 정보
     MemberApi.detail()
@@ -141,9 +134,12 @@ export default function Pay() {
     // 사용자 주소
     OrderApi.findAddress()
       .then((response) => {
-        setAddress(response.address1 + ' ' + response.address2);
-        setAddressName(response.addressName);
-        console.log(`OrderApi.findAddress() 결과 = ${response}`);
+        // addressId
+        setAddrId(response.addressId);
+        setAddr(response.address1 + ' ' + response.address2);
+        setAddrName(response.addressName);
+        setAddrType(response.addrType);
+        console.log(`최초호출 OrderApi.findAddress() 결과 response.addressName = ${response.addressName}`);
       })
       .catch((err) => {
         alert('주소 조회 실패');
@@ -191,8 +187,52 @@ export default function Pay() {
               <tr>
                 <th>배송지</th>
                 <td>
-                  {address} &nbsp;&nbsp;&nbsp;<button onClick={() => setIsDestOpen(true)}>배송지 수정</button>
-                  {isDestOpen && handleOpenPopupDestination()}
+                  <b>{addrType}</b> &nbsp;&nbsp;&nbsp;<button onClick={() => setIsDestOpen(true)}>배송지 수정</button>
+                  <br />
+                  {addr}
+                  {isDestOpen && (
+                    <Popup isOpen={isDestOpen} onClose={() => setIsDestOpen(false)}>
+                      <h3>배송지 변경 창</h3>
+                      <br />
+                      {addrList.length > 0 && (
+                        <ul className='addr'>
+                          {addrList.map((a, index) => (
+                            <li>
+                              <div className='addr_item'>
+                                <div className='addr1'>
+                                  {index == 0 ? <p style={{ fontWeight: 'bold' }}>{a.addrType}</p> : <p>{a.addrType}</p>}
+                                  <span>{a.addressName}</span>
+                                </div>
+
+                                <div className='addr2'>
+                                  <p>[우편번호]{a.addressZip}</p>
+                                  <span>
+                                    {a.address1} {a.address2}
+                                  </span>
+                                </div>
+                              </div>
+                              <div className='addr_btn'>
+                                <button
+                                  onClick={() => {
+                                    setAddrId(a.addressId);
+                                    setAddrName(a.addressName);
+                                    setAddr(`${a.address1} ${a.address2}`);
+                                    setAddrType(a.addrType);
+                                    // 새로고침 방어
+                                    localStorage.setItem('selectedAddress', JSON.stringify(a));
+
+                                    setIsDestOpen(false);
+                                  }}>
+                                  선택
+                                </button>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                      <button onClick={handleDestSave}>저장</button>
+                    </Popup>
+                  )}
                 </td>
               </tr>
               <tr>
@@ -215,19 +255,33 @@ export default function Pay() {
         <section>
           <div className='title'>상품 정보</div>
           <hr />
-          {goods.map((item, index) => (
-            <div className='goodslist' key={index}>
-              <div>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                {item.goodsName}
-                {', '}
-                {item.description}
-                {', '}
-                {item.quantity}
-                {' 개'}
+          <div className='goods'>
+            {goods.map((item, index) => (
+              <div className='prod' key={index}>
+                <div className='prodleft'>
+                  <img src={`${imgUrl}${item.imageFile}`} alt={item.goodsName} className='prodimg' onClick={() => navigate('/goods/order', { state: { goods: item } })} />
+                </div>
+                <div className='prodright'>
+                  <div>
+                    <b>상품명</b>&nbsp;&nbsp;{item.goodsName}
+                  </div>
+                  <div>
+                    <b>상세정보</b>&nbsp;&nbsp;{item.description}
+                  </div>
+                  <div>
+                    <b>가격</b>&nbsp;&nbsp; {item.price} 원
+                  </div>
+                  <div>
+                    <b>구매 수량 </b>&nbsp;&nbsp; &nbsp;&nbsp;<b> {item.quantity}</b>&nbsp;&nbsp;
+                  </div>
+                  <div>
+                    <b>판매원</b>&nbsp;&nbsp;
+                    <img src={seller} className='seller' alt='판매원' /> 몽냥마켓
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </section>
         <br />
         <section>
@@ -267,7 +321,7 @@ export default function Pay() {
                     <input type='radio' name='payment' value='PHONE' checked={payment === 'PHONE'} onChange={handlePaymentChange} /> 휴대폰 <br />
                   </label>
                   <label>
-                    <input type='radio' name='payment' value='NOACOUNT' checked={payment === 'NOACOUNT'} onChange={handlePaymentChange} /> 무통장입금(상세조회) <br />
+                    <input type='radio' name='payment' value='NOACCOUNT' checked={payment === 'NOACCOUNT'} onChange={handlePaymentChange} /> 무통장입금(상세조회) <br />
                   </label>
                 </td>
               </tr>
@@ -286,7 +340,7 @@ export default function Pay() {
                 alert('결제 수단을 선택해 주세요!');
                 return;
               }
-              pay(goods, payment, addressName, note);
+              pay(goods, payment, addrName, note, addrId);
             }}>
             결제하기
           </button>

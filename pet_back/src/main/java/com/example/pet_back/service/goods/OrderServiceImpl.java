@@ -2,6 +2,7 @@ package com.example.pet_back.service.goods;
 
 import com.example.pet_back.config.FileUploadProperties;
 import com.example.pet_back.constant.ORDERSTATE;
+import com.example.pet_back.domain.address.AddressResponseDTO;
 import com.example.pet_back.domain.goods.*;
 import com.example.pet_back.entity.*;
 import com.example.pet_back.jwt.CustomUserDetails;
@@ -42,17 +43,26 @@ public class OrderServiceImpl implements OrderService {
 
     // 결제페이지 - 고객 주소 가져오기
     @Override
+    @Transactional
     public ResponseEntity<?> findMemberAddress(CustomUserDetails userDetails) {
         // 1. 고객정보
         Member member = memberRepository.findById( //
                         userDetails.getMember().getId()) //
                 .orElseThrow(() //
                         -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
-        // 2. 주소
-        Address memberAddress = addressRepository.findByMemberId(member.getId());
-        String address = memberAddress.getAddress1() + " " + memberAddress.getAddress2();
-        log.info("주소: " + address);
-        return ResponseEntity.status(HttpStatus.OK).body(memberAddress);
+        // 2. 기본주소 가져오기
+        Address memberAddress = addressRepository.findDefaultByMemberId(member.getId());
+
+        // 3. DTO변환
+        AddressResponseDTO addressResponseDTO = new AddressResponseDTO();
+        addressResponseDTO.setAddressId(memberAddress.getAddressId());
+        addressResponseDTO.setAddressName(memberAddress.getAddressName());
+        addressResponseDTO.setAddrType(memberAddress.getAddrType().getAddrName());
+        addressResponseDTO.setAddress1(memberAddress.getAddress1());
+        addressResponseDTO.setAddress2(memberAddress.getAddress2());
+        addressResponseDTO.setAddressZip(memberAddress.getAddressZip());
+
+        return ResponseEntity.status(HttpStatus.OK).body(addressResponseDTO);
     }
 
     // 결제 : Delivery > Orders > Order_Detail 테이블 save
@@ -77,8 +87,11 @@ public class OrderServiceImpl implements OrderService {
         System.out.println("GoodsServiceImpl --------------------------------- 오류확인용 -----------------");
 
         // 3. Delivery 테이블에 저장 (delivery_id 생성) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Address address = addressRepository.findById(payRequestDTO.getAddressId())
+                .orElseThrow(() -> new RuntimeException("해당 주소가 존재하지 않습니다."));
         Delivery delivery = Delivery.builder()
-                .member(member).recipient(member.getName()).recipientPhone(member.getPhone())
+                .member(member).address(address)
+                .recipient(member.getName()).recipientPhone(member.getPhone())
                 .deliveryName(payRequestDTO.getDeliveryName())
                 .requestMessage(payRequestDTO.getRequestMessage())
                 .build();
