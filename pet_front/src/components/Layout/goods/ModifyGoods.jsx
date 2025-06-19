@@ -31,11 +31,39 @@ const ModalStyles = styled.div`
 
 const ModifyGoodsComp = styled.div`
   .container {
-    width: 900px;
-    height: 1200px;
+    width: 1000px;
     margin: 0 auto;
-    margin-top: 150px;
-    border: 1px solid rgb(230, 230, 230);
+    margin-top: 100px;
+    font-family: 'Noto Sans KR', sans-serif;
+
+    h2 {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    span {
+      display: block;
+      margin-bottom: 20px;
+      color: #666;
+    }
+
+    button {
+      background-color: #f6e96c;
+      color: #333;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #f1d700;
+    }
+
     .list {
       width: 100%;
 
