@@ -1,6 +1,7 @@
 package com.example.pet_back.service.goods;
 
 import com.example.pet_back.config.FileUploadProperties;
+import com.example.pet_back.constant.ORDERSTATE;
 import com.example.pet_back.domain.goods.*;
 import com.example.pet_back.entity.*;
 import com.example.pet_back.jwt.CustomUserDetails;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +39,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
     private final ReviewMapper reviewMapper;
     private final FileUploadProperties fileUploadProperties;
+
     // 결제페이지 - 고객 주소 가져오기
     @Override
     public ResponseEntity<?> findMemberAddress(CustomUserDetails userDetails) {
@@ -49,11 +52,12 @@ public class OrderServiceImpl implements OrderService {
         Address memberAddress = addressRepository.findByMemberId(member.getId());
         String address = memberAddress.getAddress1() + " " + memberAddress.getAddress2();
         log.info("주소: " + address);
-        return ResponseEntity.status(HttpStatus.OK).body(address);
+        return ResponseEntity.status(HttpStatus.OK).body(memberAddress);
     }
 
     // 결제 : Delivery > Orders > Order_Detail 테이블 save
     @Override
+    @Transactional
     public ResponseEntity<?> payGoods(CustomUserDetails userDetails, //
                                       PayRequestDTO payRequestDTO) {
         System.out.println("GoodsServiceImpl 의 payGoods() 시작");
@@ -74,7 +78,11 @@ public class OrderServiceImpl implements OrderService {
 
         // 3. Delivery 테이블에 저장 (delivery_id 생성) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         Delivery delivery = Delivery.builder()
-                .member(member).recipient(member.getName()).recipientPhone(member.getPhone()).build();
+                .member(member).recipient(member.getName()).recipientPhone(member.getPhone())
+                .deliveryName(payRequestDTO.getDeliveryName())
+                .requestMessage(payRequestDTO.getRequestMessage())
+                .build();
+
         Delivery save = deliveryRepository.save(delivery);
         System.out.println("GoodsServiceImpl delivery_id => " + delivery.getDeliveryId());
 
@@ -86,7 +94,14 @@ public class OrderServiceImpl implements OrderService {
         Orders order = Orders.builder().delivery(save)
                 .member(member).totalQuantity(totalQuantity).totalPrice(totalPrice)
                 .payment(payRequestDTO.getPayment()).build();
+
         Orders orders = orderRepository.save(order);
+
+        member.setTotalPurchaseCount(member.getTotalPurchaseCount()+1);
+        member.setTotalPurchasePrice(member.getTotalPurchasePrice()+totalPrice);
+        member.setPoint(member.getPoint()+(totalPrice*0.01));
+
+        log.info(""+member.getTotalPurchaseCount());
 
         // 5. Order_Detail 테이블에 저장 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         List<GoodsRequestDTO> requestGoodsList = payRequestDTO.getGoodsList();
@@ -104,10 +119,11 @@ public class OrderServiceImpl implements OrderService {
                     .goodsQuantity(requestDTO.getQuantity())
                     .goodsPrice(requestDTO.getPrice())
                     .build();
-            // OrderDetail 테이블에 저장
+
             orderDetailRepository.save(orderDetail);
         }
 
+        order.setStatus(ORDERSTATE.AFTERPAY);
         // 6. 장바구니에서 수량차감 또는 삭제
         List<Cart> cartList = cartRepository.findCartListByUserId(member.getId());
         for (GoodsRequestDTO requestDTO : requestGoodsList) {

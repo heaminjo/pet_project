@@ -4,6 +4,7 @@ import com.example.pet_back.domain.goods.PayRequestDTO;
 import com.example.pet_back.domain.goods.ReviewRequestDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
+import com.example.pet_back.service.MemberService;
 import com.example.pet_back.service.goods.GoodsService;
 import com.example.pet_back.service.goods.OrderDetailService;
 import com.example.pet_back.service.goods.OrderService;
@@ -22,6 +23,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 public class OrderController {
 
+    private final MemberService memberService;
     private final OrderService orderService;
     private final OrderDetailService orderDetailService;
 
@@ -32,7 +34,7 @@ public class OrderController {
         return orderDetailService.orderList(userDetails, pageRequestDTO);
     }
 
-    // 결제페이지 - 고객 주소 가져오기
+    // 고객 주소 가져오기
     @GetMapping("/findaddress")
     public ResponseEntity<?> findMemberAddress(@AuthenticationPrincipal CustomUserDetails userDetails) {
         log.info("** GoodsController => findMemberAddress() 실행됨 **");

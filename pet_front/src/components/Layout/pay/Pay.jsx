@@ -15,6 +15,7 @@ export default function Pay() {
   // 회원정보 & 주소정보
   const [member, setMember] = useState({});
   const [address, setAddress] = useState('');
+  const [addressName, setAddressName] = useState('');
 
   // 수량
   //const quantities = location.state?.quantity || [];
@@ -106,10 +107,12 @@ export default function Pay() {
   const deliverPrice = 3000;
 
   // 결제 로직 수행(BackEnd)
-  const pay = async (goods, payment) => {
+  const pay = async (goods, payment, addressName, note) => {
     const payload = {
       goodsList: goods,
       payment: payment,
+      deliveryName: addressName,
+      requestMessage: note,
     };
     alert('pay 동작테스트');
     OrderApi.pay(payload) // 여기가 호출
@@ -126,6 +129,7 @@ export default function Pay() {
   const handlePaymentChange = (e) => {
     setPayment(e.target.value);
   };
+
   useEffect(() => {
     // 사용자 정보
     MemberApi.detail()
@@ -133,10 +137,13 @@ export default function Pay() {
         setMember(response);
       })
       .catch((err) => {});
+
     // 사용자 주소
     OrderApi.findAddress()
       .then((response) => {
-        setAddress(response);
+        setAddress(response.address1 + ' ' + response.address2);
+        setAddressName(response.addressName);
+        console.log(`OrderApi.findAddress() 결과 = ${response}`);
       })
       .catch((err) => {
         alert('주소 조회 실패');
@@ -173,10 +180,7 @@ export default function Pay() {
         </section>
         <br />
         <section>
-          <div className='title'>
-            배송지 정보 &nbsp;&nbsp;&nbsp;<button onClick={() => setIsDestOpen(true)}>배송지 수정</button>
-            {isDestOpen && handleOpenPopupDestination()}
-          </div>
+          <div className='title'>배송지 정보</div>
           <hr />
           <table>
             <tbody>
@@ -186,7 +190,10 @@ export default function Pay() {
               </tr>
               <tr>
                 <th>배송지</th>
-                <td>{address}</td>
+                <td>
+                  {address} &nbsp;&nbsp;&nbsp;<button onClick={() => setIsDestOpen(true)}>배송지 수정</button>
+                  {isDestOpen && handleOpenPopupDestination()}
+                </td>
               </tr>
               <tr>
                 <th>연락처</th>
@@ -279,7 +286,7 @@ export default function Pay() {
                 alert('결제 수단을 선택해 주세요!');
                 return;
               }
-              pay(goods, payment);
+              pay(goods, payment, addressName, note);
             }}>
             결제하기
           </button>

@@ -90,16 +90,10 @@ public class GoodsController {
     // 상품등록 메서드 (관리자 페이지)
     @PostMapping("/register")
     public ResponseEntity<?> createGoods( @AuthenticationPrincipal CustomUserDetails userDetails, //
-                                          @RequestPart("goods") GoodsUploadDTO goodsUploadDTO,
+                                          @RequestPart("goods") GoodsUploadDTO goodsUploadDTO, //
                                           @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) {
-        //  @ModelAttribute ReviewRequestDTO dto
         log.info("** GoodsController => createGoods() 실행됨 **");
-        System.out.println("goodsDTO 이름: " + goodsRequestDTO.getGoodsName());
-        System.out.println("goodsDTO state: " + goodsRequestDTO.getGoodsState());
-        System.out.println("goodsDTO state 타입: " + goodsRequestDTO.getGoodsState().getClass());
-
         try {
-
             goodsUploadDTO.setImageFile(imageFile); // DTO에 setter로 주입
             goodsService.registerGoods(goodsUploadDTO);
         } catch (Exception e) {
@@ -136,19 +130,15 @@ public class GoodsController {
         return ResponseEntity.status(HttpStatus.OK).body("성공");
     }
 
-    // 결제페이지 - 고객 주소 가져오기
-    @GetMapping("/findaddress")
-    public ResponseEntity<?> findMemberAddress(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        log.info("** GoodsController => findMemberAddress() 실행됨 **");
-        return goodsService.findMemberAddress(userDetails);
-    }
+
+
     //배너 리스트 불러오기(조해민)
     @GetMapping("/banner/list")
     public ResponseEntity<List<BannerDTO>> bannerList() {
         return ResponseEntity.ok(goodsService.bannerList());
     }
 
-    //카테고리 불러오기(조해민)
+    //카테고리 불러오기(조해민
     @GetMapping("/category/list")
     public ResponseEntity<List<CategoryResponseDTO>> categoryList(){
         return ResponseEntity.ok(goodsService.categoryList());
