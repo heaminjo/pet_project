@@ -136,15 +136,39 @@ const MyInfoComp = styled.div`
       flex-direction: column;
       gap: 10px;
       justify-content: center;
+      @keyframes cartStyle {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
       i {
         color: red;
+        animation: 1s cartStyle steps(1, start) infinite;
       }
       .cart_icon {
         svg {
           font-size: 20px;
+          margin-right: 5px;
         }
+        cursor: pointer;
       }
     }
   } //
+  .order_ {
+    margin-top: 50px;
+    h2 {
+      span {
+        font-size: 13px;
+        color: #aaa;
+      }
+      padding: 10px 0;
+    }
+  }
 `;
 export default MyInfoComp;

@@ -10,10 +10,19 @@ import MemberApi from "../../api/MemberApi";
 import gradeImage from "../../images/d1nrwjnej10dkwnrnksj423kj.jpg";
 import { PetContext } from "./MyPage";
 import { PiShoppingCartFill } from "react-icons/pi";
+import { LuMoveRight } from "react-icons/lu";
 
 export default function MyInfo() {
   const { user } = useContext(PetContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    getOrderList();
+  }, []);
+
+  const getOrderList = async () => {
+    const result = await MemberApi.getOrderList();
+  };
   return (
     <MyInfoComp>
       <div className="main_container">
@@ -56,11 +65,22 @@ export default function MyInfo() {
         </div>
 
         <div className="cart_">
-          <i>{user.cartCount}개의 상품이 기다리고있어요~</i>
-          <div>
+          <i>{user.cartCount}개의 상품이 장바구니에서 기다리고있어요~</i>
+          <div
+            className="cart_icon"
+            onClick={() => navigate("/user/mypage/cart/list")}
+          >
             <PiShoppingCartFill />
+            <LuMoveRight />
           </div>
         </div>
+      </div>
+      <div className="order_">
+        <h2>
+          주문 목록 <span>최근 주문 3건</span>
+        </h2>
+        <hr />
+        <div className="order_list"></div>
       </div>
     </MyInfoComp>
   );

@@ -14,4 +14,7 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
     @Transactional
     @Query("SELECT od FROM OrderDetail od WHERE od.orders.orderId IN :order_id")
     Page<OrderDetail> findAllByOrderIdList(@Param("order_id") List<Long> orderId, Pageable pageable);
+
+    @Query(nativeQuery = true,value = "select * from order_detail where order_id = :id")
+    List<OrderDetail> orderDetailList(@Param("id") Long orderId);
 }
