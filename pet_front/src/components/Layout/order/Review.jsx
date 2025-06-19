@@ -176,7 +176,7 @@ export default function Review() {
       imageFile: reviews.imageFile,
     };
     try {
-      console.log(`goodsId = ${reviews.goodsId}`)
+      console.log(`goodsId = ${reviews.goodsId}`);
       const response = await OrderApi.registerReview(review);
       alert(response); // 리뷰가 정상적으로 등록되었습니다.
       navigate('/');
