@@ -80,7 +80,7 @@ const OrderApi = {
       },
     });
 
-    alert(result.data);
+    console.log(result.data);
   },
 };
 

@@ -106,11 +106,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     }
 
-
-
-
-
-    // 리뷰
+    // 리뷰 출력
     @Override
     @Transactional
     public  ResponseEntity<?> reviews(Long goodsId, PageRequestDTO pageRequestDTO){

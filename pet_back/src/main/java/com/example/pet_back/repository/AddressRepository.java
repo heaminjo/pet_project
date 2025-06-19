@@ -7,6 +7,10 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface AddressRepository extends JpaRepository<Address, Long> {
+
+    @Query("SELECT a FROM Address a WHERE a.member.id = :id AND a.addrType = 'DEFAULT'")
+    Address findDefaultByMemberId(Long id);
+
     Address findByMemberId(Long id);
 
     //기본 배송지 최 상단

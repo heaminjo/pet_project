@@ -35,15 +35,15 @@ export default function OrderDetail() {
   });
 
   // 장바구니 담기
-  const addToCart = async (goods) => {
-    const goodsWithQuantity = { ...goods, quantity: buyQuantity };
-    alert(`addToCart => ${goodsWithQuantity.quantity}`);
-    GoodsApi.addToCart(goodsWithQuantity)
+  const addToCart = async (goods, buyQuantity) => {
+    console.log(`addToCart 수량 => ${buyQuantity}`);
+    GoodsApi.addToCart(goods, buyQuantity)
       .then((response) => {
-        alert(`장바구니 담기 성공, 상품ID:  => ${response.goodsId}`);
-        console.log(response);
+        console.log(`장바구니 담기 성공, 상품ID:  => ${response}`);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        alert('GoodsApi.addToCart() 중 오류발생');
+      });
   };
 
   // 주문내역 리스트를 순회하며 날짜별로 그룹화 ~~~~~~~~~~~~~~~~~~~~
@@ -121,7 +121,7 @@ export default function OrderDetail() {
                         {item.goodsPrice} 원 / {item.goodsQuantity} 개
                       </div>
                       <div className='btn'>
-                        <button className='btn1' onClick={() => addToCart(item)}>
+                        <button className='btn1' onClick={() => addToCart(item, 1)}>
                           장바구니 담기
                         </button>
                         <button className='btn2' onClick={() => navigate('/user/mypage/delivery', { state: { goodsId: item.goodsId } })}>

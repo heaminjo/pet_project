@@ -19,7 +19,7 @@ const PopupComp = styled.div`
     background: white;
     padding: 20px;
     border-radius: 12px;
-    width: 400px;
+    width: 800px;
     max-width: 90%;
     position: relative;
   }
