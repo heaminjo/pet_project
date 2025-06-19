@@ -1,11 +1,10 @@
 package com.example.pet_back.controller;
 
 import com.example.pet_back.domain.goods.PayRequestDTO;
-import com.example.pet_back.domain.goods.ReviewRequestDTO;
+import com.example.pet_back.domain.goods.ReviewUploadDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.service.MemberService;
-import com.example.pet_back.service.goods.GoodsService;
 import com.example.pet_back.service.goods.OrderDetailService;
 import com.example.pet_back.service.goods.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +12,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Log4j2
 @RequiredArgsConstructor // private final만
@@ -50,13 +47,12 @@ public class OrderController {
         return orderService.payGoods(userDetails, dto);
     }
 
-    // 리뷰 작성
+    // 리뷰 업로드
     @PostMapping("/review/register")
     public ResponseEntity<?> regReview(@AuthenticationPrincipal CustomUserDetails userDetails, //
-                                       @ModelAttribute ReviewRequestDTO dto) {
+                                       @RequestPart("review") ReviewUploadDTO reviewUploadDTO) {
         log.info("** OrderController => regReview() 실행됨 **");
-
-        return orderService.regReview(userDetails, dto);
+        return orderService.regReview(userDetails, reviewUploadDTO);
     }
 
 

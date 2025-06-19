@@ -16,9 +16,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -91,7 +95,7 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new RuntimeException("해당 주소가 존재하지 않습니다."));
         Delivery delivery = Delivery.builder()
                 .member(member).address(address)
-                .recipient(member.getName()).recipientPhone(member.getPhone())
+                .recipient(member.getName()).recipientPhone(payRequestDTO.getRecipientPhone())
                 .deliveryName(payRequestDTO.getDeliveryName())
                 .requestMessage(payRequestDTO.getRequestMessage())
                 .build();
@@ -157,22 +161,50 @@ public class OrderServiceImpl implements OrderService {
 
     // 리뷰 작성
     @Override
-    public ResponseEntity<?> regReview(CustomUserDetails userDetails, ReviewRequestDTO dto){
-        Member member = memberRepository.findById(dto.getMemberId()).orElseThrow();
-        Goods goods = goodsRepository.findById(dto.getGoodsId()).orElseThrow();
-        OrderDetail orderDetail = orderDetailRepository.findById(dto.getOrderDetailId()).orElseThrow();
+    public ResponseEntity<?> regReview(CustomUserDetails userDetails, ReviewUploadDTO reviewUploadDTO) throws IOException {
+        Long memberId = reviewUploadDTO.getMemberId();
+        Long goodsId = reviewUploadDTO.getGoodsId();
+        Long orderDetailId = reviewUploadDTO.getOrderDetailId();
+        int score = reviewUploadDTO.getScore();
+        String title =reviewUploadDTO.getTitle();
+        String content=reviewUploadDTO.getContent();
 
-        String imagePath = null;
-//        if (dto.getImageFile() != null && !dto.getImageFile().isEmpty()) {
-//            imagePath = fileService.save(dto.getImageFile()); // 파일 저장 후 경로
-//        }
+        MultipartFile imageFile = reviewUploadDTO.getImageFile();
+        String uploadImg = null;
 
-        Review review = reviewMapper.toEntity(dto, member, goods, orderDetail);
+
+        // 이미지 로직
+        // 1. 파일 저장 경로
+        String realPath = "C:/devv/pet_project/pet_back/src/main/resources/webapp/userImages/";
+
+        // 2. 업로드 이미지 처리
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String originalFilename = imageFile.getOriginalFilename(); // ex: cat.jpg
+            String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String uuid = UUID.randomUUID().toString();
+            String newFileName = uuid + extension;
+
+            File destFile = new File(realPath + newFileName);
+            imageFile.transferTo(destFile); // MultipartFile 저장
+
+            uploadImg = newFileName;
+        }
+
         try {
+            Member member = memberRepository.findById(memberId)
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+            Goods goods = goodsRepository.findById(goodsId)
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+            OrderDetail orderDetail = orderDetailRepository.findById(orderDetailId)
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문내역입니다."));
+
+            Review review = new Review(member, goods, orderDetail, score, title, content, uploadImg);
             reviewRepository.save(review);
+
             return ResponseEntity.status(HttpStatus.OK).body("리뷰가 정상적으로 등록되었습니다.");
-        }catch (Exception e){
-            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("리뷰 등록 중 오류가 발생했습니다.");
         }
 
     }

@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewRequestDTO {
+public class ReviewUploadDTO {
 
     private Long memberId;         // 로그인 사용자 정보
     private Long goodsId;          // 상품 ID

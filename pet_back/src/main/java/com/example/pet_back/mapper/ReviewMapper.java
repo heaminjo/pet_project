@@ -1,6 +1,6 @@
 package com.example.pet_back.mapper;
 
-import com.example.pet_back.domain.goods.ReviewRequestDTO;
+import com.example.pet_back.domain.goods.ReviewUploadDTO;
 import com.example.pet_back.entity.Goods;
 import com.example.pet_back.entity.Member;
 import com.example.pet_back.entity.OrderDetail;
@@ -18,7 +18,7 @@ public interface ReviewMapper {
     @Mapping(source = "goods", target = "goods")   // Goods 엔티티
     @Mapping(source = "orderDetail", target = "orderDetail") // OrderDetail 엔티티
     @Mapping(source = "dto.imageFile", target = "imageFile")
-    Review toEntity(ReviewRequestDTO dto, Member member, Goods goods, OrderDetail orderDetail);
+    Review toEntity(ReviewUploadDTO dto, Member member, Goods goods, OrderDetail orderDetail);
 
 
     // 커스텀 매핑 메서드 추가
