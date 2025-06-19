@@ -9,6 +9,7 @@ import React, { useContext, useEffect, useState } from "react";
 import MemberApi from "../../api/MemberApi";
 import gradeImage from "../../images/d1nrwjnej10dkwnrnksj423kj.jpg";
 import { PetContext } from "./MyPage";
+import { PiShoppingCartFill } from "react-icons/pi";
 
 export default function MyInfo() {
   const { user } = useContext(PetContext);
@@ -53,25 +54,12 @@ export default function MyInfo() {
             </div>
           </div>
         </div>
-        <div className="order_state">
-          <ul>
-            <li>
-              <big>최근 주문 내역</big>
-              <span>0</span>
-            </li>
-            <li>
-              <big>현재 배송중</big>
-              <span>2</span>
-            </li>
-            <li>
-              <big>배송 완료</big>
-              <span>0</span>
-            </li>
-            <li>
-              <big>장바구니</big>
-              <span>0</span>
-            </li>
-          </ul>
+
+        <div className="cart_">
+          <i>{user.cartCount}개의 상품이 기다리고있어요~</i>
+          <div>
+            <PiShoppingCartFill />
+          </div>
         </div>
       </div>
     </MyInfoComp>

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import { PiShoppingCartFill } from "react-icons/pi";
 const MyInfoComp = styled.div`
   .main_container {
     width: 100%;
@@ -124,6 +124,24 @@ const MyInfoComp = styled.div`
         }
         li:hover {
           background-color: #ddd;
+        }
+      }
+    }
+
+    .cart_ {
+      height: 70px;
+      text-align: center;
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      justify-content: center;
+      i {
+        color: red;
+      }
+      .cart_icon {
+        svg {
+          font-size: 20px;
         }
       }
     }
