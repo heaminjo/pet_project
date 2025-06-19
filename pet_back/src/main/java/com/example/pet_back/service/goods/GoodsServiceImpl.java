@@ -264,18 +264,18 @@ public class GoodsServiceImpl implements GoodsService {
 
     // 상품등록
     @Override
-    public void registerGoods(GoodsRequestDTO goodsRequestDTO) throws IOException {
+    public void registerGoods(GoodsUploadDTO goodsUploadDTO) throws IOException {
         log.info("** GoodsServiceImpl 실행됨 **");
-        System.out.println("에러발생지점 확인용 : " + goodsRequestDTO.getGoodsState().getClass());
+        System.out.println("에러발생지점 확인용 : " + goodsUploadDTO.getGoodsState().getClass());
 
-        Long categoryId = goodsRequestDTO.getCategoryId();
-        String goodsName = goodsRequestDTO.getGoodsName();
-        int price = goodsRequestDTO.getPrice();
-        String description = goodsRequestDTO.getDescription();
-        String goodsState = goodsRequestDTO.getGoodsState().name(); // String 변환 후 저장 필수
-        int quantity = goodsRequestDTO.getQuantity();
+        Long categoryId = goodsUploadDTO.getCategoryId();
+        String goodsName = goodsUploadDTO.getGoodsName();
+        int price = goodsUploadDTO.getPrice();
+        String description = goodsUploadDTO.getDescription();
+        String goodsState = goodsUploadDTO.getGoodsState().name(); // String 변환 후 저장 필수
+        int quantity = goodsUploadDTO.getQuantity();
 
-        MultipartFile imageFile = goodsRequestDTO.getImageFile();
+        MultipartFile imageFile = goodsUploadDTO.getImageFile();
         String uploadImg = "basicimg.jpg"; // 기본이미지
 
         // 이미지 로직

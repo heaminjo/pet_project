@@ -30,6 +30,8 @@ export default function Order() {
     console.log(`결제페이지 이동 성공, 상품ID:  => ${goods.goodsId}`);
     const goodsWithQuantity = { ...goods, quantity: buyQuantity };
     navigate('/user/mypage/pay', { state: { goods: goodsWithQuantity } });
+    // => <Cart /> <Order /> 공통으로 쓰는 로직이므로, 해당 줄은 변경하지 않기로 한다.
+    //     ㄴ> ( navigate('/user/mypage/pay', { state: { goods: goodsWithQuantity } }); )
   };
 
   // 장바구니 담기
