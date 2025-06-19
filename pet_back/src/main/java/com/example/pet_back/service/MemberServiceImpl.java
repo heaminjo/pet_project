@@ -16,6 +16,7 @@ import com.example.pet_back.entity.Member;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.mapper.MemberMapper;
 import com.example.pet_back.repository.AddressRepository;
+import com.example.pet_back.repository.CartRepository;
 import com.example.pet_back.repository.MemberRepository;
 import jakarta.servlet.ServletContext;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +49,7 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
     private final FileUploadProperties fileUploadProperties;
     private final ServletContext servletContext;
-
+    private final CartRepository cartRepository;
     //이메일 중복 검사
     @Override
     public ResponseEntity<Boolean> emailCheck(String email) {
@@ -72,8 +73,13 @@ public class MemberServiceImpl implements MemberService {
         String realPath = fileUploadProperties.getUrl(); // http://localhost:8080/resources/webapp
 
         MemberResponseDTO dto = mapper.toDto(member);
+
+
+        int cartCount = cartRepository.cartCount(member.getId());
+
         //해당파일은 MvcConfig에 매핑되어 이미지를 매핑
         dto.setImageFile(realPath + imageFile);
+        dto.setCartCount(cartCount);
 
         log.info(dto.getImageFile());
 //        String grade = member.getGrade().getGradeName();
