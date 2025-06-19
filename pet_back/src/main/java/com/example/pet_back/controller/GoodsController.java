@@ -94,9 +94,9 @@ public class GoodsController {
                                           @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) {
         //  @ModelAttribute ReviewRequestDTO dto
         log.info("** GoodsController => createGoods() 실행됨 **");
-        System.out.println("goodsDTO 이름: " + goodsRequestDTO.getGoodsName());
-        System.out.println("goodsDTO state: " + goodsRequestDTO.getGoodsState());
-        System.out.println("goodsDTO state 타입: " + goodsRequestDTO.getGoodsState().getClass());
+//        System.out.println("goodsDTO 이름: " + goodsRequestDTO.getGoodsName());
+//        System.out.println("goodsDTO state: " + goodsRequestDTO.getGoodsState());
+//        System.out.println("goodsDTO state 타입: " + goodsRequestDTO.getGoodsState().getClass());
 
         try {
 
