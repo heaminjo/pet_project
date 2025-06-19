@@ -131,6 +131,7 @@ export default function Pay() {
     OrderApi.pay(payload) // 여기가 호출
       .then((response) => {
         alert("GoodsApi.pay() 성공");
+        conditionCheck();
         navigate("/user/mypage/orderlist");
       })
       .catch((err) => {
@@ -138,16 +139,16 @@ export default function Pay() {
       });
 
     //주문이 성공한 이후에 등급 업그레이드 조건이 충족 되었는지 검사하는 API 호출
-    conditionCheck();
   };
 
+  //업그레이드 검사
   const conditionCheck = async () => {
     const result = await MemberApi.conditionCheck();
 
+    //만약 업그레이드 조건이 중족됐다면 이동
     if (result.success) {
-      alert("업그레이드 조건 충족");
-    } else {
-      alert("업그레이드 아직 안됌");
+      alert(result.data);
+      navigate("/upgrade", { state: { nextGrade: result.data } });
     }
   };
 

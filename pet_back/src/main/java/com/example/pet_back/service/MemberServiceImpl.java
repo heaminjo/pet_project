@@ -253,7 +253,7 @@ public class MemberServiceImpl implements MemberService {
             if( grade != GRADE.AURORA && isLogin && isCount && isPrice){
                 GRADE nextGrade = grade.getNextGrade();
                 member.setGrade(nextGrade);
-                return new ApiResponse<String>(true,nextGrade.getGradeName());
+                return new ApiResponse<String>(true,nextGrade.getGradeName(),"업그레이드");
             }else{
                 return new ApiResponse<String>(false,"아직 조건이 중촉되지않았습니다.");
             }
