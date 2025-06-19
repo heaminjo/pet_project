@@ -37,10 +37,13 @@ const OrderApi = {
     return result.data;
     //console.log(JSON.stringify(payload, null, 2));
   },
+
+  // 배송지 주소
   findAddress: async () => {
-    const result = await instance.get(`/goods/findaddress`);
+    const result = await instance.get(`/order/findaddress`);
     try {
       if (result != null) {
+        console.log(`findAddress 결과: ${result}`);
         return result.data;
       } else {
         alert(`OrderApi.findAddress() null`);

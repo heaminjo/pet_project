@@ -15,4 +15,8 @@ import java.util.List;
 public class PayRequestDTO {
     private List<GoodsRequestDTO> goodsList;
     private PAYMENT payment;
+    // 배송정보
+    String deliveryName;
+    String requestMessage;
+
 }
