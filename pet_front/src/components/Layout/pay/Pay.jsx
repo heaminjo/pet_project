@@ -1,10 +1,10 @@
-import PayComp from './PayStyle';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import MemberApi from '../../../api/MemberApi';
-import GoodsApi from '../../../api/GoodsApi';
-import OrderApi from '../../../api/OrderApi';
-import Popup from './Popup';
+import PayComp from "./PayStyle";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import MemberApi from "../../../api/MemberApi";
+import GoodsApi from "../../../api/GoodsApi";
+import OrderApi from "../../../api/OrderApi";
+import Popup from "./Popup";
 
 export default function Pay() {
   const location = useLocation();
@@ -14,24 +14,28 @@ export default function Pay() {
   const [payment, setPayment] = useState(); // 결제수단
   // 회원정보 & 주소정보
   const [member, setMember] = useState({});
-  const [address, setAddress] = useState('');
-  const [addressName, setAddressName] = useState('');
+  const [address, setAddress] = useState("");
+  const [addressName, setAddressName] = useState("");
 
   // 수량
   //const quantities = location.state?.quantity || [];
 
   // const goodsList = location.state?.goods || []; // Order -> Pay 이동위해 변경 (rawGoods 추가)
   const rawGoods = location.state?.goods;
-  const goodsList = Array.isArray(rawGoods) ? rawGoods : rawGoods ? [rawGoods] : []; // 단일 상품이 오더라도 강제로 배열로 감싸기
+  const goodsList = Array.isArray(rawGoods)
+    ? rawGoods
+    : rawGoods
+    ? [rawGoods]
+    : []; // 단일 상품이 오더라도 강제로 배열로 감싸기
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 팝 업 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 모달 사용 (요청사항) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const [isReqOpen, setIsReqOpen] = useState(false); // 배송요청사항 Open / Close
-  const [note, setNote] = useState(''); // 배송요청 메시지
+  const [note, setNote] = useState(""); // 배송요청 메시지
 
   // 요청사항 저장
   const handleReqSave = () => {
-    console.log('요청사항 저장:', note);
+    console.log("요청사항 저장:", note);
     setIsReqOpen(false); // 팝업창 닫음
   };
 
@@ -40,7 +44,12 @@ export default function Pay() {
     return (
       <Popup isOpen={isReqOpen} onClose={() => setIsReqOpen(false)}>
         <h3>요청사항 입력</h3>
-        <textarea value={note} onChange={(e) => setNote(e.target.value)} rows={4} style={{ width: '100%' }} />
+        <textarea
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          rows={4}
+          style={{ width: "100%" }}
+        />
         <br />
         <button onClick={handleReqSave}>저장</button>
       </Popup>
@@ -59,7 +68,7 @@ export default function Pay() {
 
   // 배송지 상태
   const handleDestSave = () => {
-    console.log('요청사항 저장:', note);
+    console.log("요청사항 저장:", note);
     setIsDestOpen(false); // 팝업창 닫음
   };
 
@@ -71,16 +80,20 @@ export default function Pay() {
         <h3>배송지 변경 창</h3>
         <br />
         {addrList.length > 0 && (
-          <ul className='addr'>
+          <ul className="addr">
             {addrList.map((a, index) => (
               <li>
-                <div className='addr_item'>
-                  <div className='addr1'>
-                    {index == 0 ? <p style={{ fontWeight: 'bold' }}>{a.addrType}</p> : <p>{a.addrType}</p>}
+                <div className="addr_item">
+                  <div className="addr1">
+                    {index == 0 ? (
+                      <p style={{ fontWeight: "bold" }}>{a.addrType}</p>
+                    ) : (
+                      <p>{a.addrType}</p>
+                    )}
                     <span>{a.addressName}</span>
                   </div>
 
-                  <div className='addr2'>
+                  <div className="addr2">
                     <p>[우편번호]{a.addressZip}</p>
                     <span>
                       {a.address1} {a.address2}
@@ -114,15 +127,28 @@ export default function Pay() {
       deliveryName: addressName,
       requestMessage: note,
     };
-    alert('pay 동작테스트');
+    alert("pay 동작테스트");
     OrderApi.pay(payload) // 여기가 호출
       .then((response) => {
-        alert('GoodsApi.pay() 성공');
-        navigate('/user/mypage/orderlist');
+        alert("GoodsApi.pay() 성공");
+        navigate("/user/mypage/orderlist");
       })
       .catch((err) => {
-        alert('GoodsApi.pay() 에러');
+        alert("GoodsApi.pay() 에러");
       });
+
+    //주문이 성공한 이후에 등급 업그레이드 조건이 충족 되었는지 검사하는 API 호출
+    conditionCheck();
+  };
+
+  const conditionCheck = async () => {
+    const result = await MemberApi.conditionCheck();
+
+    if (result.success) {
+      alert("업그레이드 조건 충족");
+    } else {
+      alert("업그레이드 아직 안됌");
+    }
   };
 
   // 걸제수단 핸들링 & 유효성 검사
@@ -141,27 +167,27 @@ export default function Pay() {
     // 사용자 주소
     OrderApi.findAddress()
       .then((response) => {
-        setAddress(response.address1 + ' ' + response.address2);
+        setAddress(response.address1 + " " + response.address2);
         setAddressName(response.addressName);
         console.log(`OrderApi.findAddress() 결과 = ${response}`);
       })
       .catch((err) => {
-        alert('주소 조회 실패');
+        alert("주소 조회 실패");
       });
     // 상품 정보
     if (goodsList.length > 0) {
       setGoods(goodsList);
     }
-    console.log('goodsList:', goodsList);
+    console.log("goodsList:", goodsList);
   }, []);
 
   return (
     <PayComp>
-      <div className='container'>
+      <div className="container">
         <section>
-          <div className='title'>구매자</div>
+          <div className="title">구매자</div>
           <hr />
-          <table className='payment'>
+          <table className="payment">
             <tbody>
               <tr>
                 <th>이름</th>
@@ -180,7 +206,7 @@ export default function Pay() {
         </section>
         <br />
         <section>
-          <div className='title'>배송지 정보</div>
+          <div className="title">배송지 정보</div>
           <hr />
           <table>
             <tbody>
@@ -191,7 +217,10 @@ export default function Pay() {
               <tr>
                 <th>배송지</th>
                 <td>
-                  {address} &nbsp;&nbsp;&nbsp;<button onClick={() => setIsDestOpen(true)}>배송지 수정</button>
+                  {address} &nbsp;&nbsp;&nbsp;
+                  <button onClick={() => setIsDestOpen(true)}>
+                    배송지 수정
+                  </button>
                   {isDestOpen && handleOpenPopupDestination()}
                 </td>
               </tr>
@@ -202,7 +231,7 @@ export default function Pay() {
               <tr>
                 <th>요청사항</th>
                 <td>
-                  {note || '배송 요청사항을 입력해주세요.'}
+                  {note || "배송 요청사항을 입력해주세요."}
                   &nbsp;&nbsp;
                   <button onClick={() => setIsReqOpen(true)}>수정</button>
                   {isReqOpen && handleOpenPopupReq()}
@@ -213,25 +242,25 @@ export default function Pay() {
         </section>
         <br />
         <section>
-          <div className='title'>상품 정보</div>
+          <div className="title">상품 정보</div>
           <hr />
           {goods.map((item, index) => (
-            <div className='goodslist' key={index}>
+            <div className="goodslist" key={index}>
               <div>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 {item.goodsName}
-                {', '}
+                {", "}
                 {item.description}
-                {', '}
+                {", "}
                 {item.quantity}
-                {' 개'}
+                {" 개"}
               </div>
             </div>
           ))}
         </section>
         <br />
         <section>
-          <div className='title'>결제 정보</div>
+          <div className="title">결제 정보</div>
           <hr />
           <table>
             <tbody>
@@ -251,23 +280,65 @@ export default function Pay() {
                 <th>결제방법</th>
                 <td>
                   <label>
-                    <input type='radio' name='payment' value='ACCOUNT' checked={payment === 'ACCOUNT'} onChange={handlePaymentChange} /> 계좌이체 <br />
+                    <input
+                      type="radio"
+                      name="payment"
+                      value="ACCOUNT"
+                      checked={payment === "ACCOUNT"}
+                      onChange={handlePaymentChange}
+                    />{" "}
+                    계좌이체 <br />
                   </label>
                   <label>
-                    <input type='radio' name='payment' value='POINT' checked={payment === 'POINT'} onChange={handlePaymentChange} /> 포인트결제 &nbsp; &nbsp; &nbsp;
-                    <span className='badge'>최대 캐시적립</span> <br />
+                    <input
+                      type="radio"
+                      name="payment"
+                      value="POINT"
+                      checked={payment === "POINT"}
+                      onChange={handlePaymentChange}
+                    />{" "}
+                    포인트결제 &nbsp; &nbsp; &nbsp;
+                    <span className="badge">최대 캐시적립</span> <br />
                   </label>
                   <label>
-                    <input type='radio' name='payment' value='CARD' checked={payment === 'CARD'} onChange={handlePaymentChange} /> 신용/체크카드 <br />
+                    <input
+                      type="radio"
+                      name="payment"
+                      value="CARD"
+                      checked={payment === "CARD"}
+                      onChange={handlePaymentChange}
+                    />{" "}
+                    신용/체크카드 <br />
                   </label>
                   <label>
-                    <input type='radio' name='payment' value='CORPCARD' checked={payment === 'CORPCARD'} onChange={handlePaymentChange} /> 법인카드 <br />
+                    <input
+                      type="radio"
+                      name="payment"
+                      value="CORPCARD"
+                      checked={payment === "CORPCARD"}
+                      onChange={handlePaymentChange}
+                    />{" "}
+                    법인카드 <br />
                   </label>
                   <label>
-                    <input type='radio' name='payment' value='PHONE' checked={payment === 'PHONE'} onChange={handlePaymentChange} /> 휴대폰 <br />
+                    <input
+                      type="radio"
+                      name="payment"
+                      value="PHONE"
+                      checked={payment === "PHONE"}
+                      onChange={handlePaymentChange}
+                    />{" "}
+                    휴대폰 <br />
                   </label>
                   <label>
-                    <input type='radio' name='payment' value='NOACOUNT' checked={payment === 'NOACOUNT'} onChange={handlePaymentChange} /> 무통장입금(상세조회) <br />
+                    <input
+                      type="radio"
+                      name="payment"
+                      value="NOACOUNT"
+                      checked={payment === "NOACOUNT"}
+                      onChange={handlePaymentChange}
+                    />{" "}
+                    무통장입금(상세조회) <br />
                   </label>
                 </td>
               </tr>
@@ -280,17 +351,18 @@ export default function Pay() {
         </section>
         <section>
           <button
-            className='pay'
+            className="pay"
             onClick={() => {
               if (!payment) {
-                alert('결제 수단을 선택해 주세요!');
+                alert("결제 수단을 선택해 주세요!");
                 return;
               }
               pay(goods, payment, addressName, note);
-            }}>
+            }}
+          >
             결제하기
           </button>
-          &nbsp;&nbsp; <button className='cancel'>메인 페이지로</button>
+          &nbsp;&nbsp; <button className="cancel">메인 페이지로</button>
         </section>
       </div>
     </PayComp>

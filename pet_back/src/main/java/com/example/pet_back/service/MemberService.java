@@ -37,5 +37,6 @@ public interface MemberService {
     public ApiResponse addressDetail(Long addressId);
 
     public ApiResponse addressUpdate(Long userId, AddressRequestDTO dto);
-
+    //업그레이드 조건 검사
+    public ApiResponse<String> conditionCheck(Long id);
 }

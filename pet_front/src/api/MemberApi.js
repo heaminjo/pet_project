@@ -137,6 +137,11 @@ const MemberApi = {
     const result = await instance.get(`${KH_DOMAIN}/user/order/list`);
     return result.data;
   },
+  //업그레이드 검사
+  conditionCheck: async () => {
+    const result = await instance.patch(`${KH_DOMAIN}/user/condition`);
+    return result.data;
+  },
 };
 
 export default MemberApi;

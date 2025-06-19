@@ -101,4 +101,9 @@ public class MemberController {
     public ResponseEntity< List<OrderResponseDTO>> userOrderList(@AuthenticationPrincipal CustomUserDetails details) {
         return ResponseEntity.ok(orderService.userOrderList(details.getMember().getId()));
     }
+
+    @PatchMapping("/condition")
+    public ResponseEntity<ApiResponse<String>> conditionCheck(@AuthenticationPrincipal CustomUserDetails details){
+        return ResponseEntity.ok(memberService.conditionCheck(details.getMember().getId()));
+    }
 }

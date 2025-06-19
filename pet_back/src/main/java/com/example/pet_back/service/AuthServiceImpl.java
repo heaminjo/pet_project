@@ -28,7 +28,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -47,7 +50,7 @@ public class AuthServiceImpl implements AuthService {
 
     //로그인
     @Override
-
+    @Transactional
     public ApiResponse<?> login(HttpServletResponse response, LoginRequestDTO dto) {
         try {
             //email과 pw기반으로 AuthenticationToken 생성
@@ -65,6 +68,21 @@ public class AuthServiceImpl implements AuthService {
             //인증 정보 기반으로 토큰 생성
             //로그인 직후 이므로 refreshToken과  AccessToken 모두 생성해서 발급한다.
             TokenDTO tokenDTO = tokenProvider.generateTokenDto(authentication);
+
+            //마지막 로그인 시간 저장을 위해 id를 꺼낸다.
+            Long userId = tokenProvider.getUserId(tokenDTO.getAccessToken());
+
+            Member member = memberRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            LocalDateTime lastLogin = member.getLastLogin();
+
+            //만약 마지막 로그인이 null이거나 오늘보다 전날(isBefore) 이라면 누적
+            if(lastLogin == null || lastLogin.toLocalDate().isBefore(LocalDate.now())){
+                member.setLoginCount(member.getLoginCount() + 1);
+            }
+            //그리고 난 뒤 현재 시각으로 마지막 로그인 업데이트
+            member.setLastLogin(LocalDateTime.now());
+            log.info(member.getName()+"님의 마지막 로그인 시간이"+LocalDateTime.now()+"으로 업데이트 됩니다.");
+
 
             log.info("토큰 발급 => " + tokenDTO);
 
