@@ -23,7 +23,7 @@ export default function Best() {
   };
   return (
     <BestComp>
-      <h2>오늘의 BEST 상품</h2>
+      <h2>오늘의 추천 상품</h2>
       <div className="best_container">
         <ul>
           {best?.map((b) => (

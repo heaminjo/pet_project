@@ -186,6 +186,7 @@ const MyInfoComp = styled.div`
           padding: 20px;
           border: 1px solid #999;
           border-radius: 10px;
+          box-shadow: 3px 3px 3px #ccc;
           h4 {
             font-size: 25px;
             margin-bottom: 20px;
@@ -236,6 +237,7 @@ const MyInfoComp = styled.div`
                 cursor: pointer;
                 width: 100px;
                 height: 40px;
+                background-color: #f8e776;
               }
             }
           }
