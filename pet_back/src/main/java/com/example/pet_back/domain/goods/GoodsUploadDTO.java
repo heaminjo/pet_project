@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-public class GoodsRequestDTO {
+public class GoodsUploadDTO {
 
     private Long goodsId;
     private Long categoryId;
@@ -23,8 +23,11 @@ public class GoodsRequestDTO {
 
     // 상품 상태 (SALE, SOLDOUT, HIDDEN)
     private GOODSSTATE goodsState = GOODSSTATE.SALE;
-    private String imageFile;
+    private MultipartFile imageFile;
     private int quantity;
     private LocalDate regDate;
-    
+
+
+    // 제거: private MultipartFile uploadImg;
+
 }

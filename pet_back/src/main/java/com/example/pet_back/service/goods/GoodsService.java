@@ -4,11 +4,8 @@ import com.example.pet_back.domain.admin.BannerDTO;
 import com.example.pet_back.domain.admin.BestDTO;
 import com.example.pet_back.domain.admin.BestInsertDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
-import com.example.pet_back.domain.goods.CategoryResponseDTO;
-import com.example.pet_back.domain.goods.GoodsRequestDTO;
+import com.example.pet_back.domain.goods.*;
 import com.example.pet_back.domain.goods.GoodsSimpleDTO;
-import com.example.pet_back.domain.goods.GoodsSimpleDTO;
-import com.example.pet_back.domain.goods.PayRequestDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
@@ -46,7 +43,7 @@ public interface GoodsService {
     ResponseEntity<?> findMemberAddress(CustomUserDetails userDetails);
 
     // 상품 등록
-    void registerGoods(GoodsRequestDTO goodsRequestDTO) throws IOException;
+    void registerGoods(GoodsUploadDTO goodsUploadDTO) throws IOException;
 
     // 상품 수정
     void updateGoods(CustomUserDetails userDetails, GoodsRequestDTO goodsRequestDTO);

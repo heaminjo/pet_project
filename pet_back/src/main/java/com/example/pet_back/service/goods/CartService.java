@@ -10,5 +10,5 @@ public interface CartService {
     public ResponseEntity<?> selectList(CustomUserDetails userDetails, PageRequestDTO dto);
 
     // 상품을 장바구니에 추가
-    public ResponseEntity<?> addToCart(CustomUserDetails userDetails, GoodsRequestDTO goodsRequestDTO);
+    public ResponseEntity<?> addToCart(CustomUserDetails userDetails, Long goodsId, int quantity);
 }

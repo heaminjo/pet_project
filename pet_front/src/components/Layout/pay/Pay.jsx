@@ -4,24 +4,17 @@ import { useEffect, useState } from 'react';
 import MemberApi from '../../../api/MemberApi';
 import GoodsApi from '../../../api/GoodsApi';
 import OrderApi from '../../../api/OrderApi';
+import Popup from './Popup';
 
 export default function Pay() {
   const location = useLocation();
   const navigate = useNavigate();
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상태변수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
   const [goods, setGoods] = useState([]);
-  const [requestNote, setRequestNote] = useState('');
-
-  // 결제수단
-  const [payment, setPayment] = useState();
-
+  const [payment, setPayment] = useState(); // 결제수단
   // 회원정보 & 주소정보
   const [member, setMember] = useState({});
   const [address, setAddress] = useState('');
-
-  // 수정 버튼
-  const [popup, setPopup] = useState(false);
 
   // 수량
   //const quantities = location.state?.quantity || [];
@@ -30,11 +23,79 @@ export default function Pay() {
   const rawGoods = location.state?.goods;
   const goodsList = Array.isArray(rawGoods) ? rawGoods : rawGoods ? [rawGoods] : []; // 단일 상품이 오더라도 강제로 배열로 감싸기
 
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 로직 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  const handleOpenPopup = () => {
-    window.open();
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 팝 업 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // 모달 사용 (요청사항) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const [isReqOpen, setIsReqOpen] = useState(false); // 배송요청사항 Open / Close
+  const [note, setNote] = useState(''); // 배송요청 메시지
+
+  // 요청사항 저장
+  const handleReqSave = () => {
+    console.log('요청사항 저장:', note);
+    setIsReqOpen(false); // 팝업창 닫음
   };
 
+  // 요청사항 입력 창
+  const handleOpenPopupReq = () => {
+    return (
+      <Popup isOpen={isReqOpen} onClose={() => setIsReqOpen(false)}>
+        <h3>요청사항 입력</h3>
+        <textarea value={note} onChange={(e) => setNote(e.target.value)} rows={4} style={{ width: '100%' }} />
+        <br />
+        <button onClick={handleReqSave}>저장</button>
+      </Popup>
+    );
+  };
+
+  // 모달 사용 (배송지 수정) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const [isDestOpen, setIsDestOpen] = useState(false); // 배송지지 Open / Close
+  const [addrList, setAddrList] = useState([]); //배송지 목록
+
+  //배송지 목록 호출하는 API
+  const getAddrList = async () => {
+    const result = await MemberApi.addrList();
+    setAddrList(result);
+  };
+
+  // 배송지 상태
+  const handleDestSave = () => {
+    console.log('요청사항 저장:', note);
+    setIsDestOpen(false); // 팝업창 닫음
+  };
+
+  // 배송지 수정 창
+  const handleOpenPopupDestination = () => {
+    getAddrList();
+    return (
+      <Popup isOpen={isDestOpen} onClose={() => setIsDestOpen(false)}>
+        <h3>배송지 변경 창</h3>
+        <br />
+        {addrList.length > 0 && (
+          <ul className='addr'>
+            {addrList.map((a, index) => (
+              <li>
+                <div className='addr_item'>
+                  <div className='addr1'>
+                    {index == 0 ? <p style={{ fontWeight: 'bold' }}>{a.addrType}</p> : <p>{a.addrType}</p>}
+                    <span>{a.addressName}</span>
+                  </div>
+
+                  <div className='addr2'>
+                    <p>[우편번호]{a.addressZip}</p>
+                    <span>
+                      {a.address1} {a.address2}
+                    </span>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+        <button onClick={handleDestSave}>저장</button>
+      </Popup>
+    );
+  };
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 결 제 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 총 구매가격
   const totalPrice = goodsList.reduce((acc, item) => {
     const price = item.price || 0;
@@ -113,7 +174,8 @@ export default function Pay() {
         <br />
         <section>
           <div className='title'>
-            배송지 정보 &nbsp;&nbsp;&nbsp;<button onClick={() => setPopup(true)}>배송지 수정</button>
+            배송지 정보 &nbsp;&nbsp;&nbsp;<button onClick={() => setIsDestOpen(true)}>배송지 수정</button>
+            {isDestOpen && handleOpenPopupDestination()}
           </div>
           <hr />
           <table>
@@ -133,7 +195,10 @@ export default function Pay() {
               <tr>
                 <th>요청사항</th>
                 <td>
-                  문 앞(직접수령) &nbsp;&nbsp; <button>수정</button>
+                  {note || '배송 요청사항을 입력해주세요.'}
+                  &nbsp;&nbsp;
+                  <button onClick={() => setIsReqOpen(true)}>수정</button>
+                  {isReqOpen && handleOpenPopupReq()}
                 </td>
               </tr>
             </tbody>
@@ -202,10 +267,6 @@ export default function Pay() {
               <tr>
                 <th>연락처</th>
                 <td>{member.phone}</td>
-              </tr>
-              <tr>
-                <th>요청사항</th>
-                <td>문 앞(직접수령)</td>
               </tr>
             </tbody>
           </table>

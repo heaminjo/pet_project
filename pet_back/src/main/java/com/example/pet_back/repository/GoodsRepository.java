@@ -31,6 +31,7 @@ public interface GoodsRepository extends JpaRepository<Goods, Long> {
                               @Param("goods_state") String goods_state, //
                               @Param("image_file") String image_file, @Param("quantity") int quantity);
 
+
     // 특정 고객이 한번이라도 주문한 적 있는 상품의 리스트
     @Transactional
     @Query("SELECT g FROM OrderDetail od " +

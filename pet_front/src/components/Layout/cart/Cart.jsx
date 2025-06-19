@@ -85,6 +85,7 @@ export default function Cart() {
     }
     // 유효성 통과 시 결제 페이지 이동
     navigate('/user/mypage/pay', { state: { goods: selectedGoods } });
+    // => <Cart /> <Order /> 공통으로 쓰는 로직이므로, 해당 줄은 변경하지 않기로 한다.
   };
 
   // 구매수량 조절 버튼

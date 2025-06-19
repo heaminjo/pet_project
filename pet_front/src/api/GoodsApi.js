@@ -5,14 +5,15 @@ const KH_DOMAIN = 'http://localhost:8080';
 const GoodsApi = {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 장 바 구 니 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 장바구니 추가
-  addToCart: async (goods) => {
+  addToCart: async (goods, buyQuantity) => {
     //alert(`장바구니 담기 => ${goods}`);
-
-    console.log(`장바구니 담기 시도 => ${goods.goodsId}, 수량: ${goods.quantity}`);
-    const result = await instance.post('/cart/add', goods);
+    const { goodsId } = goods;
+    const query = `goodsId=${goodsId}&quantity=${buyQuantity}`;
+    console.log(`장바구니 담기 시도 => ${goodsId}, 수량: ${buyQuantity}`);
+    const result = await instance.post(`/cart/add?${query}`);
     try {
       if (result.data != null) {
-        console.log('장바구니 담기 완료');
+        console.log(`장바구니 담기 성공, 상품ID: ${result.data.goodsId}`);
         return result.data;
       } else {
         console.log('장바구니 담기 실패');
@@ -69,8 +70,7 @@ const GoodsApi = {
     try {
       const result = await instance.post(`/goods/list`, pages);
       if (result.data != null) {
-        console.log(' getGoodsPageList 응답 결과:', result.data);
-        alert(`getGoodsPageList() 호출됨`);
+        console.log('getGoodsPageList 응답 결과:', result.data);
         return result.data;
       }
     } catch (err) {}
@@ -96,7 +96,7 @@ const GoodsApi = {
         },
       });
       if (result.data != null) {
-        alert(`상품등록 완료 => ${result.data}`);
+        console.log(`상품등록 완료 => ${result.data}`);
         return result.data;
       }
     } catch (err) {
@@ -110,7 +110,7 @@ const GoodsApi = {
     try {
       const result = await instance.post('/goods/modify', goods);
       if (result.data != null) {
-        alert(`상품수정 완료 => ${result.data}`);
+        console.log(`상품수정 완료 => ${result.data}`);
         return result.data;
       }
     } catch (err) {

@@ -99,36 +99,20 @@ public class CartServiceImpl implements CartService {
     // 상품을 장바구니에 추가
     @Override
     public ResponseEntity<?> addToCart(CustomUserDetails userDetails, //
-                                       GoodsRequestDTO goodsRequestDTO) {
-        System.out.println("** goodsRequestDTO goods_id : " + goodsRequestDTO.getGoodsId());
+                                       Long goodsId, int quantity) {
+        System.out.println("** goodsRequestDTO goods_id : " + goodsId);
         log.info("** CartServiceImpl 실행됨 **");
-        // 1. 현재 상태 확인
         // member 불러옴
         Member member = memberRepository.findById( //
                         userDetails.getMember().getId()) //
                 .orElseThrow(() //
                         -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
         System.out.println("** member.getId() : " + member.getId());
-        // goods 불러옴
-        Goods goods = goodsRepository.findById( //
-                        goodsRequestDTO.getGoodsId()) //
-                .orElseThrow(()  //
-                        -> new IllegalArgumentException("상품이 존재하지 않습니다."));
 
-        // 2. 조건 설정 (Builder 패턴 연습용, 이 부분은 해당 코드에서는 사용되지 않으므로 지워도 무방합니다.)
-        // 엔티티에 값 SET
-        Cart cart = Cart.builder() //
-                .goodsId(goods.getGoodsId()) //
-                .memberId(member.getId()) //
-                .quantity(goodsRequestDTO.getQuantity()) //
-                .regDate(LocalDate.now())
-                .build();
-
-        // 3. 수행
         // INSERT 수행
-        if (cartRepository.addToCart(member.getId(), goods.getGoodsId(), goodsRequestDTO.getQuantity(), LocalDate.now()) > 0) {
-            GoodsResponseDTO goodsResponseDTO = goodsMapper.toDto(goods);
-            return ResponseEntity.status(HttpStatus.OK).body(goodsResponseDTO);
+        if (cartRepository.addToCart(member.getId(), goodsId, quantity, LocalDate.now()) > 0) {
+            log.info("** cartRepository.addToCart() 실행됨 **");
+            return ResponseEntity.status(HttpStatus.OK).body("상품이 성공적으로 등록되었습니다.");
         } else {
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("상품을 장바구니에 추가하는 도중 오류가 발생하였습니다.");
         }
