@@ -233,5 +233,29 @@ public class MemberServiceImpl implements MemberService {
 
         return new ApiResponse(true, "배송지 수정이 완료되었습니다.");
     }
+    //조건 검사
+    @Override
+    @Transactional
+    public ApiResponse<String> conditionCheck(Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
+        //현재 회원의 등급을 가져온다.
+        GRADE grade =member.getGrade();
+
+            //로그인 수 검사
+            boolean isLogin = grade.getLogin() <= member.getLoginCount();
+            //누적 주문 수 검사
+            boolean isCount = grade.getCount() <= member.getTotalPurchaseCount();
+            //누적 주문 금액 검사
+            boolean isPrice = grade.getPrice() <= member.getTotalPurchasePrice();
+
+            //만약 모든 조건이 충족한다면 업그레이드
+            if( grade != GRADE.AURORA && isLogin && isCount && isPrice){
+                GRADE nextGrade = grade.getNextGrade();
+                member.setGrade(nextGrade);
+                return new ApiResponse<String>(true,nextGrade.getGradeName(),"업그레이드");
+            }else{
+                return new ApiResponse<String>(false,"아직 조건이 중촉되지않았습니다.");
+            }
+    }
 }

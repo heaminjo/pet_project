@@ -86,21 +86,21 @@ export default function Login() {
       setIsLogin(true);
 
       //마지막 로그인 시간 업데이트 및 업그레이드 유무 확인
-      loginUpdate();
+      conditionCheck();
       navigate("/");
     } else {
       alert(result.message);
     }
   };
 
-  //마지막 로그인 시간 업데이트 및 업그레이드 유무 확인
-  const loginUpdate = async () => {
-    const result = await MemberApi.lastLogin();
-    console.log(result);
-    result.data
-      ? //로그인 조건 충족
-        localStorage.setItem("loginMet", true)
-      : localStorage.setItem("loginMet", false);
+  //업그레이드 검사
+  const conditionCheck = async () => {
+    const result = await MemberApi.conditionCheck();
+
+    //만약 업그레이드 조건이 중족됐다면 이동
+    if (result.success) {
+      navigate("/upgrade/", { state: { nextGrade: result.data } });
+    }
   };
   //카카오에 인가 코드를 발급받아서 다시 /login으로 온다.
   const kakaoCode = async () => {
