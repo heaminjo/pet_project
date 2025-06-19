@@ -31,10 +31,9 @@ const ModalStyles = styled.div`
 
 const ModifyGoodsComp = styled.div`
   .container {
-    width: 900px;
-    height: 1200px;
+    width: 1000px;
     margin: 0 auto;
-    margin-top: 150px;
+    margin-top: 100px;
     font-family: 'Noto Sans KR', sans-serif;
 
     h2 {
