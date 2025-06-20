@@ -2,6 +2,7 @@ import styled from "styled-components";
 import UserStatistics from "../../components/admin/UserStatistics";
 import { useEffect, useState } from "react";
 import AdminApi from "../../api/AdminApi";
+import OrderStatistics from "../../components/admin/OrderStatistics";
 const StaticticsComp = styled.div`
   display: flex;
   flex-direction: column;
@@ -28,6 +29,7 @@ export default function StatisticsPage() {
       todayUser: result.todayUser, //오늘 로그인
       male: result.male, //남자
       female: result.female, //여자
+
       weekReg: Object.keys(result.userJoin), //최근 7일
       weekJoin: Object.values(result.userJoin),
     });
@@ -40,8 +42,14 @@ export default function StatisticsPage() {
   }, [userData]);
 
   return (
-    <StaticticsComp>
+    <StatisComp>
       <UserStatistics userData={userData} />
-    </StaticticsComp>
+      <OrderStatistics />
+    </StatisComp>
   );
 }
+const StatisComp = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+`;

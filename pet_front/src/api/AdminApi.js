@@ -138,6 +138,14 @@ const AdminApi = {
     );
     return result.data;
   },
+
+  //매출 통계 가져오기
+  getOrderStatistics: async (date) => {
+    const result = await instance.get(
+      `${KH_DOMAIN}/admin/statistics/order?date=${date}`
+    );
+    return result.data;
+  },
 };
 
 export default AdminApi;

@@ -43,20 +43,20 @@ export default function AdminMenu() {
           <p className="menu_title">회원 관리</p>
           <ul>
             <li>
+              <span onClick={() => navigate("/admin/page/statistics")}>
+                종합 통계
+              </span>
+            </li>
+            <li>
               <span onClick={() => navigate("/admin/page/userlist")}>
                 회원 목록 및 상세 정보
               </span>
             </li>
+
             <li>
               <span onClick={() => navigate("/admin/page/grade")}>
                 회원 등급 관리
               </span>
-            </li>
-            <li>
-              <span>회원 상태 관리</span>
-            </li>
-            <li>
-              <span>고객 활동 기록</span>
             </li>
           </ul>
         </div>

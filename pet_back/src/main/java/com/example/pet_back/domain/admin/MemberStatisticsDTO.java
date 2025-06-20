@@ -17,4 +17,8 @@ public class MemberStatisticsDTO {
     private Long male; //남자 수
     private Long female;//여자 수
     private Map<String, Long> userJoin;
+
+
+
+
 }

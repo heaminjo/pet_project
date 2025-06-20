@@ -22,6 +22,7 @@ const StatisticsComp = styled.div`
 
   h2 {
     margin-bottom: 20px;
+    text-align: center;
   }
   .m_statis_container {
     width: 1000px;
