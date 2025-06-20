@@ -8,6 +8,7 @@ import MyEditComp from "./MyEditStyle";
 import { PetContext } from "./MyPage";
 //회원 수정 페이지
 export default function MyEdit() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
   const navigate = useNavigate();
 
   const [selectImage, setSelectImage] = useState(null); //선택 프로필(서버용)

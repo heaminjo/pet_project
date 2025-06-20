@@ -7,10 +7,9 @@ import { useNavigate } from "react-router-dom";
 
 export default function MyGrade() {
   const { user } = useContext(PetContext);
+  const [lastGrade, setLastGrade] = useState(user.grade == "프리미엄 회원"); //마지막 등급인가?
   const navigate = useNavigate();
-  //조건 달성 여부
-  const [con01, setCon01] = useState(localStorage.getItem("loginMet"));
-  console.log(con01);
+  window.scrollTo({ top: 0, behavior: "smooth" });
   //회원의 등급에 따른 등급 정보
   const gradeStyleMap = {
     새싹회원: {
@@ -67,7 +66,7 @@ export default function MyGrade() {
     { name: "초급회원", color: "#ffe99a" },
     { name: "중급회원", color: "#ffd586" },
     { name: "상급회원", color: "#ffaaaa" },
-    { name: "프리미엄회원", color: "#ff9898" },
+    { name: "프리미엄 회원", color: "#ff9898" },
   ];
 
   return (

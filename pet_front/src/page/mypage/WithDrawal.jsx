@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Modal from "../../modal/Modal";
 
 export default function WithDrawal() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
   const WithDrawalComp = styled.div`
     .withDrawal_container {
       width: 800px;

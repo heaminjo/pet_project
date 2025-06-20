@@ -1,9 +1,9 @@
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import AddGoods from './AddGoods';
-import React, { useEffect, useState } from 'react';
-import GoodsApi from '../../../api/GoodsApi';
-import styled from 'styled-components';
-import PageNumber from '../../util/PageNumber';
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import AddGoods from "./AddGoods";
+import React, { useEffect, useState } from "react";
+import GoodsApi from "../../../api/GoodsApi";
+import styled from "styled-components";
+import PageNumber from "../../util/PageNumber";
 
 const ModalStyles = styled.div`
   .modal-backdrop {
@@ -34,7 +34,7 @@ const ModifyGoodsComp = styled.div`
     width: 1000px;
     margin: 0 auto;
     margin-top: 100px;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: "Noto Sans KR", sans-serif;
 
     h2 {
       font-size: 24px;
@@ -105,8 +105,8 @@ const ModifyGoodsComp = styled.div`
 export default function ModifyGoods() {
   const navigate = useNavigate();
   const location = useLocation();
-  const goodsImg = process.env.PUBLIC_URL + '/images/pic1.png';
-  const imgUrl = 'http://localhost:8080/resources/webapp/userImages/';
+  const goodsImg = process.env.PUBLIC_URL + "/images/pic1.png";
+  const imgUrl = "http://localhost:8080/resources/webapp/userImages/";
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상 태 변 수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 팝업
@@ -129,7 +129,7 @@ export default function ModifyGoods() {
 
   // 별점 (배열)
   const renderStars = (rating) => {
-    return '⭐'.repeat(Math.floor(rating)); // 반올림이나 소수점 무시
+    return "⭐".repeat(Math.floor(rating)); // 반올림이나 소수점 무시
   };
 
   // 페이징
@@ -137,10 +137,10 @@ export default function ModifyGoods() {
     // 검색조건 (URL에서 추출)
     const params = new URLSearchParams(location.search);
 
-    const searchKeyword = params.get('searchKeyword') || ''; // 검색어
-    const searchType = params.get('searchType') || 'all'; // 검색필터
-    const sortParam = params.get('sort') || 'desc';
-    const pageParam = parseInt(params.get('page')) || 0;
+    const searchKeyword = params.get("searchKeyword") || ""; // 검색어
+    const searchType = params.get("searchType") || "all"; // 검색필터
+    const sortParam = params.get("sort") || "desc";
+    const pageParam = parseInt(params.get("page")) || 0;
     const pages = {
       page: pageParam,
       size: 4,
@@ -164,14 +164,16 @@ export default function ModifyGoods() {
         totalPages: result.totalPages,
       });
     } catch (err) {
-      console.error('getPageList 실패: ', err);
+      console.error("getPageList 실패: ", err);
     }
   };
 
   // 상품1개 클릭시
   const clickProd = (item) => {
-    alert(`clickProd 선택된 상품: ${item.goodsId}, ${item.goodsName}, ${item.goodsState}, ${item.description}, ${item.price}`);
-    navigate('/goods/order', { state: { goods: item } });
+    alert(
+      `clickProd 선택된 상품: ${item.goodsId}, ${item.goodsName}, ${item.goodsState}, ${item.description}, ${item.price}`
+    );
+    navigate("/goods/order", { state: { goods: item } });
   };
 
   // 상품 수정
@@ -180,7 +182,7 @@ export default function ModifyGoods() {
       const result = await GoodsApi.modifyGoods(item);
       // 결과
     } catch (err) {
-      console.error('getPageList 실패: ', err);
+      console.error("getPageList 실패: ", err);
     }
   };
 
@@ -192,29 +194,37 @@ export default function ModifyGoods() {
   // 모달
   useEffect(() => {
     if (showModal) {
-      document.body.style.overflow = 'hidden'; // 스크롤 비활성화
+      document.body.style.overflow = "hidden"; // 스크롤 비활성화
     } else {
-      document.body.style.overflow = 'auto'; // 스크롤 복구
+      document.body.style.overflow = "auto"; // 스크롤 복구
     }
 
     return () => {
-      document.body.style.overflow = 'auto'; // 컴포넌트 언마운트시 복구
+      document.body.style.overflow = "auto"; // 컴포넌트 언마운트시 복구
     };
   }, [showModal]);
 
   return (
     <ModifyGoodsComp>
-      <div className='container'>
+      <div className="container">
         <h2>[관리자 페이지] 상품 등록 내역 (수정/삭제) 페이지 </h2>
-        <span>설명: 관리자가 상품에 대한 상세정보를 입력하고 등록하는 페이지</span>
+        <span>
+          설명: 관리자가 상품에 대한 상세정보를 입력하고 등록하는 페이지
+        </span>
         <hr />
-        <button style={{ width: '200px', height: '50px' }} onClick={() => setShowModal(true)}>
+        <button
+          style={{ width: "200px", height: "50px" }}
+          onClick={() => setShowModal(true)}
+        >
           + 상품 추가
         </button>
         <ModalStyles>
           {showModal && (
-            <div className='modal-backdrop' onClick={() => setShowModal(false)}>
-              <div className='modal-content' onClick={(e) => e.stopPropagation()}>
+            <div className="modal-backdrop" onClick={() => setShowModal(false)}>
+              <div
+                className="modal-content"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <AddGoods
                   onClose={() => setShowModal(false)}
                   refreshList={getPageList} // ← 리스트 새로고침 함수 전달
@@ -224,28 +234,35 @@ export default function ModifyGoods() {
           )}
         </ModalStyles>
 
-        <section className='list'>
+        <section className="list">
           {Array.isArray(goods) &&
             goods?.map((item, index) => (
-              <div className='goodslist' key={index} onClick={() => clickProd(item)}>
-                <div className='prodimg'>
-                  <img src={`${imgUrl}${item.imageFile}`} alt={item.goodsName} />
+              <div
+                className="goodslist"
+                key={index}
+                onClick={() => clickProd(item)}
+              >
+                <div className="prodimg">
+                  <img src={`${item.imageFile}`} alt={item.goodsName} />
                 </div>
-                <div className='goodsdetail'>
+                <div className="goodsdetail">
                   <div>
                     <b>{item.goodsName} </b>
                   </div>
                   <div>
-                    {item.description} {', '}
+                    {item.description} {", "}
                     {item.quantity} 개
                   </div>
                   <div>{item.price} 원</div>
                   <div>
                     <span>{renderStars(item.rating)}</span>
-                    <span style={{ color: 'red', fontSize: '12px' }}> {'( ' + item.reviewNum + ' )'} </span>
+                    <span style={{ color: "red", fontSize: "12px" }}>
+                      {" "}
+                      {"( " + item.reviewNum + " )"}{" "}
+                    </span>
                   </div>
                 </div>
-                <div className='modify'>
+                <div className="modify">
                   <button onClick={() => modify(item)}>수정</button>
                   <button>삭제</button>
                 </div>

@@ -7,6 +7,7 @@ import OrderApi from "../../../api/OrderApi";
 import Popup from "./Popup";
 
 export default function Pay() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
   const location = useLocation();
   const navigate = useNavigate();
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상태변수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -201,7 +202,6 @@ export default function Pay() {
 
     //만약 업그레이드 조건이 중족됐다면 이동
     if (result.success) {
-      alert(result.data);
       navigate("/upgrade", { state: { nextGrade: result.data } });
     }
   };
@@ -385,7 +385,7 @@ export default function Pay() {
               <div className="prod" key={index}>
                 <div className="prodleft">
                   <img
-                    src={`${imgUrl}${item.imageFile}`}
+                    src={`${item.imageFile}`}
                     alt={item.goodsName}
                     className="prodimg"
                     onClick={() =>

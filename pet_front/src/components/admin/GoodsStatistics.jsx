@@ -31,7 +31,7 @@ export default function GoodsStatistics() {
       <div className="goods_statistics_inner">
         <div className="date_statis">
           <h3>
-            상품 순위 <span>(판매 수 기준)</span>
+            상품 순위 <span>(매출액 기준)</span>
           </h3>
           <div className="data_container">
             <div className="goods_data">

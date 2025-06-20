@@ -15,6 +15,8 @@ import { LuMoveRight } from "react-icons/lu";
 import { TbHandFingerRight } from "react-icons/tb";
 
 export default function MyInfo() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
   const { user } = useContext(PetContext);
   const location = useLocation();
   const navigate = useNavigate();

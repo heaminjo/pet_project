@@ -5,6 +5,8 @@ import PageNumber from "../../components/util/PageNumber";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function MyBoardList() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
   const navigate = useNavigate();
   const location = useLocation();
 

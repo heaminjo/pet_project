@@ -1,3 +1,4 @@
+import { FiAlertTriangle } from "react-icons/fi";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -10,11 +11,8 @@ export default function Error() {
       <div className="error_inner">
         <div className="error_container">
           <h1>{message}</h1>
-          <div>
-            <img
-              src="http://localhost:8080/uploads/sign-3228713_1280.png"
-              alt="권한 없는 이미지"
-            />
+          <div className="icon_">
+            <FiAlertTriangle />
             <button onClick={() => navigate("/")}>메인페이지로 ▶</button>
           </div>
         </div>
@@ -44,19 +42,24 @@ const ErrorComp = styled.div`
       h1 {
         margin: 10px 0;
       }
-      img {
-        width: 250px;
-        height: 300px;
-      }
-      button {
-        height: 50px;
-        width: 120px;
-        border: none;
-        background-color: #000;
-        color: #fff;
-        font-weight: bold;
-        border-radius: 10px;
-        cursor: pointer;
+      .icon_ {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        svg {
+          font-size: 200px;
+          color: red;
+        }
+        button {
+          height: 50px;
+          width: 120px;
+          border: none;
+          background-color: #000;
+          color: #fff;
+          font-weight: bold;
+          border-radius: 10px;
+          cursor: pointer;
+        }
       }
     }
   }

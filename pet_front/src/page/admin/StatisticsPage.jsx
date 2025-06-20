@@ -37,21 +37,40 @@ export default function StatisticsPage() {
     console.log(Object.keys(result.userJoin));
     console.log(Object.values(result.userJoin));
   };
-  useEffect(() => {
-    console.log("weekReg", userData.weekReg);
-    console.log("weekJoin", userData.weekJoin);
-  }, [userData]);
 
   return (
     <StatisComp>
-      <UserStatistics userData={userData} />
-      <OrderStatistics />
-      <GoodsStatistics />
+      <div className="move_btn">
+        <button>회원통계</button>
+        <button>매출분석</button>
+        <button>상품통계</button>
+      </div>
+      <div className="statis_inner">
+        <UserStatistics userData={userData} />
+        <hr />
+        <OrderStatistics />
+        <hr />
+        <GoodsStatistics />
+      </div>
     </StatisComp>
   );
 }
 const StatisComp = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 100px;
+  .move_btn {
+    width: 1000px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    height: 100px;
+    line-height: 100px;
+    button {
+      width: 200px;
+      height: 40px;
+    }
+  }
+  .statis_inner {
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+  }
 `;

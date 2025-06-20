@@ -7,6 +7,7 @@ import MemberApi from "../../api/MemberApi";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 export default function UpdatePw() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
   const navigate = useNavigate();
   const schema = yup.object({
     password: yup.string().required("필수 입력 입니다."),

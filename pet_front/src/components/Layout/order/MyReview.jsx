@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import GoodsApi from '../../../api/GoodsApi';
-import OrderApi from '../../../api/OrderApi';
-import PageNumber from '../../util/PageNumber';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import GoodsApi from "../../../api/GoodsApi";
+import OrderApi from "../../../api/OrderApi";
+import PageNumber from "../../util/PageNumber";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const MyReviewComp = styled.div`
   .container {
@@ -13,6 +13,7 @@ const MyReviewComp = styled.div`
 
 // 리뷰 페이지
 export default function MyReview() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
   const navigate = useNavigate();
   const location = useLocation();
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상 태 변 수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -20,9 +21,9 @@ export default function MyReview() {
   const [reviews, setReviews] = useState([]);
 
   // 페이징 관련 상태변수
-  const [type, setType] = useState('all');
-  const [keyword, setKeyword] = useState('');
-  const [sort, setSort] = useState('desc');
+  const [type, setType] = useState("all");
+  const [keyword, setKeyword] = useState("");
+  const [sort, setSort] = useState("desc");
   const [page, setPage] = useState(0);
 
   // 페이징 정보 상태변수 (현재 페이징 상태 핸들링 위함)
@@ -61,7 +62,7 @@ export default function MyReview() {
         totalPages: result.totalPages,
       });
     } catch (err) {
-      console.error('getPageList 실패: ', err);
+      console.error("getPageList 실패: ", err);
     }
   };
 
@@ -71,7 +72,7 @@ export default function MyReview() {
 
   return (
     <MyReviewComp>
-      <div className='container'>
+      <div className="container">
         <h2>내가 작성한 리뷰 목록</h2>
       </div>
     </MyReviewComp>

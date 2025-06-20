@@ -11,6 +11,7 @@ export default function MyPage() {
   const navigate = useNavigate();
   useEffect(() => {
     getLoginUser();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   const getLoginUser = async () => {

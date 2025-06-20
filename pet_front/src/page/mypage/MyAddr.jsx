@@ -6,6 +6,8 @@ import AddressInsert from "../../components/mypage/AddressInsert";
 import Modal from "../../modal/Modal";
 
 export default function MyAddr() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
   const navigate = useNavigate();
   const [isInsert, setIsInsert] = useState(false); //추가 창
   const [isUpdate, setIsUpdate] = useState(false); //추가 창
