@@ -3,6 +3,8 @@ package com.example.pet_back.service.goods;
 import com.example.pet_back.config.FileUploadProperties;
 import com.example.pet_back.constant.ORDERSTATE;
 import com.example.pet_back.domain.address.AddressResponseDTO;
+import com.example.pet_back.domain.admin.OrderStatisticsDTO;
+import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.goods.*;
 import com.example.pet_back.entity.*;
 import com.example.pet_back.jwt.CustomUserDetails;
@@ -20,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -236,5 +239,24 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return response;
+    }
+    //주문 통계
+    @Override
+    public OrderStatisticsDTO orderStatistics(String date) {
+        LocalDate today = LocalDate.now();
+        LocalDate start;
+
+        switch (date) {
+            case "1D": start = today; break;
+            case "7D": start = today.minusDays(7); break;
+            case "1M": start = today.minusMonths(1); break;
+            case "6M": start = today.minusMonths(6); break;
+            default: throw new IllegalArgumentException("지원하지 않는 기간: " + date);
+        }
+
+        LocalDate end = today.plusDays(1); // 오늘 하루 포함
+
+        OrderStatisticsDTO dto = orderRepository.orderStatistics(start,end);
+        return dto;
     }
 }

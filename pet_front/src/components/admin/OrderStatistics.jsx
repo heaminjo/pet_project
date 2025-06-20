@@ -31,28 +31,28 @@ export default function OrderStatistics() {
                   className={date == "INTERVAL 1 DAY" ? "select" : "not"}
                   onClick={(e) => dateClick(e)}
                 >
-                  <input type="radio" name="date" value="INTERVAL 1 DAY" />
+                  <input type="radio" name="date" value="1D" />
                   오늘
                 </label>
                 <label
                   className={date == "INTERVAL 7 DAY" ? "select" : "not"}
                   onClick={(e) => dateClick(e)}
                 >
-                  <input type="radio" name="date" value="INTERVAL 7 DAY" />
+                  <input type="radio" name="date" value="7D" />
                   최근 7일
                 </label>
                 <label
                   className={date == "INTERVAL 1 MONTHS" ? "select" : "not"}
                   onClick={(e) => dateClick(e)}
                 >
-                  <input type="radio" name="date" value="INTERVAL 1 MONTHS" />
+                  <input type="radio" name="date" value="1M" />
                   최근 1개월
                 </label>
                 <label
                   className={date == "INTERVAL 6 MONTHS" ? "select" : "not"}
                   onClick={(e) => dateClick(e)}
                 >
-                  <input type="radio" name="date" value="INTERVAL 6 MONTHS" />
+                  <input type="radio" name="date" value="6M" />
                   최근 6개월
                 </label>
               </div>

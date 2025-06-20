@@ -1,5 +1,7 @@
 package com.example.pet_back.service.goods;
 
+import com.example.pet_back.domain.admin.OrderStatisticsDTO;
+import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.goods.OrderResponseDTO;
 import com.example.pet_back.domain.goods.PayRequestDTO;
 
@@ -23,5 +25,7 @@ public interface OrderService {
     //주문 리스트
     public  List<OrderResponseDTO> userOrderList(Long userId);
 
+    //주문 통계
+    public OrderStatisticsDTO orderStatistics (String date);
 
 }

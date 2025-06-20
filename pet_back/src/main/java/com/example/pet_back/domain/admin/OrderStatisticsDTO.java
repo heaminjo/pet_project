@@ -12,8 +12,8 @@ import java.util.Map;
 public class OrderStatisticsDTO {
 
     //주문 통계
-    private int totalPurchaseCount;  //기간별 매출 금액
+    private Long totalPurchaseCount;  //기간별 매출 금액
     private Long totalPurchasePrice; // 기간별 주문 수
     private double avgPrice; //평균 주문 금액
-    private Map<String, Long> userJoin;   //최근 7일 일일 매출 변화
+
 }

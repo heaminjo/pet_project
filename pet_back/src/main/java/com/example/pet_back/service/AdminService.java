@@ -36,5 +36,4 @@ public interface AdminService {
     public ApiResponse bannerDelete(Long id);
     //베스트 삭제
     public ApiResponse bestDelete(Long id);
-
 }
