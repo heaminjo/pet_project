@@ -11,7 +11,7 @@ export default function Grade() {
   const navigate = useNavigate();
   //내 등급 클릭 시 로그인 여부에따른 이동
   const myGrade = () => {
-    if (localStorage.getItem("loginName") != null) {
+    if (sessionStorage.getItem("loginName") != null) {
       navigate("/user/mypage/mygrade");
     } else {
       alert("로그인이 필요한 서비스 입니다.");

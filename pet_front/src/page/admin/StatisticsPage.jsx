@@ -3,6 +3,7 @@ import UserStatistics from "../../components/admin/UserStatistics";
 import { useEffect, useState } from "react";
 import AdminApi from "../../api/AdminApi";
 import OrderStatistics from "../../components/admin/OrderStatistics";
+import GoodsStatistics from "../../components/admin/GoodsStatistics";
 const StaticticsComp = styled.div`
   display: flex;
   flex-direction: column;
@@ -45,6 +46,7 @@ export default function StatisticsPage() {
     <StatisComp>
       <UserStatistics userData={userData} />
       <OrderStatistics />
+      <GoodsStatistics />
     </StatisComp>
   );
 }

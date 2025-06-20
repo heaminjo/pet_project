@@ -1,5 +1,6 @@
 package com.example.pet_back.service.goods;
 
+import com.example.pet_back.domain.admin.GoodsRankDTO;
 import com.example.pet_back.domain.goods.OrderDetailResponseDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
@@ -118,4 +119,10 @@ public class OrderDetailServiceImpl implements OrderDetailService{
     }
 
 
+    @Override
+    public List<GoodsRankDTO> goodsRank() {
+        List<GoodsRankDTO> list = orderDetailRepository.goodsRank();
+
+        return list;
+    }
 }

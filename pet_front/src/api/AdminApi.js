@@ -146,6 +146,14 @@ const AdminApi = {
     );
     return result.data;
   },
+
+  //통계용 상품 랭크 리스트
+  getGoodsRank: async () => {
+    const result = await instance.get(
+      `${KH_DOMAIN}/admin/statistics/goods/rank`
+    );
+    return result.data;
+  },
 };
 
 export default AdminApi;

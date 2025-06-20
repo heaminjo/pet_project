@@ -63,6 +63,9 @@ public class GoodsServiceImpl implements GoodsService {
     public ResponseEntity<?> selectOne(Long goodsId) {
         log.info("** GoodsServiceImpl 실행됨 **");
         Goods goods = goodsRepository.findById(goodsId).get();
+
+        //이미지 파일 수정 (조해민)
+        goods.setImageFile(fileUploadProperties.getUrl()+goods.getImageFile());
         return ResponseEntity.status(HttpStatus.OK).body(goods);
     }
 
@@ -192,7 +195,7 @@ public class GoodsServiceImpl implements GoodsService {
                         .price(goods.getPrice())
                         .description(goods.getDescription())
                         .goodsState(goods.getGoodsState())
-                        .imageFile(goods.getImageFile())
+                        .imageFile(fileUploadProperties.getUrl()+goods.getImageFile())
                         .rating(goods.getRating())
                         .views(goods.getViews())
                         .reviewNum(goods.getReviewNum())

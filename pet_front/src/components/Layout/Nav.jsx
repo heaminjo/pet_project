@@ -9,16 +9,11 @@ export default function Nav() {
 
   //로그인 체크
   //비 로그인 시 로그인 화면으로 이동동
-  const loginCheck = (move) => {
-    if (localStorage.getItem("loginName") == null) {
-      navigate(move);
-    } else {
-      alert("로그인이 필요한 서비스입니다");
-      navigate("/login");
-    }
-  };
+
   const clickMyPage = () => {
-    if (localStorage.getItem("loginName") != null) {
+    if (sessionStorage.getItem("role") == "ROLE_ADMIN") {
+      navigate("/admin/page/statistics");
+    } else if (sessionStorage.getItem("loginName") != null) {
       navigate("/user/mypage/myinfo");
     } else {
       alert("로그인이 필요한 서비스입니다.");
@@ -35,9 +30,12 @@ export default function Nav() {
           <li onClick={() => navigate("/grade")}> 등급</li>
 
           <li onClick={() => navigate("/boardList/free")}>게시판</li>
-          <li onClick={() => clickMyPage()}>마이페이지</li>
 
-          {/* <li><Link to="/boardList">게시판</Link></li> */}
+          {sessionStorage.getItem("role") == "ROLE_ADMIN" ? (
+            <li onClick={() => clickMyPage()}>관리자페이지</li>
+          ) : (
+            <li onClick={() => clickMyPage()}>마이페이지</li>
+          )}
         </ul>
       </div>
     </NavComp>

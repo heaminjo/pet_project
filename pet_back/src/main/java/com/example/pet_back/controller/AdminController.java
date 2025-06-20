@@ -10,6 +10,7 @@ import com.example.pet_back.service.AdminService;
 import com.example.pet_back.service.ImageService;
 import com.example.pet_back.service.MemberService;
 import com.example.pet_back.service.goods.GoodsService;
+import com.example.pet_back.service.goods.OrderDetailService;
 import com.example.pet_back.service.goods.OrderService;
 import jakarta.persistence.criteria.Order;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ public class AdminController {
     private final GoodsService goodsService;
     private final ImageService imageService;
     private final OrderService orderService;
+    private final OrderDetailService orderDetailService;
     //관리자 조회
     @GetMapping("/detail")
     public ResponseEntity<?> memberDetail(@AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -141,4 +143,11 @@ public class AdminController {
     public ResponseEntity<OrderStatisticsDTO> orderStatistics(@RequestParam ("date") String date){
         return ResponseEntity.ok(orderService.orderStatistics(date));
     }
+
+    //상품 순위 통계
+    @GetMapping("/statistics/goods/rank")
+    public ResponseEntity<List<GoodsRankDTO>> goodsRank(){
+        return ResponseEntity.ok(orderDetailService.goodsRank());
+    }
+
 }

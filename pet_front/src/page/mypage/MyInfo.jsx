@@ -75,17 +75,18 @@ export default function MyInfo() {
             </div>
           </div>
         </div>
-
-        <div className="cart_">
-          <i>{user.cartCount}개의 상품이 장바구니에서 기다리고있어요~</i>
-          <div
-            className="cart_icon"
-            onClick={() => navigate("/user/mypage/cart/list")}
-          >
-            <PiShoppingCartFill />
-            <LuMoveRight />
+        {user.cartCount > 0 && (
+          <div className="cart_">
+            <i>{user.cartCount}개의 상품이 장바구니에서 기다리고있어요~</i>
+            <div
+              className="cart_icon"
+              onClick={() => navigate("/user/mypage/cart/list")}
+            >
+              <PiShoppingCartFill />
+              <LuMoveRight />
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <div className="order_">
         <h2>

@@ -247,6 +247,7 @@ public class OrderServiceImpl implements OrderService {
         LocalDate start;
 
         switch (date) {
+            case "ALL": start = LocalDate.of(2000,1,1); break;
             case "1D": start = today; break;
             case "7D": start = today.minusDays(7); break;
             case "1M": start = today.minusMonths(1); break;
@@ -254,7 +255,7 @@ public class OrderServiceImpl implements OrderService {
             default: throw new IllegalArgumentException("지원하지 않는 기간: " + date);
         }
 
-        LocalDate end = today.plusDays(1); // 오늘 하루 포함
+        LocalDate end = LocalDate.of(3000,1,1); // 오늘 하루 포함
 
         OrderStatisticsDTO dto = orderRepository.orderStatistics(start,end);
         return dto;

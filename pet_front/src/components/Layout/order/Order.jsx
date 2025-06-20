@@ -97,6 +97,7 @@ export default function Order() {
   };
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     console.log(
       `상품정보 확인: ${goods.goodsId}, ${goods.goodsName}, ${goods.goodsState}, ${goods.description}, ${goods.price}, 수량: ${goods.quantity}`
     );
@@ -112,7 +113,7 @@ export default function Order() {
         <section className="product">
           <div className="left">
             <img
-              src={`${imgUrl}${goods.imageFile}`}
+              src={`${goods.imageFile}`}
               alt={goods.goodsName}
               className="prodimg"
             />

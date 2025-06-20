@@ -30,4 +30,5 @@ public interface OrderRepository extends JpaRepository<Orders, Long> {
     OrderStatisticsDTO orderStatistics(@Param("startDate") LocalDate startDate,
                                        @Param("endDate") LocalDate endDate);
 
+
 }

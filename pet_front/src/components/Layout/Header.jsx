@@ -29,13 +29,6 @@ export default function Header() {
               <li>
                 <span>{sessionStorage.getItem("loginName")}님 환영합니다</span>
               </li>
-              {sessionStorage.getItem("role") == "ROLE_ADMIN" && (
-                <li>
-                  <span onClick={() => navigate("/admin/page/statistics")}>
-                    관리자 메뉴
-                  </span>
-                </li>
-              )}
               <li>
                 <span onClick={() => clickLogout()}>로그아웃</span>
               </li>

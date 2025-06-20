@@ -1,16 +1,16 @@
-import GoodsListComp from './GoodsListStyle.js';
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import GoodsApi from '../../../api/GoodsApi';
-import PageNumber from '../../util/PageNumber.jsx';
+import GoodsListComp from "./GoodsListStyle.js";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import GoodsApi from "../../../api/GoodsApi";
+import PageNumber from "../../util/PageNumber.jsx";
 
 export default function GoodsList() {
   const navigate = useNavigate();
   const location = useLocation();
-  const goodsImg = process.env.PUBLIC_URL + '/images/pic1.png';
-  const imgUrl = 'http://localhost:8080/resources/webapp/userImages/';
-  const EMPTY_HEART = '🤍';
-  const FULL_HEART = '💖';
+  const goodsImg = process.env.PUBLIC_URL + "/images/pic1.png";
+  const imgUrl = "http://localhost:8080/resources/webapp/userImages/";
+  const EMPTY_HEART = "🤍";
+  const FULL_HEART = "💖";
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상 태 변 수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const [goods, setGoods] = useState([]); // 페이지에 사용되는 goods
@@ -22,10 +22,10 @@ export default function GoodsList() {
   // 검색 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 쿼리스트링에서 현재 상태값 추출
   const queryParams = new URLSearchParams(location.search);
-  const page = parseInt(queryParams.get('page')) || 0;
-  const keyword = queryParams.get('searchKeyword') || '';
-  const type = queryParams.get('searchType') || 'all';
-  const sort = queryParams.get('sort') || 'desc';
+  const page = parseInt(queryParams.get("page")) || 0;
+  const keyword = queryParams.get("searchKeyword") || "";
+  const type = queryParams.get("searchType") || "all";
+  const sort = queryParams.get("sort") || "desc";
 
   // 페이징 정보 상태변수 (현재 페이징 상태 핸들링 위함)
   const [paging, setPaging] = useState({
@@ -49,12 +49,12 @@ export default function GoodsList() {
   //검색 버튼 클릭
   const searchClick = (e) => {
     e.preventDefault();
-    handleChangeQuery('searchKeyword', keyword);
+    handleChangeQuery("searchKeyword", keyword);
   };
 
   //검색버튼 엔터
   const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       //검색
       searchClick();
     }
@@ -62,13 +62,15 @@ export default function GoodsList() {
 
   // 상품1개 클릭시
   const clickProd = (item) => {
-    console.log(`clickProd 선택된 상품: ${item.goodsId}, ${item.goodsName}, ${item.goodsState}, ${item.description}, ${item.price}`);
-    navigate('/goods/order', { state: { goods: item } });
+    console.log(
+      `clickProd 선택된 상품: ${item.goodsId}, ${item.goodsName}, ${item.goodsState}, ${item.description}, ${item.price}`
+    );
+    navigate("/goods/order", { state: { goods: item } });
   };
 
   // 별점 (배열)
   const renderStars = (rating) => {
-    return '⭐'.repeat(Math.floor(rating)); // 반올림이나 소수점 무시
+    return "⭐".repeat(Math.floor(rating)); // 반올림이나 소수점 무시
   };
 
   // 페이징
@@ -96,7 +98,7 @@ export default function GoodsList() {
         totalPages: result.totalPages,
       });
     } catch (err) {
-      console.error('getPageList 실패: ', err);
+      console.error("getPageList 실패: ", err);
     }
   };
 
@@ -106,24 +108,25 @@ export default function GoodsList() {
       const response = await GoodsApi.getCategoryList();
       setCategories(response);
     } catch (error) {
-      console.error('카테고리 불러오기 실패:', error);
+      console.error("카테고리 불러오기 실패:", error);
     }
   };
 
   // 페이징, 검색 조건
   useEffect(() => {
     getPageList();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [location.search]);
 
   const handleChangeQuery = (key, value) => {
     queryParams.set(key, value);
-    if (key !== 'page') queryParams.set('page', 0);
+    if (key !== "page") queryParams.set("page", 0);
     navigate(`?${queryParams.toString()}`);
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
-    handleChangeQuery('searchKeyword', keyword);
+    handleChangeQuery("searchKeyword", keyword);
   };
 
   useEffect(() => {
@@ -132,26 +135,35 @@ export default function GoodsList() {
 
   return (
     <GoodsListComp>
-      <div className='container'>
+      <div className="container">
         <div>
           <form
-            className='search-bar'
+            className="search-bar"
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              margin: '30px 0 0 0',
+              display: "flex",
+              alignItems: "center",
+              margin: "30px 0 0 0",
             }}
             onSubmit={(e) => {
               e.preventDefault(); // 폼 제출 시 새로고침 방지
               searchClick();
-            }}>
-            <div className='custom-select'>
-              <select value={sort} onChange={(e) => handleChangeQuery('sort', e.target.value)}>
-                <option value='desc'>최신순</option>
-                <option value='asc'>오래된 순</option>
+            }}
+          >
+            <div className="custom-select">
+              <select
+                value={sort}
+                onChange={(e) => handleChangeQuery("sort", e.target.value)}
+              >
+                <option value="desc">최신순</option>
+                <option value="asc">오래된 순</option>
               </select>
-              <select value={type} onChange={(e) => handleChangeQuery('searchType', e.target.value)}>
-                <option value='all'>전체</option>
+              <select
+                value={type}
+                onChange={(e) =>
+                  handleChangeQuery("searchType", e.target.value)
+                }
+              >
+                <option value="all">전체</option>
                 {categories.map((cat) => (
                   <option key={cat.categoryId} value={cat.categoryId}>
                     {cat.categoryName}
@@ -159,10 +171,15 @@ export default function GoodsList() {
                 ))}
               </select>
             </div>
-            <input type='text' defaultValue={keyword} onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)} onBlur={(e) => handleChangeQuery('searchKeyword', e.target.value)} />
+            <input
+              type="text"
+              defaultValue={keyword}
+              onKeyDown={(e) => e.key === "Enter" && handleSearch(e)}
+              onBlur={(e) => handleChangeQuery("searchKeyword", e.target.value)}
+            />
 
-            <button className='search_btn' onClick={() => searchClick()}>
-              <span role='img' aria-label='search'>
+            <button className="search_btn" onClick={() => searchClick()}>
+              <span role="img" aria-label="search">
                 🔍
               </span>
             </button>
@@ -170,49 +187,75 @@ export default function GoodsList() {
         </div>
         <br />
         <hr />
-        <div className='body'>
+        <div className="body">
           <h2>BEST SELLER</h2>
-          <section className='list'>
+          <section className="list">
             {Array.isArray(goods) &&
               goods?.map((item, index) => (
-                <div className='goodslist' key={index} onClick={() => clickProd(item)}>
-                  <img src={`${imgUrl}${item.imageFile}`} alt={item.goodsName} className='prodimg' />
+                <div
+                  className="goodslist"
+                  key={index}
+                  onClick={() => clickProd(item)}
+                >
+                  <img
+                    src={`${item.imageFile}`}
+                    alt={item.goodsName}
+                    className="prodimg"
+                  />
                   <div>
                     <b>{item.goodsName} </b>
                   </div>
                   <div>
-                    {item.description} {', '}
+                    {item.description} {", "}
                     {item.quantity} 개
                   </div>
                   <div>{item.price} 원</div>
                   <div>
                     <span>{renderStars(item.rating)}</span>
-                    <span style={{ color: 'red', fontSize: '12px' }}> {'( ' + item.reviewNum + ' )'} </span>
+                    <span style={{ color: "red", fontSize: "12px" }}>
+                      {" "}
+                      {"( " + item.reviewNum + " )"}{" "}
+                    </span>
                   </div>
                 </div>
               ))}
           </section>
-          <PageNumber page={page} setPage={(p) => handleChangeQuery('page', p)} paging={paging} />
+          <PageNumber
+            page={page}
+            setPage={(p) => handleChangeQuery("page", p)}
+            paging={paging}
+          />
           <br />
           <hr />
           <h2>자주 산 상품</h2>
 
-          <section className='list'>
+          <section className="list">
             {Array.isArray(goods) &&
               goods.map((item, index) => (
-                <div className='goodslist' key={index} onClick={() => clickProd(item)}>
-                  <img src={`${imgUrl}${item.imageFile}`} alt={item.goodsName} className='prodimg' />
+                <div
+                  className="goodslist"
+                  key={index}
+                  onClick={() => clickProd(item)}
+                >
+                  <img
+                    src={`${imgUrl}${item.imageFile}`}
+                    alt={item.goodsName}
+                    className="prodimg"
+                  />
                   <div>
                     <b>{item.goodsName} </b>
                   </div>
                   <div>
-                    {item.description} {', '}
+                    {item.description} {", "}
                     {item.quantity} 개
                   </div>
                   <div>{item.price} 원</div>
                   <div>
                     <span>{renderStars(item.rating)}</span>
-                    <span style={{ color: 'red', fontSize: '12px' }}> {'( ' + item.reviewNum + ' )'} </span>
+                    <span style={{ color: "red", fontSize: "12px" }}>
+                      {" "}
+                      {"( " + item.reviewNum + " )"}{" "}
+                    </span>
                   </div>
                 </div>
               ))}
