@@ -66,6 +66,7 @@ export default function ReviewList({ stars, goodsId, reviewNum, imgUrl }) {
       type: type,
     };
     try {
+
       const result = await GoodsApi.getReviewsPageList(pages, goodsId);
       // 1. 리뷰 목록
       setReviews(result.content);

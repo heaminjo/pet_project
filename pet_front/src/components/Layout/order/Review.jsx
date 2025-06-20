@@ -43,20 +43,29 @@ export default function Review() {
   ];
 
   // 리뷰등록
-  const regReview = async (reviews) => {
+  const regReview = async (reviews, userImage) => {
+    console.log(`goodsId = ${reviews.goodsId}`);
     console.log(`별점: ${score}`);
     const review = {
       memberId: '',
       goodsId: goods.goodsId,
-      orderDetailId: '',
-      score: score, // 여기 중요!
+      orderDetailId: goods.orderDetailId,
+      score: score,
       title: comment,
       content: content,
-      imageFile: reviews.imageFile,
     };
+    const formData = new FormData();
+    // JSON 문자열로 변환한 뒤 Blob으로 감싸기
+    const jsonBlob = new Blob([JSON.stringify(review)], { type: 'application/json' });
+    formData.append('review', jsonBlob);
+
+    // 파일도 함께 추가
+    if (userImage) {
+      formData.append('imageFile', userImage);
+    }
+
     try {
-      console.log(`goodsId = ${reviews.goodsId}`);
-      const response = await OrderApi.registerReview(review);
+      const response = await OrderApi.registerReview(formData);
       alert(response); // 리뷰가 정상적으로 등록되었습니다.
       navigate('/');
     } catch (err) {
@@ -66,16 +75,20 @@ export default function Review() {
   };
 
   useEffect(() => {
+    console.log(`goodsId = ${goods.goodsId}`);
     console.log(`goods 정보 확인 : ${Object.keys(goods)}`);
   }, []);
+
   return (
     <ReviewComp>
       <div className='container'>
         <h2>리뷰작성 페이지</h2>
         <div className='prod-info'>
           <img src={`${imgUrl}${goods.imageFile}`} alt='' style={{ width: '400px', height: '400px' }} className='prod-img' />
-          <div>{goods.goodsName}</div>
-          <div>{goods.description}</div>
+          <div>goodsId: {goods.goodsId}</div>
+          <div>goodsName: {goods.goodsName}</div>
+          <div>description: {goods.description}</div>
+          <div>orderDetailId : {goods.orderDetailId}</div>
           <div
             className='star-container'
             onMouseDown={() => setIsDragging(true)}
@@ -144,12 +157,10 @@ export default function Review() {
                 accept='image/*'
                 onChange={(e) => {
                   const file = e.target.files[0];
-                  setReviews({ ...regReview, imageFile: file });
+                  setUserImage(file); // ✔ 이미지 상태는 따로 관리
                   if (file) {
                     const imgUrl = URL.createObjectURL(file);
-                    setPrevImg(imgUrl); // 미리보기용 이미지주소
-                  } else {
-                    setPrevImg(prevImg);
+                    setPrevImg(imgUrl);
                   }
                 }}
               />

@@ -3,15 +3,19 @@ package com.example.pet_back.controller;
 import com.example.pet_back.domain.goods.PayRequestDTO;
 import com.example.pet_back.domain.goods.ReviewUploadDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
+import com.example.pet_back.entity.Member;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.service.MemberService;
 import com.example.pet_back.service.goods.OrderDetailService;
 import com.example.pet_back.service.goods.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Log4j2
 @RequiredArgsConstructor // private final만
@@ -50,9 +54,17 @@ public class OrderController {
     // 리뷰 업로드
     @PostMapping("/review/register")
     public ResponseEntity<?> regReview(@AuthenticationPrincipal CustomUserDetails userDetails, //
-                                       @RequestPart("review") ReviewUploadDTO reviewUploadDTO) {
+                                       @RequestPart("review") ReviewUploadDTO reviewUploadDTO,
+                                       @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) {
         log.info("** OrderController => regReview() 실행됨 **");
-        return orderService.regReview(userDetails, reviewUploadDTO);
+        try {
+            reviewUploadDTO.setImageFile(imageFile);
+            log.info("** OrderController =>  reviewUploadDTO.setImageFile(imageFile) **");
+            return orderService.regReview(userDetails, reviewUploadDTO);
+        } catch (Exception e) {
+            log.error("** goodsService.registerGoods Exception => " + e.toString());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("리뷰 등록 중 오류가 발생했습니다.");
+        }
     }
 
 

@@ -12,6 +12,7 @@ import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.entity.*;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.mapper.GoodsMapper;
+import com.example.pet_back.mapper.ReviewMapper;
 import com.example.pet_back.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +58,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     // Mapper
     private final GoodsMapper goodsMapper;
+    private final ReviewMapper reviewMapper;
 
     // 상품상세정보
     @Override
@@ -122,34 +124,33 @@ public class GoodsServiceImpl implements GoodsService {
 
         log.info("** 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬 **");
         // 3. Page<Review> 의 content (DTO에 SET)
-        Page<ReviewResponseDTO> reviewPage = reviewRepository.findAllByGoodsId(goodsId, pageable); // Review List
+        Page<Review> reviewPage = reviewRepository.findAllByGoodsId(goodsId, pageable); // Review List
+
+        List<ReviewResponseDTO> dtoList = reviewPage.getContent().stream()
+                .map(reviewMapper::toDTO)
+                .toList();
 
         log.info("** 3. Page<Review> 의 content (DTO에 SET) **");
         log.info("getContent: "+reviewPage.getContent());
          // 4. PageResponseDTO
         PageResponseDTO<ReviewResponseDTO> response = new PageResponseDTO<>(
-                reviewPage.getContent(),
-                pageRequestDTO.getPage(), // 클라이언트가 요청한 페이지
-                pageRequestDTO.getSize(), // 클라이언트가 요청한 수
+                dtoList,
+                pageRequestDTO.getPage(),
+                pageRequestDTO.getSize(),
                 reviewPage.getTotalElements(),
                 reviewPage.getTotalPages(),
                 reviewPage.hasNext(),
                 reviewPage.hasPrevious()
         );
         log.info("** 4. PageResponseDTO **");
-
         return ResponseEntity.status(HttpStatus.OK).body(response);
-
     }
-
-
 
     // 고객의 배송지 정보
     @Override
     public ResponseEntity<?> findMemberAddress(CustomUserDetails userDetails){
         return ResponseEntity.status(HttpStatus.OK).body("구현중");
     }
-    
 
     // 상품리스트 출력
     @Override

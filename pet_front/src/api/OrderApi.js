@@ -54,33 +54,27 @@ const OrderApi = {
     return result.data;
   },
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 리 뷰  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // 리뷰 출력 (전체 리스트)
-  // <Review /> 페이징
+  //
   getReviewsPageList: async (pages) => {
+    alert(`GoodsApi.getReviewPageList`);
     const result = await instance.post(`/order/review`, pages);
     console.log('응답 결과:', result);
     return result.data;
   },
+
   // 리뷰 출력 (나의 리뷰)
+  // <MyReview /> 페이징
 
   // 리뷰 등록 (사진 포함)
-  registerReview: async (review) => {
-    const formData = new FormData();
-    formData.append('goodsId', review.goodsId);
-    formData.append('score', review.score);
-    formData.append('title', review.title);
-    formData.append('content', review.content);
-    if (review.imageFile) {
-      formData.append('imageFile', review.imageFile); // 실제 파일 객체
-    }
-
-    const result = await instance.post('/review/register', formData, {
+  // <Review /> 페이징
+  registerReview: async (formData) => {
+    const result = await instance.post(`/order/review/register`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
 
-    console.log(result.data);
+    return result.data;
   },
 };
 

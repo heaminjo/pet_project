@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -74,7 +75,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public ResponseEntity<?> payGoods(CustomUserDetails userDetails, //
                                       PayRequestDTO payRequestDTO) {
-        System.out.println("GoodsServiceImpl 의 payGoods() 시작");
+        System.out.println("OrderServiceImpl 의 payGoods() 시작");
         // 1. Goods List
         List<Long> goodsIds = payRequestDTO.getGoodsList().stream()
                 .map(GoodsRequestDTO::getGoodsId)
@@ -153,7 +154,7 @@ public class OrderServiceImpl implements OrderService {
             // goods id 로 cart 조회후 삭제 (현재 장바구니 전체에서 삭제하도록 함)
             cartRepository.deleteByGoodsId(goods.getGoodsId());
         }
-        System.out.println("GoodsServiceImpl 의 payGoods() 끝");
+        System.out.println("OrderServiceImpl 의 payGoods() 끝");
         return ResponseEntity.status(HttpStatus.OK).body("결제가 정상적으로 완료되었습니다."); // orderDetail컴포넌트로 이동
     }//
 
@@ -161,17 +162,14 @@ public class OrderServiceImpl implements OrderService {
 
     // 리뷰 작성
     @Override
-    public ResponseEntity<?> regReview(CustomUserDetails userDetails, ReviewUploadDTO reviewUploadDTO) throws IOException {
-        Long memberId = reviewUploadDTO.getMemberId();
-        Long goodsId = reviewUploadDTO.getGoodsId();
-        Long orderDetailId = reviewUploadDTO.getOrderDetailId();
-        int score = reviewUploadDTO.getScore();
-        String title =reviewUploadDTO.getTitle();
-        String content=reviewUploadDTO.getContent();
+    @Transactional
+    public ResponseEntity<?> regReview(CustomUserDetails userDetails, //
+                                       ReviewUploadDTO reviewUploadDTO) throws IOException {
+        Member member = memberRepository.findById(userDetails.getMember().getId()).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+        log.info("member.getId() = "+member.getId());
 
         MultipartFile imageFile = reviewUploadDTO.getImageFile();
         String uploadImg = null;
-
 
         // 이미지 로직
         // 1. 파일 저장 경로
@@ -183,30 +181,26 @@ public class OrderServiceImpl implements OrderService {
             String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
             String uuid = UUID.randomUUID().toString();
             String newFileName = uuid + extension;
-
             File destFile = new File(realPath + newFileName);
             imageFile.transferTo(destFile); // MultipartFile 저장
-
             uploadImg = newFileName;
         }
 
-        try {
-            Member member = memberRepository.findById(memberId)
-                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
-            Goods goods = goodsRepository.findById(goodsId)
-                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
-            OrderDetail orderDetail = orderDetailRepository.findById(orderDetailId)
-                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문내역입니다."));
+        reviewUploadDTO.setMemberId(member.getId());
+        Optional<Goods> goods = goodsRepository.findById(reviewUploadDTO.getGoodsId());
+        Optional<OrderDetail> orderDetail = orderDetailRepository.findById(reviewUploadDTO.getOrderDetailId());
+        Review review = reviewMapper.toEntity(reviewUploadDTO, member, goods.orElse(null), orderDetail.orElse(null));
 
-            Review review = new Review(member, goods, orderDetail, score, title, content, uploadImg);
-            reviewRepository.save(review);
+        log.info("memberId = "+review.getMember().getId()+", goodsId = "+review.getGoods().getGoodsId()+", orderDetailId = "+review.getOrderDetail().getOrderDetailId());
+        log.info("score = "+review.getScore()+", title = "+review.getTitle()+", content = "+review.getContent()+", imageFile = "+review.getImageFile());
 
+        try{
+              reviewRepository.save(review);
+            log.info("** OrderServiceImpl => regReview() reviewRepository.save(review) 완료 **");
             return ResponseEntity.status(HttpStatus.OK).body("리뷰가 정상적으로 등록되었습니다.");
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("리뷰 등록 중 오류가 발생했습니다.");
         }
-
     }
 
     //주문 리스트 3건

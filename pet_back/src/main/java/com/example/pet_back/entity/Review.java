@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Review extends BaseEntity{
+public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,5 +45,16 @@ public class Review extends BaseEntity{
     @Column(name = "image_file", length = 100)
     private String imageFile;
 
+    @Column(name = "reg_date")
+    private LocalDate regDate;
+
+    @Column(name = "mod_date")
+    private LocalDate modDate;
+
+    // 엔티티 persist() 되기 직전에 자동 호출되는 콜백 메서드
+    @PrePersist
+    protected void onCreate() {
+        this.regDate = LocalDate.now(); // save 전 reg_date 오늘 날짜로 자동 세팅됨
+    }
 
 }

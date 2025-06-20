@@ -2,10 +2,11 @@ package com.example.pet_back.service.goods;
 
 import com.example.pet_back.domain.goods.OrderResponseDTO;
 import com.example.pet_back.domain.goods.PayRequestDTO;
-import com.example.pet_back.domain.goods.ReviewRequestDTO;
+import com.example.pet_back.domain.goods.ReviewUploadDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import org.springframework.http.ResponseEntity;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface OrderService {
@@ -17,7 +18,7 @@ public interface OrderService {
     ResponseEntity<?> payGoods(CustomUserDetails userDetails, PayRequestDTO dto);
 
     // 리뷰 작성
-    ResponseEntity<?> regReview(CustomUserDetails userDetails, ReviewRequestDTO dto);
+    ResponseEntity<?> regReview(CustomUserDetails userDetails, ReviewUploadDTO dto) throws IOException;
 
     //주문 리스트
     public  List<OrderResponseDTO> userOrderList(Long userId);

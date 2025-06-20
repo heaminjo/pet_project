@@ -58,8 +58,10 @@ export default function OrderDetail() {
     });
     return grouped;
   };
+
   // 함수 실행
   const groupedInfo = groupByDate(info);
+
   // 그룹화한 리스트 결과를 날짜 최신순 정렬
   const sortedDates = Object.keys(groupedInfo).sort((a, b) => new Date(b) - new Date(a));
 

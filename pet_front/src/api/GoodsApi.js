@@ -128,7 +128,7 @@ const GoodsApi = {
   },
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 리  뷰 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // 리뷰목록 (단일 상품)
+  // 리뷰목록 (상품)
   getReviewsPageList: async (pages, goodsId) => {
     console.log(`getPageList() 호출됨, goodsId = ${JSON.stringify(goodsId)}`);
     const result = await instance.post(`/goods/reviews/list/${goodsId}`, pages);
