@@ -68,7 +68,7 @@ export default function BannerSelect() {
       position: selBanner,
     };
 
-    const result = await GoodsApi.bannerInsert(newBanner);
+    const result = await AdminApi.bannerInsert(newBanner);
     alert(result.message);
     getBanner();
   };

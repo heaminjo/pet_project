@@ -7,12 +7,12 @@ import MemberApi from "../../api/MemberApi";
 
 export default function Header() {
   const navigate = useNavigate();
-  const [role, setRole] = useState(localStorage.getItem("role"));
+  const [role, setRole] = useState(sessionStorage.getItem("role"));
 
   //로그아웃 클릭
   const clickLogout = async () => {
     await MemberApi.logout();
-    localStorage.clear();
+    sessionStorage.clear();
     alert("로그아웃 됩니다.");
     navigate("/");
   };
@@ -24,12 +24,12 @@ export default function Header() {
         </div>
 
         <ul className="member_menu">
-          {localStorage.getItem("loginName") != null ? (
+          {sessionStorage.getItem("loginName") != null ? (
             <>
               <li>
-                <span>{localStorage.getItem("loginName")}님 환영합니다</span>
+                <span>{sessionStorage.getItem("loginName")}님 환영합니다</span>
               </li>
-              {localStorage.getItem("role") == "ROLE_ADMIN" && (
+              {sessionStorage.getItem("role") == "ROLE_ADMIN" && (
                 <li>
                   <span onClick={() => navigate("/admin/page/statistics")}>
                     관리자 메뉴

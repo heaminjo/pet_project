@@ -161,7 +161,7 @@ public class OrderServiceImpl implements OrderService {
 
     // 리뷰 작성
     @Override
-    public ResponseEntity<?> regReview(CustomUserDetails userDetails, ReviewUploadDTO reviewUploadDTO) throws IOException {
+    public ResponseEntity<?> regReview(CustomUserDetails userDetails, ReviewUploadDTO reviewUploadDTO) {
         Long memberId = reviewUploadDTO.getMemberId();
         Long goodsId = reviewUploadDTO.getGoodsId();
         Long orderDetailId = reviewUploadDTO.getOrderDetailId();
@@ -176,7 +176,7 @@ public class OrderServiceImpl implements OrderService {
         // 이미지 로직
         // 1. 파일 저장 경로
         String realPath = "C:/devv/pet_project/pet_back/src/main/resources/webapp/userImages/";
-
+        try {
         // 2. 업로드 이미지 처리
         if (imageFile != null && !imageFile.isEmpty()) {
             String originalFilename = imageFile.getOriginalFilename(); // ex: cat.jpg
@@ -190,7 +190,7 @@ public class OrderServiceImpl implements OrderService {
             uploadImg = newFileName;
         }
 
-        try {
+
             Member member = memberRepository.findById(memberId)
                     .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
             Goods goods = goodsRepository.findById(goodsId)

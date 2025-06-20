@@ -46,4 +46,7 @@ public class Review extends BaseEntity{
     private String imageFile;
 
 
+    public Review(Member member, Goods goods, OrderDetail orderDetail, int score, String title, String content, String uploadImg) {
+        super();
+    }
 }

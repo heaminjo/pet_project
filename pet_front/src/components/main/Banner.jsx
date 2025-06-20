@@ -59,7 +59,7 @@ const BannerComp = styled.div`
   margin-bottom: 100px;
   .slider-container {
     position: relative;
-    width: 100vw;
+    width: 99vw;
     height: 400px;
     margin: 0 auto;
     background-color: rgb(255, 254, 242);
@@ -68,6 +68,8 @@ const BannerComp = styled.div`
     .item {
       width: 100%;
       height: 100%;
+      margin-bottom: 50px;
+      border: 2px solid #555;
       img {
         width: 100%;
         height: 450px;

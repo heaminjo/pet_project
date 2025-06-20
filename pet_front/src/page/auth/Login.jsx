@@ -78,15 +78,12 @@ export default function Login() {
     if (result.success) {
       alert("로그인 성공!");
 
-      localStorage.setItem("loginName", result.data.memberName);
-      localStorage.setItem("accessToken", result.data.accessToken);
-      localStorage.setItem("role", result.data.role);
+      sessionStorage.setItem("loginName", result.data.memberName);
+      sessionStorage.setItem("accessToken", result.data.accessToken);
+      sessionStorage.setItem("role", result.data.role);
 
-      //전역변수에 로그인 여부 저장
-      setIsLogin(true);
-
-      //마지막 로그인 시간 업데이트 및 업그레이드 유무 확인
-      conditionCheck();
+      //만약
+      if (result.data.role == "ROLE_USER") conditionCheck();
       navigate("/");
     } else {
       alert(result.message);
