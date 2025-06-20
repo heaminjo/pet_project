@@ -93,7 +93,9 @@ export default function MypageMenu() {
               </span>
             </li>
             <li>
-              <span>취소 내역</span>
+              <span onClick={() => navigate('/user/mypage/withdrawlist')} style={{ color: 'red', fontWeight: 'bold' }}>
+                취소 내역
+              </span>
             </li>
           </ul>
         </div>

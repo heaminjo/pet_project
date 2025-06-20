@@ -4,6 +4,8 @@ import com.example.pet_back.config.FileUploadProperties;
 import com.example.pet_back.constant.ORDERSTATE;
 import com.example.pet_back.domain.address.AddressResponseDTO;
 import com.example.pet_back.domain.goods.*;
+import com.example.pet_back.domain.page.PageRequestDTO;
+import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.entity.*;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.mapper.OrderMapper;
@@ -11,6 +13,10 @@ import com.example.pet_back.mapper.ReviewMapper;
 import com.example.pet_back.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -168,40 +174,96 @@ public class OrderServiceImpl implements OrderService {
         Member member = memberRepository.findById(userDetails.getMember().getId()).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
         log.info("member.getId() = "+member.getId());
 
-        MultipartFile imageFile = reviewUploadDTO.getImageFile();
-        String uploadImg = null;
+        List<MultipartFile> imageFiles = reviewUploadDTO.getImageFiles();
 
         // 이미지 로직
         // 1. 파일 저장 경로
+        List<String> uploadedFileNames = new ArrayList<>();
         String realPath = "C:/devv/pet_project/pet_back/src/main/resources/webapp/userImages/";
 
         // 2. 업로드 이미지 처리
-        if (imageFile != null && !imageFile.isEmpty()) {
-            String originalFilename = imageFile.getOriginalFilename(); // ex: cat.jpg
-            String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-            String uuid = UUID.randomUUID().toString();
-            String newFileName = uuid + extension;
-            File destFile = new File(realPath + newFileName);
-            imageFile.transferTo(destFile); // MultipartFile 저장
-            uploadImg = newFileName;
+        if (imageFiles  != null && !imageFiles .isEmpty()) {
+            for(MultipartFile imageFile : imageFiles){
+                if(!imageFile.isEmpty()){
+                    String originalFilename = imageFile.getOriginalFilename(); // ex: cat.jpg
+                    String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+                    String uuid = UUID.randomUUID().toString();
+                    String newFileName = uuid + extension; // UUID 추가
+                    File destFile = new File(realPath + newFileName);
+                    imageFile.transferTo(destFile); // MultipartFile 저장
+                    uploadedFileNames.add(newFileName); //
+                }
+            }
         }
+
+        // 이미지 파일명 문자열로 저장
+        String uploadImg = String.join(",", uploadedFileNames);
+        reviewUploadDTO.setUploadImg(uploadImg);
+        reviewUploadDTO.setMemberId(member.getId());
 
         reviewUploadDTO.setMemberId(member.getId());
         Optional<Goods> goods = goodsRepository.findById(reviewUploadDTO.getGoodsId());
         Optional<OrderDetail> orderDetail = orderDetailRepository.findById(reviewUploadDTO.getOrderDetailId());
         Review review = reviewMapper.toEntity(reviewUploadDTO, member, goods.orElse(null), orderDetail.orElse(null));
 
-        log.info("memberId = "+review.getMember().getId()+", goodsId = "+review.getGoods().getGoodsId()+", orderDetailId = "+review.getOrderDetail().getOrderDetailId());
-        log.info("score = "+review.getScore()+", title = "+review.getTitle()+", content = "+review.getContent()+", imageFile = "+review.getImageFile());
+
+        log.info("등록할 리뷰 정보: memberId={}, goodsId={}, orderDetailId={}", member.getId(), review.getGoods().getGoodsId(), review.getOrderDetail().getOrderDetailId());
+        log.info("score={}, title={}, content={}, imageFiles={}", review.getScore(), review.getTitle(), review.getContent(), uploadImg);
+
 
         try{
               reviewRepository.save(review);
             log.info("** OrderServiceImpl => regReview() reviewRepository.save(review) 완료 **");
             return ResponseEntity.status(HttpStatus.OK).body("리뷰가 정상적으로 등록되었습니다.");
         } catch (Exception e) {
+            log.error("리뷰 등록 중 오류: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("리뷰 등록 중 오류가 발생했습니다.");
         }
     }
+
+    // 내 리뷰 목록 출력
+    @Override
+    public ResponseEntity<?> showMyReviews(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO){
+        System.out.println("OrderServiceImpl 의 showReviewList() 시작");
+        Member member = memberRepository.findById(userDetails.getMember().getId()).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+
+        // 페이징
+        // 1. 정렬 조건 설정 :  (최신)
+        Sort sort = pageRequestDTO.getSortBy().equals("desc") ? // desc라면
+                Sort.by("regDate").descending() // regDate 필드 기준으로 desc
+                : Sort.by("regDate").ascending();
+
+        // 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(), sort);
+        log.info("** 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬 **");
+
+        // 3. Page<Review> 의 content (DTO에 SET)
+        Page<Review> reviewPage =  reviewRepository.findAllByUserId(member.getId(), pageable); // Review List
+
+        List<ReviewResponseDTO> dtoList = reviewPage.getContent().stream()
+                .map(reviewMapper::toDTO)
+                .toList();
+
+        log.info("** 3. Page<Review> 의 content (DTO에 SET) **");
+        log.info("getContent: "+reviewPage.getContent());
+
+        // 4. PageResponseDTO
+        PageResponseDTO<ReviewResponseDTO> response = new PageResponseDTO<>(
+                dtoList,
+                pageRequestDTO.getPage(),
+                pageRequestDTO.getSize(),
+                reviewPage.getTotalElements(),
+                reviewPage.getTotalPages(),
+                reviewPage.hasNext(),
+                reviewPage.hasPrevious()
+        );
+        log.info("** 4. PageResponseDTO **");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
+    }
+
+
+
 
     //주문 리스트 3건
     @Override

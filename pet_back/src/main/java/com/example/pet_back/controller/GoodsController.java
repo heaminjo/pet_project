@@ -39,13 +39,8 @@ public class GoodsController {
     private final MemberService memberService;
     private final ImageService imageService;
 
-    // 상품 상세정보
-    @GetMapping("/detail/{goods_id}")
-    public ResponseEntity<?> selectOne(@PathVariable("goods_id") Long goods_id) {
-        log.info("** GoodsController => selectOne() 실행됨 **");
-        return goodsService.selectOne(goods_id);
-    }
 
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 찜 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // 찜 (추가/해제)
     @PostMapping("/favorite/{goodsId}")
     public ResponseEntity<?> favorite(@PathVariable("goodsId") Long goodsId,  @AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -59,21 +54,32 @@ public class GoodsController {
         log.info("** GoodsController => favorite() 실행됨 **");
         return goodsService.favoriteInfo(goodsId, userDetails);
     }
-
-    // 리뷰
-    @PostMapping("/reviews/{goodsId}")
-    public ResponseEntity<?> reviews(@PathVariable Long goodsId, @RequestBody PageRequestDTO pageRequestDTO) {
-        log.info("** GoodsController => reviews() 실행됨 **");
-
-        return goodsService.reviews(goodsId, pageRequestDTO);
-    }
-
-    //  리스트 출력
+    
+    // 찜 리스트 출력
     // @GetMapping(value = "/list") => Paging 추가로 @PostMapping으로 변경함
     @PostMapping(value = "/favorite") // @PathVariable 시 {name} 필수
     public ResponseEntity<?> favoriteList(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody PageRequestDTO pageRequestDTO) { // Cart entity
         log.info("** CartController => cartList() 실행됨 **");
         return goodsService.favorite(userDetails, pageRequestDTO);
+    }
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 리 뷰 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // 리뷰 리스트 출력 (상품)
+    @GetMapping("/reviews/{goodsId}")
+    public ResponseEntity<?> goodsReviewList(@PathVariable Long goodsId, @ModelAttribute PageRequestDTO pageRequestDTO) {
+        log.info("** GoodsController => goodsReviewList() 실행됨 **");
+        return goodsService.goodsReviewList(goodsId, pageRequestDTO);
+    }
+
+
+
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상 품 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // 상품 상세정보
+    @GetMapping("/detail/{goods_id}")
+    public ResponseEntity<?> selectOne(@PathVariable("goods_id") Long goods_id) {
+        log.info("** GoodsController => selectOne() 실행됨 **");
+        return goodsService.selectOne(goods_id);
     }
 
 
@@ -129,6 +135,7 @@ public class GoodsController {
         }
         return ResponseEntity.status(HttpStatus.OK).body("성공");
     }
+
 
 
 

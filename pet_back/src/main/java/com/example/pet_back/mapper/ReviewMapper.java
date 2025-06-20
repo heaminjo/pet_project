@@ -19,7 +19,7 @@ public interface ReviewMapper {
     @Mapping(target = "member", source = "member")
     @Mapping(target = "orderDetail", source = "orderDetail")
     @Mapping(target = "goods", source = "goods")
-    @Mapping(target = "imageFile", ignore = true) // 파일명은 컨트롤러나 서비스에서 별도 처리
+    @Mapping(target = "imageFile", source = "dto.uploadImg") // 파일명은 컨트롤러나 서비스에서 별도 처리
     @Mapping(target = "regDate", ignore = true) // @PrePersist에서 자동 처리
     @Mapping(target = "modDate", ignore = true)
     Review toEntity(ReviewUploadDTO dto, Member member, Goods goods, OrderDetail orderDetail);

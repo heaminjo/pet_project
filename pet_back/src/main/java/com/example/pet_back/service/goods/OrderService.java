@@ -3,6 +3,7 @@ package com.example.pet_back.service.goods;
 import com.example.pet_back.domain.goods.OrderResponseDTO;
 import com.example.pet_back.domain.goods.PayRequestDTO;
 import com.example.pet_back.domain.goods.ReviewUploadDTO;
+import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import org.springframework.http.ResponseEntity;
 
@@ -19,6 +20,10 @@ public interface OrderService {
 
     // 리뷰 작성
     ResponseEntity<?> regReview(CustomUserDetails userDetails, ReviewUploadDTO dto) throws IOException;
+
+    // 내 리뷰 목록 출력
+    ResponseEntity<?> showMyReviews(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO);
+
 
     //주문 리스트
     public  List<OrderResponseDTO> userOrderList(Long userId);

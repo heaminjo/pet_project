@@ -11,14 +11,17 @@ export default function Review() {
   const location = useLocation();
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상 태 변 수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 이미지 미리보기 위한 상태변수 추가
-  const [prevImg, setPrevImg] = useState('http://localhost:8080/resources/webapp/userImages/basicimg.jpg');
+  // 'http://localhost:8080/resources/webapp/userImages/basicimg.jpg'
+  const [prevImg, setPrevImg] = useState([]);
+  const [userImage, setUserImage] = useState([]);
 
   const { goods } = location.state || {};
+
   const [activeTab, setActiveTab] = useState('상품상세');
   const [reviews, setReviews] = useState([]);
   const [comment, setComment] = useState([]);
   const [content, setContent] = useState([]);
-  const [userImage, setUserImage] = useState([]);
+
   const imgUrl = 'http://localhost:8080/resources/webapp/userImages/';
   const up = 'up.png';
   const down = 'down.png';
@@ -42,8 +45,14 @@ export default function Review() {
     { label: '작성한 리뷰', value: goods.description },
   ];
 
+  // 이미지 제거
+  const removeImage = (index) => {
+    setUserImage((prev) => prev.filter((_, i) => i !== index));
+    setPrevImg((prev) => prev.filter((_, i) => i !== index));
+  };
+
   // 리뷰등록
-  const regReview = async (reviews, userImage) => {
+  const regReview = async () => {
     console.log(`goodsId = ${reviews.goodsId}`);
     console.log(`별점: ${score}`);
     const review = {
@@ -54,15 +63,16 @@ export default function Review() {
       title: comment,
       content: content,
     };
+
     const formData = new FormData();
     // JSON 문자열로 변환한 뒤 Blob으로 감싸기
     const jsonBlob = new Blob([JSON.stringify(review)], { type: 'application/json' });
     formData.append('review', jsonBlob);
 
-    // 파일도 함께 추가
-    if (userImage) {
-      formData.append('imageFile', userImage);
-    }
+    // 여러 이미지 파일 추가
+    userImage.forEach((file) => {
+      formData.append('imageFile', file); // 백엔드에서 배열로 받을 수 있도록 세팅
+    });
 
     try {
       const response = await OrderApi.registerReview(formData);
@@ -151,27 +161,47 @@ export default function Review() {
         <form>
           <fieldset className='user-img'>
             <legend>
-              <strong>사진 첨부</strong>{' '}
+              <strong>사진 첨부</strong>
               <input
                 type='file'
                 accept='image/*'
+                multiple
                 onChange={(e) => {
-                  const file = e.target.files[0];
-                  setUserImage(file); // ✔ 이미지 상태는 따로 관리
-                  if (file) {
-                    const imgUrl = URL.createObjectURL(file);
-                    setPrevImg(imgUrl);
-                  }
+                  const files = Array.from(e.target.files); // FileList 배열
+                  setUserImage((prev) => [...prev, ...files]); // 파일 배열로 누적
+                  // 미리보기 이미지 배열
+                  const newPreviews = files.map((file) => URL.createObjectURL(file));
+                  setPrevImg((prev) => [...prev, ...newPreviews]); // prevImg 배열
                 }}
               />
             </legend>
-            <div>
-              <img src={prevImg} alt='상품 이미지' className='goodsImg' style={{ width: '200px', height: '200px' }} />
-            </div>
+            <br />
+            {prevImg.map((src, idx) => (
+              <div key={idx} style={{ position: 'relative', display: 'inline-block', marginRight: '10px' }}>
+                <img src={src} alt='미리보기' className='goodsImg' style={{ width: '200px', height: '200px' }} />
+                <button
+                  onClick={() => removeImage(idx)}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    backgroundColor: 'black',
+                    border: 'none',
+                    fontSize: '20px',
+                    color: 'white',
+                    cursor: 'pointer',
+                  }}>
+                  X
+                </button>
+              </div>
+            ))}
           </fieldset>
         </form>
+        <br />
+        <br />
+        <hr />
         <section>
-          <button className='pay' onClick={() => regReview(reviews)}>
+          <button className='pay' onClick={regReview}>
             리뷰등록
           </button>
           &nbsp;&nbsp;{' '}

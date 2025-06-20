@@ -131,7 +131,9 @@ const GoodsApi = {
   // 리뷰목록 (상품)
   getReviewsPageList: async (pages, goodsId) => {
     console.log(`getPageList() 호출됨, goodsId = ${JSON.stringify(goodsId)}`);
-    const result = await instance.post(`/goods/reviews/list/${goodsId}`, pages);
+    const result = await instance.get(`/goods/reviews/${goodsId}`, {
+      params: pages,
+    });
     if (result.data != null) {
       console.log('getReviewsPageList 응답 결과:', result.data);
       return result.data;

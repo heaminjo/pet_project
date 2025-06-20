@@ -11,6 +11,8 @@ import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,13 +30,14 @@ public interface GoodsService {
     // 찜 (가져오기 - 단일)
     ResponseEntity<?> favoriteInfo(Long goodsId, CustomUserDetails userDetails);
 
-
     // 찜 목록
     ResponseEntity<?> favorite(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO);
 
+    // 리뷰 리스트 출력 (상품)
+    ResponseEntity<?> goodsReviewList(Long goodsId, PageRequestDTO pageRequestDTO);
 
-    // 리뷰
-    ResponseEntity<?> reviews(Long goodsId, PageRequestDTO pageRequestDTO);
+//    // 리뷰 리스트 출력 (상품에 대한 전체 리뷰)
+//    ResponseEntity<?> showReviewList( Long goodsId,  PageRequestDTO pageRequestDTO);
 
     // 상품 리스트 출력 (메인)
     ResponseEntity<?> showGoodsList(PageRequestDTO pageRequestDTO);

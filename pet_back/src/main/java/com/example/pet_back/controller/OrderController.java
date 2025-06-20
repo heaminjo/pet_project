@@ -17,6 +17,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Log4j2
 @RequiredArgsConstructor // private final만
 @RequestMapping(value = "/order")
@@ -55,10 +57,10 @@ public class OrderController {
     @PostMapping("/review/register")
     public ResponseEntity<?> regReview(@AuthenticationPrincipal CustomUserDetails userDetails, //
                                        @RequestPart("review") ReviewUploadDTO reviewUploadDTO,
-                                       @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) {
+                                       @RequestPart(value = "imageFile", required = false) List<MultipartFile> imageFiles) {
         log.info("** OrderController => regReview() 실행됨 **");
         try {
-            reviewUploadDTO.setImageFile(imageFile);
+            reviewUploadDTO.setImageFiles(imageFiles);
             log.info("** OrderController =>  reviewUploadDTO.setImageFile(imageFile) **");
             return orderService.regReview(userDetails, reviewUploadDTO);
         } catch (Exception e) {
@@ -67,6 +69,19 @@ public class OrderController {
         }
     }
 
+    // 내 리뷰 목록 출력
+    @PostMapping("/myreviews")
+    public ResponseEntity<?> showReviewList(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody PageRequestDTO pageRequestDTO) {
+        log.info("** GoodsController => reviews() 실행됨 **");
+        return orderService.showMyReviews(userDetails, pageRequestDTO);
+    }
+
+//        // 내 리뷰 출력 (수정필요)
+//    @GetMapping("/reviews/list/{goodsId}")
+//    public ResponseEntity<?> showReviewList(@PathVariable("goodsId") Long goodsId, @RequestBody PageRequestDTO pageRequestDTO) {
+//        log.info("** GoodsController => reviews() 실행됨 **");
+//        return goodsService.showReviewList(goodsId, pageRequestDTO);
+//    }
 
 
 }

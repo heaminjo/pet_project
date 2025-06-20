@@ -55,18 +55,17 @@ const OrderApi = {
   },
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 리 뷰  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //
+  // 리뷰 목록 출력 (나의 리뷰)
+  // <MyReview /> 페이징
   getReviewsPageList: async (pages) => {
     alert(`GoodsApi.getReviewPageList`);
-    const result = await instance.post(`/order/review`, pages);
+    const result = await instance.post(`/order/myreviews`, pages);
     console.log('응답 결과:', result);
     return result.data;
   },
 
-  // 리뷰 출력 (나의 리뷰)
-  // <MyReview /> 페이징
-
   // 리뷰 등록 (사진 포함)
-  // <Review /> 페이징
+  // <Review />
   registerReview: async (formData) => {
     const result = await instance.post(`/order/review/register`, formData, {
       headers: {

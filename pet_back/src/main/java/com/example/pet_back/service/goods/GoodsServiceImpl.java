@@ -60,96 +60,13 @@ public class GoodsServiceImpl implements GoodsService {
     private final GoodsMapper goodsMapper;
     private final ReviewMapper reviewMapper;
 
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상 품 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // 상품상세정보
     @Override
     public ResponseEntity<?> selectOne(Long goodsId) {
         log.info("** GoodsServiceImpl 실행됨 **");
         Goods goods = goodsRepository.findById(goodsId).get();
         return ResponseEntity.status(HttpStatus.OK).body(goods);
-    }
-
-    // 찜 (추가/해제 - 단일)
-    @Override
-    @Transactional
-    public ResponseEntity<?> favorite(Long goodsId, CustomUserDetails userDetails) {
-        log.info("** GoodsServiceImpl 실행됨 **");
-        Member member = memberRepository.findById(userDetails.getMember().getId()) //
-                .orElseThrow(() //
-                        -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
-       boolean exists = favoriteRepository.existsByMemberIdAndGoodsId(member.getId(), goodsId);
-
-        if (exists) {
-            favoriteRepository.deleteByMemberIdAndGoodsId(member.getId(), goodsId);
-            return ResponseEntity.ok("FALSE");
-        } else {
-            Favorite favorite = new Favorite();
-            favorite.setMemberId(member.getId());
-            favorite.setGoodsId(goodsId);
-            favoriteRepository.save(favorite);
-            return ResponseEntity.ok("TRUE");
-        }
-    }
-
-    // 찜 (가져오기 - 단일)
-    @Override
-    @Transactional
-    public ResponseEntity<?> favoriteInfo(Long goodsId, CustomUserDetails userDetails){
-        log.info("** GoodsServiceImpl 실행됨 **");
-        Member member = memberRepository.findById(userDetails.getMember().getId()) //
-                .orElseThrow(() //
-                        -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
-        boolean exists = favoriteRepository.existsByMemberIdAndGoodsId(member.getId(), goodsId);
-
-        if(exists){
-            return ResponseEntity.ok("TRUE");
-        }else{
-            return ResponseEntity.ok("FALSE");
-        }
-
-    }
-
-    // 리뷰 출력
-    @Override
-    @Transactional
-    public  ResponseEntity<?> reviews(Long goodsId, PageRequestDTO pageRequestDTO){
-        log.info("** GoodsServiceImpl 실행됨 **");
-        // 페이징
-        // 1. 정렬 조건 설정 :  (최신)
-        Sort sort = pageRequestDTO.getSortBy().equals("desc") ? // desc라면
-                Sort.by("regDate").descending() // regDate 필드 기준으로 desc
-                : Sort.by("regDate").ascending();
-
-        // 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬
-        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(), sort);
-
-        log.info("** 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬 **");
-        // 3. Page<Review> 의 content (DTO에 SET)
-        Page<Review> reviewPage = reviewRepository.findAllByGoodsId(goodsId, pageable); // Review List
-
-        List<ReviewResponseDTO> dtoList = reviewPage.getContent().stream()
-                .map(reviewMapper::toDTO)
-                .toList();
-
-        log.info("** 3. Page<Review> 의 content (DTO에 SET) **");
-        log.info("getContent: "+reviewPage.getContent());
-         // 4. PageResponseDTO
-        PageResponseDTO<ReviewResponseDTO> response = new PageResponseDTO<>(
-                dtoList,
-                pageRequestDTO.getPage(),
-                pageRequestDTO.getSize(),
-                reviewPage.getTotalElements(),
-                reviewPage.getTotalPages(),
-                reviewPage.hasNext(),
-                reviewPage.hasPrevious()
-        );
-        log.info("** 4. PageResponseDTO **");
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
-
-    // 고객의 배송지 정보
-    @Override
-    public ResponseEntity<?> findMemberAddress(CustomUserDetails userDetails){
-        return ResponseEntity.status(HttpStatus.OK).body("구현중");
     }
 
     // 상품리스트 출력
@@ -185,7 +102,7 @@ public class GoodsServiceImpl implements GoodsService {
             page = goodsRepository.findByCategoryAndKeyword("%" + pageRequestDTO.getKeyword() + "%", pageRequestDTO.getCategory(), pageable);
         }
         log.info("** 키워드 유무에 따른 분기 **");
-            // 4. 스트림 사용하여 GoodsResponseDTO 리스트로 변환
+        // 4. 스트림 사용하여 GoodsResponseDTO 리스트로 변환
         List<GoodsResponseDTO> goodsResponseDTOList = page.getContent().stream() //
                 .map(goods -> GoodsResponseDTO.builder() //
                         .goodsId(goods.getGoodsId())
@@ -211,53 +128,7 @@ public class GoodsServiceImpl implements GoodsService {
         log.info("** 반환할 ResponseDTO 에 List 저장 (goodsResponseDTOList) **");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-
-    // 찜 목록
-    @Override
-    public ResponseEntity<?> favorite(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO){
-        log.info("** GoodsServiceImpl 실행됨 **");
-        Member member = memberRepository.findById(userDetails.getMember().getId()) //
-                .orElseThrow(() //
-                        -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
-
-        // 페이징
-        // 1. 정렬 (최신)
-        Sort sort = pageRequestDTO.getSortBy().equals("desc") ? // desc라면
-                Sort.by("regDate").descending() // regDate 필드 기준으로 desc
-                : Sort.by("regDate").ascending();
-
-        // 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬
-        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(), sort);
-
-        // 3. Page<Goods> 조회 완료 (Favorite 의 GoodsId로 Goods 정보 조회)
-        Page<Goods> page = goodsRepository.findFavoriteList(member.getId(), pageable);
-
-        // 4. 스트림 사용하여 GoodsResponseDTO 리스트로 변환
-        List<GoodsResponseDTO> goodsResponseDTOList = page.getContent().stream() //
-                .map(goods -> GoodsResponseDTO.builder() //
-                        .goodsId(goods.getGoodsId())
-                        .goodsName(goods.getGoodsName())
-                        .price(goods.getPrice())
-                        .description(goods.getDescription())
-                        .goodsState(goods.getGoodsState())
-                        .imageFile(goods.getImageFile())
-                        .rating(goods.getRating())
-                        .views(goods.getViews())
-                        .reviewNum(goods.getReviewNum())
-                        .quantity(goods.getQuantity())
-                        .regDate(goods.getRegDate())
-                        .build()).collect(Collectors.toList());
-
-        // 5. 반환할 ResponseDTO 에 List 저장 (goodsResponseDTOList)
-        PageResponseDTO<GoodsResponseDTO> response = new PageResponseDTO<>( //
-                goodsResponseDTOList, //
-                pageRequestDTO.getPage(), pageRequestDTO.getSize(),  //
-                page.getTotalElements(), page.getTotalPages(), page.hasNext(), page.hasPrevious());
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
-
-
+    
     // 상품등록
     @Override
     public void registerGoods(GoodsUploadDTO goodsUploadDTO) throws IOException {
@@ -323,6 +194,150 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
 
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 찜 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // 찜 (추가/해제 - 단일)
+    @Override
+    @Transactional
+    public ResponseEntity<?> favorite(Long goodsId, CustomUserDetails userDetails) {
+        log.info("** GoodsServiceImpl 실행됨 **");
+        Member member = memberRepository.findById(userDetails.getMember().getId()) //
+                .orElseThrow(() //
+                        -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+       boolean exists = favoriteRepository.existsByMemberIdAndGoodsId(member.getId(), goodsId);
+
+        if (exists) {
+            favoriteRepository.deleteByMemberIdAndGoodsId(member.getId(), goodsId);
+            return ResponseEntity.ok("FALSE");
+        } else {
+            Favorite favorite = new Favorite();
+            favorite.setMemberId(member.getId());
+            favorite.setGoodsId(goodsId);
+            favoriteRepository.save(favorite);
+            return ResponseEntity.ok("TRUE");
+        }
+    }
+
+    // 찜 (가져오기 - 단일)
+    @Override
+    @Transactional
+    public ResponseEntity<?> favoriteInfo(Long goodsId, CustomUserDetails userDetails){
+        log.info("** GoodsServiceImpl 실행됨 **");
+        Member member = memberRepository.findById(userDetails.getMember().getId()) //
+                .orElseThrow(() //
+                        -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+        boolean exists = favoriteRepository.existsByMemberIdAndGoodsId(member.getId(), goodsId);
+
+        if(exists){
+            return ResponseEntity.ok("TRUE");
+        }else{
+            return ResponseEntity.ok("FALSE");
+        }
+
+    }
+
+    // 찜 목록
+    @Override
+    public ResponseEntity<?> favorite(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO){
+        log.info("** GoodsServiceImpl 실행됨 **");
+        Member member = memberRepository.findById(userDetails.getMember().getId()) //
+                .orElseThrow(() //
+                        -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+
+        // 페이징
+        // 1. 정렬 (최신)
+        Sort sort = pageRequestDTO.getSortBy().equals("desc") ? // desc라면
+                Sort.by("regDate").descending() // regDate 필드 기준으로 desc
+                : Sort.by("regDate").ascending();
+
+        // 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(), sort);
+
+        // 3. Page<Goods> 조회 완료 (Favorite 의 GoodsId로 Goods 정보 조회)
+        Page<Goods> page = goodsRepository.findFavoriteList(member.getId(), pageable);
+
+        // 4. 스트림 사용하여 GoodsResponseDTO 리스트로 변환
+        List<GoodsResponseDTO> goodsResponseDTOList = page.getContent().stream() //
+                .map(goods -> GoodsResponseDTO.builder() //
+                        .goodsId(goods.getGoodsId())
+                        .goodsName(goods.getGoodsName())
+                        .price(goods.getPrice())
+                        .description(goods.getDescription())
+                        .goodsState(goods.getGoodsState())
+                        .imageFile(goods.getImageFile())
+                        .rating(goods.getRating())
+                        .views(goods.getViews())
+                        .reviewNum(goods.getReviewNum())
+                        .quantity(goods.getQuantity())
+                        .regDate(goods.getRegDate())
+                        .build()).collect(Collectors.toList());
+
+        // 5. 반환할 ResponseDTO 에 List 저장 (goodsResponseDTOList)
+        PageResponseDTO<GoodsResponseDTO> response = new PageResponseDTO<>( //
+                goodsResponseDTOList, //
+                pageRequestDTO.getPage(), pageRequestDTO.getSize(),  //
+                page.getTotalElements(), page.getTotalPages(), page.hasNext(), page.hasPrevious());
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 리 뷰 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // 리뷰 리스트 출력 (상품)
+    @Override
+    @Transactional
+    public ResponseEntity<?> goodsReviewList(Long goodsId, PageRequestDTO pageRequestDTO){
+        log.info("** GoodsServiceImpl 실행됨 **");
+        // 페이징
+        // 1. 정렬 조건 설정 :  (최신)
+        Sort sort = pageRequestDTO.getSortBy().equals("desc") ? // desc라면
+                Sort.by("regDate").descending() // regDate 필드 기준으로 desc
+                : Sort.by("regDate").ascending();
+
+        // 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(), sort);
+        log.info("** 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬 **");
+
+        // 3. Page<Review> 의 content (DTO에 SET)
+        Page<Review> reviewPage = reviewRepository.findAllByGoodsId(goodsId, pageable); // Review List
+
+        List<ReviewResponseDTO> dtoList = reviewPage.getContent().stream()
+                .map(reviewMapper::toDTO)
+                .toList();
+
+        log.info("** 3. Page<Review> 의 content (DTO에 SET) **");
+        log.info("getContent: "+reviewPage.getContent());
+
+         // 4. PageResponseDTO
+        PageResponseDTO<ReviewResponseDTO> response = new PageResponseDTO<>(
+                dtoList,
+                pageRequestDTO.getPage(),
+                pageRequestDTO.getSize(),
+                reviewPage.getTotalElements(),
+                reviewPage.getTotalPages(),
+                reviewPage.hasNext(),
+                reviewPage.hasPrevious()
+        );
+        log.info("** 4. PageResponseDTO **");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+//    // 리뷰 리스트 출력(상품에 대한 전체 리뷰)
+//    @Override
+//    public ResponseEntity<?> showReviewList( Long goodsId,  PageRequestDTO pageRequestDTO){
+//
+//    }
+
+
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 결 제 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // 고객의 배송지 정보
+    @Override
+    public ResponseEntity<?> findMemberAddress(CustomUserDetails userDetails){
+        return ResponseEntity.status(HttpStatus.OK).body("구현중");
+    }
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 배 너 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //배너 목록 가져오기
     @Override
     public List<BannerDTO> bannerList() {
@@ -345,9 +360,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public List<CategoryResponseDTO> categoryList() {
         List<CategoryResponseDTO> categoryList = categoryRepository.categoryList();
-
 //        List<CategoryResponseDTO> response = categoryList.stream().map(goodsMapper::categoryToDto).toList();
-
         return categoryList;
     }
 
@@ -356,8 +369,6 @@ public class GoodsServiceImpl implements GoodsService {
     public PageResponseDTO<GoodsSimpleDTO> goodsPageList(PageRequestDTO dto) {
         //요청 페이지, 출력 개수,정렬을 담은 Pageable 객체
         Pageable pageable = PageRequest.of(dto.getPage(), dto.getSize());
-
-
 
         String keyword = dto.getKeyword() != null && !dto.getKeyword().isEmpty()
                 ? "%" + dto.getKeyword() + "%" : null;
@@ -377,17 +388,16 @@ public class GoodsServiceImpl implements GoodsService {
         );
         return response;
     }
+    
     //베스트 상품 출력
     @Override
     public List<BestDTO> bestList() {
         List<GoodsBest> list = goodsBestRepository.bestListAll();
-
-
+        
         List<BestDTO> response = new ArrayList<>();
         //수동으로 매핑
         for(GoodsBest g : list){
             String imagePath = fileUploadProperties.getUrl()+g.getGoods().getImageFile();
-
             response.add(new BestDTO(   g.getBestId(),
                                         g.getGoods().getGoodsId(),
                                         g.getGoods().getGoodsName(),
@@ -397,7 +407,6 @@ public class GoodsServiceImpl implements GoodsService {
                                         imagePath,
                                         g.getPosition()));
         }
-
         return response;
     }
 
@@ -410,14 +419,12 @@ public class GoodsServiceImpl implements GoodsService {
         GoodsBest goodsBest = new GoodsBest();
         goodsBest.setGoods(goods);
         goodsBest.setPosition(dto.getPosition());
-
         goodsBestRepository.save(goodsBest);
-
         return new ApiResponse(true,dto.getPosition()+"번째 자리에 베스트 상품이 추가돼었습니다.");
     }
 
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 카 테 고 리 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //카테고리 추가
-
     @Override
     public ApiResponse categoryInsert(String categoryName) {
         //카테고리가 10개 인지 아닌지 체크
@@ -435,6 +442,7 @@ public class GoodsServiceImpl implements GoodsService {
         }
 
     }
+    
     //카테고리 삭제
     @Override
     public ApiResponse categoryDelete(Long id) {
@@ -447,8 +455,8 @@ public class GoodsServiceImpl implements GoodsService {
             categoryRepository.deleteById(id);
             return new ApiResponse(true,"카테고리 [" + category.getCategoryName()+"] 가 삭제되었습니다.");
         }
-
     }
+    
     //카테고리 수정
     @Override
     @Transactional
@@ -459,9 +467,10 @@ public class GoodsServiceImpl implements GoodsService {
         String prevName = category.getCategoryName();
         //새 이름 저장
         category.setCategoryName(categoryName);
-
         return new ApiResponse(true,prevName + "에서 "+categoryName+"으로 이름 변경을 성공하였습니다.");
     }
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 재 고 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //재고수량 수정
     @Override
     @Transactional
@@ -475,6 +484,7 @@ public class GoodsServiceImpl implements GoodsService {
         String message = "상품 ["+goods.getGoodsName()+"] 의 수량이 "+prev+" -> "+quantity+" 으로 변경 완료되었습니다.";
         return new ApiResponse(true,message);
     }
+    
     //상품 상태 수정
     @Override
     @Transactional
@@ -486,9 +496,7 @@ public class GoodsServiceImpl implements GoodsService {
           "품절",GOODSSTATE.SOLDOUT,
           "숨김",GOODSSTATE.HIDDEN
         );
-
         goods.setGoodsState(map.get(state));
-
         return new ApiResponse(true,"상품 상태가 ["+state+"] 로 변경되었습니다");
     }
 }
