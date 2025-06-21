@@ -43,7 +43,7 @@ public class AuthController {
     //리프레쉬 토큰
     @GetMapping("/getrefresh")
     public ResponseEntity<?> getRefresh(@CookieValue("refreshToken") String refreshToken) {
-        log.info("쿠키 컨틑롤러");
+        log.info("refreshToken => "+ refreshToken);
         if (refreshToken == null) {
             log.info("쿠키가 제대로안옴");
         }
@@ -52,8 +52,8 @@ public class AuthController {
 
     //로그아웃
     @GetMapping("/logout")
-    public ResponseEntity<ApiResponse> logout(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        return ResponseEntity.ok(authService.logout(userDetails));
+    public ResponseEntity<ApiResponse> logout(@AuthenticationPrincipal CustomUserDetails userDetails,HttpServletResponse response) {
+        return ResponseEntity.ok(authService.logout(userDetails,response));
     }
 
     @GetMapping("/emailcheck")
@@ -62,12 +62,6 @@ public class AuthController {
         return memberService.emailCheck(email);
     }
 
-    //로그인 기록
-    @PutMapping("/login/history")
-    public ResponseEntity<?> loginHisTory(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        log.info("로그인 기록 처리 실행");
-        return memberService.loginHistory(userDetails.getMember().getId());
-    }
 
 
 }

@@ -40,11 +40,6 @@ export default function StatisticsPage() {
 
   return (
     <StatisComp>
-      <div className="move_btn">
-        <button>회원통계</button>
-        <button>매출분석</button>
-        <button>상품통계</button>
-      </div>
       <div className="statis_inner">
         <UserStatistics userData={userData} />
         <hr />
@@ -56,18 +51,6 @@ export default function StatisticsPage() {
   );
 }
 const StatisComp = styled.div`
-  .move_btn {
-    width: 1000px;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    height: 100px;
-    line-height: 100px;
-    button {
-      width: 200px;
-      height: 40px;
-    }
-  }
   .statis_inner {
     display: flex;
     flex-direction: column;

@@ -329,7 +329,6 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public List<BannerDTO> bannerList() {
         List<Goodsbanner> bannerList = goodsBannerRepository.bannerListAll();
-        log.info("Banner List => " + bannerList.toString());
         List<BannerDTO> response = new ArrayList<>();
 
         //수동으로 매핑
@@ -338,8 +337,6 @@ public class GoodsServiceImpl implements GoodsService {
 
             response.add(new BannerDTO(g.getBannerId(),imagePath,g.getPosition()));
         }
-
-        log.info("Banner List => " + response.toString());
         return response;
     }
 

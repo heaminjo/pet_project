@@ -14,5 +14,5 @@ public interface AuthService {
 
     public ResponseEntity<?> getRefresh(String refreshToken);
 
-    public ApiResponse logout(CustomUserDetails userDetails);
+    public ApiResponse logout(CustomUserDetails userDetails,HttpServletResponse response);
 }

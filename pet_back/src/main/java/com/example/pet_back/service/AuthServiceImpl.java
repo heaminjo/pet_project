@@ -58,16 +58,18 @@ public class AuthServiceImpl implements AuthService {
                     new UsernamePasswordAuthenticationToken(
                             dto.getEmail(), dto.getPassword()
                     );
-            log.info("AuthServiceImple : email => " + authenticationToken.getName());
+            log.info("2-1. 이메일 체크 => " + dto.getEmail());
             //실제 검증(비밀번호 체크)
             //사용자의 ID/비밀번호(authenticationToken)를 받아 인증 절차 실행 후 인증객체(Authentication) 생성
             //여기에서 DB조회가 이루어지며 권한(role)을 포함한 Authentication객체 반환
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-            log.info("Authentication => " + authentication);
+            log.info("3. 인증객체 체크 Authentication => " + authentication);
 
             //인증 정보 기반으로 토큰 생성
             //로그인 직후 이므로 refreshToken과  AccessToken 모두 생성해서 발급한다.
             TokenDTO tokenDTO = tokenProvider.generateTokenDto(authentication);
+            log.info("3. 인증객체로 발급한 토큰 체크  accssToken  => " + tokenDTO.getAccessToken());
+            log.info("4. 인증객체로 발급한 토큰 체크  refreshToken  => " + tokenDTO.getRefreshToken());
 
             //마지막 로그인 시간 저장을 위해 id를 꺼낸다.
             Long userId = tokenProvider.getUserId(tokenDTO.getAccessToken());
@@ -82,10 +84,6 @@ public class AuthServiceImpl implements AuthService {
             //그리고 난 뒤 현재 시각으로 마지막 로그인 업데이트
             member.setLastLogin(LocalDateTime.now());
             log.info(member.getName()+"님의 마지막 로그인 시간이"+LocalDateTime.now()+"으로 업데이트 됩니다.");
-
-
-            log.info("토큰 발급 => " + tokenDTO);
-
 
             //RefreshToken DB 저장하기
             RefreshToken refreshToken = RefreshToken.builder()
@@ -102,17 +100,19 @@ public class AuthServiceImpl implements AuthService {
             refreshTokenCookie.setPath("/");        //모든 경로에서 전송
             refreshTokenCookie.setMaxAge(7 * 24 * 60 * 60); // 7일 유지
 
+            response.addCookie(refreshTokenCookie);
 
             //Cookie 객체는 SameSite 속성을 기본적으로 지원하지 않기 때문에 setHeader로 직접 설정
             //secure는 HTTPS 연결에서만 브라우저로 전송
             //HTTP 연결을 하므로 false 해야한다.
 
-//            response.addCookie(refreshTokenCookie);
-            response.setHeader("Set-Cookie",
-                    "refreshToken=" + tokenDTO.getRefreshToken() +
-                            "; Path=/; Max-Age=604800; HttpOnly; SameSite=Lax");
 
-            log.info("쿠키 저장 완료 => " + refreshTokenCookie.getValue());
+//            response.setHeader("Set-Cookie",
+//                    "refreshToken=" + tokenDTO.getRefreshToken() +
+//                            "; Path=/; Max-Age=604800; HttpOnly; SameSite=Lax");
+
+            log.info("5. refreshTOken 쿠키 저장 완료 => " + refreshTokenCookie.getValue());
+            log.info("6. 로그인 성공 accessToken 쿠키 전송 => " + tokenDTO.getAccessToken());
 
             refreshTokenRepository.save((refreshToken));
             //커스텀 응답 객체에 token을 담아 반환
@@ -165,12 +165,14 @@ public class AuthServiceImpl implements AuthService {
             //refreshToken을 통해 유저 Id를 가져온다.
             Long userId = tokenProvider.getUserId(refreshToken);
             log.info("test userId => " + userId);
+
             //userId를 통해 tokenProvider에서 유저의 정보를 담은 Authentication 객체를 가져온다
             Authentication authentication = tokenProvider.getAuthentication(userId);
             log.info("authentication => " + authentication);
+
             //새로운 access토큰 생성
             TokenDTO tokenDTO = tokenProvider.createToken(authentication);
-
+            log.info("새로운 토큰 발급 => "+ tokenDTO.getAccessToken());
             return ResponseEntity.ok(new ApiResponse<TokenDTO>(true, tokenDTO, "토큰 재발급 성공"));
         } catch (ExpiredJwtException e) {
             log.info("만료된 RefreshToken입니다.");
@@ -182,9 +184,18 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public ApiResponse logout(CustomUserDetails userDetails) {
+    public ApiResponse logout(CustomUserDetails userDetails,HttpServletResponse response) {
         //리프레쉬 제거
         refreshTokenRepository.deleteByUserId(userDetails.getMember().getId());
+
+        //쿠키 삭제
+        Cookie refreshCookie = new Cookie("refreshToken", null);
+        refreshCookie.setPath("/");             // 쿠키 경로 설정 (생성할 때와 같아야 함)
+        refreshCookie.setMaxAge(0);             // 유효기간 0 → 삭제
+        refreshCookie.setHttpOnly(true);        // 보안 옵션
+        refreshCookie.setSecure(true);          // HTTPS만 전달 (필요시)
+        response.addCookie(refreshCookie);
+        
         return new ApiResponse<>(true, "로그아웃 성공입니다.");
     }
 }

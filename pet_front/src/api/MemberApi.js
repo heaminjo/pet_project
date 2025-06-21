@@ -58,7 +58,9 @@ const MemberApi = {
   },
   //로그아웃
   logout: async () => {
-    const result = await instance.get(`${KH_DOMAIN}/auth/logout`);
+    const result = await instance.get(`${KH_DOMAIN}/auth/logout`, {
+      withCredentials: true,
+    });
     return result.data;
   },
   //회원 탈퇴
