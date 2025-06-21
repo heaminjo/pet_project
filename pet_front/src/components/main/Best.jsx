@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import GoodsApi from "../../api/GoodsApi";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Best() {
   const [best, setBest] = useState([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     getBest();
   }, []);
@@ -27,7 +28,9 @@ export default function Best() {
       <div className="best_container">
         <ul>
           {best?.map((b) => (
-            <li>
+            <li
+              onClick={() => navigate("/goods/order", { state: { goods: b } })}
+            >
               <div className="goods_image">
                 <img src={b.imageFile} alt="베스트 상품 이미지" />
               </div>
@@ -38,7 +41,6 @@ export default function Best() {
               <div className="goods_rating">
                 <span>{renderStars(b.rating)}</span>
                 <span style={{ color: "red", fontSize: "12px" }}>
-                  {" "}
                   {"( " + b.reviewNum + " )"}{" "}
                 </span>
               </div>
@@ -78,6 +80,7 @@ const BestComp = styled.div`
     ul {
       display: flex;
       li {
+        cursor: pointer;
         width: 220px;
         height: 100%;
         border-right: 1px solid #ccc;

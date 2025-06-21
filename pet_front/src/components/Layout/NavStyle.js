@@ -22,8 +22,6 @@ const NavComp = styled.nav`
       }
       li:hover {
         font-size: 1.2em;
-        color: #fff;
-        background-color: #ff6666;
       }
     }
   }

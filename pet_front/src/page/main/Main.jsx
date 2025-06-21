@@ -23,6 +23,7 @@ const MainComp = styled.div`
     display: flex;
     flex-direction: column;
     gap: 100px;
+    padding-bottom: 30px;
     /* background-color: rgb(255, 254, 242); */
   }
 `;

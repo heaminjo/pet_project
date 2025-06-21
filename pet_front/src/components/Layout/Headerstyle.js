@@ -16,6 +16,7 @@ const HeaderComp = styled.header`
     h1 {
       margin: 0;
       line-height: 100px;
+      cursor: pointer;
     }
     .member_menu {
       display: flex;

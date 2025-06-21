@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const GoodsListComp = styled.div`
   .container {
@@ -15,7 +15,7 @@ const GoodsListComp = styled.div`
       margin: 30px 0 0 0;
 
       select,
-      input[type='text'] {
+      input[type="text"] {
         height: 40px;
         width: 120px; /* 원하는 너비로 맞추세요 */
         font-size: 16px;
@@ -37,7 +37,7 @@ const GoodsListComp = styled.div`
         text-align: center;
       }
 
-      input[type='text'] {
+      input[type="text"] {
         border-left: none;
         border-right: none;
         border-radius: 0;
@@ -87,6 +87,7 @@ const GoodsListComp = styled.div`
         gap: 10px; /* 아이템 간 간격 */
 
         .goodslist {
+          cursor: pointer;
           width: 250px;
           height: 350px;
           margin: 2px auto;

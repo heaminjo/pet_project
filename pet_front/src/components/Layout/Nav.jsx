@@ -24,9 +24,7 @@ export default function Nav() {
     <NavComp>
       <div className="nav_inner">
         <ul className="nav_menu">
-          <li style={{ color: "red" }} onClick={() => navigate("/goods/list")}>
-            전체 상품보기
-          </li>
+          <li onClick={() => navigate("/goods/list")}>쇼핑</li>
           <li onClick={() => navigate("/grade")}> 등급</li>
 
           <li onClick={() => navigate("/boardList/free")}>게시판</li>

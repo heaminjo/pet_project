@@ -7,7 +7,6 @@ import OrderApi from "../../../api/OrderApi";
 import Popup from "./Popup";
 
 export default function Pay() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
   const location = useLocation();
   const navigate = useNavigate();
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상태변수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -182,10 +181,10 @@ export default function Pay() {
       addressId: addrId,
       recipientPhone: phone,
     };
-    alert("pay 동작테스트");
+    // alert("pay 동작테스트");
     OrderApi.pay(payload) // 여기가 호출
       .then((response) => {
-        alert("GoodsApi.pay() 성공");
+        alert("결제 성공적으로 마무리 되었습니다.");
         conditionCheck();
         navigate("/user/mypage/orderlist");
       })
@@ -225,6 +224,7 @@ export default function Pay() {
 
   // 기본정보
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     // 사용자 정보
     MemberApi.detail()
       .then((response) => {
@@ -245,7 +245,7 @@ export default function Pay() {
         );
       })
       .catch((err) => {
-        alert("주소 조회 실패");
+        // alert("주소 조회 실패");
       });
     // 상품 정보
     if (goodsList.length > 0) {
@@ -385,7 +385,7 @@ export default function Pay() {
               <div className="prod" key={index}>
                 <div className="prodleft">
                   <img
-                    src={`${item.imageFile}`}
+                    src={`${imgUrl + item.imageFile}`}
                     alt={item.goodsName}
                     className="prodimg"
                     onClick={() =>

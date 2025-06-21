@@ -33,7 +33,7 @@ export default function Delivery() {
   };
 
   useEffect(() => {
-    alert(`goodsId => ${goodsId}`);
+    // alert(`goodsId => ${goodsId}`);
     memberInfo();
     if (goodsId) {
       goodsInfo(goodsId);

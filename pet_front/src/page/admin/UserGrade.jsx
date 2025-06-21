@@ -23,11 +23,13 @@ export default function UserGrade() {
   const [backColor, setBackColor] = useState("#eaefef");
   const [render, setRender] = useState(0);
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
     getGradeStatistics();
     getGradeUserList();
   }, [gradeType, render]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
   //그룹 통계 API
   const getGradeStatistics = async () => {
     const result = await AdminApi.getGradeStatistics();
@@ -188,6 +190,7 @@ export default function UserGrade() {
             <th>이메일</th>
             <th>이름</th>
             <th>포인트</th>
+            <th>변경</th>
           </tr>
           {userList.length > 0 ? (
             userList?.map((user, index) => (

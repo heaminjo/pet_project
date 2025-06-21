@@ -25,13 +25,12 @@ const ErrorComp = styled.div`
   height: calc(100vh - 150px);
   display: flex;
   align-items: center;
-  background-color: #323232;
   .error_inner {
     width: 800px;
     margin: 0 auto;
     .error_container {
       text-align: center;
-      background-color: #ddd;
+      background-color: #eee;
       height: 500px;
       border-radius: 100%;
       padding: 30px;

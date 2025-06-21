@@ -1,10 +1,11 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const OrderComp = styled.div`
+  padding: 30px 0;
   .container {
     width: 900px;
-    height: 3000px;
     margin: 0 auto;
+
     margin-top: 110px;
     padding: 0px;
     border-radius: 10px;
@@ -83,7 +84,7 @@ const OrderComp = styled.div`
     .product-container {
       padding: 16px;
       font-size: 14px;
-    
+
       /* 테이블 */
       .product-table {
         width: 100%;
