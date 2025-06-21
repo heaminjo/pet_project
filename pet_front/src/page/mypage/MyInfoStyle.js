@@ -243,6 +243,32 @@ const MyInfoComp = styled.div`
           }
         }
       }
+      .not_goods {
+        width: 400px;
+        height: 200px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        background-color: #eee;
+        box-shadow: 2px 2px 2px #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        svg {
+          font-size: 100px;
+        }
+        p {
+          font-size: 17px;
+        }
+        button {
+          margin-top: 10px;
+          width: 200px;
+          height: 30px;
+          background-color: #f8e776;
+          border: none;
+          cursor: pointer;
+        }
+      }
     }
   }
 `;

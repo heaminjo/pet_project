@@ -6,13 +6,16 @@ const LoginComp = styled.div`
   margin-top: 140px;
   .login_inner {
     width: 500px;
-    background-color: aliceblue;
     height: 100%;
     margin: 0 auto;
+    padding-top: 100px;
     .login_container {
       padding-top: 130px;
       width: 350px;
       margin: 0 auto;
+      border: 1px solid #eee;
+      box-shadow: 2px 2px 2px #ccc;
+      padding: 40px;
       h2 {
         margin: 20px 0;
         text-align: start;
@@ -41,7 +44,7 @@ const LoginComp = styled.div`
           height: 50px;
           width: 100%;
           border-radius: 5px;
-          background-color: #ccc;
+          font-weight: bold;
           border: none;
           cursor: pointer;
         }

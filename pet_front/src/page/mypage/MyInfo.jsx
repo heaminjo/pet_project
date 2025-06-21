@@ -13,6 +13,7 @@ import { PetContext } from "./MyPage";
 import { PiShoppingCartFill } from "react-icons/pi";
 import { LuMoveRight } from "react-icons/lu";
 import { TbHandFingerRight } from "react-icons/tb";
+import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 
 export default function MyInfo() {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -128,9 +129,12 @@ export default function MyInfo() {
               ))}
             </ul>
           ) : (
-            <div>
+            <div className="not_goods">
+              <MdOutlineProductionQuantityLimits />
               <p>아직 주문한 상품이 없습니다.</p>
-              <p onClick={() => navigate("/goods/list")}>상품 보러가기 </p>
+              <button onClick={() => navigate("/goods/list")}>
+                상품 보러가기{" "}
+              </button>
             </div>
           )}
         </div>
