@@ -38,7 +38,14 @@ export default function Login() {
   const schema = yup.object({
     email: yup
       .string()
-      .email("올바른 이메일 형식이 아닙니다.")
+      .matches(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        "올바른 이메일 형식이 아닙니다."
+      )
+      .matches(
+        /^[^\s@]+@[^\s@]+\.(com|net|kr)$/i,
+        "이메일 형식은 .com, .net, .kr 만 허용됩니다."
+      )
       .required("필수 입력입니다."),
     password: yup
       .string()
@@ -101,6 +108,8 @@ export default function Login() {
   };
   //카카오에 인가 코드를 발급받아서 다시 /login으로 온다.
   const kakaoCode = async () => {
+    setValue("email", "");
+    setValue("password", "");
     window.Kakao.Auth.authorize({
       redirectUri: "http://localhost:3000/login", //
     });
