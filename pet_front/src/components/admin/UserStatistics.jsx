@@ -71,15 +71,6 @@ export default function UserStatistics({ userData }) {
                   <th>비방문자</th>
                   <td>{userData.totalUser - userData.todayUser}</td>
                 </tr>
-                <tr>
-                  <th>- - - </th>
-                </tr>
-                <tr>
-                  <th>- - - </th>
-                </tr>
-                <tr>
-                  <th>- - - </th>
-                </tr>
               </table>
             </div>
           </div>

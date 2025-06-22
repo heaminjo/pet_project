@@ -42,6 +42,8 @@ const BannerSelectComp = styled.div`
           }
           p {
             text-align: center;
+            font-weight: bold;
+            padding: 10px 0;
             /* line-height: 200px; */
           }
           .banner_text {

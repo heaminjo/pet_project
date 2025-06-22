@@ -24,7 +24,7 @@ public interface OrderRepository extends JpaRepository<Orders, Long> {
 
 
     @Query("SELECT new com.example.pet_back.domain.admin.OrderStatisticsDTO( " +
-            "SUM(o.totalPrice), COUNT(o), AVG(o.totalPrice)) " +
+            "COALESCE(SUM(o.totalPrice),0), COALESCE(COUNT(o),0), COALESCE(AVG(o.totalPrice),0)) " +
             "FROM Orders o " +
             "WHERE o.regDate >= :startDate AND o.regDate < :endDate")
     OrderStatisticsDTO orderStatistics(@Param("startDate") LocalDate startDate,

@@ -83,7 +83,7 @@ export default function BestSelect() {
           </div>
         )}
         <div className="banner_list">
-          <h3>베스트 상품 관리</h3>
+          <h3>추천 상품 관리</h3>
           <ul>
             {[...Array(4)].map((_, i) => (
               <li key={i}>
@@ -93,6 +93,7 @@ export default function BestSelect() {
                     .map((b) => (
                       <React.Fragment key={b.position}>
                         <img src={b.imageFile} alt="배너 이미지" />
+                        <p>{b.goodsName}</p>
                         <div className="banner_mod">
                           <button onClick={() => clickBannerDelete(b.bestId)}>
                             삭제
