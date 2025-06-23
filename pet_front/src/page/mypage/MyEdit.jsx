@@ -14,7 +14,7 @@ export default function MyEdit() {
   const [selectImage, setSelectImage] = useState(null); //선택 프로필(서버용)
   const [prevImage, setPrevImage] = useState(null); //이전 프로필필
 
-  const { user } = useContext(PetContext);
+  const { user, setUser } = useContext(PetContext);
 
   //로드 시 회원 정보 불러오기
   useEffect(() => {
@@ -28,16 +28,18 @@ export default function MyEdit() {
 
   //회원 수정 처리
   const updateUser = async () => {
-    const user = {
+    const users = {
       name: watch("name"),
       birth: watch("birth"),
       phone: watch("phone"),
     };
-    const result = await MemberApi.update(user);
+    console.log(users);
+    setUser({ ...user, ...users });
+    const result = await MemberApi.update(users);
     if (result.success) {
       alert("회원 수정이 완료되었습니다.");
-      localStorage.setItem("loginName", result.data);
-      navigate("/user/mypage/myinfo", { replace: true });
+      sessionStorage.setItem("loginName", result.data);
+      navigate("/user/mypage/myinfo");
     }
   };
   const schema = yup.object({

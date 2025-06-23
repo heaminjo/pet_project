@@ -48,7 +48,7 @@ export default function UpdatePw() {
 
     if (result.success) {
       alert("비밀번호 변경이 완료되었습니다. 다시 로그인 해주세요");
-      localStorage.clear();
+      sessionStorage.clear();
       navigate("/login");
     } else {
       alert("비밀번호 변경에 실패하였습니다.");

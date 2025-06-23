@@ -93,8 +93,8 @@ const GoodsApi = {
   },
 
   // 상품상세정보 (단일)
-  goodsDetail: async () => {
-    const result = await instance.get("/goods/detail/${goods_id}");
+  goodsDetail: async (id) => {
+    const result = await instance.get(`/goods/detail/${id}`);
     return result.data;
   },
 
@@ -111,25 +111,6 @@ const GoodsApi = {
       return result.data;
     }
   },
-
-  // // 상품등록 (기존 axios 사용한 코드 - 예시)
-  // regGoods: async (goods) => {
-  //   try {
-  //     const result = await axios.post(`${KH_DOMAIN}/goods/register`, goods, {
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: `${localStorage.getItem('grantType')} ${localStorage.getItem('accessToken')}`,
-  //       },
-  //     });
-  //     if (result.data != null) {
-  //       alert(`상품등록 완료 => ${result.data}`);
-  //       return result.data;
-  //     }
-  //   } catch (err) {
-  //     console.error('상품 등록 실패:', err);
-  //     alert('상품 등록 중 에러가 발생했습니다.');
-  //   }
-  // }, // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   //배너 가져오기
   getBanner: async () => {

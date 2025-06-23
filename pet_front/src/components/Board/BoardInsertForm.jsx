@@ -8,7 +8,7 @@ export default function BoardInsertForm() {
   const [content, setContent] = useState("");
   const navigate = useNavigate();
   const [category, setCategory] = useState("default"); // 기본값 설정
-  const [role, setRole] = useState(localStorage.getItem("role") || "");
+  const [role, setRole] = useState(sessionStorage.getItem("role") || "");
   const [imageFiles, setImageFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
 
@@ -41,7 +41,7 @@ export default function BoardInsertForm() {
   };
 
   useEffect(() => {
-    const handleStorage = () => setRole(localStorage.getItem("role") || "");
+    const handleStorage = () => setRole(sessionStorage.getItem("role") || "");
     window.addEventListener("storage", handleStorage);
     return () => window.removeEventListener("storage", handleStorage);
   }, []);

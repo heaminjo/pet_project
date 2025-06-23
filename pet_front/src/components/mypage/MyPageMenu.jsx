@@ -77,9 +77,7 @@ export default function MypageMenu() {
                 장바구니
               </span>
             </li>
-            <li>
-              <span>최근 본 목록</span>
-            </li>
+
             <li>
               <span onClick={() => navigate("/user/mypage/myreview")}>
                 내 후기
@@ -100,9 +98,6 @@ export default function MypageMenu() {
                 주문 / 배송 내역
               </span>
             </li>
-            <li>
-              <span>취소 내역</span>
-            </li>
           </ul>
         </div>
         <div className="sub_menu" id="border_menu">
@@ -112,12 +107,6 @@ export default function MypageMenu() {
               <span onClick={() => navigate("/user/mypage/myboardlist")}>
                 내 게시물 목록
               </span>
-            </li>
-            <li>
-              <span>북마크</span>
-            </li>
-            <li>
-              <span></span>
             </li>
           </ul>
         </div>

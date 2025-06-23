@@ -56,7 +56,7 @@ export default function Grade() {
                   <div className="color_block" id="grade01"></div>
                 </div>
                 <div className="grade_advantage">
-                  <p>혜택 준비중</p>
+                  <p>혜택이 없습니다.</p>
                 </div>
                 <div className="grade_condition">
                   <h4>등급 기준</h4>
@@ -69,7 +69,7 @@ export default function Grade() {
                   <div className="color_block" id="grade02"></div>
                 </div>
                 <div className="grade_advantage">
-                  <p>혜택 준비중</p>
+                  <p>구매 시 5% 할인</p>
                 </div>
                 <div className="grade_condition">
                   <h4>등급 기준</h4>
@@ -83,7 +83,7 @@ export default function Grade() {
                   <div className="color_block" id="grade03"></div>
                 </div>
                 <div className="grade_advantage">
-                  <p>혜택 준비중</p>
+                  <p>구매 시 7% 할인</p>
                 </div>
                 <div className="grade_condition">
                   <h4>등급 기준</h4>
@@ -98,7 +98,7 @@ export default function Grade() {
                   <div className="color_block" id="grade04"></div>
                 </div>
                 <div className="grade_advantage">
-                  <p>혜택 준비중</p>
+                  <p>구매 시 10% 할인</p>
                 </div>
                 <div className="grade_condition">
                   <h4>등급 기준</h4>
@@ -113,7 +113,7 @@ export default function Grade() {
                   <div className="color_block" id="grade05"></div>
                 </div>
                 <div className="grade_advantage">
-                  <p>혜택 준비중</p>
+                  <p>구매 시 20% 할인</p>
                 </div>
                 <div className="grade_condition">
                   <h4>등급 기준</h4>

@@ -18,20 +18,32 @@ import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 export default function MyInfo() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 
-  const { user } = useContext(PetContext);
   const location = useLocation();
   const navigate = useNavigate();
   const [orderList, setOrderList] = useState([]);
-
+  const [user, setUser] = useState([]);
   useEffect(() => {
     getOrderList();
-
-    //만약 수정된 이미지가 있다면 그 이미지로 수정
-    if (location.state?.newImage != null) {
-      user.imageFile = location.state?.newImage;
-    }
+    getLoginUser();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
-
+  const getLoginUser = async () => {
+    try {
+      const result = await MemberApi.detail();
+      if (result.memberState == "임시회원") {
+        alert(
+          "더 나은 서비스 이용을 위해 몇 가지 정보를 추가로 입력해 주세요."
+        );
+        navigate("/join", { state: { kakao: "true" } });
+      } else {
+        setUser(result);
+        console.log(result);
+      }
+    } catch (e) {
+      navigate("/error", { state: { message: "권한이 없는 페이지 입니다." } });
+    }
+  };
+  //최근 주문 목록 리스트
   const getOrderList = async () => {
     const result = await MemberApi.getOrderList();
     console.log(result);

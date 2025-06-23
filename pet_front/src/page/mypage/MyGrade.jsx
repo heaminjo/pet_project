@@ -19,6 +19,7 @@ export default function MyGrade() {
       width: "190px",
       condition1: 3,
       condition2: 1,
+      boon: "새싹 등급은 아직 혜택이 없습니다.",
     },
     초급회원: {
       next: "중급회원",
@@ -28,6 +29,7 @@ export default function MyGrade() {
       condition1: 5,
       condition2: 3,
       condition3: 30000,
+      boon: "구매 시 5% 할인",
     },
     중급회원: {
       next: "상급회원",
@@ -37,6 +39,7 @@ export default function MyGrade() {
       condition1: 10,
       condition2: 10,
       condition3: 100000,
+      boon: "구매 시 7% 할인",
     },
     상급회원: {
       next: "프리미엄회원",
@@ -46,11 +49,13 @@ export default function MyGrade() {
       condition1: 20,
       condition2: 15,
       condition3: 300000,
+      boon: "구매 시 10% 할인",
     },
     "프리미엄 회원": {
       next: "---------",
       backColor: "#ff9898",
       width: "1000px",
+      boon: "구매 시 20% 할인",
     },
   };
   const gradeData = gradeStyleMap[user.grade] ?? {
@@ -101,6 +106,9 @@ export default function MyGrade() {
         </div>
         <div className="boon">
           <h3>{user.grade} 등급 혜택</h3>
+          <div className="text">
+            <p>{gradeData.boon}</p>
+          </div>
         </div>
       </div>
       <div className="grade_graph">
@@ -141,7 +149,7 @@ export default function MyGrade() {
               ) : (
                 <span>
                   다음 등급까지 <br />
-                  {gradeData.condition1 - user.loginCount}회
+                  {user.loginCount}/{gradeData.condition1}
                 </span>
               )}
             </li>

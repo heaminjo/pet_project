@@ -334,7 +334,7 @@ export default function Pay() {
                                     setAddr(`${a.address1} ${a.address2}`);
                                     setAddrType(a.addrType);
                                     // 새로고침 방어
-                                    localStorage.setItem(
+                                    sessionStorage.setItem(
                                       "selectedAddress",
                                       JSON.stringify(a)
                                     );

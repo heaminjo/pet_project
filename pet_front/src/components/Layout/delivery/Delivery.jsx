@@ -48,8 +48,7 @@ export default function Delivery() {
           상품명: {goods.goodsName} <br />
           배송이 시작 되었습니다 <br />
           또는 <br />
-          6/9(월) 배송 완료 <br />ㄴ orders 테이블의 regDate 가져옴 (order
-          response dto 활용)
+          6/9(월) 배송 완료
         </div>
 
         <hr />
@@ -85,7 +84,7 @@ export default function Delivery() {
               </tr>
               <tr>
                 <td>받는주소</td>
-                <td>{member.address || ""}</td>
+                <td>{member.address1 || ""}</td>
               </tr>
               <tr>
                 <td>요청사항</td>

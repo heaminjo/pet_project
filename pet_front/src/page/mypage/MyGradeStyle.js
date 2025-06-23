@@ -43,6 +43,12 @@ const GradeComp = styled.div`
       width: 400px;
       text-align: center;
       padding: 20px;
+      .text {
+        display: flex;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+      }
     }
   }
   .grade_graph {

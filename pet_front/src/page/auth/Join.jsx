@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import MemberApi from "../../api/MemberApi";
 import AddressModal from "../../modal/AddressModal";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 export default function Join() {
   const [isEmailCheck, setIsEmailCheck] = useState(false); //이메일 중복 체크
   const emailRef = useRef(null);
@@ -13,6 +13,7 @@ export default function Join() {
   const [popup, setPopup] = useState(false); //우편번호 팝업
   const location = useLocation();
   const [isKakao, setIskakao] = useState(false);
+  const navigate = useNavigate();
   //유효성 조건(yup)
   const schema = yup.object({
     email: yup
@@ -137,9 +138,10 @@ export default function Join() {
     const result = await MemberApi.join(newUser);
     console.log(result.success);
     if (result.success) {
-      alert("회원가입 성공");
+      alert("회원가입 성공에 하였습니다 환영합니다.");
+      navigate("/login");
     } else {
-      alert("회원가입 실패");
+      alert("회원가입에 실패하였습니다 다시 시도해주세요.");
     }
     console.log("회원가입 유저 정보 확인" + newUser.email);
   };
@@ -160,8 +162,9 @@ export default function Join() {
     console.log(result.message);
     if (result.success) {
       alert("회원가입이 모두 완료되었습니다.");
+      navigate("/login");
     } else {
-      alert("회원가입 실패");
+      alert("회원가입을 실패하였습니다 다시 시도헤주세요.");
     }
   };
 

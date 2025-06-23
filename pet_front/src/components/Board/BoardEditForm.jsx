@@ -11,14 +11,14 @@ export default function BoardEditForm() {
   // 카테고리 기본값 설정
   const navigate = useNavigate();
   const [existingImages, setExistingImages] = useState([]); // 기존 이미지 파일명 배열
-  const [deletedImages, setDeletedImages] = useState([]);   // 삭제할 기존 이미지 파일명 배열
-  const [newImageFiles, setNewImageFiles] = useState([]);   // 새로 추가된 이미지 파일 객체 배열
+  const [deletedImages, setDeletedImages] = useState([]); // 삭제할 기존 이미지 파일명 배열
+  const [newImageFiles, setNewImageFiles] = useState([]); // 새로 추가된 이미지 파일 객체 배열
   const [newImagePreviews, setNewImagePreviews] = useState([]); // 새로 추가된 이미지 미리보기 배열
 
-  const [role, setRole] = useState(localStorage.getItem("role") || "");
+  const [role, setRole] = useState(sessionStorage.getItem("role") || "");
 
   useEffect(() => {
-    const handleStorage = () => setRole(localStorage.getItem("role") || "");
+    const handleStorage = () => setRole(sessionStorage.getItem("role") || "");
     window.addEventListener("storage", handleStorage);
     return () => window.removeEventListener("storage", handleStorage);
   }, []);
@@ -41,29 +41,29 @@ export default function BoardEditForm() {
   // 새 이미지 파일 선택 핸들러
   const handleNewImageChange = (e) => {
     const files = Array.from(e.target.files);
-    setNewImageFiles(prev => [...prev, ...files]); // 기존 파일에 새로 선택한 파일 추가
-    const previews = files.map(file => URL.createObjectURL(file));
-    setNewImagePreviews(prev => [...prev, ...previews]); // 기존 미리보기 + 새로 미리보기 합치기
+    setNewImageFiles((prev) => [...prev, ...files]); // 기존 파일에 새로 선택한 파일 추가
+    const previews = files.map((file) => URL.createObjectURL(file));
+    setNewImagePreviews((prev) => [...prev, ...previews]); // 기존 미리보기 + 새로 미리보기 합치기
     e.target.value = ""; // 파일 선택 후 input 초기화
   };
 
   // 기존 이미지 삭제 핸들러
   const handleExistingImageRemove = (idx) => {
-    setDeletedImages(prev => [...prev, existingImages[idx]]);
-    setExistingImages(prev => prev.filter((_, i) => i !== idx));
+    setDeletedImages((prev) => [...prev, existingImages[idx]]);
+    setExistingImages((prev) => prev.filter((_, i) => i !== idx));
   };
 
   // 새 이미지 삭제 핸들러
   const handleNewImageRemove = (idx) => {
-    setNewImagePreviews(prev => prev.filter((_, i) => i !== idx));
-    setNewImageFiles(prev => prev.filter((_, i) => i !== idx));
+    setNewImagePreviews((prev) => prev.filter((_, i) => i !== idx));
+    setNewImageFiles((prev) => prev.filter((_, i) => i !== idx));
   };
 
   // 이미지 업로드 함수
   const handleNewImageUpload = async () => {
     if (!newImageFiles || newImageFiles.length === 0) return [];
     const formData = new FormData();
-    newImageFiles.forEach(file => formData.append("files", file));
+    newImageFiles.forEach((file) => formData.append("files", file));
     try {
       const res = await axios.post("/board/uploadimage", formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -101,23 +101,25 @@ export default function BoardEditForm() {
     }
 
     //2. 게시글 정보 + 이미지 파일명 전송
-    let data = { board_id, title, content,
+    let data = {
+      board_id,
+      title,
+      content,
       // 기존 이미지 + 새로 업로드된 이미지
       imageFileNames: [...existingImages, ...(uploadedFileNames || [])],
       // 삭제할 기존 이미지 파일명 배열
-      deletedImageFileNames: deletedImages
-     };
+      deletedImageFileNames: deletedImages,
+    };
 
     try {
       await axios.put(`/board/updateboard/${board_id}`, data, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
         },
       });
       alert("게시글이 수정되었습니다.");
 
-      navigate(`/boardList/${category}`); 
-      
+      navigate(`/boardList/${category}`);
     } catch (err) {
       alert("게시글 수정에 실패했습니다.");
     }
@@ -188,11 +190,11 @@ export default function BoardEditForm() {
                 accept="image/*"
                 multiple
                 onChange={handleNewImageChange}
-                style={{ display: "none"}}
+                style={{ display: "none" }}
               />
               <span className="fileNameText">
                 {newImageFiles.length > 0
-                  ? newImageFiles.map(f => f.name).join(", ")
+                  ? newImageFiles.map((f) => f.name).join(", ")
                   : "파일을 선택하세요."}
               </span>
             </div>

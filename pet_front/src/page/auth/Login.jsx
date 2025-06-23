@@ -83,8 +83,6 @@ export default function Login() {
   //로그인 응답처리
   const loginResponse = (result) => {
     if (result.success) {
-      alert("로그인 성공!");
-
       sessionStorage.setItem("loginName", result.data.memberName);
       sessionStorage.setItem("accessToken", result.data.accessToken);
       sessionStorage.setItem("role", result.data.role);

@@ -158,7 +158,6 @@ export default function BoardDetail() {
 
   const token = sessionStorage.getItem("accessToken");
   const loginMemberId = getMemberIdFromToken(token); // JWT 토큰에서 로그인한 회원의 ID를 가져옴
-  //const loginRole = localStorage.getItem("role"); // "ADMIN" 또는 "USER"
 
   // 작성자(member_id) 또는 관리자(ADMIN)만 버튼 보이게
   const canEditOrDelete =
