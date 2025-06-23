@@ -27,23 +27,35 @@ export default function Order() {
 
   // 결제
   const pay = async (goods) => {
+    if (sessionStorage.getItem("loginName") != null) {
+      const goodsWithQuantity = { ...goods, quantity: buyQuantity };
+      navigate("/user/mypage/pay", { state: { goods: goodsWithQuantity } });
+      // => <Cart /> <Order /> 공통으로 쓰는 로직이므로, 해당 줄은 변경하지 않기로 한다.
+      //     ㄴ> ( navigate('/user/mypage/pay', { state: { goods: goodsWithQuantity } }); )
+    } else {
+      alert("로그인이 필요한 서비스입니다.");
+      navigate("/login", { state: { nextUrl: "/user/mypage/pay" } });
+    }
     console.log(`결제페이지 이동 성공, 상품ID:  => ${goods.goodsId}`);
-    const goodsWithQuantity = { ...goods, quantity: buyQuantity };
-    navigate("/user/mypage/pay", { state: { goods: goodsWithQuantity } });
-    // => <Cart /> <Order /> 공통으로 쓰는 로직이므로, 해당 줄은 변경하지 않기로 한다.
-    //     ㄴ> ( navigate('/user/mypage/pay', { state: { goods: goodsWithQuantity } }); )
   };
 
   // 장바구니 담기
   const addToCart = async (goods, buyQuantity) => {
     console.log(`addToCart 수량 => ${buyQuantity}`);
-    GoodsApi.addToCart(goods, buyQuantity)
-      .then((response) => {
-        console.log(`장바구니 담기 성공, 상품ID:  => ${response}`);
-      })
-      .catch((err) => {
-        alert("GoodsApi.addToCart() 중 오류발생");
-      });
+    if (sessionStorage.getItem("loginName") != null) {
+      GoodsApi.addToCart(goods, buyQuantity)
+        .then((response) => {
+          console.log(`장바구니 담기 성공, 상품ID:  => ${response}`);
+          alert("장바구니에 " + goods.goodsName + "이(가) 1개 담겼습니다.");
+          navigate("/user/mypage/cart/list");
+        })
+        .catch((err) => {
+          // alert("GoodsApi.addToCart() 중 오류발생");d
+        });
+    } else {
+      alert("로그인이 필요한 서비스입니다.");
+      navigate("/login", { state: { nextUrl: "/goods/order" } });
+    }
   };
 
   // 별점 (상품의 총 별점)
@@ -65,7 +77,7 @@ export default function Order() {
         }
       })
       .catch((err) => {
-        alert(`에러발생 => ${err}`);
+        // alert(`에러발생 => ${err}`);
       });
   };
 
@@ -81,7 +93,7 @@ export default function Order() {
         }
       })
       .catch((err) => {
-        alert(`에러발생 => ${err}`);
+        // alert(`에러발생 => ${err}`);
       });
   };
 

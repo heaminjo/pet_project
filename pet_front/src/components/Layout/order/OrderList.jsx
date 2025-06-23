@@ -41,9 +41,11 @@ export default function OrderDetail() {
     GoodsApi.addToCart(goods, buyQuantity)
       .then((response) => {
         console.log(`장바구니 담기 성공, 상품ID:  => ${response}`);
+        alert("장바구니에 " + goods.goodsName + "이(가) 1개 담겼습니다.");
+        navigate("/user/mypage/cart/list");
       })
       .catch((err) => {
-        alert("GoodsApi.addToCart() 중 오류발생");
+        // alert("GoodsApi.addToCart() 중 오류발생");
       });
   };
 

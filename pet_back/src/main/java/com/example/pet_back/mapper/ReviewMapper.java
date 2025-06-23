@@ -1,5 +1,6 @@
 package com.example.pet_back.mapper;
 
+import com.example.pet_back.domain.goods.ReviewResponseDTO;
 import com.example.pet_back.domain.goods.ReviewUploadDTO;
 import com.example.pet_back.entity.Goods;
 import com.example.pet_back.entity.Member;
@@ -13,18 +14,26 @@ import org.springframework.web.multipart.MultipartFile;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ReviewMapper {
 
-    // DTO -> Entity
-    @Mapping(source = "member", target = "member") // Member 엔티티
-    @Mapping(source = "goods", target = "goods")   // Goods 엔티티
-    @Mapping(source = "orderDetail", target = "orderDetail") // OrderDetail 엔티티
-    @Mapping(source = "dto.imageFile", target = "imageFile")
+    // 등록용: DTO -> Entity
+    @Mapping(target = "reviewId", ignore = true)
+    @Mapping(target = "member", source = "member")
+    @Mapping(target = "orderDetail", source = "orderDetail")
+    @Mapping(target = "goods", source = "goods")
+    @Mapping(target = "imageFile", source = "dto.uploadImg") // 파일명은 컨트롤러나 서비스에서 별도 처리
+    @Mapping(target = "regDate", ignore = true) // @PrePersist에서 자동 처리
+    @Mapping(target = "modDate", ignore = true)
     Review toEntity(ReviewUploadDTO dto, Member member, Goods goods, OrderDetail orderDetail);
-
 
     // 커스텀 매핑 메서드 추가
     default String map(MultipartFile file) {
         return file != null ? file.getOriginalFilename() : null;
     }
+
+    // 조회용: Entity -> DTO
+    @Mapping(target = "memberId", source = "member.id")
+    @Mapping(target = "orderDetailId", source = "orderDetail.orderDetailId")
+    @Mapping(target = "goodsId", source = "goods.goodsId")
+    ReviewResponseDTO toDTO(Review review);
 
 
     // 필요시 Entity -> DTO 도 작성 가능

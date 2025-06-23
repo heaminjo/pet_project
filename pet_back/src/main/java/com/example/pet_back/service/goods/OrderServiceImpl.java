@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -162,55 +163,7 @@ public class OrderServiceImpl implements OrderService {
 
     // <Delivery /> 페이지 : OrderDetailResponseDTO
 
-    // 리뷰 작성
-    @Override
-    public ResponseEntity<?> regReview(CustomUserDetails userDetails, ReviewUploadDTO reviewUploadDTO) {
-        Long memberId = reviewUploadDTO.getMemberId();
-        Long goodsId = reviewUploadDTO.getGoodsId();
-        Long orderDetailId = reviewUploadDTO.getOrderDetailId();
-        int score = reviewUploadDTO.getScore();
-        String title =reviewUploadDTO.getTitle();
-        String content=reviewUploadDTO.getContent();
 
-        MultipartFile imageFile = reviewUploadDTO.getImageFile();
-        String uploadImg = null;
-
-
-        // 이미지 로직
-        // 1. 파일 저장 경로
-        String realPath = "C:/devv/pet_project/pet_back/src/main/resources/webapp/userImages/";
-        try {
-        // 2. 업로드 이미지 처리
-        if (imageFile != null && !imageFile.isEmpty()) {
-            String originalFilename = imageFile.getOriginalFilename(); // ex: cat.jpg
-            String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-            String uuid = UUID.randomUUID().toString();
-            String newFileName = uuid + extension;
-
-            File destFile = new File(realPath + newFileName);
-            imageFile.transferTo(destFile); // MultipartFile 저장
-
-            uploadImg = newFileName;
-        }
-
-
-            Member member = memberRepository.findById(memberId)
-                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
-            Goods goods = goodsRepository.findById(goodsId)
-                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
-            OrderDetail orderDetail = orderDetailRepository.findById(orderDetailId)
-                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문내역입니다."));
-
-            Review review = new Review(member, goods, orderDetail, score, title, content, uploadImg);
-            reviewRepository.save(review);
-
-            return ResponseEntity.status(HttpStatus.OK).body("리뷰가 정상적으로 등록되었습니다.");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("리뷰 등록 중 오류가 발생했습니다.");
-        }
-
-    }
 
     //주문 리스트 3건
     @Override
@@ -260,4 +213,58 @@ public class OrderServiceImpl implements OrderService {
         OrderStatisticsDTO dto = orderRepository.orderStatistics(start,end);
         return dto;
     }
-}
+//    // 리뷰 작성
+    @Override
+    @Transactional
+    public ResponseEntity<?> regReview(CustomUserDetails userDetails, //
+                                       ReviewUploadDTO reviewUploadDTO)   {
+        Member member = memberRepository.findById(userDetails.getMember().getId()).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+        log.info("member.getId() = "+member.getId());
+
+        List<MultipartFile> imageFiles = reviewUploadDTO.getImageFiles();
+
+        // 이미지 로직
+        // 1. 파일 저장 경로
+        List<String> uploadedFileNames = new ArrayList<>();
+        String realPath = "C:/devv/pet_project/pet_back/src/main/resources/webapp/userImages/";
+
+        try{
+        // 2. 업로드 이미지 처리
+        if (imageFiles  != null && !imageFiles .isEmpty()) {
+            for(MultipartFile imageFile : imageFiles){
+                if(!imageFile.isEmpty()){
+                    String originalFilename = imageFile.getOriginalFilename(); // ex: cat.jpg
+                    String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+                    String uuid = UUID.randomUUID().toString();
+                    String newFileName = uuid + extension; // UUID 추가
+                    File destFile = new File(realPath + newFileName);
+                    imageFile.transferTo(destFile); // MultipartFile 저장
+                    uploadedFileNames.add(newFileName); //
+                }
+            }
+        }
+
+        // 이미지 파일명 문자열로 저장
+        String uploadImg = String.join(",", uploadedFileNames);
+        reviewUploadDTO.setUploadImg(uploadImg);
+        reviewUploadDTO.setMemberId(member.getId());
+
+        reviewUploadDTO.setMemberId(member.getId());
+        Optional<Goods> goods = goodsRepository.findById(reviewUploadDTO.getGoodsId());
+        Optional<OrderDetail> orderDetail = orderDetailRepository.findById(reviewUploadDTO.getOrderDetailId());
+        Review review = reviewMapper.toEntity(reviewUploadDTO, member, goods.orElse(null), orderDetail.orElse(null));
+
+        log.info("등록할 리뷰 정보: memberId={}, goodsId={}, orderDetailId={}", member.getId(), review.getGoods().getGoodsId(), review.getOrderDetail().getOrderDetailId());
+        log.info("score={}, title={}, content={}, imageFiles={}", review.getScore(), review.getTitle(), review.getContent(), uploadImg);
+
+
+
+            reviewRepository.save(review);
+            log.info("** OrderServiceImpl => regReview() reviewRepository.save(review) 완료 **");
+            return ResponseEntity.status(HttpStatus.OK).body("리뷰가 정상적으로 등록되었습니다.");
+        } catch (Exception e) {
+            log.error("리뷰 등록 중 오류: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("리뷰 등록 중 오류가 발생했습니다.");
+        }
+    }
+    }

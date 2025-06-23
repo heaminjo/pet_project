@@ -158,9 +158,15 @@ export default function BoardList() {
                   >
                     {b.title}
                   </td>
-                  <td className="center" style={{width:"15%"}}>{b.name}</td>
-                  <td className="center" style={{width:"10%"}}>{b.views}</td>
-                  <td className="center" style={{width:"15%"}}>{b.reg_date}</td>
+                  <td className="center" style={{ width: "15%" }}>
+                    {b.name}
+                  </td>
+                  <td className="center" style={{ width: "10%" }}>
+                    {b.views}
+                  </td>
+                  <td className="center" style={{ width: "15%" }}>
+                    {b.reg_date}
+                  </td>
                 </tr>
               ))
             )}
@@ -169,7 +175,7 @@ export default function BoardList() {
                 <button
                   type="button"
                   onClick={() => {
-                    if (localStorage.getItem("accessToken") != null) {
+                    if (sessionStorage.getItem("accessToken") != null) {
                       navigate(
                         `/boardInsertForm?category=${category || "board"}`
                       );

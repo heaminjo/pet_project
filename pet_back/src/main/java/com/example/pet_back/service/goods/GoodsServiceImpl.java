@@ -170,7 +170,14 @@ public class GoodsServiceImpl implements GoodsService {
         // 3. Page<Goods> 조회 완료
         Page<Goods> page;
         // 키워드 유무에 따른 분기
-        if(pageRequestDTO.getKeyword().isEmpty() && pageRequestDTO.getType().isEmpty()){ // 키워드 & 카테고리 X
+        // 빈 문자열일 경우
+        String keyword = pageRequestDTO.getKeyword();
+        String category = pageRequestDTO.getType();
+        if ("all".equals(category)) category = "";
+        if ("all".equals(keyword)) keyword = "";
+
+        if(keyword.isEmpty() && category.isEmpty()){ // 키워드 & 카테고리 X
+        //if(pageRequestDTO.getKeyword().isEmpty() && pageRequestDTO.getType().isEmpty()){ // 키워드 & 카테고리 X
             // 전체 조회
             log.info("전체 조회 => Category / Keyword : All");
             page = goodsRepository.findAll(pageable); // GoodsList

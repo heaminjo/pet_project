@@ -7,7 +7,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 // 리뷰 페이지
 export default function Review() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
   const navigate = useNavigate();
   const location = useLocation();
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상 태 변 수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -70,6 +69,7 @@ export default function Review() {
 
   useEffect(() => {
     console.log(`goods 정보 확인 : ${Object.keys(goods)}`);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
   return (
     <ReviewComp>

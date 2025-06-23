@@ -66,6 +66,7 @@ export default function Cart() {
       .map((item) => ({
         ...item,
         quantity: quantityMap[item.goodsId],
+        imageFile: imgUrl + item.imageFile,
       }));
 
     // 재고수량 검증
@@ -134,7 +135,7 @@ export default function Cart() {
       const result = await GoodsApi.getCartPageList(pages);
       // 1. 상품 목록
       setGoods(result.content);
-
+      console.log(result.content);
       // 2. 수량 맵 초기화
       const initialQuantityMap = {};
       result.content.forEach((item) => {

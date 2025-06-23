@@ -385,7 +385,7 @@ export default function Pay() {
               <div className="prod" key={index}>
                 <div className="prodleft">
                   <img
-                    src={`${imgUrl + item.imageFile}`}
+                    src={`${item.imageFile}`}
                     alt={item.goodsName}
                     className="prodimg"
                     onClick={() =>

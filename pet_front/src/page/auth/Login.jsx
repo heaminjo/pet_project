@@ -91,7 +91,8 @@ export default function Login() {
 
       //만약
       if (result.data.role == "ROLE_USER") conditionCheck();
-      navigate("/");
+      const url = location.state?.nextUrl ? -1 : "/";
+      navigate(url);
     } else {
       alert(result.message);
     }

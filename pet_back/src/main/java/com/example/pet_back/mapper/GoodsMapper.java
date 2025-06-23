@@ -34,6 +34,7 @@ public interface GoodsMapper {
     public GoodsResponseDTO toDto(Goods goods);
 
     // Entity 리스트 -> DTO 리스트
+    @Mapping(source = "imageFile" ,target = "imageFile",qualifiedByName = "imageFileUrl")
     List<GoodsResponseDTO> toDtoList(List<Goods> goodsList);
 
     // DTO 리스트 -> Entity 리스트

@@ -1,6 +1,6 @@
 import GoodsListComp from "./GoodsListStyle.js";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import GoodsApi from "../../../api/GoodsApi";
 import PageNumber from "../../util/PageNumber.jsx";
 
@@ -25,7 +25,11 @@ export default function GoodsList() {
   const page = parseInt(queryParams.get("page")) || 0;
   const keyword = queryParams.get("searchKeyword") || "";
   const type = queryParams.get("searchType") || "all";
-  const sort = queryParams.get("sort") || "desc";
+
+  // 입력 키워드
+  const [inputKeyword, setInputKeyword] = useState(keyword);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const sort = searchParams.get("sort") || "desc";
 
   // 페이징 정보 상태변수 (현재 페이징 상태 핸들링 위함)
   const [paging, setPaging] = useState({
@@ -48,16 +52,20 @@ export default function GoodsList() {
   //검색 기능
   //검색 버튼 클릭
   const searchClick = (e) => {
-    e.preventDefault();
-    handleChangeQuery("searchKeyword", keyword);
+    if (e) e.preventDefault();
+    handleChangeQuery("searchKeyword", inputKeyword);
   };
-
-  //검색버튼 엔터
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      //검색
-      searchClick();
-    }
+  // 엔터 시
+  const handleSearch = (e) => {
+    e.preventDefault();
+    handleChangeQuery("searchKeyword", inputKeyword);
+  };
+  // 쿼리변경
+  const handleChangeQuery = (key, value) => {
+    const updatedParams = new URLSearchParams(searchParams);
+    updatedParams.set(key, value);
+    if (key !== "page") updatedParams.set("page", 0);
+    setSearchParams(updatedParams);
   };
 
   // 상품1개 클릭시
@@ -76,6 +84,13 @@ export default function GoodsList() {
   // 페이징
   // 상품 데이터 조회 함수
   const getPageList = async () => {
+    // 최신으로 다시 읽기
+    const queryParams = new URLSearchParams(location.search);
+    const page = parseInt(queryParams.get("page")) || 0;
+    const keyword = queryParams.get("searchKeyword") || "";
+    const type = queryParams.get("searchType") || "all";
+    const sort = searchParams.get("sort") || "desc";
+
     const pages = {
       page,
       size: 8,
@@ -115,19 +130,7 @@ export default function GoodsList() {
   // 페이징, 검색 조건
   useEffect(() => {
     getPageList();
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [location.search]);
-
-  const handleChangeQuery = (key, value) => {
-    queryParams.set(key, value);
-    if (key !== "page") queryParams.set("page", 0);
-    navigate(`?${queryParams.toString()}`);
-  };
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    handleChangeQuery("searchKeyword", keyword);
-  };
 
   useEffect(() => {
     loadCategories();
@@ -238,7 +241,7 @@ export default function GoodsList() {
                   onClick={() => clickProd(item)}
                 >
                   <img
-                    src={`${imgUrl}${item.imageFile}`}
+                    src={`${item.imageFile}`}
                     alt={item.goodsName}
                     className="prodimg"
                   />
