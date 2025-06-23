@@ -89,9 +89,93 @@ const boardInsertFormStyle = styled.div`
       }
     }
 
-    .buttonRow {
+    .fileRow {
       display: flex;
       justify-content: flex-end;
+
+      .uploadBox {
+        display: flex;
+        align-items: center;
+        border: 2px solid #eee;
+        border-radius: 10px;
+        background: #fafafa;
+        padding: 10px 16px;
+        min-height: 10px;
+        gap: 10px;
+
+        .imageLabel {
+          display: inline-block;
+          background: #fafafa;
+          font-size: 16px;
+          font-weight: bold;
+          border-radius: 10px 10px 10px 10px;
+          padding: 12px 24px;
+          cursor: pointer;
+          border: none;
+          outline: none;
+          transition: background 0.2s;
+          vertical-align: middle;
+        }
+
+        .fileNameText {
+          display: inline-block;
+          font-size: 15px;
+          margin-left: 10px;
+          vertical-align: middle;
+        }
+      }
+
+      .imagePreview {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+        max-width: 100%;
+        overflow-x: auto;
+
+        .imagePreviewBox {
+          position: relative;
+          width: 100px;
+          height: 100px;
+          aspect-ratio: 1 / 1; /* 정사각형 유지 */
+          overflow: hidden;
+          border-radius: 10px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+          background: #fafafa;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+          }
+
+          button {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: rgba(0,0,0,0.55);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+            transition: background 0.2s, opacity 0.2s;
+          }
+
+          button:hover {
+            background: #f44336;
+            opacity: 1;
+          }
+
+        }
+
+      }
     }
 
     .submitBtn {

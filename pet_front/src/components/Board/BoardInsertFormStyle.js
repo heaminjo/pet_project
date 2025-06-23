@@ -138,7 +138,7 @@ const boardInsertFormStyle = styled.div`
         .imagePreviewBox {
           position: relative;
           width: 100px;
-          hieght: 100px;
+          height: 100px;
           aspect-ratio: 1 / 1; /* 정사각형 유지 */
           overflow: hidden;
           border-radius: 10px;
