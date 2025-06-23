@@ -33,7 +33,6 @@ const ModifyGoodsComp = styled.div`
   .container {
     width: 1000px;
     margin: 0 auto;
-    margin-top: 100px;
     font-family: "Noto Sans KR", sans-serif;
 
     h2 {
@@ -207,7 +206,7 @@ export default function ModifyGoods() {
   return (
     <ModifyGoodsComp>
       <div className="container">
-        <h2>[관리자 페이지] 상품 등록 내역 (수정/삭제) 페이지 </h2>
+        <h2>상품 관리 </h2>
         <span>
           설명: 관리자가 상품에 대한 상세정보를 입력하고 등록하는 페이지
         </span>
@@ -240,7 +239,7 @@ export default function ModifyGoods() {
               <div
                 className="goodslist"
                 key={index}
-                onClick={() => clickProd(item)}
+                // onClick={() => clickProd(item)}
               >
                 <div className="prodimg">
                   <img src={`${item.imageFile}`} alt={item.goodsName} />

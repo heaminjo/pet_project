@@ -26,7 +26,13 @@ export default function UserGrade() {
     getGradeStatistics();
     getGradeUserList();
   }, [gradeType, render]);
-
+  const boon = [
+    "새싹등급은 혜택이 없습니다.",
+    "구매 시 5% 할인",
+    "구매 시 7% 할인",
+    "구매 시 10% 할인",
+    "구매 시 20% 할인",
+  ];
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
@@ -154,13 +160,13 @@ export default function UserGrade() {
               <span>혜택 요약</span>
             </th>
           </tr>
-          {gradeData.map((g) => (
+          {gradeData.map((g, index) => (
             <tr>
               <td>{g.name}</td>
               <td>{g.value}명</td>
               <td>{g.percent.toFixed(1)}%</td>
               <td>{g.avg.toFixed(1)}P</td>
-              <td>---------------------</td>
+              <td>{boon[index]}</td>
             </tr>
           ))}
         </table>
@@ -199,11 +205,15 @@ export default function UserGrade() {
                 <td>{user.email}</td>
                 <td>{user.name}</td>
                 <td>{user.point}</td>
-                {user.grade != "프리미엄 회원" && (
+                {user.grade != "프리미엄 회원" ? (
                   <td className="btn_td">
                     <button onClick={() => clickUpgrade(user)}>
                       업그레이드
                     </button>
+                  </td>
+                ) : (
+                  <td>
+                    <span>마지막 등급</span>
                   </td>
                 )}
               </tr>

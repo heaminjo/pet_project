@@ -96,10 +96,10 @@ function App() {
               <Route path="category" element={<CategoryManage />} />
               <Route path="inventory" element={<Inventory />} />
               <Route path="goods/state" element={<GoodsState />} />
+              <Route path="goods/add" element={<AddGoods />} />
+              <Route path="goods/modify" element={<ModifyGoods />} />
             </Route>
             <Route path="/withcomplete" element={<WithDrawalComplete />} />
-            <Route path="/admin/goods/add" element={<AddGoods />} />
-            <Route path="/admin/goods/modify" element={<ModifyGoods />} />
             <Route path="/boardList/:category" element={<BoardList />} />
             <Route
               path="/boardDetail/:category/:board_id"

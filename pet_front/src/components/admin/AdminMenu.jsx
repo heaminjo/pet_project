@@ -64,7 +64,7 @@ export default function AdminMenu() {
           <p className="menu_title">상품 관리</p>
           <ul>
             <li>
-              <span onClick={() => navigate("/admin/goods/modify")}>
+              <span onClick={() => navigate("/admin/page/goods/modify")}>
                 상품 등록/수정/삭제
               </span>
             </li>
@@ -85,20 +85,7 @@ export default function AdminMenu() {
             </li>
           </ul>
         </div>
-        <div className="sub_menu" id="order_menu">
-          <p className="menu_title">주문 관리</p>
-          <ul>
-            <li>
-              <span>전체 주문 목록</span>
-            </li>
-            <li>
-              <span>주문 상세 및 상태 변경</span>
-            </li>
-            <li>
-              <span>반품 처리</span>
-            </li>
-          </ul>
-        </div>
+
         <div className="sub_menu" id="border_menu">
           <p className="menu_title">메인 관리</p>
           <ul>
