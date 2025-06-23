@@ -28,6 +28,7 @@ export default function BoardEditForm() {
     axios
       .get(`/board/boardDetail/${category}/${board_id}`)
       .then((response) => {
+        console.log("fileList", response.data.fileList);
         setTitle(response.data.title);
         setContent(response.data.content);
         setExistingFiles(response.data.fileList || []); // 기존 이미지 파일명 배열로 세팅

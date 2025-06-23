@@ -134,8 +134,8 @@
     </insert>
 
     <!-- 이미지 파일명 리스트 조회-->
-    <select id="selectImageFileNamesByBoardId" resultType="string">
-        SELECT file_name FROM board_image WHERE board_id = #{board_id}
+    <select id="selectImageFileNamesByBoardId" resultType="map">
+        SELECT file_name, origin_name, file_type FROM board_image WHERE board_id = #{board_id}
         ORDER BY output_order
     </select>
 

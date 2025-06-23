@@ -218,11 +218,11 @@ export default function BoardDetail() {
           {post.content}
         </div>
         <div className="image-gallery" style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-          {post?.imageFileNames && post.imageFileNames.map((fileName, idx) => (
+          {post?.fileList && post.fileList.filter(f => f.file_type && f.file_type.startsWith("image/")).map((file, idx) => (
             <img
-              key={idx}
-              src={`http://localhost:8080/resources/webapp/userImages/${fileName}`}
-              alt={`img${idx}`}
+              key={file.file_name}
+              src={`http://localhost:8080/resources/webapp/userImages/${file.file_name}`}
+              alt={file.origin_name}
               style={{ width: "200px", height: "auto", borderRadius: "8px", objectFit: "cover" }}
             />
           ))}

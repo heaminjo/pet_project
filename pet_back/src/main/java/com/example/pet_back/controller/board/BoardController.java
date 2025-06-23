@@ -62,8 +62,8 @@ public class BoardController {
         BoardDTO dto = boardService.selectOne(category, board_id);
 
         if (dto != null) {
-            List<String> imageFileNames = boardService.selectImageFileNamesByBoardId(board_id);
-            dto.setImageFileNames(imageFileNames);
+            List<Map<String,String>> imageFileNames = boardService.selectImageFileNamesByBoardId(board_id);
+            dto.setFileList(imageFileNames);
             return ResponseEntity.ok(dto);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("게시글을 찾을 수 없습니다");

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.security.core.parameters.P;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface BoardMapper {
@@ -62,7 +63,7 @@ public interface BoardMapper {
                          @Param("outputOrder") int outputOrder);
 
     //** 이미지 파일명 리스트 조회
-    List<String> selectImageFileNamesByBoardId(@Param("board_id") int board_id);
+    List<Map<String, String>> selectImageFileNamesByBoardId(@Param("board_id") int board_id);
 
     //** 이미지 삭제
     int deleteBoardImage(@Param("board_id") int board_id,

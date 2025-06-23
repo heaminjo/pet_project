@@ -46,7 +46,11 @@ public class BoardServiceImpl implements BoardService {
     //** 게시글 내용
     @Override
     public BoardDTO selectOne(String category, int board_id) {
-        return boardMapper.selectOne(category, board_id);
+        BoardDTO dto = boardMapper.selectOne(category, board_id);
+        if (dto != null){
+            dto.setFileList(boardMapper.selectImageFileNamesByBoardId(board_id));
+        }
+        return dto;
     }
 
     //** 조회수 증가
@@ -122,11 +126,12 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public int deleteBoard(int board_id) {
         // 1. 이미지 파일명 리스트 조회
-        List<String> imageFileNames = boardMapper.selectImageFileNamesByBoardId(board_id);
+        List<Map<String, String>> imageFileNames = boardMapper.selectImageFileNamesByBoardId(board_id);
 
         // 2. 이미지 테이블에서 삭제 및 파일 시스템에서 삭제
         if (imageFileNames != null && !imageFileNames.isEmpty()){
-            for (String fileName : imageFileNames){
+            for (Map<String, String> file : imageFileNames){
+                String fileName = file.get("file_name");
                 boardMapper.deleteBoardImage(board_id, fileName);
                 imageService.deleteImageFile(fileName); //실제 파일 삭제
             }
@@ -163,7 +168,7 @@ public class BoardServiceImpl implements BoardService {
 
     //** 이미지 파일명 리스트 조회
     @Override
-    public List<String> selectImageFileNamesByBoardId(int board_id) {
+    public List<Map<String, String>> selectImageFileNamesByBoardId(int board_id) {
         return boardMapper.selectImageFileNamesByBoardId(board_id);
     }
 
