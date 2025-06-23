@@ -1,4 +1,4 @@
-import { act, useReducer, useRef, useState } from "react";
+import { act, useEffect, useReducer, useRef, useState } from "react";
 import JoinComp from "./JoinStyle";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -12,7 +12,7 @@ export default function Join() {
   const btnRef = useRef(null);
   const [popup, setPopup] = useState(false); //우편번호 팝업
   const location = useLocation();
-
+  const [isKakao, setIskakao] = useState(false);
   //유효성 조건(yup)
   const schema = yup.object({
     email: yup
@@ -118,6 +118,9 @@ export default function Join() {
     }
   };
 
+  useEffect(() => {
+    if (location.state?.kakao === "true") setIskakao(true);
+  }, []);
   //회원가입
   const saveMember = async () => {
     const newUser = {
@@ -201,7 +204,7 @@ export default function Join() {
                     )}
                   </td>
                 </tr>
-                {location.kakao && (
+                {!isKakao && (
                   <>
                     <tr>
                       <th>
