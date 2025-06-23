@@ -60,7 +60,7 @@ export default function WithDrawal() {
     console.log("탈퇴 처리 실행");
     const result = await MemberApi.withdrawal();
     if (result.success) {
-      localStorage.clear();
+      sessionStorage.clear();
       navigate("/withcomplete");
     }
   };
