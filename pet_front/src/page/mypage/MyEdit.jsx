@@ -16,7 +16,7 @@ export default function MyEdit() {
 
   const { user, setUser } = useContext(PetContext);
 
-  //로드 시 회원 정보 불러오기
+  //로드 시 회원 정보 불러오기(MyPage에서 전역으로 뿌린 user를 Context를 통해 가져온다.)
   useEffect(() => {
     reset({
       name: user.name,
@@ -42,6 +42,8 @@ export default function MyEdit() {
       navigate("/user/mypage/myinfo");
     }
   };
+
+  //yup을 통한 유효성 검사
   const schema = yup.object({
     name: yup
       .string()
