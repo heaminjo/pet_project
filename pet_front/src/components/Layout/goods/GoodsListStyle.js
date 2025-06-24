@@ -3,16 +3,17 @@ import styled from 'styled-components';
 const GoodsListComp = styled.div`
   .container {
     width: 900px;
-    height: 2500px;
+    height: 900px;
     padding: 10px;
     margin: 0 auto;
-    margin-top: 150px;
+    margin-top: 180px;
 
     .search-bar {
       display: flex;
+      width: 780px;
       align-items: center;
       justify-content: center;
-      margin: 30px 0 0 0;
+      margin: 0 auto;
 
       select,
       input[type='text'] {
@@ -41,7 +42,7 @@ const GoodsListComp = styled.div`
         border-left: none;
         border-right: none;
         border-radius: 0;
-        width: 500px; /* input은 더 넓게 */
+        width: 400px; /* input은 더 넓게 */
       }
 
       button {
@@ -66,59 +67,58 @@ const GoodsListComp = styled.div`
 
     .body {
       width: inherit;
-      height: inherit;
       // border: 1px solid rgb(230, 230, 230);
       margin: 0 auto;
-      margin-top: 50px;
       display: flex;
       flex-direction: column;
       justify-content: center;
 
-      h2 {
-        margin-top: 30px;
-      }
-
       .list {
-        width: 850px;
         display: flex;
         flex-wrap: wrap;
         justify-content: flex-start; /* 왼쪽 정렬 */
-        gap: 10px; /* 카드 간 여백 */
+        gap: 5px; /* 카드 간 여백 */
         flex-direction: row;
         margin: 30px 0 auto;
         justify-content: flex-start; /* ← 가운데가 아닌 왼쪽 정렬 */
-        gap: 10px; /* 아이템 간 간격 */
+        gap: 5px; /* 아이템 간 간격 */
 
         .goodslist {
           cursor: pointer;
           width: 250px;
-          height: 350px;
-          margin: 2px;
-          flex: 0 0 calc(24% - 10px); /* 한 줄에 5개 (100% / 5) */
+          height: 330px;
+          margin: 5px;
+          padding: 5px;
+          align-items: center;
+          flex: 0 0 calc(23% - 10px); /* 한 줄에 5개 (100% / 5) */
           border: 1px solid rgb(185, 185, 185);
-          div {
-            margin-left: 10px;
-          }
-          .prodimg {
-            width: 150px;
-            height: 150px;
-            margin: 10px;
+          text-align: center;
+
+          .img-container {
+            height: 180px;
+            display: flex;
+            justify-content: center;
             align-items: center;
-            padding: 10px;
-            box-shadow: 1px 1px 3px rgb(150, 150, 150);
+
+            .prodimg {
+              width: 160px;
+              height: 160px;
+              margin: 10px;
+              object-fit: cover;
+              align-items: center;
+              margin-botton: 10px;
+              padding: 5px;
+              box-shadow: 1px 1px 3px rgb(150, 150, 150);
+            }
+          }
+
+          div {
+            width: 100%;
+            text-align: center;
+            margin: 4px 0;
+            word-break: break-word;
           }
         }
-      }
-      .list1 {
-        height: 300px;
-        border: 1px solid rgb(230, 230, 230);
-        display: flex;
-        flex-direction: row;
-        background-color: aqua; /* TEST 용 */
-      }
-      .list2 {
-        height: 300px;
-        border: 1px solid rgb(230, 230, 230);
       }
     }
   }

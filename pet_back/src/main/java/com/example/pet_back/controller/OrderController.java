@@ -28,6 +28,28 @@ public class OrderController {
     private final OrderService orderService;
     private final OrderDetailService orderDetailService;
 
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 주 문 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // <OrderDetail /> : 주문 리스트
+    @PostMapping("/detail")
+    public ResponseEntity<?> orderList(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody PageRequestDTO pageRequestDTO) {
+        log.info("** OrderController => orderList() 실행됨 **");
+        return orderDetailService.orderList(userDetails, pageRequestDTO);
+    }
+
+
+
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 배 송 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    @PostMapping("/delivery")
+    public ResponseEntity<?> deliveryStatus(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("orderId") Long orderId) {
+        log.info("** OrderController => orderList() 실행됨 **");
+        return orderService.deliveryStatus(userDetails, orderId);
+    }
+    
+    
+    
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 관 리 자 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // 관리자 페이지:
     @PostMapping("/list/all")
     public ResponseEntity<?> orderAllList(@RequestBody PageRequestDTO pageRequestDTO){
@@ -37,12 +59,6 @@ public class OrderController {
 
 
 
-    // <OrderDetail /> : 주문 리스트
-    @PostMapping("/detail")
-    public ResponseEntity<?> orderList(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody PageRequestDTO pageRequestDTO) {
-        log.info("** OrderController => orderList() 실행됨 **");
-        return orderDetailService.orderList(userDetails, pageRequestDTO);
-    }
 
     // 고객 주소 가져오기
     @GetMapping("/findaddress")

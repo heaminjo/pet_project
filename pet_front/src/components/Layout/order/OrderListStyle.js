@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 const OrderListComp = styled.div`
+  modal {
+    z-index: 999;
+  }
   .container {
     width: 900px;
     margin: 0 auto;

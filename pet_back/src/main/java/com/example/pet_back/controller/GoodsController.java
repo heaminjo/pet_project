@@ -119,7 +119,6 @@ public class GoodsController {
         }
         return ResponseEntity.status(HttpStatus.OK).body("성공");
     }
-    
 
     // 상품 삭제 메서드 (관리자 페이지)
     @PostMapping("/delete")

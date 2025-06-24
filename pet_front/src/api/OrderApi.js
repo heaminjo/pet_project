@@ -1,7 +1,7 @@
-import axios from "axios";
-import instance from "../api/axiosInstance"; // 인스턴스 불러오기
+import axios from 'axios';
+import instance from '../api/axiosInstance'; // 인스턴스 불러오기
 
-const KH_DOMAIN = "http://localhost:8080";
+const KH_DOMAIN = 'http://localhost:8080';
 const OrderApi = {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 주  문 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // <Order /> : 주문하기
@@ -13,7 +13,7 @@ const OrderApi = {
   // <OrderDetail /> 페이징 : 주문상세 보기
   getOrderDetailPageList: async (pages) => {
     const result = await instance.post(`/order/detail`, pages);
-    console.log("응답 결과:", result);
+    console.log('응답 결과:', result);
     return result.data;
   },
 
@@ -35,14 +35,23 @@ const OrderApi = {
       console.error('오류 발생:', err);
     }
   },
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 배  송 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  deliveryStatus: async (orderId) => {
+    console.log(`OrderApi.deliveryStatus`);
+    try {
+      const result = await instance.post(`/order/delivery?orderId=${orderId}`); //
+      return result?.data;
+    } catch (err) {
+      alert('오류 발생');
+      console.error('오류 발생:', err);
+    }
+  },
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 결  제 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 결제
   pay: async (payload) => {
     payload.goodsList.forEach((item) => {
-      console.log(
-        `결제 시도 => 상품 ID: ${item.goodsId}, 상품 수량: ${item.quantity}`
-      );
+      console.log(`결제 시도 => 상품 ID: ${item.goodsId}, 상품 수량: ${item.quantity}`);
     });
     const result = await instance.post(`/order/pay`, payload);
     try {
@@ -53,7 +62,7 @@ const OrderApi = {
         console.log(`OrderApi.pay() null`);
       }
     } catch (err) {
-      console.error("오류 발생:", err);
+      console.error('오류 발생:', err);
     }
 
     return result.data;
@@ -72,7 +81,7 @@ const OrderApi = {
         console.log(`OrderApi.findAddress() null`);
       }
     } catch (err) {
-      console.error("오류 발생:", err);
+      console.error('오류 발생:', err);
     }
     return result.data;
   },

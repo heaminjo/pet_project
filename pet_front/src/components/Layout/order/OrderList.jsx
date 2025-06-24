@@ -1,4 +1,3 @@
-
 import OrderListComp from './OrderListStyle';
 import GoodsApi from '../../../api/GoodsApi';
 import OrderApi from '../../../api/OrderApi';
@@ -8,10 +7,10 @@ import PageNumber from '../../util/PageNumber';
 import Modal from '../../../modal/Modal';
 
 export default function OrderDetail() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
   const location = useLocation();
-  const prodImg = process.env.PUBLIC_URL + "/images/pic1.png";
-  const imgUrl = "http://localhost:8080/resources/webapp/userImages/";
+  const prodImg = process.env.PUBLIC_URL + '/images/pic1.png';
+  const imgUrl = 'http://localhost:8080/resources/webapp/userImages/';
   const navigate = useNavigate();
   // 페이징 위함
   const [goodsList, setGoodsList] = useState([]);
@@ -24,9 +23,9 @@ export default function OrderDetail() {
   const [buyQuantity, setBuyQuantity] = useState(1);
 
   // 페이징 관련 상태변수
-  const [type, setType] = useState("all");
-  const [keyword, setKeyword] = useState("");
-  const [sort, setSort] = useState("desc");
+  const [type, setType] = useState('all');
+  const [keyword, setKeyword] = useState('');
+  const [sort, setSort] = useState('desc');
   const [page, setPage] = useState(0); // 1 페이지, 2 페이지, ...
 
   // 페이징 정보 상태변수 (현재 페이징 상태 핸들링 위함)
@@ -62,7 +61,7 @@ export default function OrderDetail() {
   const groupByDate = (info) => {
     const grouped = {};
     info.forEach((item) => {
-      const dateKey = new Date(item.regDate).toISOString().split("T")[0]; // 'YYYY-MM-DD'
+      const dateKey = new Date(item.regDate).toISOString().split('T')[0]; // 'YYYY-MM-DD'
       // toISOString() : 시차 방어 (UTC 기준)
       // 2025-06-05T15:57:22.427+09:00 --> '2025-06-05' 추출
       if (!grouped[dateKey]) grouped[dateKey] = []; // 빈배열 방어
@@ -75,9 +74,7 @@ export default function OrderDetail() {
   const groupedInfo = groupByDate(info);
 
   // 그룹화한 리스트 결과를 날짜 최신순 정렬
-  const sortedDates = Object.keys(groupedInfo).sort(
-    (a, b) => new Date(b) - new Date(a)
-  );
+  const sortedDates = Object.keys(groupedInfo).sort((a, b) => new Date(b) - new Date(a));
 
   // 주문취소
 
@@ -86,7 +83,7 @@ export default function OrderDetail() {
     const pages = {
       page: page,
       size: 5,
-      sortBy: "desc",
+      sortBy: 'desc',
       keyword: keyword,
       type: type,
     };
@@ -97,7 +94,7 @@ export default function OrderDetail() {
       if (Array.isArray(response?.content)) {
         setInfo(response.content);
       } else {
-        console.error("비정상 응답:", response);
+        console.error('비정상 응답:', response);
         setInfo([]);
       }
 
@@ -111,7 +108,7 @@ export default function OrderDetail() {
         totalPages: response.totalPages,
       });
     } catch (err) {
-      console.error("getPageList 실패:", err);
+      console.error('getPageList 실패:', err);
     }
   };
 
@@ -121,7 +118,7 @@ export default function OrderDetail() {
 
   return (
     <OrderListComp>
-      <div className="container">
+      <div className='container'>
         <h2>주문내역</h2>
         <div>
           {showModal && (
@@ -138,54 +135,36 @@ export default function OrderDetail() {
             />
           )}
           {sortedDates.map((date) => (
-            <div key={date} className="orderlist">
+            <div key={date} className='orderlist'>
               {groupedInfo[date].map((item, index) => (
-                <div key={item.orderDetailId} className="ordertitle">
+                <div key={item.orderDetailId} className='ordertitle'>
                   {date} 주문
-                  <div className="orderlist2">
-                    <div className="orderdesc">
-                      <img
-                        src={`${imgUrl}${item.imageFile}`}
-                        alt={item.goodsName}
-                        className="prodimg"
-                        onClick={() =>
-                          navigate("/user/order", { state: { goods: item } })
-                        }
-                      />
+                  <div className='orderlist2'>
+                    <div className='orderdesc'>
+                      <img src={`${imgUrl}${item.imageFile}`} alt={item.goodsName} className='prodimg' onClick={() => navigate('/user/order', { state: { goods: item } })} />
                       <br />
-                      <div className="proddesc">
+                      <div className='proddesc'>
                         <b>결제완료</b> <br />
                         {item.goodsName} <br />
                         {item.goodsPrice} 원 / {item.goodsQuantity} 개
                       </div>
-                      <div className="btn">
-                        <button
-                          className="btn1"
-                          onClick={() => addToCart(item, 1)}
-                        >
+                      <div className='btn'>
+                        <button className='btn1' onClick={() => addToCart(item, 1)}>
                           장바구니 담기
                         </button>
-                        <button
-                          className="btn2"
-                          onClick={() =>
-                            navigate("/user/mypage/delivery", {
-                              state: { goodsId: item.goodsId },
-                            })
-                          }
-                        >
+                        <button className='btn2' onClick={() => navigate(`/user/mypage/delivery?orderId=${item.orderId}`)}>
                           배송조회
                         </button>
                         <button className='btn3' onClick={() => navigate('/user/mypage/withdraw')}>
                           주문취소
                         </button>
                         <button
-                          className="btn4"
+                          className='btn4'
                           onClick={() =>
-                            navigate("/user/mypage/review", {
+                            navigate('/user/mypage/review', {
                               state: { goods: item },
                             })
-                          }
-                        >
+                          }>
                           리뷰작성
                         </button>
                       </div>

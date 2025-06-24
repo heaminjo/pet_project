@@ -91,27 +91,25 @@ public class GoodsServiceImpl implements GoodsService {
         Page<Goods> page;
         // 키워드 유무에 따른 분기
         // 빈 문자열일 경우
-        String keyword = pageRequestDTO.getKeyword();
-        String category = pageRequestDTO.getType();
-        if ("all".equals(category)) category = "";
-        if ("all".equals(keyword)) keyword = "";
-
-        if(keyword.isEmpty() && category.isEmpty()){ // 키워드 & 카테고리 X
+        String keyword = pageRequestDTO.getKeyword() == null ? "" : pageRequestDTO.getKeyword();
+        Long category = pageRequestDTO.getCategory();
+        if ((keyword.isEmpty()) && (category == null || category == 0L)) { // 키워드 & 카테고리 X
             // 전체 조회
             log.info("전체 조회 => Category / Keyword : All");
             page = goodsRepository.findAll(pageable); // GoodsList
-        }else if(pageRequestDTO.getType().isEmpty()) { // 카테고리 X
+        } else if (category == null || category == 0L) {// 카테고리 X
             // Type: all 전체 조회
             log.info("전체 조회 => Category : All / Keyword : ??" );
-            page = goodsRepository.findByKeyword("%" + pageRequestDTO.getKeyword() + "%", pageable);
-        }else if(pageRequestDTO.getKeyword().isEmpty()) { // 키워드 X
+            page = goodsRepository.findByKeyword("%" + keyword + "%", pageable);
+        } else if (keyword.isEmpty()) { // 키워드 X
             log.info("전체 조회 => Category : ?? / Keyword : All" );
-            page = goodsRepository.findByCategory(pageRequestDTO.getCategory(), pageable);
-        }else { // 검색필터
+            page = goodsRepository.findByCategory(category, pageable);
+        } else { // 검색필터
             // 검색 필터 : 키워드 & 카테고리
             log.info("필터링 => Category : ??  keyword : ??");
-            page = goodsRepository.findByCategoryAndKeyword("%" + pageRequestDTO.getKeyword() + "%", pageRequestDTO.getCategory(), pageable);
+            page = goodsRepository.findByCategoryAndKeyword("%" + keyword + "%", category, pageable);
         }
+
         log.info("** 키워드 유무에 따른 분기 **");
         // 4. 스트림 사용하여 GoodsResponseDTO 리스트로 변환
         List<GoodsResponseDTO> goodsResponseDTOList = page.getContent().stream() //
