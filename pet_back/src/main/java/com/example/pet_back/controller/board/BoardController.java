@@ -14,9 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/board")
@@ -64,8 +62,8 @@ public class BoardController {
         BoardDTO dto = boardService.selectOne(category, board_id);
 
         if (dto != null) {
-            List<String> imageFileNames = boardService.selectImageFileNamesByBoardId(board_id);
-            dto.setImageFileNames(imageFileNames);
+            List<Map<String,String>> imageFileNames = boardService.selectImageFileNamesByBoardId(board_id);
+            dto.setFileList(imageFileNames);
             return ResponseEntity.ok(dto);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("게시글을 찾을 수 없습니다");
@@ -143,14 +141,14 @@ public class BoardController {
         return ResponseEntity.ok(responseDTO);
     }
 
-    @PostMapping("/uploadimage")
-    public ResponseEntity<List<String>> uploadImage(@RequestParam("files") List<MultipartFile> files) {
+    @PostMapping("/uploadfile")
+    public ResponseEntity<List<Map<String, String>>> uploadFile(@RequestParam("files") List<MultipartFile> files) {
 
         //1. 저장 경로 지정
         String uploadDir = imageService.getRealPath();
 
         //2. 파일명 중복 방지 (UUID 등으로 랜덤 이름)
-        List<String> savedFileNames = new ArrayList<>();
+        List<Map<String, String>> savedFiles = new ArrayList<>();
 
         for (MultipartFile file : files) {
             String originalFileName = file.getOriginalFilename();
@@ -161,6 +159,7 @@ public class BoardController {
             }
 
             String savedFileName = UUID.randomUUID() + extension;
+            String fileType = file.getContentType();
 
             File dest = new File(uploadDir + savedFileName);
 
@@ -170,14 +169,18 @@ public class BoardController {
             try {
                 //4. 파일 저장
                 file.transferTo(dest);
+                Map<String, String> fileInfo = new HashMap<>();
+                fileInfo.put("file_name", savedFileName);
+                fileInfo.put("origin_name", originalFileName);
+                fileInfo.put("file_type", fileType);
 
-                savedFileNames.add(savedFileName);
+                savedFiles.add(fileInfo);
 
             } catch (IOException e) {
                 return ResponseEntity.internalServerError().body(null);
             }
         }
-        return ResponseEntity.ok(savedFileNames);
+        return ResponseEntity.ok(savedFiles);
     }
 
 }

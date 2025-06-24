@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -45,7 +46,11 @@ public class BoardServiceImpl implements BoardService {
     //** 게시글 내용
     @Override
     public BoardDTO selectOne(String category, int board_id) {
-        return boardMapper.selectOne(category, board_id);
+        BoardDTO dto = boardMapper.selectOne(category, board_id);
+        if (dto != null){
+            dto.setFileList(boardMapper.selectImageFileNamesByBoardId(board_id));
+        }
+        return dto;
     }
 
     //** 조회수 증가
@@ -61,11 +66,18 @@ public class BoardServiceImpl implements BoardService {
     public int insertBoard(BoardDTO dto) {
         int result = boardMapper.insertBoard(dto);
         // 여러 장 이미지 저장
-        List<String> fileNames = dto.getImageFileNames();
+        List<Map<String, String>> fileList = dto.getFileList();
 
-        if (fileNames != null && !fileNames.isEmpty()) {
-            for (int i = 0; i < fileNames.size(); i++) {
-                boardMapper.insertBoardImage(dto.getBoard_id(), fileNames.get(i), i + 1);
+        if (fileList != null && !fileList.isEmpty()) {
+            for (int i = 0; i < fileList.size(); i++) {
+                Map<String, String> file = fileList.get(i);
+                boardMapper.insertBoardImage(
+                        dto.getBoard_id(),
+                        file.get("file_name"),
+                        file.get("origin_name"),
+                        file.get("file_type"),
+                        i+1
+                );
             }
         }
         return result;
@@ -94,10 +106,16 @@ public class BoardServiceImpl implements BoardService {
         //3. 기존 이미지 전체 삭제 후, 남길 이미지만 다시 삽입
         boardMapper.deleteAllBoardImages(board_id);
 
-        List<String> imageFileNames = dto.getImageFileNames();
-        if (imageFileNames != null && !imageFileNames.isEmpty()){
-            for (int i = 0; i < imageFileNames.size(); i++){
-                boardMapper.insertBoardImage(board_id, imageFileNames.get(i), i+1);
+        List<Map<String, String>> fileList = dto.getFileList();
+        if (fileList != null && !fileList.isEmpty()){
+            for (int i = 0; i < fileList.size(); i++){
+                Map<String, String> file = fileList.get(i);
+                boardMapper.insertBoardImage(
+                        board_id,
+                        file.get("file_name"),
+                        file.get("origin_name"),
+                        file.get("file_type"),i+1
+                );
             }
         }
         return result;
@@ -108,11 +126,12 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public int deleteBoard(int board_id) {
         // 1. 이미지 파일명 리스트 조회
-        List<String> imageFileNames = boardMapper.selectImageFileNamesByBoardId(board_id);
+        List<Map<String, String>> imageFileNames = boardMapper.selectImageFileNamesByBoardId(board_id);
 
         // 2. 이미지 테이블에서 삭제 및 파일 시스템에서 삭제
         if (imageFileNames != null && !imageFileNames.isEmpty()){
-            for (String fileName : imageFileNames){
+            for (Map<String, String> file : imageFileNames){
+                String fileName = file.get("file_name");
                 boardMapper.deleteBoardImage(board_id, fileName);
                 imageService.deleteImageFile(fileName); //실제 파일 삭제
             }
@@ -143,13 +162,13 @@ public class BoardServiceImpl implements BoardService {
 
     //** 이미지 삽입
     @Override
-    public int insertBoardImage(int board_id, String fileName, int outputOrder) {
-        return boardMapper.insertBoardImage(board_id, fileName, outputOrder);
+    public int insertBoardImage(int board_id, String fileName, String originName, String fileType, int outputOrder) {
+        return boardMapper.insertBoardImage(board_id, fileName, originName, fileType, outputOrder);
     }
 
     //** 이미지 파일명 리스트 조회
     @Override
-    public List<String> selectImageFileNamesByBoardId(int board_id) {
+    public List<Map<String, String>> selectImageFileNamesByBoardId(int board_id) {
         return boardMapper.selectImageFileNamesByBoardId(board_id);
     }
 

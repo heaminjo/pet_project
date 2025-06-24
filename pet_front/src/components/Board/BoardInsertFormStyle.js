@@ -90,7 +90,7 @@ const boardInsertFormStyle = styled.div`
       }
     }
 
-    .imageRow {
+    .fileRow {
       .uploadBox {
         display: flex;
         align-items: center;
@@ -101,7 +101,7 @@ const boardInsertFormStyle = styled.div`
         min-height: 10px;
         gap: 10px;
       
-        .imageLabel {
+        .fileLabel {
           display: inline-block;
           background: #fafafa;
           font-size: 16px;
@@ -115,7 +115,7 @@ const boardInsertFormStyle = styled.div`
           vertical-align: middle;
         }
 
-        .imageLabel:hover {
+        .fileLabel:hover {
           background: #f8e776;
         }
 
@@ -138,7 +138,7 @@ const boardInsertFormStyle = styled.div`
         .imagePreviewBox {
           position: relative;
           width: 100px;
-          hieght: 100px;
+          height: 100px;
           aspect-ratio: 1 / 1; /* 정사각형 유지 */
           overflow: hidden;
           border-radius: 10px;

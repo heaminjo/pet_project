@@ -5,6 +5,7 @@ import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BoardService {
 
@@ -31,10 +32,10 @@ public interface BoardService {
     PageResponseDTO<BoardDTO> selectMyBoardList(int member_id, PageRequestDTO pageRequestDTO, String type, String keyword, String sort);
 
     //** 이미지 삽입
-    int insertBoardImage(int board_id, String fileName, int outputOrder);
+    int insertBoardImage(int board_id, String fileName, String originName, String fileType, int outputOrder);
 
     //** 이미지 파일명 리스트 조회
-    List<String> selectImageFileNamesByBoardId(int board_id);
+    List<Map<String, String>> selectImageFileNamesByBoardId(int board_id);
 
     //** 이미지 삭제
     int deleteBoardImage(int board_id, String fileName);

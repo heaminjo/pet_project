@@ -8,29 +8,39 @@ export default function BoardInsertForm() {
   const [content, setContent] = useState("");
   const navigate = useNavigate();
   const [category, setCategory] = useState("default"); // 기본값 설정
-  const [role, setRole] = useState(sessionStorage.getItem("role") || "");
-  const [imageFiles, setImageFiles] = useState([]);
+  const [role, setRole] = useState(localStorage.getItem("role") || "");
+  const [files, setFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
+  const [otherFiles, setOtherFiles] = useState([]);
 
-  // 이미지 파일 선택 핸들러
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    setImageFiles((prev) => [...prev, ...files]); // 기존 파일에 새로 선택한 파일 추가
-
-    // 미리보기 (기존 미리보기 + 새로 미리보기 합치기)
-    const previews = files.map((file) => URL.createObjectURL(file));
-    setImagePreviews((prev) => [...prev, ...previews]);
+  // 파일 선택 핸들러 (이미지+문서 모두)
+  const handleFileChange = (e) => {
+    const selected = Array.from(e.target.files);
+    const images =[];
+    const imagesPreview = [];
+    const others = [];
+    selected.forEach(file => {
+      if (file.type.startsWith("image/")) {
+        images.push(file);
+        imagesPreview.push(URL.createObjectURL(file)); // 이미지 미리보기 URL 생성
+      } else {
+        others.push(file);
+      }
+    });
+    setFiles(prev => [...prev, ...selected]); // 기존 파일에 새로 선택한 이미지 파일 추가
+    setImagePreviews(prev => [...prev, ...imagesPreview]); // 이미지 미리보기 업데이트
+    setOtherFiles(prev => [...prev, ...others]); // 문서 파일 업데이트
     e.target.value = ""; // 파일 선택 후 input 초기화
   };
 
-  // 이미지 업로드 함수
-  const handleImageUpload = async () => {
-    if (!imageFiles || imageFiles.length === 0) return [];
+  // 파일 업로드 함수
+  const handleFileUpload = async () => {
+    if (!files || files.length === 0) return [];
     const formData = new FormData();
-    imageFiles.forEach((file) => formData.append("files", file));
-
+    files.forEach( file => formData.append("files", file) );
+  
     try {
-      const res = await axios.post("/board/uploadimage", formData, {
+      const res = await axios.post("/board/uploadfile", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       return res.data; // 서버에서 반환한 savedFileName
@@ -40,8 +50,9 @@ export default function BoardInsertForm() {
     }
   };
 
+  
   useEffect(() => {
-    const handleStorage = () => setRole(sessionStorage.getItem("role") || "");
+    const handleStorage = () => setRole(localStorage.getItem("role") || "");
     window.addEventListener("storage", handleStorage);
     return () => window.removeEventListener("storage", handleStorage);
   }, []);
@@ -63,41 +74,41 @@ export default function BoardInsertForm() {
       return;
     }
 
-    //1. 이미지 먼저 업로드
-    let savedFileNames = [];
-    if (imageFiles && imageFiles.length > 0) {
-      savedFileNames = await handleImageUpload();
-      if (!savedFileNames || savedFileNames.length === 0) return; //업로드 실패 시 중단
+    // 파일 업로드
+    let fileList = [];
+    if (files.length > 0) {
+      fileList = await handleFileUpload();
+      if (!fileList) return;   //업로드 실패 시 중단
     }
-
-    //2. 게시글 정보 + 이미지 파일명 전송
-    let data = { title, content, category, imageFileNames: savedFileNames };
+    
+    //2. 게시글 정보 + 파일 리스트 전송
+    let data = { title, content, category, fileList };
     let url = `/board/insertBoard/${category}`;
 
     try {
       await axios.post(url, data, {
         headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       });
       alert("게시글이 등록되었습니다.");
       console.log("category:", category, "url:", url);
 
-      // 등록 후 해당 게시판 목록으로 이동
-      if (category === "notice") navigate(`/boardList/${category}`);
-      else if (category === "community") navigate(`/boardList/${category}`);
-      else if (category === "faq") navigate(`/boardList/${category}`);
-      else if (category === "free") navigate(`/boardList/${category}`);
+      // 등록 후 해당 게시판 목록으로 이동  
+      if(category==="notice") navigate(`/boardList/${category}`); 
+      else if(category==="community") navigate(`/boardList/${category}`);
+      else if(category==="faq") navigate(`/boardList/${category}`);
+      else if(category==="free") navigate(`/boardList/${category}`);
+
     } catch (err) {
       alert("게시글 등록에 실패했습니다.");
     }
   };
 
-  const handleImageRemove = (idx) => {
-    // 이미지 미리보기 삭제
-    setImagePreviews((prev) => prev.filter((_, i) => i !== idx));
-    // 실제 파일 배열도 같이 삭제
-    setImageFiles((prev) => prev.filter((_, i) => i !== idx));
+  const handleFileRemove = (idx) => {
+    setFiles(prev => prev.filter((_, i) => i !== idx));
+    setImagePreviews(prev => prev.filter((_, i) => i !== idx));
+    setOtherFiles(prev => prev.filter((_, i) => i !== idx));
   };
 
   return (
@@ -132,9 +143,7 @@ export default function BoardInsertForm() {
               onChange={(e) => setCategory(e.target.value)}
               required
             >
-              <option value="default" disabled>
-                게시판 선택
-              </option>
+              <option value="default" disabled>게시판 선택</option>
               {role === "ROLE_ADMIN" && (
                 <option value="notice">공지사항</option>
               )}
@@ -157,22 +166,22 @@ export default function BoardInsertForm() {
               required
             ></textarea>
           </div>
-          <div className="imageRow">
+          <div className="fileRow">
             <div className="uploadBox">
-              <label htmlFor="image" className="imageLabel">
-                이미지 업로드
+              <label htmlFor="file" className="fileLabel">
+                파일 업로드
               </label>
               <input
                 type="file"
-                id="image"
-                accept="image/*"
+                id="file"
+                accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.zip,.hwp,.ppt,.pptx"
                 multiple
-                onChange={handleImageChange}
-                style={{ display: "none" }}
+                onChange={handleFileChange}
+                style={{ display: "none"}}
               />
               <span className="fileNameText">
-                {imageFiles.length > 0
-                  ? imageFiles.map((f) => f.name).join(", ")
+                {files.length > 0
+                  ? files.map(f => f.name).join(", ")
                   : "파일을 선택하세요."}
               </span>
             </div>
@@ -184,13 +193,24 @@ export default function BoardInsertForm() {
                     <button
                       type="button"
                       className="removeImageBtn"
-                      onClick={() => handleImageRemove(idx)}
+                      onClick={() => handleFileRemove(idx)}
                     >
                       x
                     </button>
                   </div>
                 ))}
               </div>
+            )}
+            {/* 문서/압축 등 파일 리스트 */}
+              {otherFiles.length > 0 && (
+              <ul className="otherFileList">
+                {otherFiles.map((file, idx) => (
+                  <li key={idx}>
+                    {file.name}
+                    <button type="button" className="removeFileBtn" onClick={() => handleFileRemove(idx)}>x</button>
+                  </li>
+                ))}
+              </ul>
             )}
           </div>
           <div className="buttonRow">

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,5 +22,6 @@ public class BoardDTO {
     private String name;
     private List<String> imageFileNames;
     private List<String> deletedImageFileNames;
+    private List<Map<String, String>> fileList;
 
 }
