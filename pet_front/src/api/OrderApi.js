@@ -17,11 +17,30 @@ const OrderApi = {
     return result.data;
   },
 
+  // <OrderList /> : 주문취소
+  withDraw: async (orderDetailId) => {
+    console.log(`withDraw: ${orderDetailId}`);
+    const result = await instance.post(`/order/withdraw/${orderDetailId}`);
+    return result.data;
+  },
+
   // [관리자] 전체 Order List
   orderList: async (pages) => {
     const result = await instance.post(`/order/list/all`, pages);
     console.log('응답 결과:', result);
     return result.data;
+  },
+
+  // [관리자] <OrderListAll />
+  getAllOrderDetailList: async (pages) => {
+    console.log(`OrderApi.getAllOrderDetailList`);
+    try {
+      const result = await instance.post(`/order/page/details`, pages); //
+      return result?.data;
+    } catch (err) {
+      alert('오류 발생');
+      console.error('오류 발생:', err);
+    }
   },
 
   // [관리자] <DeliveryGoods>

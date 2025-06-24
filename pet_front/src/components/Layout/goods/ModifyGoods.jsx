@@ -91,6 +91,15 @@ export default function ModifyGoods() {
     }
   };
 
+  // 상품 삭제
+  const deleteGoods = async (goodsId) => {
+    try {
+      const result = await GoodsApi.deleteGoods(goodsId);
+    } catch (err) {
+      console.error('getPageList 실패: ', err);
+    }
+  };
+
   // 페이징
   useEffect(() => {
     getPageList();
@@ -174,7 +183,13 @@ export default function ModifyGoods() {
                     }}>
                     수정
                   </button>
-                  <button>삭제</button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation(); // 부모 클릭 방지
+                      deleteGoods(item.goodsId);
+                    }}>
+                    삭제
+                  </button>
                 </div>
               </div>
             ))}

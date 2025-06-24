@@ -11,6 +11,7 @@ import com.example.pet_back.entity.Orders;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.mapper.OrderDetailMapper;
 import com.example.pet_back.repository.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -41,8 +42,6 @@ public class OrderDetailServiceImpl implements OrderDetailService{
     private final AddressRepository addressRepository;
 
     private final OrderDetailMapper orderDetailMapper;
-
-
 
     // 회원이 주문한 OrderDetail
     @Override
@@ -121,14 +120,65 @@ public class OrderDetailServiceImpl implements OrderDetailService{
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-
-    
-    
-    
     @Override
     public List<GoodsRankDTO> goodsRank() {
         List<GoodsRankDTO> list = orderDetailRepository.goodsRank();
 
         return list;
     }
+
+    // <OrderListAll />
+    // 전체 OrderDetail
+    @Override
+    public PageResponseDTO<OrderDetailResponseDTO> orderDetailAllList(PageRequestDTO pageRequestDTO){
+        // 페이징
+        // 1. 정렬 조건 설정 :  (최신)
+        Sort sort = pageRequestDTO.getSortBy().equals("desc") ? // desc라면
+                Sort.by("regDate").descending() // regDate 필드 기준으로 desc
+                : Sort.by("regDate").ascending();
+
+        // 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(), sort);
+        log.info("** 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬 **");
+
+        Page<OrderDetail> orderDetailPage = orderDetailRepository.findAll(pageable);
+        List<OrderDetailResponseDTO> dtoList = orderDetailPage.getContent().stream()
+                .map(orderDetailMapper::toDTO)
+                .collect(Collectors.toList());
+
+        PageResponseDTO<OrderDetailResponseDTO> response = new PageResponseDTO<>(
+                dtoList,
+                pageRequestDTO.getPage(),
+                pageRequestDTO.getSize(),
+                orderDetailPage.getTotalElements(),
+                orderDetailPage.getTotalPages(),
+                orderDetailPage.hasNext(),
+                orderDetailPage.hasPrevious()
+        );
+
+        return response;
+
+    }
+
+    // <OrderList /> : 주문취소
+    @Override
+    @Transactional
+    public ResponseEntity<?> withdraw(CustomUserDetails userDetails, Long orderDetailId){
+        log.info("** OrderDetailServiceImpl => withdraw() 실행됨 **");
+        // 1. Member
+        Member member = memberRepository.findById( //
+                userDetails.getMember().getId()).orElseThrow(() //
+                -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+
+        OrderDetail od = orderDetailRepository.findById(orderDetailId).orElseThrow(() //
+                -> new UsernameNotFoundException("검색결과가 존재하지 않습니다."));
+
+
+
+
+        orderDetailRepository.deleteById(orderDetailId);
+        return ResponseEntity.status(HttpStatus.OK).body("삭제 성공");
+    }
+
+
 }

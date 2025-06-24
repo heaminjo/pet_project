@@ -1,12 +1,11 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const OrderComp = styled.div`
   padding: 30px 0;
   .container {
     width: 900px;
     margin: 0 auto;
-
-    margin-top: 110px;
+    margin-top: 150px;
     padding: 0px;
     border-radius: 10px;
 
@@ -104,6 +103,12 @@ const OrderComp = styled.div`
         .product-td {
           padding: 8px;
           border-top: 1px solid #eee;
+        }
+        modal {
+          position: fixed;
+          top: 20%;
+          left: 50%;
+          transform: translate(-50%, 0);
         }
       }
 

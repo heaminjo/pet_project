@@ -12,6 +12,7 @@ export default function OrderDetail() {
   const prodImg = process.env.PUBLIC_URL + '/images/pic1.png';
   const imgUrl = 'http://localhost:8080/resources/webapp/userImages/';
   const navigate = useNavigate();
+
   // 페이징 위함
   const [goodsList, setGoodsList] = useState([]);
   const [quantityMap, setQuantityMap] = useState({}); // Map 용도( goods id : goods quantity )
@@ -76,7 +77,17 @@ export default function OrderDetail() {
   // 그룹화한 리스트 결과를 날짜 최신순 정렬
   const sortedDates = Object.keys(groupedInfo).sort((a, b) => new Date(b) - new Date(a));
 
-  // 주문취소
+  // 주문취소 클릭시
+  const withDraw = async (orderDetailId) => {
+    console.log(`프론트 주문취소 요청 ID: ${orderDetailId}`);
+    try {
+      const result = await OrderApi.withDraw(orderDetailId);
+      await getPageList();
+      setPage(0);
+    } catch (err) {
+      console.error('getPageList 실패: ', err);
+    }
+  };
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 페이징 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const getPageList = async () => {
@@ -155,7 +166,7 @@ export default function OrderDetail() {
                         <button className='btn2' onClick={() => navigate(`/user/mypage/delivery?orderId=${item.orderId}`)}>
                           배송조회
                         </button>
-                        <button className='btn3' onClick={() => navigate('/user/mypage/withdraw')}>
+                        <button className='btn3' onClick={() => withDraw(item.orderDetailId)}>
                           주문취소
                         </button>
                         <button

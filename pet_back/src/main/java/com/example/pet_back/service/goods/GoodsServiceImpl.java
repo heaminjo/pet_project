@@ -245,9 +245,13 @@ public class GoodsServiceImpl implements GoodsService {
 
     // 상품삭제
     @Override
-    public void deleteGoods(GoodsRequestDTO goodsRequestDTO){
-        Goods goods = goodsRepository.findById(goodsRequestDTO.getGoodsId()).get();
-        goodsRepository.deleteById(goods.getGoodsId());
+    @Transactional
+    public void deleteGoods(Long goodsId){
+        try{
+            goodsRepository.deleteById(goodsId);
+        }catch (Exception e){
+            log.error("상품 삭제 실패");
+        }
     }
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 찜 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -37,33 +37,40 @@ public class OrderController {
         return orderDetailService.orderList(userDetails, pageRequestDTO);
     }
 
-
-
-
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 배 송 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    @PostMapping("/delivery")
-    public ResponseEntity<?> deliveryStatus(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("orderId") Long orderId) {
-        log.info("** OrderController => orderList() 실행됨 **");
-        return orderService.deliveryStatus(userDetails, orderId);
+    // <OrderList /> : 주문취소
+    @PostMapping("/withdraw/{orderDetailId}")
+    public ResponseEntity<?> withdrawOrder(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long orderDetailId) {
+        log.info("** OrderController => withdrawOrder() 실행됨 **");
+        orderDetailService.withdraw(userDetails, orderDetailId);
+        return ResponseEntity.ok("주문이 취소되었습니다.");
     }
-    
-    
-    
+
+
+
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 관 리 자 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // <DeliveryGoods />
+    @PostMapping("/page/list")
+    public PageResponseDTO<OrderSimpleDTO> ordersPageList(@RequestBody PageRequestDTO dto){
+        log.info("** OrderController => ordersPageList() 실행됨 **");
+        return orderService.ordersPageList(dto);
+    }
+
     // 관리자 페이지:
     @PostMapping("/list/all")
     public ResponseEntity<?> orderAllList(@RequestBody PageRequestDTO pageRequestDTO){
         log.info("** OrderController => orderAllList() 실행됨 **");
-       return orderService.orderAllList(pageRequestDTO);
+        return orderService.orderAllList(pageRequestDTO);
     }
 
-    // 고객 주소 가져오기
-    @GetMapping("/findaddress")
-    public ResponseEntity<?> findMemberAddress(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        log.info("** OrderController => findMemberAddress() 실행됨 **");
-        return orderService.findMemberAddress(userDetails);
+    // <OrderListAll />
+    @PostMapping("/page/details")
+    public PageResponseDTO<OrderDetailResponseDTO> orderDetailAllList(@RequestBody PageRequestDTO pageRequestDTO){
+        log.info("** OrderController => orderDetailAllList() 실행됨 **");
+        return orderDetailService.orderDetailAllList(pageRequestDTO);
     }
 
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 결 제 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // 결제 메서드
     @PostMapping("/pay")
     public ResponseEntity<?> payGoods(@AuthenticationPrincipal CustomUserDetails userDetails, //
@@ -73,6 +80,22 @@ public class OrderController {
         return orderService.payGoods(userDetails, dto);
     }
 
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 배 송 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    @PostMapping("/delivery")
+    public ResponseEntity<?> deliveryStatus(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("orderId") Long orderId) {
+        log.info("** OrderController => orderList() 실행됨 **");
+        return orderService.deliveryStatus(userDetails, orderId);
+    }
+
+    // 고객 주소 가져오기
+    @GetMapping("/findaddress")
+    public ResponseEntity<?> findMemberAddress(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        log.info("** OrderController => findMemberAddress() 실행됨 **");
+        return orderService.findMemberAddress(userDetails);
+    }
+
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 리 뷰 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 리뷰 업로드
     @PostMapping("/review/register")
     public ResponseEntity<?> regReview(@AuthenticationPrincipal CustomUserDetails userDetails, //
@@ -89,7 +112,6 @@ public class OrderController {
         }
     }
 
-
     // 내 리뷰 목록 출력
     @PostMapping("/myreviews")
     public ResponseEntity<?> showReviewList(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody PageRequestDTO pageRequestDTO) {
@@ -104,12 +126,6 @@ public class OrderController {
 //        return goodsService.showReviewList(goodsId, pageRequestDTO);
 //    }
 
-    // <DeliveryGoods />
-    @PostMapping("/page/list")
-    public PageResponseDTO<OrderSimpleDTO> ordersPageList(@RequestBody PageRequestDTO dto){
-        log.info("** OrderController => ordersPageList() 실행됨 **");
-        return orderService.ordersPageList(dto);
-    }
 
 
 }

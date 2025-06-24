@@ -117,7 +117,7 @@ const GoodsApi = {
     }
   },
 
-  // <ModifyGoods /> : 상품수정/삭제
+  // <ModifyGoods /> : 상품 수정
   modifyGoods: async (formData) => {
     try {
       const result = await instance.post('/goods/update', formData);
@@ -128,6 +128,20 @@ const GoodsApi = {
     } catch (err) {
       console.error('상품수정 등록 실패:', err);
       alert('상품 수정 중 에러가 발생했습니다.');
+    }
+  },
+
+  // <ModifyGoods /> : 상품 삭제
+  deleteGoods: async (goodsId) => {
+    try {
+      const result = await instance.post(`/goods/delete?goodsId=${goodsId}`);
+      if (result.data != null) {
+        console.log(`상품 삭제 완료 => ${result.data}`);
+        return result.data;
+      }
+    } catch (err) {
+      console.error('상품 삭제 실패:', err);
+      alert('상품 삭제 중 에러가 발생했습니다.');
     }
   },
 

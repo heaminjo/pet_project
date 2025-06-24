@@ -108,7 +108,11 @@ const GoodsListComp = styled.div`
               align-items: center;
               margin-botton: 10px;
               padding: 5px;
+              transition: transform 0.3s ease; /* 부드러운 애니메이션 */
               box-shadow: 1px 1px 3px rgb(150, 150, 150);
+            }
+            .prodimg:hover {
+              transform: scale(1.05);
             }
           }
 

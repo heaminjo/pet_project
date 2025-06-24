@@ -1,8 +1,11 @@
-import GoodsListComp from "./GoodsListStyle.js";
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import GoodsApi from "../../../api/GoodsApi";
-import PageNumber from "../../util/PageNumber.jsx";
+
+import GoodsListComp from './GoodsListStyle.js';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import GoodsApi from '../../../api/GoodsApi';
+import PageNumber from '../../util/PageNumber.jsx';
+import { FaStar, FaRegStar } from 'react-icons/fa';
+
 
 export default function GoodsList() {
   const navigate = useNavigate();
@@ -54,7 +57,17 @@ export default function GoodsList() {
 
   // 별점 (배열)
   const renderStars = (rating) => {
-    return "⭐".repeat(Math.floor(rating)); // 반올림이나 소수점 무시
+    // return '⭐'.repeat(Math.floor(rating)); // 반올림이나 소수점 무시
+    const stars = [];
+    const fullStars = Math.floor(rating); // 채운 별 수
+    const emptyStars = 5 - fullStars; // 빈 별 수
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<FaStar key={`full-${i}`} color='gold' size={16} />);
+    }
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push(<FaRegStar key={`empty-${i}`} color='lightgray' size={16} />);
+    }
+    return stars;
   };
 
   // 페이징

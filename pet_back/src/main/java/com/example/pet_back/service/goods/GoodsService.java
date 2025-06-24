@@ -52,7 +52,7 @@ public interface GoodsService {
     void updateGoods(GoodsUploadDTO goodsUploadDTO);
         
     // 상품 삭제
-    void deleteGoods(GoodsRequestDTO goodsRequestDTO);
+    void deleteGoods(Long goodsId);
 
     //배너 가져오기(조해민)
     public List<BannerDTO> bannerList();

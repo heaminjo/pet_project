@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import OrderComp from './OrderStyle.js';
+import styled from 'styled-components';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 import OrderTab from './OrderTab.jsx';
 import ReviewList from './review/ReviewList.jsx';
 import GoodsApi from '../../../api/GoodsApi.js';
 import Modal from '../../../modal/Modal.jsx';
+import { FaStar, FaRegStar } from 'react-icons/fa';
 
 export default function Order() {
   const navigate = useNavigate();
@@ -66,10 +68,19 @@ export default function Order() {
     }
   };
 
-  // 별점 (상품의 총 별점)
-  const renderIcons = (rating) => {
-    const filledStars = '⭐'.repeat(Math.floor(rating)); // 반올림이나 소수점 무시
-    setStars(filledStars);
+  // 별점 (배열)
+  const renderStars = (rating) => {
+    // return '⭐'.repeat(Math.floor(rating)); // 반올림이나 소수점 무시
+    const stars = [];
+    const fullStars = Math.floor(rating); // 채운 별 수
+    const emptyStars = 5 - fullStars; // 빈 별 수
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<FaStar key={`full-${i}`} color='gold' size={30} />);
+    }
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push(<FaRegStar key={`empty-${i}`} color='lightgray' size={30} />);
+    }
+    return stars;
   };
 
   // 찜 (적용)
@@ -120,7 +131,7 @@ export default function Order() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     console.log(`상품정보 확인: ${goods.goodsId}, ${goods.goodsName}, ${goods.goodsState}, ${goods.description}, ${goods.price}, 수량: ${goods.quantity}`);
     if (goods) {
-      renderIcons(goods.rating || 0);
+      renderStars(goods.rating || 0);
     }
     favoriteInfo();
   }, [goods]);
@@ -137,7 +148,7 @@ export default function Order() {
               {goods.goodsName}&nbsp;&nbsp;{heart}
             </div>
             <p className='rating' style={{ color: 'red', fontSize: '12px' }}>
-              {stars}&nbsp;&nbsp;{'( ' + goods.reviewNum + ' 개 상품평 )'}
+              {renderStars(goods.rating)}&nbsp;&nbsp;{'( ' + goods.reviewNum + ' 개 상품평 )'}
             </p>
             <hr />
             <div className='prodprice'>
@@ -162,17 +173,19 @@ export default function Order() {
               </b>
             </div>
             {showModal && (
-              <Modal
-                content={
-                  <>
-                    상품이 장바구니에 정상적으로 담겼습니다.
-                    <br />
-                    장바구니로 이동하시겠습니까?
-                  </>
-                }
-                clickEvt={goToCart}
-                setModal={setShowModal}
-              />
+              <ModalContainer>
+                <Modal
+                  content={
+                    <>
+                      상품이 장바구니에 정상적으로 담겼습니다.
+                      <br />
+                      장바구니로 이동하시겠습니까?
+                    </>
+                  }
+                  clickEvt={goToCart}
+                  setModal={setShowModal}
+                />
+              </ModalContainer>
             )}
             <br />
             <hr />
@@ -188,23 +201,35 @@ export default function Order() {
         </section>
         <hr />
         <div className='product-container'>
-          <table className='product-table'>
-            <tbody>
-              {data.map((item, idx) => (
-                <tr key={idx}>
-                  <th className='product-th'>{item.label}</th>
-                  <td className='product-td'>{item.value}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className='product-more'>필수 표기정보 더보기 ▼</div>
-          <hr />
-          <br />
           <OrderTab activeTab={activeTab} setActiveTab={setActiveTab} reviewNum={goods.reviewNum} />
+          {/* 상품상세 탭일 때 */}
+          {activeTab === '상품상세' && (
+            <>
+              <table className='product-table'>
+                <tbody>
+                  {data.map((item, idx) => (
+                    <tr key={idx}>
+                      <th className='product-th'>{item.label}</th>
+                      <td className='product-td'>{item.value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className='product-more'>필수 표기정보 더보기 ▼</div>
+            </>
+          )}
+
+          {/* 리뷰 탭일 때 */}
           {activeTab === `상품평 (${goods.reviewNum})` && <ReviewList stars={stars} goodsId={goods.goodsId} reviewNum={goods.reviewNum} imgUrl={imgUrl} />}
         </div>
       </div>
     </OrderComp>
   );
 }
+
+const ModalContainer = styled.div`
+  position: fixed;
+  top: 30%;
+  left: 40%;
+  transform: translate(-50%, -50%);
+`;

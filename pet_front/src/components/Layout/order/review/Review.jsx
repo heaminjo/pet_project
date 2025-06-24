@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -35,13 +34,13 @@ export default function Review() {
   const [isDragging, setIsDragging] = useState(false);
 
   const renderStars = (rating) => {
-    return "⭐".repeat(Math.floor(rating)); // 반올림이나 소수점 무시
+    return '⭐'.repeat(Math.floor(rating)); // 반올림이나 소수점 무시
   };
 
   // 보여줄 데이터
   const data = [
-    { label: "리뷰 작성", value: goods.goodsName },
-    { label: "작성한 리뷰", value: goods.description },
+    { label: '리뷰 작성', value: goods.goodsName },
+    { label: '작성한 리뷰', value: goods.description },
   ];
 
   // 이미지 제거
@@ -55,7 +54,7 @@ export default function Review() {
     console.log(`goodsId = ${reviews.goodsId}`);
     console.log(`별점: ${score}`);
     const review = {
-      memberId: "",
+      memberId: '',
       goodsId: goods.goodsId,
       orderDetailId: goods.orderDetailId,
       score: score,
@@ -76,31 +75,33 @@ export default function Review() {
     try {
       const response = await OrderApi.registerReview(formData);
       alert(response); // 리뷰가 정상적으로 등록되었습니다.
-      navigate("/");
+      navigate('/');
     } catch (err) {
-      console.error("리뷰 등록 실패", err);
-      alert("리뷰 등록 중 오류가 발생했습니다.");
+      console.error('리뷰 등록 실패', err);
+      alert('리뷰 등록 중 오류가 발생했습니다.');
     }
   };
 
   useEffect(() => {
     console.log(`goodsId = ${goods.goodsId}`);
     console.log(`goods 정보 확인 : ${Object.keys(goods)}`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
   return (
     <ReviewComp>
-      <div className="container">
+      <div className='container'>
         <h2>리뷰작성 페이지</h2>
         <div className='prod-info'>
           <img src={`${imgUrl}${goods.imageFile}`} alt='' style={{ width: '400px', height: '400px' }} className='prod-img' />
-          <div>goodsId: {goods.goodsId}</div>
-          <div>goodsName: {goods.goodsName}</div>
-          <div>description: {goods.description}</div>
-          <div>orderDetailId : {goods.orderDetailId}</div>
+          <div>
+            <b>상품명</b>&nbsp;&nbsp;{goods.goodsName}
+          </div>
+          <div>
+            <b>상세</b>&nbsp;&nbsp;{goods.description}
+          </div>
           <div
-            className="star-container"
+            className='star-container'
             onMouseDown={() => setIsDragging(true)}
             onMouseUp={() => setIsDragging(false)}
             onMouseLeave={() => setIsDragging(false)}
@@ -108,80 +109,43 @@ export default function Review() {
               if (isDragging) {
                 const rect = e.currentTarget.getBoundingClientRect();
                 const x = e.clientX - rect.left;
-                const newScore = Math.min(
-                  Math.max(Math.ceil((x / rect.width) * 5), 1),
-                  5
-                );
+                const newScore = Math.min(Math.max(Math.ceil((x / rect.width) * 5), 1), 5);
                 setScore(newScore);
               }
             }}
             style={{
-              display: "flex",
-              gap: "4px",
-              cursor: "pointer",
-              fontSize: "28px",
-            }}
-          >
+              display: 'flex',
+              gap: '4px',
+              cursor: 'pointer',
+              fontSize: '28px',
+            }}>
             {[1, 2, 3, 4, 5].map((i) => (
-              <span key={i}>{i <= score ? "❤️" : "🤍"}</span>
+              <span key={i}>{i <= score ? '❤️' : '🤍'}</span>
             ))}
           </div>
           <p>선택된 별점: {score}점</p>
         </div>
         <hr />
         <form>
-          <fieldset className="reviews">
+          <fieldset className='reviews'>
             <legend>
               <strong>한줄요약</strong>
             </legend>
             <label>
-              <input
-                type="text"
-                name="title"
-                className="comment"
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-              />
+              <input type='text' name='title' className='comment' value={comment} onChange={(e) => setComment(e.target.value)} />
             </label>
             <hr />
             <legend>
               <strong>상세 리뷰</strong>
             </legend>
             <label>
-              <textarea
-                name="contents"
-                className="contents"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-              />
+              <textarea name='contents' className='contents' value={content} onChange={(e) => setContent(e.target.value)} />
             </label>
           </fieldset>
         </form>
-
-        {/* <hr />
-        <h3>서비스</h3>
-        <div className="service">
-          <div>[서비스] 전체적인 서비스는 어떠셨나요? (상, 중, 하)</div>
-          &nbsp;&nbsp; 😍 &nbsp;&nbsp;🙂 &nbsp;&nbsp;😫 &nbsp;&nbsp;
-        </div>
-        <hr />
-        <h3>품질</h3>
-        <div className="quality">
-          <div>
-            [품질] 이 상품의 품질에 대해서 얼마나 만족하시나요? (상, 중, 하)
-          </div>
-          &nbsp;&nbsp; 😍 &nbsp;&nbsp;🙂 &nbsp;&nbsp;😫 &nbsp;&nbsp;
-        </div>
-        <hr />
-        <h3>배송</h3>
-        <div className="deliver">
-          <div>[배송] 배송에 대해서 얼마나 만족하시나요? (상, 중, 하)</div>
-          &nbsp;&nbsp; 😍 &nbsp;&nbsp;🙂 &nbsp;&nbsp;😫 &nbsp;&nbsp;
-        </div> */}
-
         <hr />
         <form>
-          <fieldset className="user-img">
+          <fieldset className='user-img'>
             <legend>
               <strong>사진 첨부</strong>
               <input
@@ -226,22 +190,11 @@ export default function Review() {
           <button className='pay' onClick={regReview}>
             리뷰등록
           </button>
-          &nbsp;&nbsp;{" "}
-          <button className="cancel" onClick={() => navigate("/")}>
+          &nbsp;&nbsp;{' '}
+          <button className='cancel' onClick={() => navigate('/')}>
             취소
           </button>
         </section>
-        {/* <table className='review-table'>
-          <tbody>
-            {data.map((item, idx) => (
-              <tr key={idx}>
-                <th className='review-th'>{item.label}</th>
-                <td className='review-td'>{item.value}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table> */}
-        {/* <PageNumber page={page} setPage={setPage} paging={paging} /> */}
       </div>
     </ReviewComp>
   );
@@ -251,7 +204,7 @@ const ReviewComp = styled.div`
   .container {
     width: 900px;
     margin: 0 auto;
-    font-family: "Arial", sans-serif;
+    font-family: 'Arial', sans-serif;
     color: #333;
   }
   .star-container {
