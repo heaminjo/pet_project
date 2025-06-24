@@ -71,9 +71,6 @@ public class GoodsController {
         return goodsService.goodsReviewList(goodsId, pageRequestDTO);
     }
 
-
-
-
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상 품 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // 상품 상세정보
     @GetMapping("/detail/{goods_id}")
@@ -81,7 +78,6 @@ public class GoodsController {
         log.info("** GoodsController => selectOne() 실행됨 **");
         return goodsService.selectOne(goods_id);
     }
-
 
     // 상품 리스트 출력 (메인)
     @PostMapping("/list")
@@ -150,13 +146,11 @@ public class GoodsController {
         return ResponseEntity.ok(goodsService.categoryList());
     }
 
-
     //상품 페이징 목록(조해민)
     @PostMapping("/page/list")
     public ResponseEntity<PageResponseDTO<GoodsSimpleDTO>> goodsPageList(@RequestBody PageRequestDTO dto){
         return ResponseEntity.ok(goodsService.goodsPageList(dto));
     }
-
 
     //베스트 상품 리스트 불러오기(조해민)
     @GetMapping("/best/list")

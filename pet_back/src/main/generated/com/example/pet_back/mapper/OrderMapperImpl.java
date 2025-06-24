@@ -4,6 +4,7 @@ import com.example.pet_back.constant.ORDERSTATE;
 import com.example.pet_back.constant.PAYMENT;
 import com.example.pet_back.domain.goods.OrderRequestDTO;
 import com.example.pet_back.domain.goods.OrderResponseDTO;
+import com.example.pet_back.domain.goods.OrderSimpleDTO;
 import com.example.pet_back.entity.Delivery;
 import com.example.pet_back.entity.Member;
 import com.example.pet_back.entity.Orders;
@@ -14,8 +15,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-06-19T10:05:06+0900",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.12 (Oracle Corporation)"
+    date = "2025-06-24T10:55:19+0900",
+    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.11 (Oracle Corporation)"
 )
 @Component
 public class OrderMapperImpl implements OrderMapper {
@@ -52,6 +53,7 @@ public class OrderMapperImpl implements OrderMapper {
 
         orderResponseDTO.memberId( ordersMemberId( orders ) );
         orderResponseDTO.deliveryId( ordersDeliveryDeliveryId( orders ) );
+        orderResponseDTO.status( OrderMapper.orderToString( orders.getStatus() ) );
         orderResponseDTO.orderId( orders.getOrderId() );
         orderResponseDTO.totalQuantity( orders.getTotalQuantity() );
         orderResponseDTO.totalPrice( orders.getTotalPrice() );
@@ -59,9 +61,6 @@ public class OrderMapperImpl implements OrderMapper {
             orderResponseDTO.payment( orders.getPayment().name() );
         }
         orderResponseDTO.regDate( orders.getRegDate() );
-        if ( orders.getStatus() != null ) {
-            orderResponseDTO.status( orders.getStatus().name() );
-        }
 
         return orderResponseDTO.build();
     }
@@ -89,6 +88,40 @@ public class OrderMapperImpl implements OrderMapper {
         List<OrderResponseDTO> list = new ArrayList<OrderResponseDTO>( orderList.size() );
         for ( Orders orders : orderList ) {
             list.add( toDto( orders ) );
+        }
+
+        return list;
+    }
+
+    @Override
+    public OrderSimpleDTO toSimpleDTO(Orders orders) {
+        if ( orders == null ) {
+            return null;
+        }
+
+        OrderSimpleDTO orderSimpleDTO = new OrderSimpleDTO();
+
+        orderSimpleDTO.setMemberId( ordersMemberId( orders ) );
+        orderSimpleDTO.setDeliveryId( ordersDeliveryDeliveryId( orders ) );
+        orderSimpleDTO.setStatus( orders.getStatus() );
+        orderSimpleDTO.setPayment( orders.getPayment() );
+        orderSimpleDTO.setOrderId( orders.getOrderId() );
+        orderSimpleDTO.setRegDate( orders.getRegDate() );
+        orderSimpleDTO.setTotalPrice( orders.getTotalPrice() );
+        orderSimpleDTO.setTotalQuantity( orders.getTotalQuantity() );
+
+        return orderSimpleDTO;
+    }
+
+    @Override
+    public List<OrderSimpleDTO> toSimpleDTOList(List<Orders> orderList) {
+        if ( orderList == null ) {
+            return null;
+        }
+
+        List<OrderSimpleDTO> list = new ArrayList<OrderSimpleDTO>( orderList.size() );
+        for ( Orders orders : orderList ) {
+            list.add( toSimpleDTO( orders ) );
         }
 
         return list;

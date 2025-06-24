@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import OrderApi from '../../../../api/OrderApi';
-import OrderApi from '../../../../api/GoodsApi';
-import OrderApi from '../../../util/PageNumber';
 
 // 리뷰 페이지
 export default function Review() {

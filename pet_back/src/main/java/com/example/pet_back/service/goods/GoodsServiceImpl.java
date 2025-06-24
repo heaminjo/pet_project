@@ -252,8 +252,6 @@ public class GoodsServiceImpl implements GoodsService {
         goodsRepository.deleteById(goods.getGoodsId());
     }
 
-
-
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 찜 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // 찜 (추가/해제 - 단일)
     @Override
@@ -294,120 +292,6 @@ public class GoodsServiceImpl implements GoodsService {
         }
 
     }
-
-
-    // 리뷰 출력
-    @Override
-    @Transactional
-    public  ResponseEntity<?> reviews(Long goodsId, PageRequestDTO pageRequestDTO){
-        log.info("** GoodsServiceImpl 실행됨 **");
-        // 페이징
-        // 1. 정렬 조건 설정 :  (최신)
-        Sort sort = pageRequestDTO.getSortBy().equals("desc") ? // desc라면
-                Sort.by("regDate").descending() // regDate 필드 기준으로 desc
-                : Sort.by("regDate").ascending();
-
-        // 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬
-        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(), sort);
-
-        log.info("** 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬 **");
-        // 3. Page<Review> 의 content (DTO에 SET)
-        Page<ReviewResponseDTO> reviewPage = reviewRepository.findAllByGoodsId(goodsId, pageable); // Review List
-
-        log.info("** 3. Page<Review> 의 content (DTO에 SET) **");
-        log.info("getContent: "+reviewPage.getContent());
-         // 4. PageResponseDTO
-        PageResponseDTO<ReviewResponseDTO> response = new PageResponseDTO<>(
-                reviewPage.getContent(),
-                pageRequestDTO.getPage(), // 클라이언트가 요청한 페이지
-                pageRequestDTO.getSize(), // 클라이언트가 요청한 수
-                reviewPage.getTotalElements(),
-                reviewPage.getTotalPages(),
-                reviewPage.hasNext(),
-                reviewPage.hasPrevious()
-        );
-        log.info("** 4. PageResponseDTO **");
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-
-    }
-
-
-
-    // 고객의 배송지 정보
-    @Override
-    public ResponseEntity<?> findMemberAddress(CustomUserDetails userDetails){
-        return ResponseEntity.status(HttpStatus.OK).body("구현중");
-    }
-    
-
-    // 상품리스트 출력
-    @Override
-    public ResponseEntity<?> showGoodsList(PageRequestDTO pageRequestDTO) {
-        log.info("** GoodsServiceImpl 실행됨 **");
-        // 페이징
-        // 1. 정렬 (최신)
-        Sort sort = pageRequestDTO.getSortBy().equals("desc") ? // desc라면
-                Sort.by("regDate").descending() // regDate 필드 기준으로 desc
-                : Sort.by("regDate").ascending();
-
-        // 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬
-        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(), sort);
-
-        // 3. Page<Goods> 조회 완료
-        Page<Goods> page;
-        // 키워드 유무에 따른 분기
-        // 빈 문자열일 경우
-        String keyword = pageRequestDTO.getKeyword();
-        String category = pageRequestDTO.getType();
-        if ("all".equals(category)) category = "";
-        if ("all".equals(keyword)) keyword = "";
-
-        if(keyword.isEmpty() && category.isEmpty()){ // 키워드 & 카테고리 X
-        //if(pageRequestDTO.getKeyword().isEmpty() && pageRequestDTO.getType().isEmpty()){ // 키워드 & 카테고리 X
-            // 전체 조회
-            log.info("전체 조회 => Category / Keyword : All");
-            page = goodsRepository.findAll(pageable); // GoodsList
-        }else if(pageRequestDTO.getType().isEmpty()) { // 카테고리 X
-            // Type: all 전체 조회
-            log.info("전체 조회 => Category : All / Keyword : ??" );
-            page = goodsRepository.findByKeyword("%" + pageRequestDTO.getKeyword() + "%", pageable);
-        }else if(pageRequestDTO.getKeyword().isEmpty()) { // 키워드 X
-            log.info("전체 조회 => Category : ?? / Keyword : All" );
-            page = goodsRepository.findByCategory(pageRequestDTO.getCategory(), pageable);
-        }else { // 검색필터
-            // 검색 필터 : 키워드 & 카테고리
-            log.info("필터링 => Category : ??  keyword : ??");
-            page = goodsRepository.findByCategoryAndKeyword("%" + pageRequestDTO.getKeyword() + "%", pageRequestDTO.getCategory(), pageable);
-        }
-        log.info("** 키워드 유무에 따른 분기 **");
-            // 4. 스트림 사용하여 GoodsResponseDTO 리스트로 변환
-        List<GoodsResponseDTO> goodsResponseDTOList = page.getContent().stream() //
-                .map(goods -> GoodsResponseDTO.builder() //
-                        .goodsId(goods.getGoodsId())
-                        .goodsName(goods.getGoodsName())
-                        .price(goods.getPrice())
-                        .description(goods.getDescription())
-                        .goodsState(goods.getGoodsState())
-                        .imageFile(fileUploadProperties.getUrl()+goods.getImageFile())
-                        .rating(goods.getRating())
-                        .views(goods.getViews())
-                        .reviewNum(goods.getReviewNum())
-                        .quantity(goods.getQuantity())
-                        .regDate(goods.getRegDate())
-                        .build()).collect(Collectors.toList());
-
-        log.info("** 스트림 사용하여 GoodsResponseDTO 리스트로 변환 **");
-        // 5. 반환할 ResponseDTO 에 List 저장 (goodsResponseDTOList)
-        PageResponseDTO<GoodsResponseDTO> response = new PageResponseDTO<>( //
-                goodsResponseDTOList, //
-                pageRequestDTO.getPage(), pageRequestDTO.getSize(),  //
-                page.getTotalElements(), page.getTotalPages(), page.hasNext(), page.hasPrevious());
-
-        log.info("** 반환할 ResponseDTO 에 List 저장 (goodsResponseDTOList) **");
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
-
 
     // 찜 목록
     @Override

@@ -1,9 +1,9 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const GoodsListComp = styled.div`
   .container {
     width: 900px;
-    height: 3000px;
+    height: 2500px;
     padding: 10px;
     margin: 0 auto;
     margin-top: 150px;
@@ -15,7 +15,7 @@ const GoodsListComp = styled.div`
       margin: 30px 0 0 0;
 
       select,
-      input[type="text"] {
+      input[type='text'] {
         height: 40px;
         width: 120px; /* 원하는 너비로 맞추세요 */
         font-size: 16px;
@@ -37,7 +37,7 @@ const GoodsListComp = styled.div`
         text-align: center;
       }
 
-      input[type="text"] {
+      input[type='text'] {
         border-left: none;
         border-right: none;
         border-radius: 0;

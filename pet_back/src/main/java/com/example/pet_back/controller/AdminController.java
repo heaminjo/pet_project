@@ -35,7 +35,6 @@ public class AdminController {
     private final GoodsService goodsService;
     private final OrderService orderService;
     private final ImageService imageService;
-    private final OrderService orderService;
     private final OrderDetailService orderDetailService;
     //관리자 조회
     @GetMapping("/detail")
@@ -148,14 +147,15 @@ public class AdminController {
 
     //상품 순위 통계
     @GetMapping("/statistics/goods/rank")
-    public ResponseEntity<List<GoodsRankDTO>> goodsRank(){
+    public ResponseEntity<List<GoodsRankDTO>> goodsRank() {
         return ResponseEntity.ok(orderDetailService.goodsRank());
+    }
 
     //주문 상태 수정
     @PatchMapping("/order/state/update")
     public ResponseEntity<ApiResponse> orderStateUpdate(@RequestParam ("id") Long id,@RequestParam("state")String  state){
         return ResponseEntity.ok(orderService.orderStateUpdate(id,state));
-
     }
+
 
 }

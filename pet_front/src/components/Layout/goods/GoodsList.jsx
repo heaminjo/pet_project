@@ -1,17 +1,16 @@
-import GoodsListComp from "./GoodsListStyle.js";
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import GoodsListComp from './GoodsListStyle.js';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import GoodsApi from '../../../api/GoodsApi';
 import PageNumber from '../../util/PageNumber.jsx';
-
 
 export default function GoodsList() {
   const navigate = useNavigate();
   const location = useLocation();
-  const goodsImg = process.env.PUBLIC_URL + "/images/pic1.png";
-  const imgUrl = "http://localhost:8080/resources/webapp/userImages/";
-  const EMPTY_HEART = "🤍";
-  const FULL_HEART = "💖";
+  const goodsImg = process.env.PUBLIC_URL + '/images/pic1.png';
+  const imgUrl = 'http://localhost:8080/resources/webapp/userImages/';
+  const EMPTY_HEART = '🤍';
+  const FULL_HEART = '💖';
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상 태 변 수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const [goods, setGoods] = useState([]); // 페이지에 사용되는 goods
@@ -33,7 +32,6 @@ export default function GoodsList() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const sort = searchParams.get('sort') || 'desc';
-
 
   // 페이징 정보 상태변수 (현재 페이징 상태 핸들링 위함)
   const [paging, setPaging] = useState({
@@ -75,15 +73,13 @@ export default function GoodsList() {
 
   // 상품1개 클릭시
   const clickProd = (item) => {
-    console.log(
-      `clickProd 선택된 상품: ${item.goodsId}, ${item.goodsName}, ${item.goodsState}, ${item.description}, ${item.price}`
-    );
-    navigate("/goods/order", { state: { goods: item } });
+    console.log(`clickProd 선택된 상품: ${item.goodsId}, ${item.goodsName}, ${item.goodsState}, ${item.description}, ${item.price}`);
+    navigate('/goods/order', { state: { goods: item } });
   };
 
   // 별점 (배열)
   const renderStars = (rating) => {
-    return "⭐".repeat(Math.floor(rating)); // 반올림이나 소수점 무시
+    return '⭐'.repeat(Math.floor(rating)); // 반올림이나 소수점 무시
   };
 
   // 페이징
@@ -118,7 +114,7 @@ export default function GoodsList() {
         totalPages: result.totalPages,
       });
     } catch (err) {
-      console.error("getPageList 실패: ", err);
+      console.error('getPageList 실패: ', err);
     }
   };
 
@@ -128,7 +124,7 @@ export default function GoodsList() {
       const response = await GoodsApi.getCategoryList();
       setCategories(response);
     } catch (error) {
-      console.error("카테고리 불러오기 실패:", error);
+      console.error('카테고리 불러오기 실패:', error);
     }
   };
 
@@ -143,14 +139,14 @@ export default function GoodsList() {
 
   return (
     <GoodsListComp>
-      <div className="container">
+      <div className='container'>
         <div>
           <form
-            className="search-bar"
+            className='search-bar'
             style={{
-              display: "flex",
-              alignItems: "center",
-              margin: "30px 0 0 0",
+              display: 'flex',
+              alignItems: 'center',
+              margin: '30px 0 0 0',
             }}
             onSubmit={(e) => {
               searchClick(e);
@@ -191,75 +187,49 @@ export default function GoodsList() {
         </div>
         <br />
         <hr />
-        <div className="body">
+        <div className='body'>
           <h2>BEST SELLER</h2>
-          <section className="list">
+          <section className='list'>
             {Array.isArray(goods) &&
               goods?.map((item, index) => (
-                <div
-                  className="goodslist"
-                  key={index}
-                  onClick={() => clickProd(item)}
-                >
-                  <img
-                    src={`${item.imageFile}`}
-                    alt={item.goodsName}
-                    className="prodimg"
-                  />
+                <div className='goodslist' key={index} onClick={() => clickProd(item)}>
+                  <img src={`${imgUrl}${item.imageFile}`} alt={item.goodsName} className='prodimg' />
                   <div>
                     <b>{item.goodsName} </b>
                   </div>
                   <div>
-                    {item.description} {", "}
+                    {item.description} {', '}
                     {item.quantity} 개
                   </div>
                   <div>{item.price} 원</div>
                   <div>
                     <span>{renderStars(item.rating)}</span>
-                    <span style={{ color: "red", fontSize: "12px" }}>
-                      {" "}
-                      {"( " + item.reviewNum + " )"}{" "}
-                    </span>
+                    <span style={{ color: 'red', fontSize: '12px' }}> {'( ' + item.reviewNum + ' )'} </span>
                   </div>
                 </div>
               ))}
           </section>
-          <PageNumber
-            page={page}
-            setPage={(p) => handleChangeQuery("page", p)}
-            paging={paging}
-          />
+          <PageNumber page={page} setPage={(p) => handleChangeQuery('page', p)} paging={paging} />
           <br />
           <hr />
           <h2>자주 산 상품</h2>
 
-          <section className="list">
+          <section className='list'>
             {Array.isArray(goods) &&
               goods.map((item, index) => (
-                <div
-                  className="goodslist"
-                  key={index}
-                  onClick={() => clickProd(item)}
-                >
-                  <img
-                    src={`${item.imageFile}`}
-                    alt={item.goodsName}
-                    className="prodimg"
-                  />
+                <div className='goodslist' key={index} onClick={() => clickProd(item)}>
+                  <img src={`${imgUrl}${item.imageFile}`} alt={item.goodsName} className='prodimg' />
                   <div>
                     <b>{item.goodsName} </b>
                   </div>
                   <div>
-                    {item.description} {", "}
+                    {item.description} {', '}
                     {item.quantity} 개
                   </div>
                   <div>{item.price} 원</div>
                   <div>
                     <span>{renderStars(item.rating)}</span>
-                    <span style={{ color: "red", fontSize: "12px" }}>
-                      {" "}
-                      {"( " + item.reviewNum + " )"}{" "}
-                    </span>
+                    <span style={{ color: 'red', fontSize: '12px' }}> {'( ' + item.reviewNum + ' )'} </span>
                   </div>
                 </div>
               ))}
