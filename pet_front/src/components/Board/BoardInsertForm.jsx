@@ -8,7 +8,7 @@ export default function BoardInsertForm() {
   const [content, setContent] = useState("");
   const navigate = useNavigate();
   const [category, setCategory] = useState("default"); // 기본값 설정
-  const [role, setRole] = useState(localStorage.getItem("role") || "");
+  const [role, setRole] = useState(sessionStorage.getItem("role") || "");
   const [files, setFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [otherFiles, setOtherFiles] = useState([]);
@@ -52,7 +52,7 @@ export default function BoardInsertForm() {
 
   
   useEffect(() => {
-    const handleStorage = () => setRole(localStorage.getItem("role") || "");
+    const handleStorage = () => setRole(sessionStorage.getItem("role") || "");
     window.addEventListener("storage", handleStorage);
     return () => window.removeEventListener("storage", handleStorage);
   }, []);
@@ -88,7 +88,7 @@ export default function BoardInsertForm() {
     try {
       await axios.post(url, data, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
         },
       });
       alert("게시글이 등록되었습니다.");

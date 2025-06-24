@@ -15,10 +15,10 @@ export default function BoardEditForm() {
   const [newImagePreviews, setNewImagePreviews] = useState([]); // 새로 추가된 이미지 미리보기 배열
   const [newOtherFiles, setNewOtherFiles] = useState([]); // 새로 추가된 문서 파일 객체 배열
 
-  const [role, setRole] = useState(localStorage.getItem("role") || "");
+  const [role, setRole] = useState(sessionStorage.getItem("role") || "");
 
   useEffect(() => {
-    const handleStorage = () => setRole(localStorage.getItem("role") || "");
+    const handleStorage = () => setRole(sessionStorage.getItem("role") || "");
     window.addEventListener("storage", handleStorage);
     return () => window.removeEventListener("storage", handleStorage);
   }, []);
@@ -130,7 +130,7 @@ export default function BoardEditForm() {
     try {
       await axios.put(`/board/updateboard/${board_id}`, data, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
         },
       });
       alert("게시글이 수정되었습니다.");
