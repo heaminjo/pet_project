@@ -14,7 +14,7 @@ export default function MyEdit() {
   const [selectImage, setSelectImage] = useState(null); //선택 프로필(서버용)
   const [prevImage, setPrevImage] = useState(null); //이전 프로필필
 
-  const { user, setUser } = useContext(PetContext);
+  const { user, setUser, getLoginUser } = useContext(PetContext);
 
   //로드 시 회원 정보 불러오기(MyPage에서 전역으로 뿌린 user를 Context를 통해 가져온다.)
   useEffect(() => {
@@ -39,7 +39,6 @@ export default function MyEdit() {
     if (result.success) {
       alert("회원 수정이 완료되었습니다.");
       sessionStorage.setItem("loginName", result.data);
-      navigate("/user/mypage/myinfo");
     }
   };
 

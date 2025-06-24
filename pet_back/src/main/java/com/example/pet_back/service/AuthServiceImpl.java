@@ -58,18 +58,15 @@ public class AuthServiceImpl implements AuthService {
                     new UsernamePasswordAuthenticationToken(
                             dto.getEmail(), dto.getPassword()
                     );
-            log.info("2-1. 이메일 체크 => " + dto.getEmail());
+
             //실제 검증(비밀번호 체크)
             //사용자의 ID/비밀번호(authenticationToken)를 받아 인증 절차 실행 후 인증객체(Authentication) 생성
             //여기에서 DB조회가 이루어지며 권한(role)을 포함한 Authentication객체 반환
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-            log.info("3. 인증객체 체크 Authentication => " + authentication);
 
             //인증 정보 기반으로 토큰 생성
             //로그인 직후 이므로 refreshToken과  AccessToken 모두 생성해서 발급한다.
             TokenDTO tokenDTO = tokenProvider.generateTokenDto(authentication);
-            log.info("3. 인증객체로 발급한 토큰 체크  accssToken  => " + tokenDTO.getAccessToken());
-            log.info("4. 인증객체로 발급한 토큰 체크  refreshToken  => " + tokenDTO.getRefreshToken());
 
             //마지막 로그인 시간 저장을 위해 id를 꺼낸다.
             Long userId = tokenProvider.getUserId(tokenDTO.getAccessToken());
@@ -83,7 +80,6 @@ public class AuthServiceImpl implements AuthService {
             }
             //그리고 난 뒤 현재 시각으로 마지막 로그인 업데이트
             member.setLastLogin(LocalDateTime.now());
-            log.info(member.getName()+"님의 마지막 로그인 시간이"+LocalDateTime.now()+"으로 업데이트 됩니다.");
 
             //RefreshToken DB 저장하기
             RefreshToken refreshToken = RefreshToken.builder()
@@ -111,8 +107,7 @@ public class AuthServiceImpl implements AuthService {
 //                    "refreshToken=" + tokenDTO.getRefreshToken() +
 //                            "; Path=/; Max-Age=604800; HttpOnly; SameSite=Lax");
 
-            log.info("5. refreshTOken 쿠키 저장 완료 => " + refreshTokenCookie.getValue());
-            log.info("6. 로그인 성공 accessToken 쿠키 전송 => " + tokenDTO.getAccessToken());
+            log.info("일반 로그인 성공 - userId :"+userId);
 
             refreshTokenRepository.save((refreshToken));
             //커스텀 응답 객체에 token을 담아 반환
@@ -164,11 +159,9 @@ public class AuthServiceImpl implements AuthService {
         try {
             //refreshToken을 통해 유저 Id를 가져온다.
             Long userId = tokenProvider.getUserId(refreshToken);
-            log.info("test userId => " + userId);
 
             //userId를 통해 tokenProvider에서 유저의 정보를 담은 Authentication 객체를 가져온다
             Authentication authentication = tokenProvider.getAuthentication(userId);
-            log.info("authentication => " + authentication);
 
             //새로운 access토큰 생성
             TokenDTO tokenDTO = tokenProvider.createToken(authentication);

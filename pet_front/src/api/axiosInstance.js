@@ -49,11 +49,16 @@ instance.interceptors.response.use(
 
           sessionStorage.setItem("accessToken", newToken);
           //요청 헤더에 새토큰 업데이트트
-          originalRequest.headers["authorization"] = `Bearer ${newToken}`;
 
+          originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
+
+          // 모든 대기 중이던 요청에 새 토큰 전달
+          requestQueue.forEach((cb) => cb(newToken));
+          requestQueue = [];
           //원래 실패했던 요청에 토큰를 다시 갱신 후 다시 요청청
           return instance(originalRequest);
         } catch (error) {
+          requestQueue = []; // 실패한 경우도 큐는 초기화해야 함
           //리프레쉬 토큰 401 시 로그아웃 처리하고 다시 로그인 요청하도록 하게 에러 객체 전달
           return Promise.reject(error);
         } finally {
@@ -61,7 +66,10 @@ instance.interceptors.response.use(
         }
       } else {
         //401 에러가 들어왔는데 isRefreshing이 true면 이미 요청 중인 상태
+
         return new Promise((resolve) => {
+          //요청 대기 큐에 함수를 넣어놓는다.
+          //리프레쉬 토큰이 오게된다면 token으로 들어가 해당 함수들을 실행하게 됌
           requestQueue.push((token) => {
             originalRequest.headers["Authorization"] = `Bearer ${token}`;
             resolve(instance(originalRequest));

@@ -43,9 +43,9 @@ public class AuthController {
     //리프레쉬 토큰
     @GetMapping("/getrefresh")
     public ResponseEntity<?> getRefresh(@CookieValue("refreshToken") String refreshToken) {
-        log.info("refreshToken => "+ refreshToken);
+        log.info("RefreshToken으로 토큰 재 발급 시도합니다.");
         if (refreshToken == null) {
-            log.info("쿠키가 제대로안옴");
+            log.info("refreshToken이 null입니다.");
         }
         return authService.getRefresh(refreshToken);
     }

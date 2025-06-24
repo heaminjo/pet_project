@@ -133,8 +133,6 @@ public class OrderServiceImpl implements OrderService {
         member.setTotalPurchasePrice(member.getTotalPurchasePrice()+totalPrice);
         member.setPoint(member.getPoint()+(totalPrice*0.01));
 
-        log.info(""+member.getTotalPurchaseCount());
-
         // 5. Order_Detail 테이블에 저장 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         List<GoodsRequestDTO> requestGoodsList = payRequestDTO.getGoodsList();
         List<OrderDetail> orderDetailList = new ArrayList<>();
@@ -181,7 +179,6 @@ public class OrderServiceImpl implements OrderService {
     public ResponseEntity<?> regReview(CustomUserDetails userDetails, //
                                        ReviewUploadDTO reviewUploadDTO) throws IOException {
         Member member = memberRepository.findById(userDetails.getMember().getId()).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
-        log.info("member.getId() = "+member.getId());
 
         List<MultipartFile> imageFiles = reviewUploadDTO.getImageFiles();
 
@@ -353,7 +350,6 @@ public class OrderServiceImpl implements OrderService {
             //각 주문건에 상품들을 가져온다.
             List<OrderDetail> list = orderDetailRepository.orderDetailList(o.getOrderId());
 
-            log.info(list.toString());
             OrderResponseDTO dto = orderMapper.toDto(o);
             dto.setTotalGoods(list.size());  //총 상품 건 수 저장
             //만약 비어있지않다면
