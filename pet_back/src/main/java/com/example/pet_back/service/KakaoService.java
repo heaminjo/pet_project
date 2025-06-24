@@ -81,16 +81,13 @@ public class KakaoService {
                 .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> Mono.error(new RuntimeException("Internal Server Error")))
                 .bodyToMono(KakaoTokenResponseDTO.class)//DTO에 받아온 JSON형태의 토큰을 매핑 시켜준다.
                 .block(); //비동기 호출 결과를 동기적으로 대기한다.
-        log.info(" [Kakao Service] Access Token ------> {}", kakaoTokenResponseDTO.getAccessToken());
-        log.info(" [Kakao Service] Refresh Token ------> {}", kakaoTokenResponseDTO.getRefreshToken());
-
 
         return kakaoTokenResponseDTO.getAccessToken();
     }
 
     //유저 정보 가져오기
     public KakaoUserResponseDTO getUserInfo(String token) {
-        log.info("유저의 정보를 가져옵니다. token=>" + token);
+        log.info("토큰을 통해 카카오 유저의 정보를 가져옵니다." );
         //유저의 정보를 가져오기 위한 USER URL HOST
         KakaoUserResponseDTO userInfo = WebClient.create(USER_URL_HOST)
                 .get()
@@ -120,7 +117,7 @@ public class KakaoService {
             Authentication authentication = null;
             //만약 있다면 로그인 처리하고 없다면 회원가입 한다.
             if (member.isEmpty()) {
-                log.info("카카오 계정이 없습니다. 회원가입 진행");
+                log.info("카카오 계정이 없습니다. 회원가입을 진행합니다.");
                 //회원 가입
                 Member newMember = new Member(dto.getId(), dto.getKakaoAccount().getProfile().getNickName(), dto.getKakaoAccount().getProfile().getProfileImageUrl());
                 newMember.setMemberState(MEMBERSTATE.INCOMPLETE); //임시회원으로 저장
@@ -128,7 +125,7 @@ public class KakaoService {
                 String imageUrl = dto.getKakaoAccount().getProfile().getProfileImageUrl();
                 newMember.setImageFile(imageUrl);
                 Member user = memberRepository.save(newMember);
-                log.info("회원 가입 성공 회원의 상태 => " + user.getMemberState());
+                log.info("카카오 회원 가입 성공");
 
                 //인증 객체 생성
                 authentication = tokenProvider.getAuthentication(user.getId());
@@ -138,8 +135,6 @@ public class KakaoService {
             }
 
             TokenDTO tokenDTO = tokenProvider.generateTokenDto(authentication);//이메일의 존재 여부를 넣어준다.
-            log.info("토큰 발급 => " + tokenDTO);
-
 
             //RefreshToken DB 저장하기
             RefreshToken refreshToken = RefreshToken.builder()
@@ -153,6 +148,7 @@ public class KakaoService {
                             "; Path=/; Max-Age=604800; HttpOnly; SameSite=Lax");
 
             refreshTokenRepository.save((refreshToken));
+            log.info("카카오 로그인 성공 - userId : "+ dto.getId());
             //커스텀 응답 객체에 token을 담아 반환
             return new ApiResponse<TokenDTO>(true, tokenDTO, "로그인에 성공하였습니다.");
         } catch (Exception e) {

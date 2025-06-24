@@ -7,10 +7,10 @@ const instance = axios.create({
   baseURL: "http://localhost:8080",
 });
 
-//요청 인터셉터 설정(header에 토큰큰)
+//요청 인터셉터
 instance.interceptors.request.use((config) => {
   const token = sessionStorage.getItem("accessToken");
-  //토큰이 존재하면
+  //토큰이 존재 할 경우 Header에 토큰을 담는다.
   if (token != null) {
     config.headers["authorization"] = `Bearer ${token}`;
   }
@@ -42,14 +42,15 @@ instance.interceptors.response.use(
         try {
           //리프레쉬 가져오기
           const response = await MemberApi.getRefresh();
-          //새로 발급된 엑세스 토큰
 
+          //새로 발급된 엑세스 토큰
           const newToken = response.data.accessToken;
           console.log("새로운 토큰 발급:", newToken);
 
+          //
           sessionStorage.setItem("accessToken", newToken);
-          //요청 헤더에 새토큰 업데이트트
 
+          //요청 헤더에 새 토큰 업데이트
           originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
 
           // 모든 대기 중이던 요청에 새 토큰 전달

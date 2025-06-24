@@ -48,13 +48,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             //토큰이 존재할 경우
             if (token != null && !token.equalsIgnoreCase("null")) {
 
-                log.info("1. 토큰 존재 => " + token);
+                log.info("토큰을 확인합니다. => " + token);
 
                 //토큰 검증 , claims 가져오기
                 Map<String, Object> claims = tokenProvider.validateToken(token, response);
 
                 if (claims == null) {
-                    log.info("2-2. 만료된 토큰입니다. RefreshToken을 통해 다시 재 발급합니다.");
+                    log.info("만료된 토큰입니다.");
                     return;
                 }
 
@@ -77,7 +77,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         null,  //일반적으로 비밀번호가 들어가지만 JWT은 토큰 자체가 인증 수단이므로 null로 처리한다.
                         Collections.singletonList(new SimpleGrantedAuthority(authority)) //role은 단일값
                 );
-                log.info(authenticationToken.getAuthorities());
 //                log.info("권한 다시 확인"+SecurityContextHolder.getContext().getAuthentication().getAuthorities());
                 //authenticationToken 객체에 부가 정보를 담아준다.
                 //단순히 사용자ID와 권한정보 이외에도 접속 IP 주소 , 세션Id등을 저장할 수 있다.
@@ -90,7 +89,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContext context = SecurityContextHolder.createEmptyContext();
                 //검증 결과로 생성된 인증 정보를 저장
                 context.setAuthentication(authenticationToken);
-                log.info("context =>", context);
                 //최종적으로 현재 요청에 Context를 설정
                 // 이후 컨트롤러나 서비스에서 인증된 사용자로 인식
                 SecurityContextHolder.setContext(context);
