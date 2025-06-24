@@ -2,7 +2,7 @@ import axios from 'axios';
 import instance from '../api/axiosInstance'; // 인스턴스 불러오기
 import { useNavigate } from 'react-router-dom';
 import ModifyGoods from '../components/Layout/goods/ModifyGoods';
-const KH_DOMAIN = "http://localhost:8080";
+const KH_DOMAIN = 'http://localhost:8080';
 const GoodsApi = {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 장 바 구 니 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 장바구니 추가
@@ -18,11 +18,11 @@ const GoodsApi = {
         console.log(`장바구니 담기 성공, 상품ID: ${result.data.goodsId}`);
         return result.data;
       } else {
-        console.log("장바구니 담기 실패");
+        console.log('장바구니 담기 실패');
       }
     } catch (err) {
-      console.error("장바구니 추가 실패:", err);
-      alert("장바구니 추가 중 에러가 발생했습니다.");
+      console.error('장바구니 추가 실패:', err);
+      alert('장바구니 추가 중 에러가 발생했습니다.');
     }
   },
 
@@ -76,7 +76,7 @@ const GoodsApi = {
     try {
       const result = await instance.post(`/goods/list`, pages);
       if (result.data != null) {
-        console.log(" getGoodsPageList 응답 결과:", result.data);
+        console.log(' getGoodsPageList 응답 결과:', result.data);
         // alert(`getGoodsPageList() 호출됨`);
         return result.data;
       }
@@ -96,18 +96,17 @@ const GoodsApi = {
     try {
       const result = await instance.post(`/goods/favorite`, pages);
       if (result.data != null) {
-        console.log(" getGoodsPageList 응답 결과:", result.data);
+        console.log(' getGoodsPageList 응답 결과:', result.data);
         // alert(`getGoodsPageList() 호출됨`);
         return result.data;
       }
     } catch (err) {}
   },
 
-
   // <AddGoods /> : 상품등록
   regGoods: async (formData) => {
     try {
-      const result = await instance.post("/goods/register", goods);
+      const result = await instance.post('/goods/register', formData);
       if (result.data != null) {
         alert(`상품등록 완료 => ${result.data}`);
         return result.data;
@@ -121,11 +120,7 @@ const GoodsApi = {
   // <ModifyGoods /> : 상품수정/삭제
   modifyGoods: async (formData) => {
     try {
-      const result = await instance.post('/goods/update', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const result = await instance.post('/goods/update', formData);
       if (result.data != null) {
         console.log(`상품수정 완료 => ${result.data}`);
         return result.data;
@@ -151,10 +146,10 @@ const GoodsApi = {
     });
 
     if (result.data != null) {
-      console.log("getReviewsPageList 응답 결과:", result.data);
+      console.log('getReviewsPageList 응답 결과:', result.data);
       return result.data;
     } else {
-      console.log("getReviewsPageList 호출 중 오류 발생:", result.data);
+      console.log('getReviewsPageList 호출 중 오류 발생:', result.data);
       return result.data;
     }
   },
