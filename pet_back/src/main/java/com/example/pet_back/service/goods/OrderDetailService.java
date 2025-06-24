@@ -14,4 +14,5 @@ public interface OrderDetailService {
     //주문 상품 랭크
     public List<GoodsRankDTO> goodsRank();
 
+
 }

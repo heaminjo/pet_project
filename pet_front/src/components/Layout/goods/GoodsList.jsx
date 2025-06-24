@@ -1,8 +1,9 @@
 import GoodsListComp from "./GoodsListStyle.js";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import GoodsApi from "../../../api/GoodsApi";
-import PageNumber from "../../util/PageNumber.jsx";
+import GoodsApi from '../../../api/GoodsApi';
+import PageNumber from '../../util/PageNumber.jsx';
+
 
 export default function GoodsList() {
   const navigate = useNavigate();
@@ -22,14 +23,17 @@ export default function GoodsList() {
   // 검색 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 쿼리스트링에서 현재 상태값 추출
   const queryParams = new URLSearchParams(location.search);
-  const page = parseInt(queryParams.get("page")) || 0;
-  const keyword = queryParams.get("searchKeyword") || "";
-  const type = queryParams.get("searchType") || "all";
+  const page = parseInt(queryParams.get('page')) || 0;
+  const keyword = queryParams.get('searchKeyword') || '';
+  const type = queryParams.get('searchType') || 'all';
+  const [inputType, setInputType] = useState(type);
 
   // 입력 키워드
   const [inputKeyword, setInputKeyword] = useState(keyword);
   const [searchParams, setSearchParams] = useSearchParams();
-  const sort = searchParams.get("sort") || "desc";
+
+  const sort = searchParams.get('sort') || 'desc';
+
 
   // 페이징 정보 상태변수 (현재 페이징 상태 핸들링 위함)
   const [paging, setPaging] = useState({
@@ -53,18 +57,19 @@ export default function GoodsList() {
   //검색 버튼 클릭
   const searchClick = (e) => {
     if (e) e.preventDefault();
-    handleChangeQuery("searchKeyword", inputKeyword);
+    handleChangeQuery('searchKeyword', inputKeyword);
   };
   // 엔터 시
   const handleSearch = (e) => {
     e.preventDefault();
-    handleChangeQuery("searchKeyword", inputKeyword);
+    handleChangeQuery('searchKeyword', inputKeyword);
   };
+
   // 쿼리변경
   const handleChangeQuery = (key, value) => {
     const updatedParams = new URLSearchParams(searchParams);
     updatedParams.set(key, value);
-    if (key !== "page") updatedParams.set("page", 0);
+    if (key !== 'page') updatedParams.set('page', 0);
     setSearchParams(updatedParams);
   };
 
@@ -86,10 +91,10 @@ export default function GoodsList() {
   const getPageList = async () => {
     // 최신으로 다시 읽기
     const queryParams = new URLSearchParams(location.search);
-    const page = parseInt(queryParams.get("page")) || 0;
-    const keyword = queryParams.get("searchKeyword") || "";
-    const type = queryParams.get("searchType") || "all";
-    const sort = searchParams.get("sort") || "desc";
+    const page = parseInt(queryParams.get('page')) || 0;
+    const keyword = queryParams.get('searchKeyword') || '';
+    const type = queryParams.get('searchType') || 'all';
+    const sort = searchParams.get('sort') || 'desc';
 
     const pages = {
       page,
@@ -148,25 +153,20 @@ export default function GoodsList() {
               margin: "30px 0 0 0",
             }}
             onSubmit={(e) => {
-              e.preventDefault(); // 폼 제출 시 새로고침 방지
-              searchClick();
-            }}
-          >
-            <div className="custom-select">
-              <select
-                value={sort}
-                onChange={(e) => handleChangeQuery("sort", e.target.value)}
-              >
-                <option value="desc">최신순</option>
-                <option value="asc">오래된 순</option>
+              searchClick(e);
+            }}>
+            <div className='custom-select'>
+              <select value={sort} onChange={(e) => handleChangeQuery('sort', e.target.value)}>
+                <option value='desc'>최신순</option>
+                <option value='asc'>오래된 순</option>
               </select>
               <select
-                value={type}
-                onChange={(e) =>
-                  handleChangeQuery("searchType", e.target.value)
-                }
-              >
-                <option value="all">전체</option>
+                value={inputType}
+                onChange={(e) => {
+                  setInputType(e.target.value);
+                  handleChangeQuery('searchType', e.target.value);
+                }}>
+                <option value='all'>전체</option>
                 {categories.map((cat) => (
                   <option key={cat.categoryId} value={cat.categoryId}>
                     {cat.categoryName}
@@ -175,14 +175,15 @@ export default function GoodsList() {
               </select>
             </div>
             <input
-              type="text"
-              defaultValue={keyword}
-              onKeyDown={(e) => e.key === "Enter" && handleSearch(e)}
-              onBlur={(e) => handleChangeQuery("searchKeyword", e.target.value)}
+              type='text'
+              defaultValue={inputKeyword} //
+              onChange={(e) => setInputKeyword(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)} //
+              onBlur={(e) => handleChangeQuery('searchKeyword', e.target.value)}
             />
 
-            <button className="search_btn" onClick={() => searchClick()}>
-              <span role="img" aria-label="search">
+            <button className='search_btn' onClick={(e) => searchClick(e)}>
+              <span role='img' aria-label='search'>
                 🔍
               </span>
             </button>

@@ -33,6 +33,7 @@ public class AdminController {
     private final MemberService memberService;
     private final AdminService adminService;
     private final GoodsService goodsService;
+    private final OrderService orderService;
     private final ImageService imageService;
     private final OrderService orderService;
     private final OrderDetailService orderDetailService;
@@ -132,6 +133,7 @@ public class AdminController {
     public ResponseEntity<ApiResponse> quantityUpdate(@RequestParam ("id") Long id,@RequestParam("quantity")int  quantity){
         return ResponseEntity.ok(goodsService.quantityUpdate(id,quantity));
     }
+
     //상품 상태 수정
     @PatchMapping("/goods/state/update")
     public ResponseEntity<ApiResponse> goodsStateUpdate(@RequestParam ("id") Long id,@RequestParam("state")String  state){
@@ -148,6 +150,12 @@ public class AdminController {
     @GetMapping("/statistics/goods/rank")
     public ResponseEntity<List<GoodsRankDTO>> goodsRank(){
         return ResponseEntity.ok(orderDetailService.goodsRank());
+
+    //주문 상태 수정
+    @PatchMapping("/order/state/update")
+    public ResponseEntity<ApiResponse> orderStateUpdate(@RequestParam ("id") Long id,@RequestParam("state")String  state){
+        return ResponseEntity.ok(orderService.orderStateUpdate(id,state));
+
     }
 
 }

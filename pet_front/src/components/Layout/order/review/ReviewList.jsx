@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-
-import GoodsApi from '../../../api/GoodsApi';
-import PageNumber from '../../util/PageNumber';
+import GoodsApi from '../../../../api/GoodsApi';
+import PageNumber from '../../../util/PageNumber';
 
 const ReviewListComp = styled.div`
   .container {
@@ -31,7 +30,7 @@ export default function ReviewList({ stars, goodsId, reviewNum, imgUrl }) {
     console.log('props로 전달된 goodsId:', goodsId);
   }, [goodsId]);
 
-  const [reviews, setReviews] = useState([]); // 유저 리뷰
+  const [reviews, setReviews] = useState([]); // 유저 리뷰 리스트
   const [userStar, setUserStar] = useState(); // ⭐ 유저 별점
 
   const [sort, setSort] = useState('desc');

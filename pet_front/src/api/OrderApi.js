@@ -4,17 +4,36 @@ import instance from "../api/axiosInstance"; // 인스턴스 불러오기
 const KH_DOMAIN = "http://localhost:8080";
 const OrderApi = {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 주  문 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // <Order />
+  // <Order /> : 주문하기
   order: async () => {
     const result = await instance.post(`/order`);
     return result.data;
   },
 
-  // <OrderDetail /> 페이징
+  // <OrderDetail /> 페이징 : 주문상세 보기
   getOrderDetailPageList: async (pages) => {
     const result = await instance.post(`/order/detail`, pages);
     console.log("응답 결과:", result);
     return result.data;
+  },
+
+  // [관리자] 전체 Order List
+  orderList: async (pages) => {
+    const result = await instance.post(`/order/list/all`, pages);
+    console.log('응답 결과:', result);
+    return result.data;
+  },
+
+  // [관리자] <DeliveryGoods>
+  getAllOrderList: async (pages) => {
+    console.log(`OrderApi.getAllOrderList`);
+    try {
+      const result = await instance.post(`/order/page/list`, pages); //
+      return result?.data;
+    } catch (err) {
+      alert('오류 발생');
+      console.error('오류 발생:', err);
+    }
   },
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 결  제 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -30,7 +49,8 @@ const OrderApi = {
       if (result != null) {
         return result.data;
       } else {
-        // alert(`OrderApi.pay() null`);
+        //alert(`OrderApi.pay() null`);
+        console.log(`OrderApi.pay() null`);
       }
     } catch (err) {
       console.error("오류 발생:", err);
@@ -48,7 +68,8 @@ const OrderApi = {
         console.log(`findAddress 결과: ${result}`);
         return result.data;
       } else {
-        // alert(`OrderApi.findAddress() null`);
+        //alert(`OrderApi.findAddress() null`);
+        console.log(`OrderApi.findAddress() null`);
       }
     } catch (err) {
       console.error("오류 발생:", err);
@@ -56,29 +77,22 @@ const OrderApi = {
     return result.data;
   },
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 리 뷰  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // 리뷰 출력 (전체 리스트)
-  // <Review /> 페이징
+  //
+  // 리뷰 목록 출력 (나의 리뷰)
+  // <MyReview /> 페이징
   getReviewsPageList: async (pages) => {
-    const result = await instance.post(`/order/review`, pages);
-    console.log("응답 결과:", result);
+    // alert(`GoodsApi.getReviewPageList`);
+    console.log(`GoodsApi.getReviewPageList`);
+    const result = await instance.post(`/order/myreviews`, pages);
+    console.log('응답 결과:', result);
     return result.data;
   },
-  // 리뷰 출력 (나의 리뷰)
 
   // 리뷰 등록 (사진 포함)
-  registerReview: async (review) => {
-    const formData = new FormData();
-    formData.append("goodsId", review.goodsId);
-    formData.append("score", review.score);
-    formData.append("title", review.title);
-    formData.append("content", review.content);
-    if (review.imageFile) {
-      formData.append("imageFile", review.imageFile); // 실제 파일 객체
-    }
-
+  // <Review />
+  registerReview: async (formData) => {
     const result = await instance.post(`/order/review/register`, formData);
-
-    console.log(result.data);
+    return result.data;
   },
 };
 

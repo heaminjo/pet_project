@@ -4,11 +4,15 @@ import com.example.pet_back.domain.admin.OrderStatisticsDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.goods.OrderResponseDTO;
 import com.example.pet_back.domain.goods.PayRequestDTO;
-
 import com.example.pet_back.domain.goods.ReviewUploadDTO;
+import com.example.pet_back.domain.custom.ApiResponse;
+import com.example.pet_back.domain.goods.*;
+import com.example.pet_back.domain.page.PageRequestDTO;
+import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import org.springframework.http.ResponseEntity;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface OrderService {
@@ -20,12 +24,23 @@ public interface OrderService {
     ResponseEntity<?> payGoods(CustomUserDetails userDetails, PayRequestDTO dto);
 
     // 리뷰 작성
-    ResponseEntity<?> regReview(CustomUserDetails userDetails, ReviewUploadDTO dto);
+    ResponseEntity<?> regReview(CustomUserDetails userDetails, ReviewUploadDTO dto) throws IOException;
 
-    //주문 리스트
-    public  List<OrderResponseDTO> userOrderList(Long userId);
+    // 내 리뷰 목록 출력
+    ResponseEntity<?> showMyReviews(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO);
 
     //주문 통계
     public OrderStatisticsDTO orderStatistics (String date);
 
+    // 주문 리스트
+    List<OrderResponseDTO> userOrderList(Long userId);
+
+    // [관리자] 주문 전체 리스트
+    ResponseEntity<?> orderAllList(PageRequestDTO pageRequestDTO);
+
+    // [관리자] <DeliveryGoods />
+    PageResponseDTO<OrderSimpleDTO> ordersPageList(PageRequestDTO dto);
+
+    // [관리자] 주문 상태 수정
+    ApiResponse orderStateUpdate(Long id, String state);
 }

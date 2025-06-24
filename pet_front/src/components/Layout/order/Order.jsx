@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
-import OrderComp from "./OrderStyle.js";
-import GoodsApi from "../../../api/GoodsApi";
-import { useLocation, useNavigate } from "react-router-dom";
-import OrderTab from "./OrderTab.jsx";
-import ReviewList from "./ReviewList.jsx";
+import { useState, useEffect } from 'react';
+import OrderComp from './OrderStyle.js';
+
+import { useLocation, useNavigate } from 'react-router-dom';
+import OrderTab from './OrderTab.jsx';
+import ReviewList from './review/ReviewList.jsx';
+import GoodsApi from '../../../api/GoodsApi.js';
+import Modal from '../../../modal/Modal.jsx';
 
 export default function Order() {
   const navigate = useNavigate();
@@ -18,6 +20,8 @@ export default function Order() {
   const [stars, setStars] = useState(); // ⭐
 
   const [activeTab, setActiveTab] = useState("상품상세");
+
+  const [showModal, setShowModal] = useState(false); // Y/N
 
   const data = [
     { label: "품명", value: goods.goodsName },
@@ -39,22 +43,26 @@ export default function Order() {
     console.log(`결제페이지 이동 성공, 상품ID:  => ${goods.goodsId}`);
   };
 
+  // 모달 핸들러 함수
+  const goToCart = () => {
+    setShowModal(false);
+    navigate('/user/mypage/cart/list');
+  };
+
   // 장바구니 담기
   const addToCart = async (goods, buyQuantity) => {
-    console.log(`addToCart 수량 => ${buyQuantity}`);
-    if (sessionStorage.getItem("loginName") != null) {
-      GoodsApi.addToCart(goods, buyQuantity)
-        .then((response) => {
-          console.log(`장바구니 담기 성공, 상품ID:  => ${response}`);
+    try {
+      if (sessionStorage.getItem("loginName") != null) {
+          const response = await GoodsApi.addToCart(goods, buyQuantity);
           alert("장바구니에 " + goods.goodsName + "이(가) 1개 담겼습니다.");
-          navigate("/user/mypage/cart/list");
-        })
-        .catch((err) => {
-          // alert("GoodsApi.addToCart() 중 오류발생");d
-        });
-    } else {
-      alert("로그인이 필요한 서비스입니다.");
-      navigate("/login", { state: { nextUrl: "/goods/order" } });
+          console.log(`장바구니 담기 성공, 상품ID:  => ${response}`);
+          // navigate("/user/mypage/cart/list");
+          setShowModal(true); // 모달 표시
+      } else {
+          alert("로그인이 필요한 서비스입니다.");
+      }
+    } catch (err) {
+      alert('장바구니 담기에 실패했습니다.');
     }
   };
 
@@ -172,6 +180,19 @@ export default function Order() {
                 />
               </b>
             </div>
+            {showModal && (
+              <Modal
+                content={
+                  <>
+                    상품이 장바구니에 정상적으로 담겼습니다.
+                    <br />
+                    장바구니로 이동하시겠습니까?
+                  </>
+                }
+                clickEvt={goToCart}
+                setModal={setShowModal}
+              />
+            )}
             <br />
             <hr />
             <br />

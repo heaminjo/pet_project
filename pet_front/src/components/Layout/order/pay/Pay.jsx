@@ -1,10 +1,9 @@
-import PayComp from "./PayStyle";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import MemberApi from "../../../api/MemberApi";
-import GoodsApi from "../../../api/GoodsApi";
-import OrderApi from "../../../api/OrderApi";
-import Popup from "./Popup";
+import PayComp from './PayStyle';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import Popup from './Popup';
+import OrderApi from '../../../../api/OrderApi';
+import MemberApi from '../../../../api/MemberApi';
 
 export default function Pay() {
   const location = useLocation();
@@ -189,7 +188,7 @@ export default function Pay() {
         navigate("/user/mypage/orderlist");
       })
       .catch((err) => {
-        alert("GoodsApi.pay() 에러");
+        alert("OrderApi.pay() 에러");
       });
 
     //주문이 성공한 이후에 등급 업그레이드 조건이 충족 되었는지 검사하는 API 호출

@@ -1,24 +1,33 @@
 package com.example.pet_back.service.goods;
 
 import com.example.pet_back.config.FileUploadProperties;
+import com.example.pet_back.constant.GOODSSTATE;
 import com.example.pet_back.constant.ORDERSTATE;
 import com.example.pet_back.domain.address.AddressResponseDTO;
 import com.example.pet_back.domain.admin.OrderStatisticsDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.goods.*;
+import com.example.pet_back.domain.page.PageRequestDTO;
+import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.entity.*;
 import com.example.pet_back.jwt.CustomUserDetails;
+import com.example.pet_back.mapper.OrderDetailMapper;
 import com.example.pet_back.mapper.OrderMapper;
 import com.example.pet_back.mapper.ReviewMapper;
 import com.example.pet_back.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -46,6 +56,7 @@ public class OrderServiceImpl implements OrderService {
 
     // Mapper
     private final OrderMapper orderMapper;
+    private final OrderDetailMapper orderDetailMapper;
     private final ReviewMapper reviewMapper;
     private final FileUploadProperties fileUploadProperties;
 
@@ -78,7 +89,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public ResponseEntity<?> payGoods(CustomUserDetails userDetails, //
                                       PayRequestDTO payRequestDTO) {
-        System.out.println("GoodsServiceImpl 의 payGoods() 시작");
+        System.out.println("OrderServiceImpl 의 payGoods() 시작");
         // 1. Goods List
         List<Long> goodsIds = payRequestDTO.getGoodsList().stream()
                 .map(GoodsRequestDTO::getGoodsId)
@@ -157,13 +168,175 @@ public class OrderServiceImpl implements OrderService {
             // goods id 로 cart 조회후 삭제 (현재 장바구니 전체에서 삭제하도록 함)
             cartRepository.deleteByGoodsId(goods.getGoodsId());
         }
-        System.out.println("GoodsServiceImpl 의 payGoods() 끝");
+        System.out.println("OrderServiceImpl 의 payGoods() 끝");
         return ResponseEntity.status(HttpStatus.OK).body("결제가 정상적으로 완료되었습니다."); // orderDetail컴포넌트로 이동
     }//
 
     // <Delivery /> 페이지 : OrderDetailResponseDTO
 
 
+    // 리뷰 작성
+    @Override
+    @Transactional
+    public ResponseEntity<?> regReview(CustomUserDetails userDetails, //
+                                       ReviewUploadDTO reviewUploadDTO) throws IOException {
+        Member member = memberRepository.findById(userDetails.getMember().getId()).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+        log.info("member.getId() = "+member.getId());
+
+        List<MultipartFile> imageFiles = reviewUploadDTO.getImageFiles();
+
+        // 이미지 로직
+        // 1. 파일 저장 경로
+        List<String> uploadedFileNames = new ArrayList<>();
+        String realPath = "C:/devv/pet_project/pet_back/src/main/resources/webapp/userImages/";
+
+        // 2. 업로드 이미지 처리
+        if (imageFiles  != null && !imageFiles .isEmpty()) {
+            for(MultipartFile imageFile : imageFiles){
+                if(!imageFile.isEmpty()){
+                    String originalFilename = imageFile.getOriginalFilename(); // ex: cat.jpg
+                    String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+                    String uuid = UUID.randomUUID().toString();
+                    String newFileName = uuid + extension; // UUID 추가
+                    File destFile = new File(realPath + newFileName);
+                    imageFile.transferTo(destFile); // MultipartFile 저장
+                    uploadedFileNames.add(newFileName); //
+                }
+            }
+        }
+
+        // 이미지 파일명 문자열로 저장
+        String uploadImg = String.join(",", uploadedFileNames);
+        reviewUploadDTO.setUploadImg(uploadImg);
+        reviewUploadDTO.setMemberId(member.getId());
+
+        reviewUploadDTO.setMemberId(member.getId());
+        Optional<Goods> goods = goodsRepository.findById(reviewUploadDTO.getGoodsId());
+        Optional<OrderDetail> orderDetail = orderDetailRepository.findById(reviewUploadDTO.getOrderDetailId());
+        Review review = reviewMapper.toEntity(reviewUploadDTO, member, goods.orElse(null), orderDetail.orElse(null));
+
+        log.info("등록할 리뷰 정보: memberId={}, goodsId={}, orderDetailId={}", member.getId(), review.getGoods().getGoodsId(), review.getOrderDetail().getOrderDetailId());
+        log.info("score={}, title={}, content={}, imageFiles={}", review.getScore(), review.getTitle(), review.getContent(), uploadImg);
+
+        try{
+              reviewRepository.save(review);
+            log.info("** OrderServiceImpl => regReview() reviewRepository.save(review) 완료 **");
+            return ResponseEntity.status(HttpStatus.OK).body("리뷰가 정상적으로 등록되었습니다.");
+        } catch (Exception e) {
+            log.error("리뷰 등록 중 오류: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("리뷰 등록 중 오류가 발생했습니다.");
+        }
+    }
+
+    // 내 리뷰 목록 출력
+    @Override
+    public ResponseEntity<?> showMyReviews(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO){
+        System.out.println("OrderServiceImpl 의 showReviewList() 시작");
+        Member member = memberRepository.findById(userDetails.getMember().getId()).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+
+        // 페이징
+        // 1. 정렬 조건 설정 :  (최신)
+        Sort sort = pageRequestDTO.getSortBy().equals("desc") ? // desc라면
+                Sort.by("regDate").descending() // regDate 필드 기준으로 desc
+                : Sort.by("regDate").ascending();
+
+        // 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(), sort);
+        log.info("** 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬 **");
+
+        // 3. Page<Review> 의 content (DTO에 SET)
+        Page<Review> reviewPage =  reviewRepository.findAllByUserId(member.getId(), pageable); // Review List
+
+        List<ReviewResponseDTO> dtoList = reviewPage.getContent().stream()
+                .map(reviewMapper::toDTO)
+                .toList();
+
+        log.info("** 3. Page<Review> 의 content (DTO에 SET) **");
+        log.info("getContent: "+reviewPage.getContent());
+
+        // 4. PageResponseDTO
+        PageResponseDTO<ReviewResponseDTO> response = new PageResponseDTO<>(
+                dtoList,
+                pageRequestDTO.getPage(),
+                pageRequestDTO.getSize(),
+                reviewPage.getTotalElements(),
+                reviewPage.getTotalPages(),
+                reviewPage.hasNext(),
+                reviewPage.hasPrevious()
+        );
+        log.info("** 4. PageResponseDTO **");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
+    }
+
+    // [관리자페이지] 전체 주문리스트
+    @Override
+    public ResponseEntity<?> orderAllList(PageRequestDTO pageRequestDTO){
+        // 페이징
+        // 1. 정렬 조건 설정 :  (최신)
+        Sort sort = pageRequestDTO.getSortBy().equals("desc") ? // desc라면
+                Sort.by("regDate").descending() // regDate 필드 기준으로 desc
+                : Sort.by("regDate").ascending();
+
+        // 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(), sort);
+        log.info("** 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬 **");
+
+        // 3. Page<Orders> 의 content (DTO에 SET)
+        Page<Orders> ordersPage = orderRepository.findAll(pageable);
+        List<OrderResponseDTO> dtoList = ordersPage.getContent().stream()
+                .map(orderMapper::toDto)
+                .toList();
+
+        // 4. PageResponseDTO
+        PageResponseDTO<ReviewResponseDTO> response = new PageResponseDTO<>(
+                dtoList,
+                pageRequestDTO.getPage(),
+                pageRequestDTO.getSize(),
+                ordersPage.getTotalElements(),
+                ordersPage.getTotalPages(),
+                ordersPage.hasNext(),
+                ordersPage.hasPrevious()
+        );
+        log.info("** 4. PageResponseDTO **");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    // [관리자] <DeliveryGoods />
+    @Override
+    public PageResponseDTO<OrderSimpleDTO> ordersPageList(PageRequestDTO dto) {
+        log.info("** OrderDetailServiceImpl => ordersPageList() 실행됨 **");
+
+        //요청 페이지, 출력 개수,정렬을 담은 Pageable 객체
+        // 정렬 조건 설정 :  (최신)
+        Sort sort = dto.getSortBy().equals("desc") ? // desc라면
+                Sort.by("regDate").descending() // regDate 필드 기준으로 desc
+                : Sort.by("regDate").ascending();
+
+        Pageable pageable = PageRequest.of(dto.getPage(), dto.getSize(), sort);
+
+        String keyword = dto.getKeyword() != null && !dto.getKeyword().isEmpty()
+                ? "%" + dto.getKeyword() + "%" : null;
+        Long category = dto.getCategory() != null && dto.getCategory() > 0
+                ? dto.getCategory() : null;
+        ORDERSTATE state = dto.getState() != null && !dto.getState().equals("all")
+                ? ORDERSTATE.valueOf(dto.getState().toUpperCase()) : null;
+
+        Page<Orders> page = orderRepository.findSearchList(keyword, category, state, pageable);
+
+        //페이지의 데이터를 List에 저장
+        List<OrderSimpleDTO> responseList = page.stream()
+                .map(orderMapper::toSimpleDTO)
+                .toList();
+        log.info("** List<OrderSimpleDTO> responseList 실행됨 **");
+
+        //반환할 ResponseDTO에 데이터들 저장
+        PageResponseDTO<OrderSimpleDTO> response  //
+                = new PageResponseDTO<>(responseList, dto.getPage(), dto.getSize(),  //
+                page.getTotalElements(), page.getTotalPages(), page.hasNext(), page.hasPrevious()
+        );
+        return response;
+    }
 
     //주문 리스트 3건
     @Override
@@ -187,12 +360,11 @@ public class OrderServiceImpl implements OrderService {
                 dto.setImageFile(fileUploadProperties.getUrl()+list.get(0).getGoods().getImageFile());
                 dto.setGoodsName(list.get(0).getGoods().getGoodsName());
             }
-
             response.add(dto);
         }
-
         return response;
     }
+
     //주문 통계
     @Override
     public OrderStatisticsDTO orderStatistics(String date) {
@@ -213,7 +385,8 @@ public class OrderServiceImpl implements OrderService {
         OrderStatisticsDTO dto = orderRepository.orderStatistics(start,end);
         return dto;
     }
-//    // 리뷰 작성
+
+   // 리뷰 작성
     @Override
     @Transactional
     public ResponseEntity<?> regReview(CustomUserDetails userDetails, //
@@ -268,3 +441,38 @@ public class OrderServiceImpl implements OrderService {
         }
     }
     }
+
+
+    // [관리자페이지] 주문 상태 수정
+    @Override
+    @Transactional
+    public ApiResponse orderStateUpdate(Long id, String state) { // ID: OrdersId, ORDERSTATE
+        Orders orders = orderRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        Map<String,ORDERSTATE > stateMap = Map.of(
+                "결제전",ORDERSTATE.BEFOREPAY,
+                "결제완료",ORDERSTATE.AFTERPAY,
+                "상품준비중",ORDERSTATE.READY,
+                "배송중",ORDERSTATE.DELIVERY,
+                "배송완료",ORDERSTATE.END
+        );
+
+        // getName 성공후 해당 로직은 지움 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+        ORDERSTATE newState = null;
+        if (stateMap.containsKey(state)) {
+            newState = stateMap.get(state);
+        } else {
+            try {
+                newState = ORDERSTATE.valueOf(state.toUpperCase()); // Enum 이름 직접 매칭 시도
+            } catch (IllegalArgumentException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "유효하지 않은 주문 상태입니다: " + state);
+            }
+        }
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        
+        orders.setStatus(newState);
+        orderRepository.save(orders);
+        return new ApiResponse(true,"상품 상태가 ["+state+"] 로 변경되었습니다");
+    }
+    
+}

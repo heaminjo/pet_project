@@ -1,3 +1,4 @@
+
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./page/layout/Layout";
@@ -5,16 +6,17 @@ import Main from "./page/main/Main";
 import React, { useState } from "react";
 import Login from "./page/auth/Login";
 import Join from "./page/auth/Join";
-import Cart from "./components/Layout/cart/Cart";
-import Order from "./components/Layout/order/Order";
-import OrderList from "./components/Layout/order/OrderList";
-import Pay from "./components/Layout/pay/Pay";
-import WithDraw from "./components/Layout/withdraw/WithDraw";
+import Cart from './components/Layout/order/cart/Cart';
+import Order from './components/Layout/order/Order';
+import OrderList from './components/Layout/order/OrderList';
+import Pay from './components/Layout/order/pay/Pay';
+import WithDraw from './components/Layout/order/withdraw/WithDraw';
+import WithDrawList from './components/Layout/order/withdraw/WithDrawList';
 import MyPage from "./page/mypage/MyPage";
 import MyEdit from "./page/mypage/MyEdit";
-import Delivery from "./components/Layout/delivery/Delivery";
-import AddGoods from "./components/Layout/goods/AddGoods";
-import ModifyGoods from "./components/Layout/goods/ModifyGoods";
+import Delivery from './components/Layout/order/delivery/Delivery';
+import AddGoods from './components/Layout/goods/AddGoods';
+import ModifyGoods from './components/Layout/goods/ModifyGoods';
 import UpdatePw from "./page/mypage/UpdatePw";
 import BoardList from "./components/Board/BoardList";
 import AdminPage from "./page/admin/AdminPage";
@@ -27,25 +29,27 @@ import WithDrawalComplete from "./page/main/WithDrawalComplete";
 import UserStatistics from "./components/admin/UserStatistics";
 import Statistice from "./page/admin/StatisticsPage";
 import StatisticsPage from "./page/admin/StatisticsPage";
-
 import BoardDetail from "./components/Board/BoardDetail";
 import BoardInsertForm from "./components/Board/BoardInsertForm";
 import BoardEditForm from "./components/Board/BoardEditForm";
 import Error from "./page/main/Error";
 import UserGrade from "./page/admin/UserGrade";
-import GoodsList from "./components/Layout/goods/GoodsList";
+import GoodsList from './components/Layout/goods/GoodsList';
 import MyAddr from "./page/mypage/MyAddr";
 import AddressInsert from "./components/mypage/AddressInsert";
 import BannerSelect from "./page/admin/BannerSelect";
-import Favorite from "./components/Layout/favorite/Favorite";
-import Review from "./components/Layout/order/Review";
-import MyReview from "./components/Layout/order/MyReview";
+import Favorite from './components/Layout/order/favorite/Favorite';
+import Review from './components/Layout/order/review/Review';
+import MyReview from './components/Layout/order/review/MyReview';
+
 import Grade from "./page/main/Grade";
 import MyGrade from "./page/mypage/MyGrade";
 import BestSelect from "./page/admin/BestSelect";
 import CategoryManage from "./page/admin/CategoryManage";
 import Inventory from "./page/admin/Inventory";
 import GoodsState from "./page/admin/GoodsState";
+import DeliveryGoods from './page/admin/DeliveryGoods';
+import OrderListAll from './components/Layout/order/OrderListAll';
 import Upgrade from "./page/main/Upgrade";
 
 //컨텍스트(useContext)
@@ -67,8 +71,8 @@ function App() {
             <Route path="/join" element={<Join />} />
             <Route path="/grade" element={<Grade />} />
             <Route path="/upgrade" element={<Upgrade />} />
-            <Route path="/goods/list" element={<GoodsList />} />
-            <Route path="/goods/order" element={<Order />} />
+            <Route path='/goods/list' element={<GoodsList />} />
+            <Route path='/goods/order' element={<Order />} />
             <Route path="user/mypage" element={<MyPage />}>
               <Route path="myinfo" element={<MyInfo />} />
               <Route path="myedit" element={<MyEdit />} />
@@ -77,14 +81,15 @@ function App() {
               <Route path="withdrawal" element={<WithDrawal />} />
               <Route path="myboardlist" element={<MyBoardList />} />
               <Route path="addr" element={<MyAddr />} />
-              <Route path="cart/list" element={<Cart />} />
-              <Route path="delivery" element={<Delivery />} />
-              <Route path="orderlist" element={<OrderList />} />
-              <Route path="favorite" element={<Favorite />} />
-              <Route path="review" element={<Review />} />
-              <Route path="myreview" element={<MyReview />} />
-              <Route path="withdraw" element={<WithDraw />} />
-              <Route path="pay" element={<Pay />} />
+              <Route path='cart/list' element={<Cart />} />
+              <Route path='delivery' element={<Delivery />} />
+              <Route path='orderlist' element={<OrderList />} />
+              <Route path='favorite' element={<Favorite />} />
+              <Route path='review' element={<Review />} />
+              <Route path='myreview' element={<MyReview />} />
+              <Route path='withdraw' element={<WithDraw />} />
+              <Route path='withdrawlist' element={<WithDrawList />} />
+              <Route path='pay' element={<Pay />} />
             </Route>
             <Route path="/admin/page" element={<AdminPage />}>
               <Route path="statistics" element={<StatisticsPage />} />
@@ -93,11 +98,14 @@ function App() {
               <Route path="userdetail" element={<UserDetail />} />
               <Route path="banner" element={<BannerSelect />} />
               <Route path="best" element={<BestSelect />} />
+               <Route path='goods/add' element={<AddGoods />} />
+              <Route path='goods/modify' element={<ModifyGoods />} />
+              <Route path='delivery' element={<DeliveryGoods />} />
+              <Route path='orderlist' element={<OrderListAll />} />
               <Route path="category" element={<CategoryManage />} />
               <Route path="inventory" element={<Inventory />} />
               <Route path="goods/state" element={<GoodsState />} />
               <Route path="goods/add" element={<AddGoods />} />
-              <Route path="goods/modify" element={<ModifyGoods />} />
             </Route>
             <Route path="/withcomplete" element={<WithDrawalComplete />} />
             <Route path="/boardList/:category" element={<BoardList />} />
@@ -113,6 +121,7 @@ function App() {
             <Route path="/error" element={<Error />} />
             <Route path="/user/order" element={<Order />} />
             <Route path="/user/withdraw" element={<WithDraw />} />
+
           </Route>
         </Routes>
       </BrowserRouter>

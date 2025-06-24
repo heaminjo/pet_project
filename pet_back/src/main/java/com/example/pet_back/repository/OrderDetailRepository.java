@@ -1,6 +1,8 @@
 package com.example.pet_back.repository;
 
 import com.example.pet_back.domain.admin.GoodsRankDTO;
+import com.example.pet_back.constant.GOODSSTATE;
+import com.example.pet_back.constant.ORDERSTATE;
 import com.example.pet_back.entity.OrderDetail;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,10 +21,12 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
     @Query(nativeQuery = true,value = "select * from order_detail where order_id = :id")
     List<OrderDetail> orderDetailList(@Param("id") Long orderId);
 
+
     @Query("SELECT new com.example.pet_back.domain.admin.GoodsRankDTO(" +
             "g.goodsId, g.goodsName, COUNT(o), SUM(g.price)) " +
             "FROM OrderDetail o JOIN o.goods g " +
             "GROUP BY g.goodsId, g.goodsName " +
             "ORDER BY SUM(g.price) DESC limit 10")
     List<GoodsRankDTO> goodsRank();
+
 }

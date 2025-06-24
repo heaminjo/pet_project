@@ -1,8 +1,8 @@
 package com.example.pet_back.controller;
 
-import com.example.pet_back.domain.goods.PayRequestDTO;
-import com.example.pet_back.domain.goods.ReviewUploadDTO;
+import com.example.pet_back.domain.goods.*;
 import com.example.pet_back.domain.page.PageRequestDTO;
+import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.service.MemberService;
 import com.example.pet_back.service.goods.OrderDetailService;
@@ -27,6 +27,15 @@ public class OrderController {
     private final MemberService memberService;
     private final OrderService orderService;
     private final OrderDetailService orderDetailService;
+
+    // 관리자 페이지:
+    @PostMapping("/list/all")
+    public ResponseEntity<?> orderAllList(@RequestBody PageRequestDTO pageRequestDTO){
+        log.info("** OrderController => orderAllList() 실행됨 **");
+       return orderService.orderAllList(pageRequestDTO);
+    }
+
+
 
     // <OrderDetail /> : 주문 리스트
     @PostMapping("/detail")
@@ -66,5 +75,28 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("리뷰 등록 중 오류가 발생했습니다.");
         }
     }
+
+
+    // 내 리뷰 목록 출력
+    @PostMapping("/myreviews")
+    public ResponseEntity<?> showReviewList(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody PageRequestDTO pageRequestDTO) {
+        log.info("** OrderController => showReviewList() 실행됨 **");
+        return orderService.showMyReviews(userDetails, pageRequestDTO);
+    }
+
+//        // 내 리뷰 출력 (수정필요)
+//    @GetMapping("/reviews/list/{goodsId}")
+//    public ResponseEntity<?> showReviewList(@PathVariable("goodsId") Long goodsId, @RequestBody PageRequestDTO pageRequestDTO) {
+//        log.info("** GoodsController => reviews() 실행됨 **");
+//        return goodsService.showReviewList(goodsId, pageRequestDTO);
+//    }
+
+    // <DeliveryGoods />
+    @PostMapping("/page/list")
+    public PageResponseDTO<OrderSimpleDTO> ordersPageList(@RequestBody PageRequestDTO dto){
+        log.info("** OrderController => ordersPageList() 실행됨 **");
+        return orderService.ordersPageList(dto);
+    }
+
 
 }

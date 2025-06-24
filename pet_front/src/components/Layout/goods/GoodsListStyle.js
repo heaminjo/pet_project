@@ -3,7 +3,7 @@ import styled from "styled-components";
 const GoodsListComp = styled.div`
   .container {
     width: 900px;
-    height: 2000px;
+    height: 3000px;
     padding: 10px;
     margin: 0 auto;
     margin-top: 150px;
@@ -68,6 +68,7 @@ const GoodsListComp = styled.div`
       width: inherit;
       height: inherit;
       // border: 1px solid rgb(230, 230, 230);
+      margin: 0 auto;
       margin-top: 50px;
       display: flex;
       flex-direction: column;
@@ -79,8 +80,10 @@ const GoodsListComp = styled.div`
 
       .list {
         width: 850px;
-        flex-wrap: wrap; /* 줄바꿈 허용 */
         display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start; /* 왼쪽 정렬 */
+        gap: 10px; /* 카드 간 여백 */
         flex-direction: row;
         margin: 30px 0 auto;
         justify-content: flex-start; /* ← 가운데가 아닌 왼쪽 정렬 */
@@ -90,8 +93,8 @@ const GoodsListComp = styled.div`
           cursor: pointer;
           width: 250px;
           height: 350px;
-          margin: 2px auto;
-          flex: 0 0 calc(25% - 10px); /* 한 줄에 5개 (100% / 5) */
+          margin: 2px;
+          flex: 0 0 calc(24% - 10px); /* 한 줄에 5개 (100% / 5) */
           border: 1px solid rgb(185, 185, 185);
           div {
             margin-left: 10px;

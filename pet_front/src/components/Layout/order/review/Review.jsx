@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import GoodsApi from "../../../api/GoodsApi";
-import OrderApi from "../../../api/OrderApi";
-import PageNumber from "../../util/PageNumber";
-import { useLocation, useNavigate } from "react-router-dom";
+
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { useLocation, useNavigate } from 'react-router-dom';
+import OrderApi from '../../../../api/OrderApi';
+import OrderApi from '../../../../api/GoodsApi';
+import OrderApi from '../../../util/PageNumber';
 
 // 리뷰 페이지
 export default function Review() {
@@ -11,20 +12,21 @@ export default function Review() {
   const location = useLocation();
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상 태 변 수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 이미지 미리보기 위한 상태변수 추가
-  const [prevImg, setPrevImg] = useState(
-    "http://localhost:8080/resources/webapp/userImages/basicimg.jpg"
-  );
+  // 'http://localhost:8080/resources/webapp/userImages/basicimg.jpg'
+  const [prevImg, setPrevImg] = useState([]);
+  const [userImage, setUserImage] = useState([]);
 
   const { goods } = location.state || {};
-  const [activeTab, setActiveTab] = useState("상품상세");
+
+  const [activeTab, setActiveTab] = useState('상품상세');
   const [reviews, setReviews] = useState([]);
   const [comment, setComment] = useState([]);
   const [content, setContent] = useState([]);
-  const [userImage, setUserImage] = useState([]);
-  const imgUrl = "http://localhost:8080/resources/webapp/userImages/";
-  const up = "up.png";
-  const down = "down.png";
-  const prodImg = "istockphoto-1320314988-2048x2048.jpg";
+
+  const imgUrl = 'http://localhost:8080/resources/webapp/userImages/';
+  const up = 'up.png';
+  const down = 'down.png';
+  const prodImg = 'istockphoto-1320314988-2048x2048.jpg';
   // c:\devv\pet_project\pet_back\src\main\resources\webapp\userImages\up.png
 
   // 별점 (배열)
@@ -44,21 +46,37 @@ export default function Review() {
     { label: "작성한 리뷰", value: goods.description },
   ];
 
+  // 이미지 제거
+  const removeImage = (index) => {
+    setUserImage((prev) => prev.filter((_, i) => i !== index));
+    setPrevImg((prev) => prev.filter((_, i) => i !== index));
+  };
+
   // 리뷰등록
-  const regReview = async (reviews) => {
+  const regReview = async () => {
+    console.log(`goodsId = ${reviews.goodsId}`);
     console.log(`별점: ${score}`);
     const review = {
       memberId: "",
       goodsId: goods.goodsId,
-      orderDetailId: "",
-      score: score, // 여기 중요!
+      orderDetailId: goods.orderDetailId,
+      score: score,
       title: comment,
       content: content,
-      imageFile: reviews.imageFile,
     };
+
+    const formData = new FormData();
+    // JSON 문자열로 변환한 뒤 Blob으로 감싸기
+    const jsonBlob = new Blob([JSON.stringify(review)], { type: 'application/json' });
+    formData.append('review', jsonBlob);
+
+    // 여러 이미지 파일 추가
+    userImage.forEach((file) => {
+      formData.append('imageFile', file); // 백엔드에서 배열로 받을 수 있도록 세팅
+    });
+
     try {
-      console.log(`goodsId = ${reviews.goodsId}`);
-      const response = await OrderApi.registerReview(review);
+      const response = await OrderApi.registerReview(formData);
       alert(response); // 리뷰가 정상적으로 등록되었습니다.
       navigate("/");
     } catch (err) {
@@ -68,22 +86,21 @@ export default function Review() {
   };
 
   useEffect(() => {
+    console.log(`goodsId = ${goods.goodsId}`);
     console.log(`goods 정보 확인 : ${Object.keys(goods)}`);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
+
   return (
     <ReviewComp>
       <div className="container">
         <h2>리뷰작성 페이지</h2>
-        <div className="prod-info">
-          <img
-            src={`${imgUrl}${goods.imageFile}`}
-            alt=""
-            style={{ width: "400px", height: "400px" }}
-            className="prod-img"
-          />
-          <div>{goods.goodsName}</div>
-          <div>{goods.description}</div>
+        <div className='prod-info'>
+          <img src={`${imgUrl}${goods.imageFile}`} alt='' style={{ width: '400px', height: '400px' }} className='prod-img' />
+          <div>goodsId: {goods.goodsId}</div>
+          <div>goodsName: {goods.goodsName}</div>
+          <div>description: {goods.description}</div>
+          <div>orderDetailId : {goods.orderDetailId}</div>
           <div
             className="star-container"
             onMouseDown={() => setIsDragging(true)}
@@ -143,7 +160,7 @@ export default function Review() {
           </fieldset>
         </form>
 
-        <hr />
+        {/* <hr />
         <h3>서비스</h3>
         <div className="service">
           <div>[서비스] 전체적인 서비스는 어떠셨나요? (상, 중, 하)</div>
@@ -162,40 +179,53 @@ export default function Review() {
         <div className="deliver">
           <div>[배송] 배송에 대해서 얼마나 만족하시나요? (상, 중, 하)</div>
           &nbsp;&nbsp; 😍 &nbsp;&nbsp;🙂 &nbsp;&nbsp;😫 &nbsp;&nbsp;
-        </div>
+        </div> */}
 
         <hr />
         <form>
           <fieldset className="user-img">
             <legend>
-              <strong>사진 첨부</strong>{" "}
+              <strong>사진 첨부</strong>
               <input
-                type="file"
-                accept="image/*"
+                type='file'
+                accept='image/*'
+                multiple
                 onChange={(e) => {
-                  const file = e.target.files[0];
-                  setReviews({ ...regReview, imageFile: file });
-                  if (file) {
-                    const imgUrl = URL.createObjectURL(file);
-                    setPrevImg(imgUrl); // 미리보기용 이미지주소
-                  } else {
-                    setPrevImg(prevImg);
-                  }
+                  const files = Array.from(e.target.files); // FileList 배열
+                  setUserImage((prev) => [...prev, ...files]); // 파일 배열로 누적
+                  // 미리보기 이미지 배열
+                  const newPreviews = files.map((file) => URL.createObjectURL(file));
+                  setPrevImg((prev) => [...prev, ...newPreviews]); // prevImg 배열
                 }}
               />
             </legend>
-            <div>
-              <img
-                src={prevImg}
-                alt="상품 이미지"
-                className="goodsImg"
-                style={{ width: "200px", height: "200px" }}
-              />
-            </div>
+            <br />
+            {prevImg.map((src, idx) => (
+              <div key={idx} style={{ position: 'relative', display: 'inline-block', marginRight: '10px' }}>
+                <img src={src} alt='미리보기' className='goodsImg' style={{ width: '200px', height: '200px' }} />
+                <button
+                  onClick={() => removeImage(idx)}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    backgroundColor: 'black',
+                    border: 'none',
+                    fontSize: '20px',
+                    color: 'white',
+                    cursor: 'pointer',
+                  }}>
+                  X
+                </button>
+              </div>
+            ))}
           </fieldset>
         </form>
+        <br />
+        <br />
+        <hr />
         <section>
-          <button className="pay" onClick={() => regReview(reviews)}>
+          <button className='pay' onClick={regReview}>
             리뷰등록
           </button>
           &nbsp;&nbsp;{" "}

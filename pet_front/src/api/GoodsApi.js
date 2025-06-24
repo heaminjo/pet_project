@@ -1,6 +1,7 @@
-import axios from "axios";
-import instance from "../api/axiosInstance"; // 인스턴스 불러오기
-
+import axios from 'axios';
+import instance from '../api/axiosInstance'; // 인스턴스 불러오기
+import { useNavigate } from 'react-router-dom';
+import ModifyGoods from '../components/Layout/goods/ModifyGoods';
 const KH_DOMAIN = "http://localhost:8080";
 const GoodsApi = {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 장 바 구 니 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -39,6 +40,30 @@ const GoodsApi = {
       const result = await instance.post(`/goods/favorite/${goodsId}`);
       if (result.data != null) {
         // alert(`찜 등록 완료 => ${JSON.stringify(result.data)}`);
+        console.log(`찜 등록 완료 => ${JSON.stringify(result.data)}`);
+        return result.data;
+      }
+    } catch (err) {}
+  },
+
+  // 현재 상품의 찜 상태 불러오기
+  favoriteInfo: async (goodsId) => {
+    try {
+      const result = await instance.post(`/goods/favoriteinfo/${goodsId}`);
+      if (result.data != null) {
+        // alert(`찜 상태 가져오기 => ${JSON.stringify(result.data)}`);
+        console.log(`찜 상태 가져오기 => ${JSON.stringify(result.data)}`);
+        return result;
+      }
+    } catch (err) {}
+  },
+
+  // 찜 리스트 출력
+  getFavoritePageList: async (pages) => {
+    try {
+      const result = await instance.post(`/goods/favorite`, pages);
+      if (result.data != null) {
+        console.log(' getFavoritePageList 응답 결과:', result.data);
         return result.data;
       }
     } catch (err) {}
@@ -78,8 +103,9 @@ const GoodsApi = {
     } catch (err) {}
   },
 
-  // <Goods /> : 상품등록
-  regGoods: async (goods) => {
+
+  // <AddGoods /> : 상품등록
+  regGoods: async (formData) => {
     try {
       const result = await instance.post("/goods/register", goods);
       if (result.data != null) {
@@ -87,8 +113,26 @@ const GoodsApi = {
         return result.data;
       }
     } catch (err) {
-      console.error("상품 등록 실패:", err);
-      alert("상품 등록 중 에러가 발생했습니다.");
+      console.error('상품 등록 실패:', err);
+      alert('상품 등록 중 에러가 발생했습니다.');
+    }
+  },
+
+  // <ModifyGoods /> : 상품수정/삭제
+  modifyGoods: async (formData) => {
+    try {
+      const result = await instance.post('/goods/update', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      if (result.data != null) {
+        console.log(`상품수정 완료 => ${result.data}`);
+        return result.data;
+      }
+    } catch (err) {
+      console.error('상품수정 등록 실패:', err);
+      alert('상품 수정 중 에러가 발생했습니다.');
     }
   },
 
@@ -99,10 +143,13 @@ const GoodsApi = {
   },
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 리  뷰 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // 리뷰목록 (단일 상품)
+  // 리뷰목록 (상품)
   getReviewsPageList: async (pages, goodsId) => {
-    alert(`getPageList() 호출됨, goodsId = ${JSON.stringify(goodsId)}`);
-    const result = await instance.post(`/goods/reviews/${goodsId}`, pages);
+    console.log(`getPageList() 호출됨, goodsId = ${JSON.stringify(goodsId)}`);
+    const result = await instance.get(`/goods/reviews/${goodsId}`, {
+      params: pages,
+    });
+
     if (result.data != null) {
       console.log("getReviewsPageList 응답 결과:", result.data);
       return result.data;

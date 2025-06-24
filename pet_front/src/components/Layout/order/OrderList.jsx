@@ -1,9 +1,11 @@
-import OrderListComp from "./OrderListStyle";
-import GoodsApi from "../../../api/GoodsApi";
-import OrderApi from "../../../api/OrderApi";
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import PageNumber from "../../util/PageNumber";
+
+import OrderListComp from './OrderListStyle';
+import GoodsApi from '../../../api/GoodsApi';
+import OrderApi from '../../../api/OrderApi';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import PageNumber from '../../util/PageNumber';
+import Modal from '../../../modal/Modal';
 
 export default function OrderDetail() {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -16,6 +18,8 @@ export default function OrderDetail() {
   const [quantityMap, setQuantityMap] = useState({}); // Map 용도( goods id : goods quantity )
 
   const [info, setInfo] = useState([]); // OrderDetailResponseDTO List
+
+  const [showModal, setShowModal] = useState(false); // Y/N
 
   const [buyQuantity, setBuyQuantity] = useState(1);
 
@@ -35,18 +39,23 @@ export default function OrderDetail() {
     totalPages: 0,
   });
 
+  // 모달 핸들러 함수
+  const goToCart = () => {
+    setShowModal(false);
+    navigate('/user/mypage/cart/list');
+  };
+
   // 장바구니 담기
   const addToCart = async (goods, buyQuantity) => {
-    console.log(`addToCart 수량 => ${buyQuantity}`);
-    GoodsApi.addToCart(goods, buyQuantity)
-      .then((response) => {
-        console.log(`장바구니 담기 성공, 상품ID:  => ${response}`);
-        alert("장바구니에 " + goods.goodsName + "이(가) 1개 담겼습니다.");
-        navigate("/user/mypage/cart/list");
-      })
-      .catch((err) => {
-        // alert("GoodsApi.addToCart() 중 오류발생");
-      });
+    try {
+      const response = await GoodsApi.addToCart(goods, buyQuantity);
+      // alert("장바구니에 " + goods.goodsName + "이(가) 1개 담겼습니다.");
+      // navigate("/user/mypage/cart/list");
+      console.log(`장바구니 담기 성공, 상품ID:  => ${response}`);
+      setShowModal(true); // 모달 표시
+    } catch (err) {
+      alert('장바구니 담기에 실패했습니다.');
+    }
   };
 
   // 주문내역 리스트를 순회하며 날짜별로 그룹화 ~~~~~~~~~~~~~~~~~~~~
@@ -61,12 +70,16 @@ export default function OrderDetail() {
     });
     return grouped;
   };
+
   // 함수 실행
   const groupedInfo = groupByDate(info);
+
   // 그룹화한 리스트 결과를 날짜 최신순 정렬
   const sortedDates = Object.keys(groupedInfo).sort(
     (a, b) => new Date(b) - new Date(a)
   );
+
+  // 주문취소
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 페이징 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const getPageList = async () => {
@@ -111,6 +124,19 @@ export default function OrderDetail() {
       <div className="container">
         <h2>주문내역</h2>
         <div>
+          {showModal && (
+            <Modal
+              content={
+                <>
+                  상품이 장바구니에 정상적으로 담겼습니다.
+                  <br />
+                  장바구니로 이동하시겠습니까?
+                </>
+              }
+              clickEvt={goToCart}
+              setModal={setShowModal}
+            />
+          )}
           {sortedDates.map((date) => (
             <div key={date} className="orderlist">
               {groupedInfo[date].map((item, index) => (
@@ -149,10 +175,7 @@ export default function OrderDetail() {
                         >
                           배송조회
                         </button>
-                        <button
-                          className="btn3"
-                          onClick={() => navigate("/user/withdraw")}
-                        >
+                        <button className='btn3' onClick={() => navigate('/user/mypage/withdraw')}>
                           주문취소
                         </button>
                         <button

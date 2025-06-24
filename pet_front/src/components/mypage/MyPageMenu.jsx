@@ -98,6 +98,11 @@ export default function MypageMenu() {
                 주문 / 배송 내역
               </span>
             </li>
+            <li>
+              <span onClick={() => navigate('/user/mypage/withdrawlist')}>
+                취소 내역
+              </span>
+            </li>
           </ul>
         </div>
         <div className="sub_menu" id="border_menu">

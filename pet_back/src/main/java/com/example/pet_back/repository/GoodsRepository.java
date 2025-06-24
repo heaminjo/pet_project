@@ -16,6 +16,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface GoodsRepository extends JpaRepository<Goods, Long> {
@@ -24,12 +25,30 @@ public interface GoodsRepository extends JpaRepository<Goods, Long> {
     @Modifying
     @Transactional
     @Query(nativeQuery = true, value = "INSERT INTO GOODS(" +
-            "category_id, goods_name, price, description, goods_state, image_file, quantity) " +
-            "VALUES (:category_id, :goods_name, :price, :description, :goods_state, :image_file, :quantity)")
+            "category_id, goods_name, price, description, goods_state, image_file, quantity, reg_date) " +
+            "VALUES (:category_id, :goods_name, :price, :description, :goods_state, :image_file, :quantity, :reg_date)")
     void registerGoods(@Param("category_id") Long category_id, @Param("goods_name") String goods_name, //
-                              @Param("price") int price, @Param("description") String description, //
-                              @Param("goods_state") String goods_state, //
-                              @Param("image_file") String image_file, @Param("quantity") int quantity);
+                       @Param("price") int price, @Param("description") String description, //
+                       @Param("goods_state") String goods_state, @Param("image_file") String image_file, //
+                       @Param("quantity") int quantity, @Param("reg_date")LocalDate reg_date);
+
+    // 상품수정
+    @Modifying
+    @Transactional
+    @Query(nativeQuery = true, value = "UPDATE GOODS SET " +
+            "category_id = :category_id, " +
+            "goods_name = :goods_name, " +
+            "price = :price, " +
+            "description = :description, " +
+            "goods_state = :goods_state, " +
+            "image_file = :image_file, " +
+            "quantity = :quantity " +
+            "WHERE goods_id = :goods_id")
+    void updateGoods(@Param("goods_id") Long goodsId, @Param("category_id") Long categoryId,
+                     @Param("goods_name") String goodsName, @Param("price") int price,
+                     @Param("description") String description, @Param("goods_state") String goodsState,
+                     @Param("image_file") String imageFile, @Param("quantity") int quantity);
+
 
 
     // 특정 고객이 한번이라도 주문한 적 있는 상품의 리스트
