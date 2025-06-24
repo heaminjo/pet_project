@@ -9,6 +9,22 @@ export default function OrderListAll() {
     <OrderListAllComp>
       <div className='container'>
         <h2>전체 주문내역</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>번호</th>
+              <th>Order ID</th>
+              <th>주문일</th>
+              <th>가격</th>
+              <th>주문 수량</th>
+              <th>결제수단</th>
+              <th>상태 관리</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr></tr>
+          </tbody>
+        </table>
       </div>
     </OrderListAllComp>
   );

@@ -22,5 +22,13 @@ public class OrderSimpleDTO {
     private int totalQuantity;
     private PAYMENT payment;
     private ORDERSTATE status;
+    
+    // 주문한 회원정보도 포함
+    private String email;
+    private String name;
+    private String phone;
+    private String zipCode;
+    private String address;
+    
 
 }

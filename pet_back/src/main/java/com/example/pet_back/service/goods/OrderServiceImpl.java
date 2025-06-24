@@ -194,7 +194,8 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public ResponseEntity<?> regReview(CustomUserDetails userDetails, //
                                        ReviewUploadDTO reviewUploadDTO) throws IOException {
-        Member member = memberRepository.findById(userDetails.getMember().getId()).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+        Member member = memberRepository.findById(userDetails.getMember().getId())
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
         log.info("member.getId() = "+member.getId());
 
         List<MultipartFile> imageFiles = reviewUploadDTO.getImageFiles();
@@ -340,8 +341,29 @@ public class OrderServiceImpl implements OrderService {
         Page<Orders> page = orderRepository.findSearchList(keyword, category, state, pageable);
 
         //페이지의 데이터를 List에 저장
-        List<OrderSimpleDTO> responseList = page.stream()
-                .map(orderMapper::toSimpleDTO)
+        List<OrderSimpleDTO> responseList = page.stream().map(order -> {
+                    Member member = order.getMember(); // 주문한 회원
+                    Delivery delivery = deliveryRepository.findById(order.getDelivery().getDeliveryId()) //
+                        .orElseThrow(() -> new UsernameNotFoundException("배송 정보가 존재하지 않습니다."));
+                    Address address = addressRepository.findById(delivery.getAddress().getAddressId())
+                            .orElseThrow(() -> new UsernameNotFoundException("주소 정보가 존재하지 않습니다."));
+
+                    return new OrderSimpleDTO(
+                            order.getOrderId(),
+                            member.getId(),
+                            delivery.getDeliveryId(),
+                            order.getRegDate(),
+                            order.getTotalPrice(),
+                            order.getTotalQuantity(),
+                            order.getPayment(),
+                            order.getStatus(),
+                            // 회원 정보
+                            member.getEmail(),
+                            member.getName(),
+                            member.getPhone(),
+                            address.getAddressZip(),
+                            address.getAddress1() + " " + address.getAddress2()
+                    );})
                 .toList();
         log.info("** List<OrderSimpleDTO> responseList 실행됨 **");
 

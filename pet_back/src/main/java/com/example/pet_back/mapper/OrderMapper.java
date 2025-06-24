@@ -46,11 +46,6 @@ public interface OrderMapper {
     @Mapping(source = "payment", target = "payment")
     OrderSimpleDTO toSimpleDTO(Orders orders);
 
-    // 리스트 변환
-    @Mapping(source = "member.id", target = "memberId")
-    @Mapping(source = "delivery.deliveryId", target = "deliveryId")
-    @Mapping(source = "status", target = "status")
-    @Mapping(source = "payment", target = "payment")
     List<OrderSimpleDTO> toSimpleDTOList(List<Orders> orderList);
 
 //    // 결제수단 한글 변환

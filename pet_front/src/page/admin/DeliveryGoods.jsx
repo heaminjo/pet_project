@@ -14,7 +14,7 @@ export default function DeliveryGoods() {
   const location = useLocation();
   const deliverImg = process.env.PUBLIC_URL + '/images/delivery.png';
   const imgUrl = 'http://localhost:8080/resources/webapp/userImages/';
-  const [member, setMember] = useState([]);
+  const [members, setMembers] = useState([]);
   const [goods, setGoods] = useState([]);
   const { goodsId } = location.state || {};
   const [allOrderList, setAllOrderList] = useState([]);
@@ -45,6 +45,7 @@ export default function DeliveryGoods() {
     totalPages: 0,
   });
 
+  // 결제 상태
   const statusMap = {
     결제전: 'BEFOREPAY',
     결제완료: 'AFTERPAY',
@@ -93,6 +94,18 @@ export default function DeliveryGoods() {
       getOrderList();
     }
   };
+  // orderId 로 주문한 사용자의 정보 가져오기
+  // orders 테이블 - deliveryId, memberId
+  // member 테이블 - email, phone, name (memberId)
+  // delivery 테이블 - addressId,
+  // address 테이블 -
+
+  // 배송정보
+  // const getDeliveryInfo = async () => {
+  //   // delivery Id, member Id 로 배송정보 조회회
+  //   const response = await OrderApi.getAllOrderList(pages);
+  //   setAllOrderList(response.content);
+  // };
 
   useEffect(() => {
     getOrderList();
@@ -108,12 +121,14 @@ export default function DeliveryGoods() {
           <table>
             <thead>
               <tr>
-                <th>번호</th>
-                <th>Order ID</th>
+                <th style={{ width: '10px' }}>No</th>
+                <th>주문자 [메일]</th>
+                <th>주문자 [연락처]</th>
                 <th>주문일</th>
                 <th>가격</th>
-                <th>주문 수량</th>
+                <th>수량</th>
                 <th>결제수단</th>
+                <th>배송지</th>
                 <th>상태 관리</th>
               </tr>
             </thead>
@@ -122,11 +137,13 @@ export default function DeliveryGoods() {
                 allOrderList.map((o, index) => (
                   <tr key={o.orderId}>
                     <td>{index + 1}</td> {/* 번호 */}
-                    <td>{o.orderId}</td>
+                    <td>{o.email}</td> {/* 주문자 이메일 */}
+                    <td>{o.phone}</td> {/* 주문자 연락처 */}
                     <td>{o.regDate}</td> {/* 주문일 */}
                     <td>{o.totalPrice}</td> {/* 가격 */}
                     <td>{o.totalQuantity}</td> {/* 주문 수량 */}
                     <td>{o.payment}</td>
+                    <td>{`[ ${o.zipCode} ]${o.address}`}</td>
                     <td>
                       {/* 상태 변경 */}
                       {['결제전', '결제완료', '상품준비중', '배송중', '배송완료'].map((stateKor) => {
@@ -156,16 +173,14 @@ export default function DeliveryGoods() {
 }
 
 const DeliveryGoodsComp = styled.div`
-  height: 1500px;
   .container {
-    width: 1500px;
+    width: 1800px;
     padding: 20px 0;
 
     .list_container {
-      width: 1300px;
       table {
         border: 1px solid #000;
-        width: 1300px;
+        width: 1500px;
         text-align: center;
         border-collapse: collapse;
         padding-bottom: 20px;
@@ -176,6 +191,7 @@ const DeliveryGoodsComp = styled.div`
           }
           td {
             border-bottom: 1px solid #ccc;
+            margin: 5px;
             img {
               width: 80px;
               height: 80px;
