@@ -3,7 +3,7 @@ import AddGoodsComp from './AddGoodsStyle';
 import { useEffect, useState } from 'react';
 import GoodsApi from '../../../api/GoodsApi';
 
-export default function AddGoods({ onClose, refreshList }) {
+export default function AddGoods({ onClose, refreshList, mode = 'create', targetGoods = null }) {
   const navigate = useNavigate();
   //const goodsImg = process.env.PUBLIC_URL + '/images/pic1.png';
 
@@ -25,21 +25,60 @@ export default function AddGoods({ onClose, refreshList }) {
     price: '',
   });
 
-  // 상품등록 폼 제출
+  // 상품등록 & 수정 폼 제출
   const register = async (e) => {
-    e.preventDefault(); // 새로고침 방지
-    const formData = new FormData();
-    for (const key in goods) {
-      formData.append(key, goods[key]);
-    }
-
+    e.preventDefault();
     try {
-      const response = await GoodsApi.regGoods(goods);
-      console.log('등록 결과:', response);
+      if (mode === 'edit') {
+        const formData = new FormData();
+
+        const updatedGoods = {
+          goodsId: targetGoods.goodsId,
+          goodsName: goods.goodsName,
+          categoryId: goods.categoryId,
+          goodsState: goods.goodsState,
+          description: goods.description,
+          quantity: goods.quantity,
+          price: goods.price,
+        };
+
+        formData.append(
+          'goods',
+          new Blob([JSON.stringify(updatedGoods)], {
+            type: 'application/json',
+          })
+        );
+
+        if (goods.imageFile) {
+          formData.append('imageFile', goods.imageFile);
+        }
+
+        await GoodsApi.modifyGoods(formData);
+      } else {
+        const formData = new FormData();
+        formData.append(
+          'goods',
+          new Blob(
+            [
+              JSON.stringify({
+                goodsName: goods.goodsName,
+                categoryId: goods.categoryId,
+                goodsState: goods.goodsState,
+                description: goods.description,
+                quantity: goods.quantity,
+                price: goods.price,
+              }),
+            ],
+            { type: 'application/json' }
+          )
+        );
+        if (goods.imageFile) formData.append('imageFile', goods.imageFile);
+        await GoodsApi.regGoods(formData);
+      }
       onClose(); // 모달 닫기
       refreshList(); // 목록 새로고침
-    } catch (error) {
-      console.log('등록 중 에러 발생생:', error);
+    } catch (err) {
+      console.error('에러:', err);
     }
   };
 
@@ -63,6 +102,21 @@ export default function AddGoods({ onClose, refreshList }) {
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
   }, []);
+
+  useEffect(() => {
+    if (mode === 'edit' && targetGoods) {
+      setGoods({
+        goodsName: targetGoods.goodsName,
+        imageFile: null,
+        categoryId: targetGoods.category?.categoryId || '',
+        goodsState: targetGoods.goodsState,
+        description: targetGoods.description,
+        quantity: targetGoods.quantity,
+        price: targetGoods.price,
+      });
+      setPrevImg(`http://localhost:8080/resources/webapp/userImages/${targetGoods.imageFile}`);
+    }
+  }, [mode, targetGoods]);
 
   useEffect(() => {
     category();
@@ -159,7 +213,7 @@ export default function AddGoods({ onClose, refreshList }) {
                     <td></td>
                     <td>
                       <button className='btn' id='sub_btn' type='submit'>
-                        등록
+                        {mode === 'edit' ? '수정' : '등록'}
                       </button>
                       <button type='button' onClick={onClose}>
                         닫기

@@ -1,10 +1,9 @@
 import PayComp from './PayStyle';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import MemberApi from '../../../api/MemberApi';
-import GoodsApi from '../../../api/GoodsApi';
-import OrderApi from '../../../api/OrderApi';
 import Popup from './Popup';
+import OrderApi from '../../../../api/OrderApi';
+import MemberApi from '../../../../api/MemberApi';
 
 export default function Pay() {
   const location = useLocation();
@@ -133,11 +132,11 @@ export default function Pay() {
     alert('pay 동작테스트');
     OrderApi.pay(payload) // 여기가 호출
       .then((response) => {
-        alert('GoodsApi.pay() 성공');
+        alert('OrderApi.pay() 성공');
         navigate('/user/mypage/orderlist');
       })
       .catch((err) => {
-        alert('GoodsApi.pay() 에러');
+        alert('OrderApi.pay() 에러');
       });
   };
 

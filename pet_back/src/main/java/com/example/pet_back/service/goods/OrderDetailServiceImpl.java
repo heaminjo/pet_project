@@ -8,6 +8,7 @@ import com.example.pet_back.entity.Member;
 import com.example.pet_back.entity.OrderDetail;
 import com.example.pet_back.entity.Orders;
 import com.example.pet_back.jwt.CustomUserDetails;
+import com.example.pet_back.mapper.OrderDetailMapper;
 import com.example.pet_back.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -38,6 +38,9 @@ public class OrderDetailServiceImpl implements OrderDetailService{
     private final MemberRepository memberRepository;
     private final CartRepository cartRepository;
     private final AddressRepository addressRepository;
+
+    private final OrderDetailMapper orderDetailMapper;
+
 
 
     // 회원이 주문한 OrderDetail

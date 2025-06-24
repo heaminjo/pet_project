@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import MemberApi from '../../../api/MemberApi';
+import MemberApi from '../../../../api/MemberApi';
 import DeliveryComp from './DeliveryStyle';
-import GoodsApi from '../../../api/GoodsApi';
+import GoodsApi from '../../../../api/GoodsApi';
 import { useLocation } from 'react-router-dom';
 // import './delivery.css';
 
@@ -26,7 +26,6 @@ export default function Delivery() {
   const goodsInfo = async (goodsId) => {
     GoodsApi.goodsDetail(goodsId)
       .then((response) => {
-        
         setGoods(response);
       })
       .catch((err) => {});
@@ -46,9 +45,8 @@ export default function Delivery() {
         <div className='title'>배송조회</div>
         <div className='box1'>
           상품명: {goods.goodsName} <br />
-          배송이 시작 되었습니다 <br />
-          또는 <br />
-          6/9(월) 배송 완료 <br />ㄴ orders 테이블의 regDate 가져옴 (order response dto 활용)
+          6/9(월) 배송 완료 <br />
+          {/*ㄴ orders 테이블의 regDate 가져옴 (order response dto 활용) */}
         </div>
 
         <hr />
@@ -71,7 +69,7 @@ export default function Delivery() {
               </tr>
               <tr>
                 <td>판매자</td>
-                <td>판매자 정보보기</td>
+                <td>몽냥마켓</td>
               </tr>
             </table>
           </section>
@@ -84,7 +82,7 @@ export default function Delivery() {
               </tr>
               <tr>
                 <td>받는주소</td>
-                <td>{member.address || ''}</td>
+                <td>{member.address || '경기 성남시 분당구'}</td>
               </tr>
               <tr>
                 <td>요청사항</td>

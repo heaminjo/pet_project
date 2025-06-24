@@ -10,6 +10,7 @@ import com.example.pet_back.service.AdminService;
 import com.example.pet_back.service.ImageService;
 import com.example.pet_back.service.MemberService;
 import com.example.pet_back.service.goods.GoodsService;
+import com.example.pet_back.service.goods.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ public class AdminController {
     private final MemberService memberService;
     private final AdminService adminService;
     private final GoodsService goodsService;
+    private final OrderService orderService;
     private final ImageService imageService;
     //관리자 조회
     @GetMapping("/detail")
@@ -127,9 +129,17 @@ public class AdminController {
     public ResponseEntity<ApiResponse> quantityUpdate(@RequestParam ("id") Long id,@RequestParam("quantity")int  quantity){
         return ResponseEntity.ok(goodsService.quantityUpdate(id,quantity));
     }
+
     //상품 상태 수정
     @PatchMapping("/goods/state/update")
     public ResponseEntity<ApiResponse> goodsStateUpdate(@RequestParam ("id") Long id,@RequestParam("state")String  state){
         return ResponseEntity.ok(goodsService.goodsStateUpdate(id,state));
     }
+
+    //주문 상태 수정
+    @PatchMapping("/order/state/update")
+    public ResponseEntity<ApiResponse> orderStateUpdate(@RequestParam ("id") Long id,@RequestParam("state")String  state){
+        return ResponseEntity.ok(orderService.orderStateUpdate(id,state));
+    }
+
 }

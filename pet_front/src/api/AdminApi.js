@@ -1,11 +1,11 @@
-import axios from "axios";
-import instance from "./axiosInstance";
-const KH_DOMAIN = "http://localhost:8080";
+import axios from 'axios';
+import instance from './axiosInstance';
+const KH_DOMAIN = 'http://localhost:8080';
 const AdminApi = {
   //관리자자 조회
   detail: async () => {
     //요청 인터셉터를 통해 header
-    console.log("admin호출합니다.");
+    console.log('admin호출합니다.');
     const result = await instance.get(`${KH_DOMAIN}/admin/detail`);
     return result.data;
   },
@@ -17,9 +17,7 @@ const AdminApi = {
   },
   //회원 상세조회
   getUserData: async (email) => {
-    const result = await instance.get(
-      `${KH_DOMAIN}/admin/user/detail?email=${email}`
-    );
+    const result = await instance.get(`${KH_DOMAIN}/admin/user/detail?email=${email}`);
     return result.data;
   },
 
@@ -30,10 +28,7 @@ const AdminApi = {
       state: state,
     };
     console.log(userState);
-    const result = await instance.post(
-      `${KH_DOMAIN}/admin/user/state/update`,
-      userState
-    );
+    const result = await instance.post(`${KH_DOMAIN}/admin/user/state/update`, userState);
 
     return result.data;
   },
@@ -51,9 +46,7 @@ const AdminApi = {
 
   //등급 당 우수 회원 목록
   getGradeUserList: async (gradeType) => {
-    const result = await instance.get(
-      `${KH_DOMAIN}/admin/best/list?grade=${gradeType}`
-    );
+    const result = await instance.get(`${KH_DOMAIN}/admin/best/list?grade=${gradeType}`);
     return result.data;
   },
 
@@ -64,20 +57,15 @@ const AdminApi = {
   },
   //배너 삭제제
   bannerDelete: async (selBanner) => {
-    const result = await instance.delete(
-      `${KH_DOMAIN}/admin/banner/delete?id=${selBanner}`
-    );
+    const result = await instance.delete(`${KH_DOMAIN}/admin/banner/delete?id=${selBanner}`);
     return result.data;
   },
   //배너 추가
   bannerInsert: async (newBanner) => {
     const formData = new FormData();
-    formData.append("file", newBanner.imageFile);
-    formData.append("position", newBanner.position.toString());
-    const result = await instance.post(
-      `${KH_DOMAIN}/admin/banner/insert`,
-      formData
-    );
+    formData.append('file', newBanner.imageFile);
+    formData.append('position', newBanner.position.toString());
+    const result = await instance.post(`${KH_DOMAIN}/admin/banner/insert`, formData);
     return result.data;
   },
   //베스트 상품 추가
@@ -87,17 +75,12 @@ const AdminApi = {
       position: position,
     };
     console.log(newBest);
-    const result = await instance.post(
-      `${KH_DOMAIN}/admin/best/insert`,
-      newBest
-    );
+    const result = await instance.post(`${KH_DOMAIN}/admin/best/insert`, newBest);
     return result.data;
   },
   //베스트 상품 삭제
   bestDelete: async (id) => {
-    const result = await instance.delete(
-      `${KH_DOMAIN}/admin/best/delete?id=${id}`
-    );
+    const result = await instance.delete(`${KH_DOMAIN}/admin/best/delete?id=${id}`);
     return result.data;
   },
 
@@ -110,32 +93,29 @@ const AdminApi = {
   },
   //카테고리 삭제
   categoryDelete: async (id) => {
-    const result = await instance.delete(
-      `${KH_DOMAIN}/admin/category/delete?id=${id}`
-    );
+    const result = await instance.delete(`${KH_DOMAIN}/admin/category/delete?id=${id}`);
     return result.data;
   },
 
   //카테고리 수정
   categoryUpdate: async (id, categoryName) => {
-    const result = await instance.patch(
-      `${KH_DOMAIN}/admin/category/update?id=${id}&categoryName=${categoryName}`
-    );
+    const result = await instance.patch(`${KH_DOMAIN}/admin/category/update?id=${id}&categoryName=${categoryName}`);
     return result.data;
   },
   //상품 재고 수정
   updateQuantity: async (id, quantity) => {
-    const result = await instance.patch(
-      `${KH_DOMAIN}/admin/goods/quantity/update?id=${id}&quantity=${quantity}`
-    );
+    const result = await instance.patch(`${KH_DOMAIN}/admin/goods/quantity/update?id=${id}&quantity=${quantity}`);
     return result.data;
   },
 
   //상품 상태 수정
   updateGoodsState: async (id, newState) => {
-    const result = await instance.patch(
-      `${KH_DOMAIN}/admin/goods/state/update?id=${id}&state=${newState}`
-    );
+    const result = await instance.patch(`${KH_DOMAIN}/admin/goods/state/update?id=${id}&state=${newState}`);
+    return result.data;
+  },
+  //주문 상태 수정
+  updateOrderState: async (id, newState) => {
+    const result = await instance.patch(`${KH_DOMAIN}/admin/order/state/update?id=${id}&state=${newState}`);
     return result.data;
   },
 };

@@ -5,15 +5,15 @@ import Main from './page/main/Main';
 import React, { useState } from 'react';
 import Login from './page/auth/Login';
 import Join from './page/auth/Join';
-import Cart from './components/Layout/cart/Cart';
+import Cart from './components/Layout/order/cart/Cart';
 import Order from './components/Layout/order/Order';
 import OrderList from './components/Layout/order/OrderList';
-import Pay from './components/Layout/pay/Pay';
-import WithDraw from './components/Layout/withdraw/WithDraw';
-import WithDrawList from './components/Layout/withdraw/WithDrawList';
+import Pay from './components/Layout/order/pay/Pay';
+import WithDraw from './components/Layout/order/withdraw/WithDraw';
+import WithDrawList from './components/Layout/order/withdraw/WithDrawList';
 import MyPage from './page/mypage/MyPage';
 import MyEdit from './page/mypage/MyEdit';
-import Delivery from './components/Layout/delivery/Delivery';
+import Delivery from './components/Layout/order/delivery/Delivery';
 import AddGoods from './components/Layout/goods/AddGoods';
 import ModifyGoods from './components/Layout/goods/ModifyGoods';
 import UpdatePw from './page/mypage/UpdatePw';
@@ -38,15 +38,17 @@ import GoodsList from './components/Layout/goods/GoodsList';
 import MyAddr from './page/mypage/MyAddr';
 import AddressInsert from './components/mypage/AddressInsert';
 import BannerSelect from './page/admin/BannerSelect';
-import Favorite from './components/Layout/favorite/Favorite';
-import Review from './components/Layout/order/Review';
-import MyReview from './components/Layout/order/MyReview';
+import Favorite from './components/Layout/order/favorite/Favorite';
+import Review from './components/Layout/order/review/Review';
+import MyReview from './components/Layout/order/review/MyReview';
 import Grade from './page/main/Grade';
 import MyGrade from './page/mypage/MyGrade';
 import BestSelect from './page/admin/BestSelect';
 import CategoryManage from './page/admin/CategoryManage';
 import Inventory from './page/admin/Inventory';
 import GoodsState from './page/admin/GoodsState';
+import DeliveryGoods from './page/admin/DeliveryGoods';
+import OrderListAll from './components/Layout/order/OrderListAll';
 
 //컨텍스트(useContext)
 //로그인 여부부를 전역변수로 뿌리기 위한것
@@ -93,13 +95,16 @@ function App() {
               <Route path='userdetail' element={<UserDetail />} />
               <Route path='banner' element={<BannerSelect />} />
               <Route path='best' element={<BestSelect />} />
+              <Route path='goods/add' element={<AddGoods />} />
+              <Route path='goods/modify' element={<ModifyGoods />} />
+              <Route path='delivery' element={<DeliveryGoods />} />
+              <Route path='orderlist' element={<OrderListAll />} />
               <Route path='category' element={<CategoryManage />} />
               <Route path='inventory' element={<Inventory />} />
               <Route path='goods/state' element={<GoodsState />} />
             </Route>
             <Route path='/withcomplete' element={<WithDrawalComplete />} />
-            <Route path='/admin/goods/add' element={<AddGoods />} />
-            <Route path='/admin/goods/modify' element={<ModifyGoods />} />
+
             <Route path='/boardList/:category' element={<BoardList />} />
             <Route path='/boardDetail/:category/:board_id' element={<BoardDetail />} />
             <Route path='/boardInsertForm' element={<BoardInsertForm />} />

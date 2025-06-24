@@ -34,6 +34,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -73,6 +74,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public ResponseEntity<?> showGoodsList(PageRequestDTO pageRequestDTO) {
         log.info("** GoodsServiceImpl 실행됨 **");
+
         // 페이징
         // 1. 정렬 (최신)
         Sort sort = pageRequestDTO.getSortBy().equals("desc") ? // desc라면
@@ -85,7 +87,13 @@ public class GoodsServiceImpl implements GoodsService {
         // 3. Page<Goods> 조회 완료
         Page<Goods> page;
         // 키워드 유무에 따른 분기
-        if(pageRequestDTO.getKeyword().isEmpty() && pageRequestDTO.getType().isEmpty()){ // 키워드 & 카테고리 X
+        // 빈 문자열일 경우
+        String keyword = pageRequestDTO.getKeyword();
+        String category = pageRequestDTO.getType();
+        if ("all".equals(category)) category = "";
+        if ("all".equals(keyword)) keyword = "";
+
+        if(keyword.isEmpty() && category.isEmpty()){ // 키워드 & 카테고리 X
             // 전체 조회
             log.info("전체 조회 => Category / Keyword : All");
             page = goodsRepository.findAll(pageable); // GoodsList
@@ -139,11 +147,17 @@ public class GoodsServiceImpl implements GoodsService {
         String goodsName = goodsUploadDTO.getGoodsName();
         int price = goodsUploadDTO.getPrice();
         String description = goodsUploadDTO.getDescription();
-        String goodsState = goodsUploadDTO.getGoodsState().name(); // String 변환 후 저장 필수
+
+        String goodsState = goodsUploadDTO.getGoodsState() != null ? goodsUploadDTO.getGoodsState().name() : GOODSSTATE.SALE.name();
+
         int quantity = goodsUploadDTO.getQuantity();
 
         MultipartFile imageFile = goodsUploadDTO.getImageFile();
         String uploadImg = "basicimg.jpg"; // 기본이미지
+        LocalDate regDate = goodsUploadDTO.getRegDate();
+        if (regDate == null) {
+            regDate = LocalDate.now(); // 오늘 날짜로 자동 설정
+        }
 
         // 이미지 로직
         // 1. 파일 저장 경로
@@ -151,10 +165,11 @@ public class GoodsServiceImpl implements GoodsService {
 
         // 2. 디렉터리 생성
         File path = new File(realPath); // 파일 또는 디렉토리를 참조하는 File 객체생성
-        if (!path.exists()) path.mkdir(); // null인경우 경로 생성(최초1회)
+        if (!path.exists()) path.mkdirs(); // null인경우 경로 생성(최초1회)
 
         // 3. 이미지가 제대로 넘어오지 않는 CASE 위한 방어 코드 (기본이미지 복사 저장)
-        if (!path.exists()) {
+        File defaultImg = new File(realPath + "basicimg.jpg");
+        if (!defaultImg.exists()) {
             String basicImg = "C:/devv/pet_project/pet_back/src/main/resources/webapp/userImages/basicimg.jpg";
             FileInputStream fin = new FileInputStream(new File(basicImg)); // 읽어오기 위한 스트림
             FileOutputStream fout = new FileOutputStream(path); // 쓰기 위한 스트림
@@ -176,19 +191,60 @@ public class GoodsServiceImpl implements GoodsService {
 
         // 5. 이미지 파일명 DTO에 주입 (DB 저장용)
         goodsRepository.registerGoods(categoryId, goodsName, price, //
-                description, goodsState, uploadImg, quantity);
+                description, goodsState, uploadImg, quantity, regDate);
     }
 
-    // 상품수정 (미완)
+    // 상품수정
     @Override
-    public void updateGoods(CustomUserDetails userDetails, GoodsRequestDTO goodsRequestDTO){
-        Goods goods = goodsRepository.findById(goodsRequestDTO.getGoodsId()).get();
-        goodsRepository.deleteById(goods.getGoodsId());
+    public void updateGoods(GoodsUploadDTO goodsUploadDTO) {
+        Goods goods = goodsRepository.findById(goodsUploadDTO.getGoodsId()).get();
+
+        log.info("** GoodsServiceImpl updateGoods 실행됨 **");
+        System.out.println("에러발생지점 확인용 : " + goodsUploadDTO.getGoodsState().getClass());
+
+        Long categoryId = goodsUploadDTO.getCategoryId();
+        String goodsName = goodsUploadDTO.getGoodsName();
+        int price = goodsUploadDTO.getPrice();
+        String description = goodsUploadDTO.getDescription();
+
+        String goodsState = goodsUploadDTO.getGoodsState() != null ? goodsUploadDTO.getGoodsState().name() : GOODSSTATE.SALE.name();
+
+        int quantity = goodsUploadDTO.getQuantity();
+
+        MultipartFile imageFile = goodsUploadDTO.getImageFile();
+        String uploadImg = "basicimg.jpg"; // 기본이미지
+
+
+        // 이미지 로직
+        // 1. 파일 저장 경로
+        String realPath = "C:/devv/pet_project/pet_back/src/main/resources/webapp/userImages/";
+
+        // 2. 업로드 이미지 처리
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String originalFilename = imageFile.getOriginalFilename(); // ex: cat.jpg
+            String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String uuid = UUID.randomUUID().toString();
+            String newFileName = uuid + extension;
+
+            File destFile = new File(realPath + newFileName);
+            try {
+            imageFile.transferTo(destFile); // MultipartFile 저장
+            } catch (IOException e) {
+                log.error("이미지 저장 중 오류 발생", e);
+                throw new RuntimeException("파일 저장 실패", e); // 혹은 커스텀 예외
+            }
+            uploadImg = newFileName;
+        }
+
+        // 5. 이미지 파일명 DTO에 주입 (DB 저장용)
+        goodsRepository.updateGoods(goods.getGoodsId(), categoryId, goodsName, price, //
+                description, goodsState, uploadImg, quantity);
+
     }
 
     // 상품삭제
     @Override
-    public void deleteGoods(CustomUserDetails userDetails, GoodsRequestDTO goodsRequestDTO){
+    public void deleteGoods(GoodsRequestDTO goodsRequestDTO){
         Goods goods = goodsRepository.findById(goodsRequestDTO.getGoodsId()).get();
         goodsRepository.deleteById(goods.getGoodsId());
     }
@@ -321,13 +377,6 @@ public class GoodsServiceImpl implements GoodsService {
         log.info("** 4. PageResponseDTO **");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-
-//    // 리뷰 리스트 출력(상품에 대한 전체 리뷰)
-//    @Override
-//    public ResponseEntity<?> showReviewList( Long goodsId,  PageRequestDTO pageRequestDTO){
-//
-//    }
-
 
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 결 제 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

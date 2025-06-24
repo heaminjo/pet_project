@@ -1,8 +1,9 @@
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import GoodsApi from '../../../api/GoodsApi';
-import PageNumber from '../../util/PageNumber';
+
 import FavoriteComp from './FavoriteStyle';
+import PageNumber from '../../../util/PageNumber';
+import GoodsApi from '../../../../api/GoodsApi';
 
 export default function Favorite() {
   const navigate = useNavigate();

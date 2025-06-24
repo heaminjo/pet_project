@@ -108,14 +108,15 @@ public class GoodsController {
         return ResponseEntity.status(HttpStatus.OK).body("성공");
     }
 
-
     // 상품 수정 메서드 (관리자 페이지)
     @PostMapping("/update")
     public ResponseEntity<?> updateGoods(@AuthenticationPrincipal CustomUserDetails userDetails, //
-                                         @RequestPart("goods") GoodsRequestDTO goodsRequestDTO){
-        log.info("** GoodsController => createGoods() 실행됨 **");
+                                         @RequestPart("goods") GoodsUploadDTO goodsUploadDTO, //
+                                         @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) {
+        log.info("** GoodsController => updateGoods() 실행됨 **");
         try {
-            goodsService.updateGoods(userDetails, goodsRequestDTO);
+            goodsUploadDTO.setImageFile(imageFile);
+            goodsService.updateGoods(goodsUploadDTO);
         } catch (Exception e) {
             log.error("** goodsService.updateGoods Exception => " + e.toString());
         }
@@ -129,15 +130,12 @@ public class GoodsController {
                                          @RequestPart("goods") GoodsRequestDTO goodsRequestDTO){
         log.info("** GoodsController => createGoods() 실행됨 **");
         try {
-            goodsService.deleteGoods(userDetails, goodsRequestDTO);
+            goodsService.deleteGoods(goodsRequestDTO);
         } catch (Exception e) {
             log.error("** goodsService.createGoods Exception => " + e.toString());
         }
         return ResponseEntity.status(HttpStatus.OK).body("성공");
     }
-
-
-
 
     //배너 리스트 불러오기(조해민)
     @GetMapping("/banner/list")

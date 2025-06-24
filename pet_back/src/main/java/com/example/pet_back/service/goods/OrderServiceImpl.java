@@ -1,13 +1,16 @@
 package com.example.pet_back.service.goods;
 
 import com.example.pet_back.config.FileUploadProperties;
+import com.example.pet_back.constant.GOODSSTATE;
 import com.example.pet_back.constant.ORDERSTATE;
 import com.example.pet_back.domain.address.AddressResponseDTO;
+import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.goods.*;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.entity.*;
 import com.example.pet_back.jwt.CustomUserDetails;
+import com.example.pet_back.mapper.OrderDetailMapper;
 import com.example.pet_back.mapper.OrderMapper;
 import com.example.pet_back.mapper.ReviewMapper;
 import com.example.pet_back.repository.*;
@@ -23,13 +26,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -49,6 +50,7 @@ public class OrderServiceImpl implements OrderService {
 
     // Mapper
     private final OrderMapper orderMapper;
+    private final OrderDetailMapper orderDetailMapper;
     private final ReviewMapper reviewMapper;
     private final FileUploadProperties fileUploadProperties;
 
@@ -262,6 +264,75 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    // [관리자페이지] 전체 주문리스트
+    @Override
+    public ResponseEntity<?> orderAllList(PageRequestDTO pageRequestDTO){
+        // 페이징
+        // 1. 정렬 조건 설정 :  (최신)
+        Sort sort = pageRequestDTO.getSortBy().equals("desc") ? // desc라면
+                Sort.by("regDate").descending() // regDate 필드 기준으로 desc
+                : Sort.by("regDate").ascending();
+
+        // 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(), sort);
+        log.info("** 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬 **");
+
+        // 3. Page<Orders> 의 content (DTO에 SET)
+        Page<Orders> ordersPage = orderRepository.findAll(pageable);
+        List<OrderResponseDTO> dtoList = ordersPage.getContent().stream()
+                .map(orderMapper::toDto)
+                .toList();
+
+        // 4. PageResponseDTO
+        PageResponseDTO<ReviewResponseDTO> response = new PageResponseDTO<>(
+                dtoList,
+                pageRequestDTO.getPage(),
+                pageRequestDTO.getSize(),
+                ordersPage.getTotalElements(),
+                ordersPage.getTotalPages(),
+                ordersPage.hasNext(),
+                ordersPage.hasPrevious()
+        );
+        log.info("** 4. PageResponseDTO **");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    // [관리자] <DeliveryGoods />
+    @Override
+    public PageResponseDTO<OrderSimpleDTO> ordersPageList(PageRequestDTO dto) {
+        log.info("** OrderDetailServiceImpl => ordersPageList() 실행됨 **");
+
+        //요청 페이지, 출력 개수,정렬을 담은 Pageable 객체
+        // 정렬 조건 설정 :  (최신)
+        Sort sort = dto.getSortBy().equals("desc") ? // desc라면
+                Sort.by("regDate").descending() // regDate 필드 기준으로 desc
+                : Sort.by("regDate").ascending();
+
+        Pageable pageable = PageRequest.of(dto.getPage(), dto.getSize(), sort);
+
+        String keyword = dto.getKeyword() != null && !dto.getKeyword().isEmpty()
+                ? "%" + dto.getKeyword() + "%" : null;
+        Long category = dto.getCategory() != null && dto.getCategory() > 0
+                ? dto.getCategory() : null;
+        ORDERSTATE state = dto.getState() != null && !dto.getState().equals("all")
+                ? ORDERSTATE.valueOf(dto.getState().toUpperCase()) : null;
+
+        Page<Orders> page = orderRepository.findSearchList(keyword, category, state, pageable);
+
+        //페이지의 데이터를 List에 저장
+        List<OrderSimpleDTO> responseList = page.stream()
+                .map(orderMapper::toSimpleDTO)
+                .toList();
+        log.info("** List<OrderSimpleDTO> responseList 실행됨 **");
+
+        //반환할 ResponseDTO에 데이터들 저장
+        PageResponseDTO<OrderSimpleDTO> response  //
+                = new PageResponseDTO<>(responseList, dto.getPage(), dto.getSize(),  //
+                page.getTotalElements(), page.getTotalPages(), page.hasNext(), page.hasPrevious()
+        );
+
+        return response;
+    }
 
 
 
@@ -293,4 +364,38 @@ public class OrderServiceImpl implements OrderService {
 
         return response;
     }
+
+
+    // [관리자페이지] 주문 상태 수정
+    @Override
+    @Transactional
+    public ApiResponse orderStateUpdate(Long id, String state) { // ID: OrdersId, ORDERSTATE
+        Orders orders = orderRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        Map<String,ORDERSTATE > stateMap = Map.of(
+                "결제전",ORDERSTATE.BEFOREPAY,
+                "결제완료",ORDERSTATE.AFTERPAY,
+                "상품준비중",ORDERSTATE.READY,
+                "배송중",ORDERSTATE.DELIVERY,
+                "배송완료",ORDERSTATE.END
+        );
+
+        // getName 성공후 해당 로직은 지움 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+        ORDERSTATE newState = null;
+        if (stateMap.containsKey(state)) {
+            newState = stateMap.get(state);
+        } else {
+            try {
+                newState = ORDERSTATE.valueOf(state.toUpperCase()); // Enum 이름 직접 매칭 시도
+            } catch (IllegalArgumentException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "유효하지 않은 주문 상태입니다: " + state);
+            }
+        }
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        
+        orders.setStatus(newState);
+        orderRepository.save(orders);
+        return new ApiResponse(true,"상품 상태가 ["+state+"] 로 변경되었습니다");
+    }
+    
 }

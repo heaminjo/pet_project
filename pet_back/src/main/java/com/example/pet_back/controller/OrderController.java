@@ -1,9 +1,8 @@
 package com.example.pet_back.controller;
 
-import com.example.pet_back.domain.goods.PayRequestDTO;
-import com.example.pet_back.domain.goods.ReviewUploadDTO;
+import com.example.pet_back.domain.goods.*;
 import com.example.pet_back.domain.page.PageRequestDTO;
-import com.example.pet_back.entity.Member;
+import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.service.MemberService;
 import com.example.pet_back.service.goods.OrderDetailService;
@@ -13,7 +12,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +27,15 @@ public class OrderController {
     private final MemberService memberService;
     private final OrderService orderService;
     private final OrderDetailService orderDetailService;
+
+    // 관리자 페이지:
+    @PostMapping("/list/all")
+    public ResponseEntity<?> orderAllList(@RequestBody PageRequestDTO pageRequestDTO){
+        log.info("** OrderController => orderAllList() 실행됨 **");
+       return orderService.orderAllList(pageRequestDTO);
+    }
+
+
 
     // <OrderDetail /> : 주문 리스트
     @PostMapping("/detail")
@@ -64,7 +71,7 @@ public class OrderController {
             log.info("** OrderController =>  reviewUploadDTO.setImageFile(imageFile) **");
             return orderService.regReview(userDetails, reviewUploadDTO);
         } catch (Exception e) {
-            log.error("** goodsService.registerGoods Exception => " + e.toString());
+            log.error("** OrderController.regReview Exception => " + e.toString());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("리뷰 등록 중 오류가 발생했습니다.");
         }
     }
@@ -72,7 +79,7 @@ public class OrderController {
     // 내 리뷰 목록 출력
     @PostMapping("/myreviews")
     public ResponseEntity<?> showReviewList(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody PageRequestDTO pageRequestDTO) {
-        log.info("** GoodsController => reviews() 실행됨 **");
+        log.info("** OrderController => showReviewList() 실행됨 **");
         return orderService.showMyReviews(userDetails, pageRequestDTO);
     }
 
@@ -82,6 +89,17 @@ public class OrderController {
 //        log.info("** GoodsController => reviews() 실행됨 **");
 //        return goodsService.showReviewList(goodsId, pageRequestDTO);
 //    }
+
+
+    // <DeliveryGoods />
+    @PostMapping("/page/list")
+    public PageResponseDTO<OrderSimpleDTO> ordersPageList(@RequestBody PageRequestDTO dto){
+        log.info("** OrderController => ordersPageList() 실행됨 **");
+        return orderService.ordersPageList(dto);
+    }
+
+
+
 
 
 }

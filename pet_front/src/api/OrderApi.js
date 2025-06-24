@@ -4,17 +4,36 @@ import instance from '../api/axiosInstance'; // 인스턴스 불러오기
 const KH_DOMAIN = 'http://localhost:8080';
 const OrderApi = {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 주  문 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // <Order />
+  // <Order /> : 주문하기
   order: async () => {
     const result = await instance.post(`/order`);
     return result.data;
   },
 
-  // <OrderDetail /> 페이징
+  // <OrderDetail /> 페이징 : 주문상세 보기
   getOrderDetailPageList: async (pages) => {
     const result = await instance.post(`/order/detail`, pages);
     console.log('응답 결과:', result);
     return result.data;
+  },
+
+  // [관리자] 전체 Order List
+  orderList: async (pages) => {
+    const result = await instance.post(`/order/list/all`, pages);
+    console.log('응답 결과:', result);
+    return result.data;
+  },
+
+  // [관리자] <DeliveryGoods>
+  getAllOrderList: async (pages) => {
+    console.log(`OrderApi.getAllOrderList`);
+    try {
+      const result = await instance.post(`/order/page/list`, pages); //
+      return result?.data;
+    } catch (err) {
+      alert('오류 발생');
+      console.error('오류 발생:', err);
+    }
   },
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 결  제 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -28,7 +47,8 @@ const OrderApi = {
       if (result != null) {
         return result.data;
       } else {
-        alert(`OrderApi.pay() null`);
+        //alert(`OrderApi.pay() null`);
+        console.log(`OrderApi.pay() null`);
       }
     } catch (err) {
       console.error('오류 발생:', err);
@@ -46,7 +66,8 @@ const OrderApi = {
         console.log(`findAddress 결과: ${result}`);
         return result.data;
       } else {
-        alert(`OrderApi.findAddress() null`);
+        //alert(`OrderApi.findAddress() null`);
+        console.log(`OrderApi.findAddress() null`);
       }
     } catch (err) {
       console.error('오류 발생:', err);
@@ -58,7 +79,8 @@ const OrderApi = {
   // 리뷰 목록 출력 (나의 리뷰)
   // <MyReview /> 페이징
   getReviewsPageList: async (pages) => {
-    alert(`GoodsApi.getReviewPageList`);
+    // alert(`GoodsApi.getReviewPageList`);
+    console.log(`GoodsApi.getReviewPageList`);
     const result = await instance.post(`/order/myreviews`, pages);
     console.log('응답 결과:', result);
     return result.data;
@@ -67,12 +89,7 @@ const OrderApi = {
   // 리뷰 등록 (사진 포함)
   // <Review />
   registerReview: async (formData) => {
-    const result = await instance.post(`/order/review/register`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-
+    const result = await instance.post(`/order/review/register`, formData);
     return result.data;
   },
 };

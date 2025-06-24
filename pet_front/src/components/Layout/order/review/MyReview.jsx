@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import GoodsApi from '../../../api/GoodsApi';
-import OrderApi from '../../../api/OrderApi';
-import PageNumber from '../../util/PageNumber';
 import { useLocation, useNavigate } from 'react-router-dom';
+import OrderApi from '../../../../api/OrderApi';
+import PageNumber from '../../../util/PageNumber';
 
 // 리뷰 페이지
 export default function MyReview() {

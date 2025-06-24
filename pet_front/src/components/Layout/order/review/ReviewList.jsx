@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-
-import GoodsApi from '../../../api/GoodsApi';
-import PageNumber from '../../util/PageNumber';
+import GoodsApi from '../../../../api/GoodsApi';
+import PageNumber from '../../../util/PageNumber';
 
 const ReviewListComp = styled.div`
   .container {

@@ -8,7 +8,7 @@ export default function WithDrawList() {
       orderDate: '2025/5/11',
       orderNumber: '2100112573207',
       productName: '제품이름',
-      productDetail: '혼합색상, 1개',
+      productDetail: '제품상세, 1개',
       quantity: 1,
       price: 20140,
       status: '반품완료',
@@ -19,7 +19,7 @@ export default function WithDrawList() {
       orderDate: '2025/5/16',
       orderNumber: '2100113645285',
       productName: '제품이름2 ',
-      productDetail: '블루블랙, 2개',
+      productDetail: '제품상세2, 2개',
       quantity: 1,
       price: 9500,
       status: '취소완료',
@@ -29,7 +29,6 @@ export default function WithDrawList() {
   return (
     <WithDrawListComp>
       <div className='container'>
-        <h2>취소 내역</h2>
         <h2>취소/반품/교환/환불내역</h2>
         <div className='tab'>
           <div className='active'>취소/반품/교환</div>
@@ -75,10 +74,12 @@ export default function WithDrawList() {
 }
 
 const WithDrawListComp = styled.div`
-  width: 900px;
-  margin: 0 auto;
-  font-family: 'Arial';
-  color: #222;
+  .container {
+    width: 900px;
+    margin: 0 auto;
+    font-family: 'Arial';
+    color: #222;
+  }
 
   h2 {
     font-size: 22px;

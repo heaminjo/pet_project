@@ -49,10 +49,10 @@ public interface GoodsService {
     void registerGoods(GoodsUploadDTO goodsUploadDTO) throws IOException;
 
     // 상품 수정
-    void updateGoods(CustomUserDetails userDetails, GoodsRequestDTO goodsRequestDTO);
+    void updateGoods(GoodsUploadDTO goodsUploadDTO);
         
     // 상품 삭제
-    void deleteGoods(CustomUserDetails userDetails, GoodsRequestDTO goodsRequestDTO);
+    void deleteGoods(GoodsRequestDTO goodsRequestDTO);
 
     //배너 가져오기(조해민)
     public List<BannerDTO> bannerList();

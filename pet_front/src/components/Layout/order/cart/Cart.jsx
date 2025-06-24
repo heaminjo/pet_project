@@ -1,8 +1,9 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import CartComp from './CartStyle';
 import { useEffect, useRef, useState } from 'react';
-import GoodsApi from '../../../api/GoodsApi';
-import PageNumber from '../../util/PageNumber';
+
+import PageNumber from '../../../util/PageNumber';
+import GoodsApi from '../../../../api/GoodsApi';
 
 export default function Cart() {
   const navigate = useNavigate();

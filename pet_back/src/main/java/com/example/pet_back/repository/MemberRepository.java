@@ -16,8 +16,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     public Optional<Member> findByEmail(String email);
 
-
-
     @Modifying
     @Query(nativeQuery = true, value = "update member set password = :password where member_id = :id")
     public void updatePassword(@Param("id") Long id, @Param("password") String password);

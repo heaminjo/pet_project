@@ -1,6 +1,7 @@
 import axios from 'axios';
 import instance from '../api/axiosInstance'; // 인스턴스 불러오기
 import { useNavigate } from 'react-router-dom';
+import ModifyGoods from '../components/Layout/goods/ModifyGoods';
 
 const KH_DOMAIN = 'http://localhost:8080';
 
@@ -8,12 +9,13 @@ const GoodsApi = {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 장 바 구 니 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 장바구니 추가
   addToCart: async (goods, buyQuantity) => {
-    alert(`장바구니 담기 => ${goods.goodsName}`);
+    // alert(`장바구니 담기 => ${goods.goodsName}`);
+    console.log(`장바구니 담기 => ${goods.goodsName}`);
     const { goodsId } = goods;
     const query = `goodsId=${goodsId}&quantity=${buyQuantity}`;
     console.log(`장바구니 담기 시도 => ${goodsId}, 수량: ${buyQuantity}`);
-    const result = await instance.post(`/cart/add?${query}`);
     try {
+      const result = await instance.post(`/cart/add?${query}`);
       if (result.data != null) {
         console.log(`장바구니 담기 성공, 상품ID: ${result.data.goodsId}`);
         return result.data;
@@ -37,7 +39,8 @@ const GoodsApi = {
     try {
       const result = await instance.post(`/goods/favorite/${goodsId}`);
       if (result.data != null) {
-        alert(`찜 등록 완료 => ${JSON.stringify(result.data)}`);
+        // alert(`찜 등록 완료 => ${JSON.stringify(result.data)}`);
+        console.log(`찜 등록 완료 => ${JSON.stringify(result.data)}`);
         return result.data;
       }
     } catch (err) {}
@@ -48,7 +51,8 @@ const GoodsApi = {
     try {
       const result = await instance.post(`/goods/favoriteinfo/${goodsId}`);
       if (result.data != null) {
-        alert(`찜 상태 가져오기 => ${JSON.stringify(result.data)}`);
+        // alert(`찜 상태 가져오기 => ${JSON.stringify(result.data)}`);
+        console.log(`찜 상태 가져오기 => ${JSON.stringify(result.data)}`);
         return result;
       }
     } catch (err) {}
@@ -79,18 +83,7 @@ const GoodsApi = {
   },
 
   // <AddGoods /> : 상품등록
-  regGoods: async (goods) => {
-    const formData = new FormData();
-    formData.append('goodsName', goods.goodsName);
-    formData.append('categoryId', goods.categoryId);
-    formData.append('goodsState', goods.goodsState);
-    formData.append('description', goods.description);
-    formData.append('quantity', goods.quantity);
-    formData.append('price', goods.price);
-    if (goods.imageFile) {
-      formData.append('imageFile', goods.imageFile); // 실제 파일 객체
-    }
-
+  regGoods: async (formData) => {
     try {
       const result = await instance.post('/goods/register', formData, {
         headers: {
@@ -108,9 +101,13 @@ const GoodsApi = {
   },
 
   // <ModifyGoods /> : 상품수정/삭제
-  modify: async (goods) => {
+  modifyGoods: async (formData) => {
     try {
-      const result = await instance.post('/goods/modify', goods);
+      const result = await instance.post('/goods/update', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       if (result.data != null) {
         console.log(`상품수정 완료 => ${result.data}`);
         return result.data;
@@ -142,25 +139,6 @@ const GoodsApi = {
       return result.data;
     }
   },
-
-  // // 상품등록 (기존 axios 사용한 코드 - 예시)
-  // regGoods: async (goods) => {
-  //   try {
-  //     const result = await axios.post(`${KH_DOMAIN}/goods/register`, goods, {
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: `${localStorage.getItem('grantType')} ${localStorage.getItem('accessToken')}`,
-  //       },
-  //     });
-  //     if (result.data != null) {
-  //       alert(`상품등록 완료 => ${result.data}`);
-  //       return result.data;
-  //     }
-  //   } catch (err) {
-  //     console.error('상품 등록 실패:', err);
-  //     alert('상품 등록 중 에러가 발생했습니다.');
-  //   }
-  // }, // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   //배너 가져오기
   getBanner: async () => {

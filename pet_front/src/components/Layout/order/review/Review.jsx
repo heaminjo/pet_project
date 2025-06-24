@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import GoodsApi from '../../../api/GoodsApi';
-import OrderApi from '../../../api/OrderApi';
-import PageNumber from '../../util/PageNumber';
 import { useLocation, useNavigate } from 'react-router-dom';
+import OrderApi from '../../../../api/OrderApi';
 
 // 리뷰 페이지
 export default function Review() {
@@ -138,7 +136,7 @@ export default function Review() {
           </fieldset>
         </form>
 
-        <hr />
+        {/* <hr />
         <h3>서비스</h3>
         <div className='service'>
           <div>[서비스] 전체적인 서비스는 어떠셨나요? (상, 중, 하)</div>
@@ -155,7 +153,7 @@ export default function Review() {
         <div className='deliver'>
           <div>[배송] 배송에 대해서 얼마나 만족하시나요? (상, 중, 하)</div>
           &nbsp;&nbsp; 😍 &nbsp;&nbsp;🙂 &nbsp;&nbsp;😫 &nbsp;&nbsp;
-        </div>
+        </div> */}
 
         <hr />
         <form>

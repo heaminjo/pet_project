@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import OrderComp from './OrderStyle.js';
-import GoodsApi from '../../../api/GoodsApi';
+
 import { useLocation, useNavigate } from 'react-router-dom';
 import OrderTab from './OrderTab.jsx';
-import ReviewList from './ReviewList.jsx';
+import ReviewList from './review/ReviewList.jsx';
+import GoodsApi from '../../../api/GoodsApi.js';
+import Modal from '../../../modal/Modal.jsx';
 
 export default function Order() {
   const navigate = useNavigate();
@@ -18,6 +20,8 @@ export default function Order() {
   const [stars, setStars] = useState(); // ⭐
 
   const [activeTab, setActiveTab] = useState('상품상세');
+
+  const [showModal, setShowModal] = useState(false); // Y/N
 
   const data = [
     { label: '품명', value: goods.goodsName },
@@ -34,16 +38,21 @@ export default function Order() {
     //     ㄴ> ( navigate('/user/mypage/pay', { state: { goods: goodsWithQuantity } }); )
   };
 
+  // 모달 핸들러 함수
+  const goToCart = () => {
+    setShowModal(false);
+    navigate('/user/mypage/cart/list');
+  };
+
   // 장바구니 담기
   const addToCart = async (goods, buyQuantity) => {
-    console.log(`addToCart 수량 => ${buyQuantity}`);
-    GoodsApi.addToCart(goods, buyQuantity)
-      .then((response) => {
-        console.log(`장바구니 담기 성공, 상품ID:  => ${response}`);
-      })
-      .catch((err) => {
-        alert('GoodsApi.addToCart() 중 오류발생');
-      });
+    try {
+      const response = await GoodsApi.addToCart(goods, buyQuantity);
+      console.log(`장바구니 담기 성공, 상품ID:  => ${response}`);
+      setShowModal(true); // 모달 표시
+    } catch (err) {
+      alert('장바구니 담기에 실패했습니다.');
+    }
   };
 
   // 별점 (상품의 총 별점)
@@ -140,6 +149,19 @@ export default function Order() {
                 <input style={{ width: '80px', height: '20px' }} type='number' min={1} max={goods.quantity} value={buyQuantity} onChange={(e) => setQuantity(Number(e.target.value))} />
               </b>
             </div>
+            {showModal && (
+              <Modal
+                content={
+                  <>
+                    상품이 장바구니에 정상적으로 담겼습니다.
+                    <br />
+                    장바구니로 이동하시겠습니까?
+                  </>
+                }
+                clickEvt={goToCart}
+                setModal={setShowModal}
+              />
+            )}
             <br />
             <hr />
             <br />
