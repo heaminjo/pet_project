@@ -1,24 +1,26 @@
-import GoodsListComp from './GoodsListStyle.js';
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import GoodsApi from '../../../api/GoodsApi';
-import PageNumber from '../../util/PageNumber.jsx';
+import GoodsListComp from "./GoodsListStyle.js";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import GoodsApi from "../../../api/GoodsApi";
+import PageNumber from "../../util/PageNumber.jsx";
 
 export default function GoodsList() {
   const navigate = useNavigate();
   const location = useLocation();
-  const goodsImg = process.env.PUBLIC_URL + '/images/pic1.png';
-  const imgUrl = 'http://localhost:8080/resources/webapp/userImages/';
+
+  const goodsImg = process.env.PUBLIC_URL + "/images/pic1.png";
+  const imgUrl = "http://localhost:8080/resources/webapp/userImages/";
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상 태 변 수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const [goods, setGoods] = useState([]); // 페이지에 사용되는 goods
 
   // 카테고리
   const [categories, setCategories] = useState([]);
+
   const [category, setCategory] = useState(0);
-  const [keyword, setKeyword] = useState('');
+  const [keyword, setKeyword] = useState("");
   const [page, setPage] = useState(0);
-  const [sort, setSort] = useState('desc');
+  const [sort, setSort] = useState("desc");
 
   // 페이징 정보 상태변수 (현재 페이징 상태 핸들링 위함)
   const [paging, setPaging] = useState({
@@ -38,19 +40,21 @@ export default function GoodsList() {
       const response = await GoodsApi.getCategoryList();
       setCategories(response);
     } catch (error) {
-      console.error('카테고리 불러오기 실패:', error);
+      console.error("카테고리 불러오기 실패:", error);
     }
   };
 
   // 상품1개 클릭시
   const clickProd = (item) => {
-    console.log(`clickProd 선택된 상품: ${item.goodsId}, ${item.goodsName}, ${item.goodsState}, ${item.description}, ${item.price}`);
-    navigate('/goods/order', { state: { goods: item } });
+    console.log(
+      `clickProd 선택된 상품: ${item.goodsId}, ${item.goodsName}, ${item.goodsState}, ${item.description}, ${item.price}`
+    );
+    navigate("/goods/order", { state: { goods: item } });
   };
 
   // 별점 (배열)
   const renderStars = (rating) => {
-    return '⭐'.repeat(Math.floor(rating)); // 반올림이나 소수점 무시
+    return "⭐".repeat(Math.floor(rating)); // 반올림이나 소수점 무시
   };
 
   // 페이징
@@ -78,33 +82,36 @@ export default function GoodsList() {
         totalPages: result.totalPages,
       });
     } catch (err) {
-      console.error('getPageList 실패: ', err);
+      console.error("getPageList 실패: ", err);
     }
   };
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ useEffect ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
   // 페이징, 검색 조건
   useEffect(() => {
     getCategoryList();
     getPageList();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [page, category, keyword, sort]);
 
   return (
     <GoodsListComp>
-      <div className='container'>
-        <div className='search-bar'>
-          <div className='custom-select'>
+      <div className="container">
+        <div className="search-bar">
+          <div className="custom-select">
             <select value={sort} onChange={(e) => setSort(e.target.value)}>
-              <option value='desc'>최신순</option>
-              <option value='asc'>오래된 순</option>
+              <option value="desc">최신순</option>
+              <option value="asc">오래된 순</option>
             </select>
             <select
               value={category}
               onChange={(e) => {
                 setCategory(parseInt(e.target.value));
-              }}>
-              <option value='0'>전체</option>
+              }}
+            >
+              <option value="0">전체</option>
               {categories.map((cat) => (
                 <option key={cat.categoryId} value={cat.categoryId}>
                   {cat.categoryName}
@@ -113,11 +120,11 @@ export default function GoodsList() {
             </select>
           </div>
           <input
-            type='text'
+            type="text"
             defaultValue={keyword} //
             onChange={(e) => setKeyword(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
+              if (e.key === "Enter") {
                 e.preventDefault();
                 setPage(0); // 검색어 입력시 페이지 초기화
               }
@@ -125,35 +132,48 @@ export default function GoodsList() {
             onBlur={(e) => setKeyword(e.target.value)}
           />
           <button
-            className='search_btn'
+            className="search_btn"
             onClick={(e) => {
               e.preventDefault();
               setPage(0); // 검색 버튼 클릭 시 페이지 초기화
-            }}>
-            <span role='img' aria-label='search'>
+            }}
+          >
+            <span role="img" aria-label="search">
               🔍
             </span>
           </button>
         </div>
-        <div className='body'>
-          <section className='list'>
+        <div className="body">
+          <section className="list">
             {Array.isArray(goods) &&
               goods?.map((item, index) => (
-                <div className='goodslist' key={index} onClick={() => clickProd(item)}>
-                  <div className='img-container'>
-                    <img src={`${imgUrl}${item.imageFile}`} alt={item.goodsName} className='prodimg' />
+                <div
+                  className="goodslist"
+                  key={index}
+                  onClick={() => clickProd(item)}
+                >
+                  <div className="img-container">
+                    <img
+                      src={`${imgUrl}${item.imageFile}`}
+                      alt={item.goodsName}
+                      className="prodimg"
+                    />
                   </div>
+
                   <div>
                     <b>{item.goodsName} </b>
                   </div>
                   <div>
-                    {item.description} {', '}
+                    {item.description} {", "}
                     {item.quantity} 개
                   </div>
                   <div>{item.price} 원</div>
                   <div>
                     <span>{renderStars(item.rating)}</span>
-                    <span style={{ color: 'red', fontSize: '12px' }}> {'( ' + item.reviewNum + ' )'} </span>
+                    <span style={{ color: "red", fontSize: "12px" }}>
+                      {" "}
+                      {"( " + item.reviewNum + " )"}{" "}
+                    </span>
                   </div>
                 </div>
               ))}

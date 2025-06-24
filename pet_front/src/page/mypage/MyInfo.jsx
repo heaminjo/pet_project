@@ -17,25 +17,17 @@ import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 
 export default function MyInfo() {
   window.scrollTo({ top: 0, behavior: "smooth" });
+  const { user, setUser } = useContext(PetContext);
 
   const location = useLocation();
   const navigate = useNavigate();
   const [orderList, setOrderList] = useState([]);
-  const [user, setUser] = useState([]);
+
   useEffect(() => {
     getOrderList();
-    getLoginUser();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
-  const getLoginUser = async () => {
-    try {
-      const result = await MemberApi.detail();
 
-      setUser(result);
-    } catch (e) {
-      navigate("/error", { state: { message: "권한이 없는 페이지 입니다." } });
-    }
-  };
   //최근 주문 목록 리스트
   const getOrderList = async () => {
     const result = await MemberApi.getOrderList();

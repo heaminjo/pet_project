@@ -31,7 +31,7 @@ export default function MyPage() {
     }
   };
   return (
-    <PetContext.Provider value={{ user, setUser }}>
+    <PetContext.Provider value={{ user, setUser, getLoginUser }}>
       <MyPageComp>
         <div className="mypage_inner">
           <MypageMenu setModal={setModal} />

@@ -34,7 +34,7 @@ public class TokenProvider {
     //보안 강도가 높다.
     private final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     private static final String BEARER_TYPE = "Bearer"; // 토큰이 어떤 방식으로 발급되었는지
-    private static final long ACCESS_TOKEN_EXPIRE_TIME =1000 * 60 * 30;   // 30분(1000 * 60 * 30)
+    private static final long ACCESS_TOKEN_EXPIRE_TIME =3000;   // 30분(1000 * 60 * 30)
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
     private final CustomUserDetailsService customUserDetailsService;
     private final MemberRepository memberRepository;
@@ -76,8 +76,6 @@ public class TokenProvider {
                 .setExpiration(accessTokenExpiresIn)
                 .compact();
 
-        log.info("accessToken 생성 => ", accessToken);
-
         return TokenDTO.builder()
                 .role(role)
                 .accessToken(accessToken)
@@ -89,12 +87,13 @@ public class TokenProvider {
     //로그인 직후 RefreshToken+Access 토큰 둘다 발급
     public TokenDTO generateTokenDto(Authentication authentication) {
 
+        log.info("로그인 직후 AccessToken과 refreshToken을 둘 다 발급합니다.");
         //사용자 인증 객체에서 권한을 가져온다.
         String role = authentication.getAuthorities().stream()
                 .findFirst()
                 .map(GrantedAuthority::getAuthority)
                 .orElse(null); //없을 경우 null
-        log.info("권한 => " + role);
+
 
         //유저 아이디를 꺼내온다.
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -105,8 +104,6 @@ public class TokenProvider {
         }
 
         Long userId = userDetails.getMember().getId();
-
-        log.info("userId => " + userId);
 
         long now = (new Date()).getTime();
 
@@ -122,6 +119,8 @@ public class TokenProvider {
                 .setExpiration(accessTokenExpiresIn)
                 .compact();
 
+        log.info("AccessToken 생성 => "+ accessToken);
+
         //RefreshToken 생성
         //만료 기간 7일
         Date refreshTokenExpiresIn = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
@@ -131,6 +130,7 @@ public class TokenProvider {
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS512)
                 .compact();
 
+        log.info("RefreshToken 생성 => "+refreshToken);
         return TokenDTO.builder()
                 .memberName(userDetails.getMember().getName())
                 .role(role)//
@@ -147,7 +147,6 @@ public class TokenProvider {
         //Jwts.parser() : JWT를 파싱(해석) 하기 위한 객체 (체인형식)
         //setSingningKey(SECRET_KEY) : 토큰 서명을 검증하기 위한 비밀키
         //      토큰을 생성할 때 사용한 키와 동일해야한다.
-        log.info("토큰 검증 합니다.");
 
 
         try {
@@ -167,7 +166,6 @@ public class TokenProvider {
         } catch (ExpiredJwtException e) {
             //만료된 토큰일 경우
             //클라이언트에게 401 값을 보내어 refresh를 통해 다시 토큰을 재발급하라고 한다.
-            log.info("만료된 토큰 입니다.");
             //만료된 Token이라는 메시지
             writeErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "만료된 계정입니다. 다시 로그인 해주세요.");
 
@@ -187,7 +185,6 @@ public class TokenProvider {
 
     //토큰에서 id 추출
     public Long getUserId(String token) {
-        log.info("토큰으로 아이디를 추출 합니다. => " + token);
         Claims claims = parseClaims(token);
         //userId를 Long 타입으로 변환하여 반환
         return Long.parseLong(claims.getSubject());

@@ -84,8 +84,6 @@ public class MemberServiceImpl implements MemberService {
         dto.setImageFile(realPath + imageFile);
         dto.setCartCount(cartCount);
 
-        log.info(dto.getImageFile());
-//        String grade = member.getGrade().getGradeName();
         return ResponseEntity.ok(dto);
     }
 
