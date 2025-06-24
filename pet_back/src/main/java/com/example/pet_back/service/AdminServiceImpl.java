@@ -50,17 +50,21 @@ public class AdminServiceImpl implements AdminService {
     private final GoodsBestRepository goodsBestRepository;
     //관리자의 회원 조회
     @Override
-    public ResponseEntity<?> adminUserDetail(String email) {
+    public ResponseEntity<?> adminUserDetail(Long id) {
         //회원 존재 확인
-        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Member member = memberRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         MemberResponseDTO dto = mapper.toDto(member);
 
-        //디렉토리에서 파일 가져오기
-        String realPath = fileUploadProperties.getUrl(); // http://localhost:8080/resources/webapp
+        //만약 카카오 회원이라면 이미지 경로가 다름
+        if(member.getKakaoId() == null){
+            //디렉토리에서 파일 가져오기
+            String realPath = fileUploadProperties.getUrl(); // http://localhost:8080/resources/webapp
 
-        //해당파일은 MvcConfig에 매핑되어 이미지를 매핑
-        dto.setImageFile(realPath + member.getImageFile());
+            //해당파일은 MvcConfig에 매핑되어 이미지를 매핑
+            dto.setImageFile(realPath + member.getImageFile());
+        }
+
         return ResponseEntity.ok(dto);
     }
 

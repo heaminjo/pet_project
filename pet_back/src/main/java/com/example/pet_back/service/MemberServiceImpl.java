@@ -72,16 +72,23 @@ public class MemberServiceImpl implements MemberService {
         if (member.getImageFile() == null) imageFile = "dec6f8725b7669004655f3bbe7178d41.jpg";
         else imageFile = member.getImageFile();
 
+
+
         //디렉토리에서 파일 가져오기
-        String realPath = fileUploadProperties.getUrl(); // http://localhost:8080/resources/webapp
 
         MemberResponseDTO dto = mapper.toDto(member);
 
+        //만약 카카오 회원이라면 이미지 경로가 다름
+        if(member.getKakaoId() == null){
+            //디렉토리에서 파일 가져오기
+            String realPath = fileUploadProperties.getUrl(); // http://localhost:8080/resources/webapp
+
+            //해당파일은 MvcConfig에 매핑되어 이미지를 매핑
+            dto.setImageFile(realPath + member.getImageFile());
+        }
 
         int cartCount = cartRepository.cartCount(member.getId());
 
-        //해당파일은 MvcConfig에 매핑되어 이미지를 매핑
-        dto.setImageFile(realPath + imageFile);
         dto.setCartCount(cartCount);
 
         return ResponseEntity.ok(dto);

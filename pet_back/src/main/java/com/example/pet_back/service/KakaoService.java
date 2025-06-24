@@ -106,9 +106,12 @@ public class KakaoService {
                 .bodyToMono(KakaoUserResponseDTO.class)
                 .block();
 
+
+
         return userInfo;
     }
 
+    //로그인 /회원가입
     public ApiResponse<?> LoginAndJoin(KakaoUserResponseDTO dto, HttpServletResponse response) {
         log.info("카카오 계정을 조회합니다.");
         //카카오 아이디로 조회
@@ -121,6 +124,9 @@ public class KakaoService {
                 //회원 가입
                 Member newMember = new Member(dto.getId(), dto.getKakaoAccount().getProfile().getNickName(), dto.getKakaoAccount().getProfile().getProfileImageUrl());
                 newMember.setMemberState(MEMBERSTATE.INCOMPLETE); //임시회원으로 저장
+
+                String imageUrl = dto.getKakaoAccount().getProfile().getProfileImageUrl();
+                newMember.setImageFile(imageUrl);
                 Member user = memberRepository.save(newMember);
                 log.info("회원 가입 성공 회원의 상태 => " + user.getMemberState());
 

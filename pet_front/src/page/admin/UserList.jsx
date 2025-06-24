@@ -41,7 +41,7 @@ export default function UserList() {
       type: type,
     };
     const result = await AdminApi.getPageList(pages);
-
+    console.log(result);
     //컨텐츠 저장
     setUserList(result.content);
     let temp = Math.floor(page / 5) * 5;
@@ -73,9 +73,8 @@ export default function UserList() {
 
   //유저 상세보기 클릭
   //유저 이메일을 넘긴다.
-  const userDetail = (email) => {
-    console.log(email);
-    navigate("/admin/page/userdetail", { state: { email: email } });
+  const userDetail = (id) => {
+    navigate("/admin/page/userdetail", { state: { id: id } });
   };
 
   const getBgColor = (state) => {
@@ -148,10 +147,7 @@ export default function UserList() {
 
             {userList.length > 0 ? (
               userList.map((m, index) => (
-                <tr
-                  className="user_present"
-                  onClick={() => userDetail(m.email)}
-                >
+                <tr className="user_present" onClick={() => userDetail(m.id)}>
                   <td align="center">{index + 1 + page * 12}</td>
                   <td id="email_col">{m.email}</td>
                   <td id="name_col">{m.name}</td>

@@ -15,7 +15,7 @@ public interface AdminService {
     public PageResponseDTO<MemberResponseDTO> memberSearchList(PageRequestDTO dto);
 
     //관리자의 회원 조회
-    public ResponseEntity<?> adminUserDetail(String email);
+    public ResponseEntity<?> adminUserDetail(Long id);
 
     //회원 상태 변경
     public ResponseEntity<?> userStateUpdate(UserStateUpdateDTO dto);

@@ -51,8 +51,8 @@ public class AdminController {
 
     //회원 상세조회
     @GetMapping("/user/detail")
-    public ResponseEntity<?> adminUserDetail(@RequestParam("email") String email) {
-        return adminService.adminUserDetail(email);
+    public ResponseEntity<?> adminUserDetail(@RequestParam("id") Long id) {
+        return adminService.adminUserDetail(id);
     }
 
     //회원 상태 변경

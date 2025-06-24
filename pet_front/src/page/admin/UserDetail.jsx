@@ -7,13 +7,16 @@ import UserData from "../../components/admin/UserData";
 export default function UserDetail() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { email } = location.state || {};
+  const { id } = location.state || {};
   const [user, setUser] = useState([]);
 
   const getUserData = async () => {
-    const result = await AdminApi.getUserData(email);
+    //만약 email이 없는 경우 (임시회원)
+
+    const result = await AdminApi.getUserData(id);
+
     setUser(result);
-    console.log(user);
+    console.log(result);
   };
 
   useEffect(() => {
