@@ -3,7 +3,7 @@ import CommentListStyle from "./CommentListStyle";
 
 function CommentList({ comments, onDeleteComment, editingCommentId, editingContent, setEditingContent, handleEditStart, handleEditCancel, handleEditSubmit, loginMemberId }) {
 
-  const isAdmin = localStorage.getItem("role") === "ROLE_ADMIN";
+  const isAdmin = sessionStorage.getItem("role") === "ROLE_ADMIN";
 
 
   return (

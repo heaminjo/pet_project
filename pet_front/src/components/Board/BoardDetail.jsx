@@ -43,7 +43,7 @@ export default function BoardDetail() {
     axios
       .get(`/board/boardDetail/${category}/${board_id}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
         },
       })
       .then((response) => setPost(response.data))
@@ -55,7 +55,7 @@ export default function BoardDetail() {
     axios
       .get(`/board/${board_id}/comments`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
         }
       })
       .then((response) => setComments(response.data || []))
@@ -71,7 +71,7 @@ export default function BoardDetail() {
         { content: comment, member_id: loginMemberId, board_id: board_id },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
           },
         }
       );
@@ -79,7 +79,7 @@ export default function BoardDetail() {
       // 댓글 등록 후 다시 댓글 목록 조회
       const res = await axios.get(`/board/${board_id}/comments`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
         }
       });
       setComments(res.data || []);
@@ -96,14 +96,14 @@ export default function BoardDetail() {
         `/board/${board_id}/comments/${comment_id}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
           },
         }
       );
       // 댓글 삭제 후 다시 댓글 목록 조회
       const res = await axios.get(`/board/${board_id}/comments`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
         }
       });
       setComments(res.data || []);
@@ -133,7 +133,7 @@ export default function BoardDetail() {
         { content: editingContent },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
           },
         }
       );
@@ -142,7 +142,7 @@ export default function BoardDetail() {
       // 댓글 수정 후 다시 댓글 목록 조회
       const res = await axios.get(`/board/${board_id}/comments`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
         }
       });
       setComments(res.data || []);
@@ -159,12 +159,12 @@ export default function BoardDetail() {
     return <div>로딩 중...</div>;
   }
 
-  const token = localStorage.getItem("accessToken");
+  const token = sessionStorage.getItem("accessToken");
   const loginMemberId = getMemberIdFromToken(token); // JWT 토큰에서 로그인한 회원의 ID를 가져옴
-  //const loginRole = localStorage.getItem("role"); // "ADMIN" 또는 "USER"
+  //const loginRole = sessionStorage.getItem("role"); // "ADMIN" 또는 "USER"
 
   // 작성자(member_id) 또는 관리자(ADMIN)만 버튼 보이게
-  const canEditOrDelete = String(post.member_id) === String(loginMemberId) || localStorage.getItem("role") === "ROLE_ADMIN";
+  const canEditOrDelete = String(post.member_id) === String(loginMemberId) || sessionStorage.getItem("role") === "ROLE_ADMIN";
 
   console.log("board_Id:", board_id);
 
@@ -174,7 +174,7 @@ export default function BoardDetail() {
       try {
         await axios.delete(`/board/delete/${post.board_id}`, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
           },
         });
         alert("삭제되었습니다.");
