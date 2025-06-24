@@ -6,7 +6,8 @@ const HeaderComp = styled.header`
   position: fixed;
   z-index: 10000;
   top: 0;
-  background-color: rgb(245, 242, 219);
+  /* background-color: rgb(245, 242, 219); */
+  background-color: #fffdf6;
   .header_inner {
     width: 80%;
     margin: 0 auto;

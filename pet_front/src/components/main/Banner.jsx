@@ -26,10 +26,10 @@ function Banner() {
     infinite: true, //무한 재생
     slidesToShow: 1, //한 화면에 보여줄 이미지
     slidesToScroll: 1,
-    autoplay: false, //자동 재생
-    speed: 500, //슬라이드 이동 속도
-    autoplaySpeed: 1000, //슬라이드간 대기 시간
-    cssEase: "linear", //애니메이션 효과
+    autoplay: true, //자동 재생
+    speed: 700, //슬라이드 이동 속도
+    autoplaySpeed: 3000, //슬라이드간 대기 시간
+    cssEase: "ease-in-out", //애니메이션 효과
     nextArrow: <NextArrow sliderRef={sliderRef} />,
     prevArrow: <PrevArrow sliderRef={sliderRef} />,
   };

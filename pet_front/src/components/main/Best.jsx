@@ -24,7 +24,9 @@ export default function Best() {
   };
   return (
     <BestComp>
-      <h2>오늘의 추천 상품</h2>
+      <div className="title">
+        <h2>오늘의 추천 상품</h2>
+      </div>
       <div className="best_container">
         <ul>
           {best?.map((b) => (
@@ -57,17 +59,35 @@ const BestComp = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  h2 {
-    padding: 20px 0;
-    background-color: pink;
-    border-radius: 10px;
-    color: #fff;
-    text-shadow: 1px 1px 1px #000;
-    text-align: center;
+  @keyframes best {
+    0% {
+      transform: scale(0.7);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(0.7);
+    }
+  }
+  .title {
     width: 300px;
-    box-shadow: 1px 1px 1px #555;
-    border: 1px solid #fff;
     margin: 0 auto;
+    padding: 20px 0;
+    border-radius: 10px;
+    background-color: pink;
+    border: 1px solid #fff;
+    height: 40px;
+    box-shadow: 1px 1px 1px #555;
+    position: relative;
+    h2 {
+      position: absolute;
+      right: 65px;
+      color: #fff;
+      text-shadow: 1px 1px 1px #000;
+
+      animation: 1s best infinite;
+    }
   }
   .best_container {
     width: 100%;
