@@ -9,7 +9,6 @@ import Cart from './components/Layout/order/cart/Cart';
 import Order from './components/Layout/order/Order';
 import OrderList from './components/Layout/order/OrderList';
 import Pay from './components/Layout/order/pay/Pay';
-import WithDraw from './components/Layout/order/withdraw/WithDraw';
 import WithDrawList from './components/Layout/order/withdraw/WithDrawList';
 import MyPage from './page/mypage/MyPage';
 import MyEdit from './page/mypage/MyEdit';
@@ -86,7 +85,6 @@ function App() {
               <Route path='favorite' element={<Favorite />} />
               <Route path='review' element={<Review />} />
               <Route path='myreview' element={<MyReview />} />
-              <Route path='withdraw' element={<WithDraw />} />
               <Route path='withdrawlist' element={<WithDrawList />} />
               <Route path='pay' element={<Pay />} />
             </Route>
@@ -113,7 +111,6 @@ function App() {
             <Route path='/boardEditForm/:category/:board_id' element={<BoardEditForm />} />
             <Route path='/error' element={<Error />} />
             <Route path='/user/order' element={<Order />} />
-            <Route path='/user/withdraw' element={<WithDraw />} />
           </Route>
         </Routes>
       </BrowserRouter>

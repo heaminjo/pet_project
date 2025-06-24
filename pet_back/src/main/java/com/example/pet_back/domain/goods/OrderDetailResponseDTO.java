@@ -35,6 +35,4 @@ public class OrderDetailResponseDTO {
     private LocalDate regDate;
     private ORDERSTATE status;
 
-
-
 }

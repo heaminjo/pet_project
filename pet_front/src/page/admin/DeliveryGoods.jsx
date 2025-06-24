@@ -94,18 +94,6 @@ export default function DeliveryGoods() {
       getOrderList();
     }
   };
-  // orderId 로 주문한 사용자의 정보 가져오기
-  // orders 테이블 - deliveryId, memberId
-  // member 테이블 - email, phone, name (memberId)
-  // delivery 테이블 - addressId,
-  // address 테이블 -
-
-  // 배송정보
-  // const getDeliveryInfo = async () => {
-  //   // delivery Id, member Id 로 배송정보 조회회
-  //   const response = await OrderApi.getAllOrderList(pages);
-  //   setAllOrderList(response.content);
-  // };
 
   useEffect(() => {
     getOrderList();

@@ -123,10 +123,10 @@ public class GoodsController {
     // 상품 삭제 메서드 (관리자 페이지)
     @PostMapping("/delete")
     public ResponseEntity<?> deleteGoods(@AuthenticationPrincipal CustomUserDetails userDetails, //
-                                         @RequestPart("goods") GoodsRequestDTO goodsRequestDTO){
-        log.info("** GoodsController => createGoods() 실행됨 **");
+                                         @RequestParam("goodsId") Long goodsId){
+        log.info("** GoodsController => deleteGoods() 실행됨 **");
         try {
-            goodsService.deleteGoods(goodsRequestDTO);
+            goodsService.deleteGoods(goodsId);
         } catch (Exception e) {
             log.error("** goodsService.createGoods Exception => " + e.toString());
         }

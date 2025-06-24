@@ -3,27 +3,6 @@ import styled from 'styled-components';
 import GoodsApi from '../../../../api/GoodsApi';
 import PageNumber from '../../../util/PageNumber';
 
-const ReviewListComp = styled.div`
-  .container {
-    width: 100%;
-    .reviews {
-      width: 100%;
-      height: 600px;
-      border: 1px solid #ddd;
-      .review {
-        margin: 10px auto;
-        border: 1px solid #ddd;
-        .prodimg {
-          width: 100px;
-          height: 100px;
-          margin: 10px auto;
-          border: 1px solid #ddd;
-        }
-      }
-    }
-  }
-`;
-
 // 리뷰 페이지
 export default function ReviewList({ stars, goodsId, reviewNum, imgUrl }) {
   useEffect(() => {
@@ -96,23 +75,26 @@ export default function ReviewList({ stars, goodsId, reviewNum, imgUrl }) {
   return (
     <ReviewListComp>
       <div className='container'>
-        <div>동일한 상품에 대한 상품평으로, 판매자는 다를 수 있습니다.</div>
-        <div className='rating' style={{ color: 'red', fontSize: '24px' }}>
-          {stars}&nbsp;&nbsp;{'( ' + reviewNum + ' )'}
-        </div>
-        <br />
-        <hr />
         <div className='reviews'>
           {reviews.length === 0 ? (
-            <div style={{ padding: '20px', textAlign: 'center', color: '#888' }}>아직 작성된 리뷰가 없습니다.</div>
+            <div style={{ textAlign: 'center', color: '#888' }}>아직 작성된 리뷰가 없습니다.</div>
           ) : (
             reviews.map((item, index) => (
               <div className='review' key={index}>
-                <div>{getStars(item.score)}</div>
-                <img src={`${imgUrl}${item.imageFile}`} alt={item.goodsName} className='prodimg' />
-
-                <div>{item.title}</div>
-                <div>{item.content}</div>
+                <div className='header'>
+                  <span className='name'>{item.userName || '작성자'}</span>
+                  <span className='date'>{item.createdDate || '날짜없음'}</span>
+                </div>
+                <div className='body'>
+                  <div>{getStars(item.score)}</div>
+                  <div className='images'>
+                    {item.imageFiles?.map((img, i) => (
+                      <img key={i} src={`${imgUrl}${img}`} alt={`review-img-${i}`} />
+                    ))}
+                  </div>
+                  <div>{item.title}</div>
+                  <div>{item.content}</div>
+                </div>
               </div>
             ))
           )}
@@ -122,3 +104,74 @@ export default function ReviewList({ stars, goodsId, reviewNum, imgUrl }) {
     </ReviewListComp>
   );
 }
+const ReviewListComp = styled.div`
+  .container {
+    .reviews {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+
+      .review {
+        padding: 16px;
+        border-bottom: 1px solid #ddd;
+
+        .header {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          margin-bottom: 12px;
+
+          .name {
+            font-weight: bold;
+            font-size: 15px;
+            color: #333;
+          }
+
+          .stars {
+            color: #f5a623;
+            font-size: 14px;
+          }
+
+          .date {
+            font-size: 12px;
+            color: #999;
+          }
+        }
+
+        .product {
+          font-size: 14px;
+          color: #444;
+          margin-bottom: 8px;
+        }
+
+        .images {
+          display: flex;
+          overflow-x: auto;
+          gap: 8px;
+          margin: 10px 0;
+
+          img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            flex-shrink: 0;
+          }
+        }
+
+        .title {
+          font-size: 16px;
+          font-weight: bold;
+          margin-bottom: 4px;
+        }
+
+        .content {
+          font-size: 14px;
+          line-height: 1.6;
+          white-space: pre-wrap;
+        }
+      }
+    }
+  }
+`;
