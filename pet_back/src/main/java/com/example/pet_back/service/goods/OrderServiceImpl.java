@@ -26,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -230,11 +231,15 @@ public class OrderServiceImpl implements OrderService {
         Optional<OrderDetail> orderDetail = orderDetailRepository.findById(reviewUploadDTO.getOrderDetailId());
         Review review = reviewMapper.toEntity(reviewUploadDTO, member, goods.orElse(null), orderDetail.orElse(null));
 
+        // null 방어 코드
+        review.setTitle(StringUtils.hasText(reviewUploadDTO.getTitle()) ? reviewUploadDTO.getTitle() : "");
+        review.setContent(StringUtils.hasText(reviewUploadDTO.getContent()) ? reviewUploadDTO.getContent() : "");
+
         log.info("등록할 리뷰 정보: memberId={}, goodsId={}, orderDetailId={}", member.getId(), review.getGoods().getGoodsId(), review.getOrderDetail().getOrderDetailId());
         log.info("score={}, title={}, content={}, imageFiles={}", review.getScore(), review.getTitle(), review.getContent(), uploadImg);
 
         try{
-              reviewRepository.save(review);
+            reviewRepository.save(review);
             log.info("** OrderServiceImpl => regReview() reviewRepository.save(review) 완료 **");
             return ResponseEntity.status(HttpStatus.OK).body("리뷰가 정상적으로 등록되었습니다.");
         } catch (Exception e) {
