@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-import GoodsApi from "../../api/GoodsApi";
-import GoodsSearch from "../../components/util/GoodsSearch";
-import PageNumber from "../../components/util/PageNumber";
-import React from "react";
-import AdminApi from "../../api/AdminApi";
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import GoodsApi from '../../api/GoodsApi';
+import GoodsSearch from '../../components/util/GoodsSearch';
+import PageNumber from '../../components/util/PageNumber';
+import React from 'react';
+import AdminApi from '../../api/AdminApi';
 
 export default function GoodsState() {
   const [categoryList, setCategoryList] = useState([]);
@@ -12,16 +12,16 @@ export default function GoodsState() {
 
   //페이지
   const [category, setCategory] = useState(0);
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState('');
   const [page, setPage] = useState(0);
-  const [state, setState] = useState("all");
+  const [state, setState] = useState('all');
   const [paging, setPaging] = useState([]);
   const [select, setSelect] = useState([]);
 
   useEffect(() => {
     getCategoryList();
     getGoodsList();
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [page, category, state]);
 
   const getCategoryList = async () => {
@@ -65,16 +65,9 @@ export default function GoodsState() {
   return (
     <StateComp>
       <h2>상태관리</h2>
-      <div className="inventory_container">
-        <GoodsSearch
-          categoryList={categoryList}
-          setGoodsList={setGoodsList}
-          getGoodsList={getGoodsList}
-          setCategory={setCategory}
-          setKeyword={setKeyword}
-          setState={setState}
-        />
-        <div className="list_container">
+      <div className='inventory_container'>
+        <GoodsSearch categoryList={categoryList} setGoodsList={setGoodsList} getGoodsList={getGoodsList} setCategory={setCategory} setKeyword={setKeyword} setState={setState} />
+        <div className='list_container'>
           <table>
             <tr>
               <th>번호</th>
@@ -90,20 +83,12 @@ export default function GoodsState() {
                     <td>{index + 1}</td>
                     <td>{g.goodsName}</td>
                     <td>
-                      <img src={g.imageFile} alt="상품 이미지" />
+                      <img src={g.imageFile} alt='상품 이미지' />
                     </td>
                     <td>{g.quantity}</td>
                     <td>
-                      {["판매", "품절", "숨김"].map((state) => (
-                        <button
-                          key={state}
-                          onClick={() =>
-                            updateState(g.goodsId, g.goodsState, state)
-                          }
-                          className={
-                            g.goodsState === state ? "btn active" : "btn"
-                          }
-                        >
+                      {['판매', '품절', '숨김'].map((state) => (
+                        <button key={state} onClick={() => updateState(g.goodsId, g.goodsState, state)} className={g.goodsState === state ? 'btn active' : 'btn'}>
                           {state}
                         </button>
                       ))}

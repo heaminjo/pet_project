@@ -23,6 +23,10 @@ public interface OrderService {
     // 상품 결제
     ResponseEntity<?> payGoods(CustomUserDetails userDetails, PayRequestDTO dto);
 
+    // 배송조회
+    ResponseEntity<?> deliveryStatus(CustomUserDetails userDetails, Long orderId);
+
+
     // 리뷰 작성
     ResponseEntity<?> regReview(CustomUserDetails userDetails, ReviewUploadDTO dto) throws IOException;
 
@@ -30,7 +34,7 @@ public interface OrderService {
     ResponseEntity<?> showMyReviews(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO);
 
     //주문 통계
-    public OrderStatisticsDTO orderStatistics (String date);
+    OrderStatisticsDTO orderStatistics (String date);
 
     // 주문 리스트
     List<OrderResponseDTO> userOrderList(Long userId);

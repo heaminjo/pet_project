@@ -1,18 +1,20 @@
-
 import { useEffect, useState } from 'react';
 import MemberApi from '../../../../api/MemberApi';
 import DeliveryComp from './DeliveryStyle';
 import GoodsApi from '../../../../api/GoodsApi';
+import OrderApi from '../../../../api/OrderApi';
 import { useLocation } from 'react-router-dom';
 // import './delivery.css';
 
 export default function Delivery() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
   const location = useLocation();
-  const deliverImg = process.env.PUBLIC_URL + "/images/delivery.png";
+  const deliverImg = process.env.PUBLIC_URL + '/images/delivery.png';
   const [member, setMember] = useState([]);
   const [goods, setGoods] = useState([]);
-  const { goodsId } = location.state || {};
+
+  const query = new URLSearchParams(location.search);
+  const goodsId = query.get('goodsId');
   const [delivery, setDelivery] = useState([]);
 
   // 회원정보 가져오기
@@ -33,30 +35,40 @@ export default function Delivery() {
       .catch((err) => {});
   };
 
+  // 배송상태 가져오기
+  const deliveryStatus = async (goodsId) => {
+    OrderApi.deliveryStatus(goodsId)
+      .then((response) => {
+        setDelivery(response);
+      })
+      .catch((err) => {});
+  };
+
   useEffect(() => {
     // alert(`goodsId => ${goodsId}`);
     memberInfo();
     if (goodsId) {
       goodsInfo(goodsId);
+      deliveryStatus(goodsId);
     }
   }, []);
 
   return (
     <DeliveryComp>
-      <div className="container">
-        <div className="title">배송조회</div>
-        <div className="box1">
+      <div className='container'>
+        <div className='title'>배송조회</div>
+        <div className='box1'>
           상품명: {goods.goodsName} <br />
           6/9(월) 배송 완료 <br />
           {/*ㄴ orders 테이블의 regDate 가져옴 (order response dto 활용) */}
         </div>
 
         <hr />
-        <div className="infotitle">배송정보</div>
-        <div className="info">
-          <section className="deliver">
-            <img src={deliverImg} alt="" className="deliverimg" />
-            <table className="deliverinfo">
+        <div className='infotitle'>배송정보</div>
+        <div className='info'>
+          <section className='deliver'>
+            <img src={deliverImg} alt='' className='deliverimg' />
+            <table className='deliverinfo'>
               <tr>
                 <td>택배사</td>
                 <td>CJ 대한통운</td>
@@ -76,8 +88,8 @@ export default function Delivery() {
             </table>
           </section>
           <hr />
-          <section className="user">
-            <table className="userinfo">
+          <section className='user'>
+            <table className='userinfo'>
               <tr>
                 <td>받는사람</td>
                 <td>{member.name}</td>
@@ -94,14 +106,12 @@ export default function Delivery() {
           </section>
         </div>
         <hr />
-        <section className="desc">
-          <div className="title">FAQ</div>
+        <section className='desc'>
+          <div className='title'>FAQ</div>
           <ul>
-            <li className="faq">
-              [배송지] 배송 중에 배송지 및 배송요청사항을 변경할 수 있나요?
-            </li>
-            <li className="faq">[배송일정] 주문한 상품은 언제 배송되나요?</li>
-            <li className="faq">[교환/반품] 상품을 교환/반품하고 싶어요.</li>
+            <li className='faq'>[배송지] 배송 중에 배송지 및 배송요청사항을 변경할 수 있나요?</li>
+            <li className='faq'>[배송일정] 주문한 상품은 언제 배송되나요?</li>
+            <li className='faq'>[교환/반품] 상품을 교환/반품하고 싶어요.</li>
           </ul>
         </section>
       </div>

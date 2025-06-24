@@ -122,6 +122,9 @@ public class OrderDetailServiceImpl implements OrderDetailService{
     }
 
 
+    
+    
+    
     @Override
     public List<GoodsRankDTO> goodsRank() {
         List<GoodsRankDTO> list = orderDetailRepository.goodsRank();

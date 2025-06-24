@@ -173,6 +173,20 @@ public class OrderServiceImpl implements OrderService {
     }//
 
     // <Delivery /> 페이지 : OrderDetailResponseDTO
+    // 배송조회
+    @Override
+    @Transactional
+    public ResponseEntity<?> deliveryStatus(CustomUserDetails userDetails, Long orderId){
+        Member member = memberRepository.findById( //
+                        userDetails.getMember().getId()) //
+                .orElseThrow(() //
+                        -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+        Orders orders = orderRepository.findById(orderId).orElseThrow(() //
+                -> new UsernameNotFoundException("주문내역이 존재하지 않습니다."));
+
+
+        return null;
+    }
 
 
     // 리뷰 작성
