@@ -3,6 +3,7 @@ import CartComp from './CartStyle';
 import { useEffect, useRef, useState } from 'react';
 import PageNumber from '../../../util/PageNumber';
 import GoodsApi from '../../../../api/GoodsApi';
+import MemberApi from '../../../../api/MemberApi';
 
 export default function Cart() {
   const navigate = useNavigate();
@@ -15,6 +16,9 @@ export default function Cart() {
   const [goods, setGoods] = useState([]); // 페이지에 사용되는 goods
   const [checked, setChecked] = useState({}); // key: 인덱스 , value: 체크유무
   const [quantityMap, setQuantityMap] = useState({}); // Map 용도( goods id : goods quantity )
+  const [member, setMember] = useState({});
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [discount, setDiscount] = useState(0); // 등급별 할인율
 
   // 페이징 관련 상태변수
   const [type, setType] = useState('all');
@@ -89,6 +93,22 @@ export default function Cart() {
     // => <Cart /> <Order /> 공통으로 쓰는 로직이므로, 해당 줄은 변경하지 않기로 한다.
   };
 
+  // ~~~~~~~~~~~~~~~~~~~~~~~~ 등급별 할인율 적용 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // 등급별 할인율
+  const gradeDiscountRate = {
+    새싹회원: 0,
+    초급회원: 0.05,
+    중급회원: 0.07,
+    상급회원: 0.1,
+    프리미엄회원: 0.2,
+  };
+
+  // 할인 계산 함수
+  const getDiscountAmount = (total, grade) => {
+    const rate = gradeDiscountRate[grade] || 0;
+    return Math.floor(total * rate); // 소수점 버림
+  };
+
   // 구매수량 조절 버튼
   const increase = (goodsId) => {
     // 상품의 최대 구매가능 수량(재고)
@@ -156,9 +176,25 @@ export default function Cart() {
   };
 
   useEffect(() => {
-    getPageList();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    getPageList();
+    // 사용자 정보
+    MemberApi.detail()
+      .then((response) => {
+        setMember(response);
+      })
+      .catch((err) => {});
+
+    // 등급별 할인금액 산출
+    setDiscount(getDiscountAmount(getCheckedTotalPrice(), member.grade));
   }, [page]);
+
+  // 체크박스 상태, 수량변경, 등급변경 감지
+  useEffect(() => {
+    const total = getCheckedTotalPrice();
+    setTotalPrice(total);
+    setDiscount(getDiscountAmount(total, member.grade));
+  }, [checked, quantityMap, member]);
 
   return (
     <CartComp>
@@ -262,15 +298,27 @@ export default function Cart() {
                 </tr>
                 <tr>
                   <td>상품가격</td>
-                  <td> {getCheckedTotalPrice()} 원</td>
+                  <td>
+                    <b>{totalPrice} 원</b>
+                  </td>
                 </tr>
                 <tr>
                   <td>배송비</td>
-                  <td> {deliverPrice} 원</td>
+                  <td>
+                    <b>{deliverPrice} 원</b>
+                  </td>
                 </tr>
                 <tr>
-                  <td>최종 가격</td>
-                  <td> {getCheckedTotalPrice() + deliverPrice}원</td>
+                  <td>등급별 할인</td>
+                  <td>
+                    <b style={{ color: 'red' }}>- {discount} 원</b>
+                  </td>
+                </tr>
+                <tr>
+                  <td style={{ fontSize: '16px' }}>최종 결제금액</td>
+                  <td>
+                    <b style={{ fontSize: '16px' }}>{totalPrice + deliverPrice - discount} 원 </b>
+                  </td>
                 </tr>
               </tbody>
             </table>

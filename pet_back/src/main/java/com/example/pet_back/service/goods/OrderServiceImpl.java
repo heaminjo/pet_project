@@ -85,6 +85,59 @@ public class OrderServiceImpl implements OrderService {
         return ResponseEntity.status(HttpStatus.OK).body(addressResponseDTO);
     }
 
+
+    // 결제페이지 - 할인율 계산, 결제금액 Preview (백엔드 일괄)
+    @Override
+    @Transactional
+    public PaymentPreviewDTO calculatePaymentPreview(List<Long> goodsIds, CustomUserDetails userDetails){
+        Member member = memberRepository.findById( //
+                        userDetails.getMember().getId()) //
+                .orElseThrow(() //
+                        -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+        List<Goods> goodsList = goodsRepository.findAllById(goodsIds);
+        if (goodsList.isEmpty()) {
+            throw new IllegalArgumentException("상품 정보가 존재하지 않습니다.");
+        }
+
+        // 구매 가격
+        int goodsPrice = goodsList.stream()
+                .mapToInt(g -> g.getPrice() * g.getQuantity())
+                .sum();
+        System.out.println("구매 가격: "+goodsPrice);
+
+        // 배달료
+        int deliveryPrice = 3000;
+
+        // 회원등급
+        String grade = member.getGrade().getGradeName();
+        // 새싹회원0 초급회원0.05 중급회원0.07 상급회원0.1 프리미엄 회원0.2
+        double rate = 0;
+        if("초급회원".equals(grade)) rate=0.05;
+        else if("중급회원".equals(grade)) rate=0.07;
+        else if("상급회원".equals(grade)) rate=0.1;
+        else if("프리미엄 회원".equals(grade)) rate=0.2;
+        // 할인율 산출
+        int discount = (int) Math.floor(goodsPrice * rate);
+        System.out.println("할인율: "+discount);
+
+        // 최종결제금액
+        int finalPrice = goodsPrice + deliveryPrice - discount;
+        System.out.println("최종결제금액: "+finalPrice);
+
+        return PaymentPreviewDTO.builder()
+                .goodsPrice(goodsPrice)
+                .deliveryPrice(deliveryPrice)
+                .discount(discount)
+                .finalPrice(finalPrice)
+                .grade(grade)
+                .build();
+    }
+
+
+
+
+
+
     // 결제 : Delivery > Orders > Order_Detail 테이블 save
     @Override
     @Transactional

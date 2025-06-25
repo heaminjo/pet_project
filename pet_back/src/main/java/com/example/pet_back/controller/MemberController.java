@@ -31,6 +31,7 @@ public class MemberController {
     private final MemberService memberService;
     private final ImageService imageService;
     private final OrderService orderService;
+
     @GetMapping("/detail")
     public ResponseEntity<?> memberDetail(@AuthenticationPrincipal CustomUserDetails userDetails) {
         return memberService.selectOne(userDetails);

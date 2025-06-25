@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import OrderApi from '../../../../api/OrderApi';
+import { FaStar, FaRegStar } from 'react-icons/fa';
 
 // 리뷰 페이지
 export default function Review() {
@@ -75,7 +76,7 @@ export default function Review() {
     try {
       const response = await OrderApi.registerReview(formData);
       alert(response); // 리뷰가 정상적으로 등록되었습니다.
-      navigate('/');
+      navigate('/user/mypage/myreview');
     } catch (err) {
       console.error('리뷰 등록 실패', err);
       alert('리뷰 등록 중 오류가 발생했습니다.');
@@ -102,17 +103,6 @@ export default function Review() {
           </div>
           <div
             className='star-container'
-            onMouseDown={() => setIsDragging(true)}
-            onMouseUp={() => setIsDragging(false)}
-            onMouseLeave={() => setIsDragging(false)}
-            onMouseMove={(e) => {
-              if (isDragging) {
-                const rect = e.currentTarget.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const newScore = Math.min(Math.max(Math.ceil((x / rect.width) * 5), 1), 5);
-                setScore(newScore);
-              }
-            }}
             style={{
               display: 'flex',
               gap: '4px',
@@ -120,7 +110,7 @@ export default function Review() {
               fontSize: '28px',
             }}>
             {[1, 2, 3, 4, 5].map((i) => (
-              <span key={i}>{i <= score ? '❤️' : '🤍'}</span>
+              <FaStar key={`star-${i}`} color={i <= score ? 'gold' : 'lightgray'} size={60} onClick={() => setScore(i)} style={{ transition: 'color 0.2s' }} />
             ))}
           </div>
           <p>선택된 별점: {score}점</p>
@@ -147,45 +137,40 @@ export default function Review() {
         <form>
           <fieldset className='user-img'>
             <legend>
-              <strong>사진 첨부</strong>
-              <input
-                type='file'
-                accept='image/*'
-                multiple
-                onChange={(e) => {
-                  const files = Array.from(e.target.files); // FileList 배열
-                  setUserImage((prev) => [...prev, ...files]); // 파일 배열로 누적
-                  // 미리보기 이미지 배열
-                  const newPreviews = files.map((file) => URL.createObjectURL(file));
-                  setPrevImg((prev) => [...prev, ...newPreviews]); // prevImg 배열
-                }}
-              />
+              <strong>사진 첨부</strong>{' '}
             </legend>
-            <br />
-            {prevImg.map((src, idx) => (
-              <div key={idx} style={{ position: 'relative', display: 'inline-block', marginRight: '10px' }}>
-                <img src={src} alt='미리보기' className='goodsImg' style={{ width: '200px', height: '200px' }} />
-                <button
-                  onClick={() => removeImage(idx)}
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                    backgroundColor: 'black',
-                    border: 'none',
-                    fontSize: '20px',
-                    color: 'white',
-                    cursor: 'pointer',
-                  }}>
-                  X
-                </button>
-              </div>
-            ))}
+
+            <label htmlFor='upload-input' className='upload-btn'>
+              이미지 선택
+            </label>
+            <input
+              id='upload-input'
+              type='file'
+              accept='image/*'
+              multiple
+              style={{ display: 'none' }}
+              onChange={(e) => {
+                const files = Array.from(e.target.files); // FileList 배열
+                setUserImage((prev) => [...prev, ...files]); // 파일 배열로 누적
+                // 미리보기 이미지 배열
+                const newPreviews = files.map((file) => URL.createObjectURL(file));
+                setPrevImg((prev) => [...prev, ...newPreviews]); // prevImg 배열
+              }}
+            />
+            <div className='preview-container'>
+              {prevImg.length === 0 ? (
+                <></>
+              ) : (
+                prevImg.map((src, idx) => (
+                  <div key={idx}>
+                    <img src={src} alt='미리보기' className='goodsImg' style={{ width: '200px', height: '200px' }} />
+                    <button onClick={() => removeImage(idx)}>X</button>
+                  </div>
+                ))
+              )}
+            </div>
           </fieldset>
         </form>
-        <br />
-        <br />
-        <hr />
         <section>
           <button className='pay' onClick={regReview}>
             리뷰등록
@@ -305,18 +290,35 @@ const ReviewComp = styled.div`
     box-sizing: border-box;
   }
 
-  /* 사진 첨부 영역 */
+  /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 사진 첨부 영역 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   .user-img {
     border: none;
-    margin-top: 24px;
+    margin: 24px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 
   .user-img legend {
     font-size: 16px;
     font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  .user-img input[type='file'] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #f8f8f8;
+    font-size: 14px;
+    width: fit-content;
+  }
+
+  .preview-container {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
   }
 
   .user-img button {
@@ -331,5 +333,100 @@ const ReviewComp = styled.div`
 
   .user-img button:hover {
     background-color: #1d4ed8;
+  }
+
+  .preview-box {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background-color: #f2f2f2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease;
+  }
+
+  .preview-box:hover {
+    transform: translateY(-2px);
+  }
+
+  .preview-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .preview-box button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: black;
+    color: white;
+    border: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .preview-box button:hover {
+    background-color: red;
+  }
+
+  /* ~~~~~~~~~~~~~~~~~~~~~~~~~ 버튼 스타일 공통화 ~~~~~~~~~~~~~~~~~~~~~ */
+  button.pay,
+  button.cancel {
+    padding: 10px 24px;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.2s ease;
+  }
+
+  button.pay {
+    background-color: #ff6b6b;
+    color: white;
+  }
+
+  button.pay:hover {
+    background-color: #fa5252;
+  }
+
+  button.cancel {
+    background-color: #e0e0e0;
+    color: #333;
+  }
+
+  button.cancel:hover {
+    background-color: #d0d0d0;
+  }
+
+  /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 업로드 버튼 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+  .upload-btn {
+    width: 70px;
+    display: inline-block;
+    padding: 10px 16px;
+    background-color: #ff6b6b;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease;
+  }
+
+  .upload-btn:hover {
+    background-color: #fa5252;
   }
 `;

@@ -88,6 +88,26 @@ const OrderApi = {
     //console.log(JSON.stringify(payload, null, 2));
   },
 
+  // 할인율 조회
+  getPayPrice: async (goodsIds, quantity) => {
+    const payload = {
+      goodsIds: goodsIds,
+      quantity: quantity
+    }
+    try {
+      const result = await instance.post(`/order/pay/preview`, goodsIds);
+      if (result != null) {
+        console.log(`findAddress 결과: ${result}`);
+        return result.data;
+      } else {
+        //alert(`OrderApi.findAddress() null`);
+        console.log(`OrderApi.findAddress() null`);
+      }
+    } catch (err) {
+      console.error('오류 발생:', err);
+    }
+  },
+
   // 배송지 주소
   findAddress: async () => {
     const result = await instance.get(`/order/findaddress`);
