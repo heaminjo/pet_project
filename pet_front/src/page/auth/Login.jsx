@@ -8,7 +8,6 @@ import { useContext, useEffect } from "react";
 import { PetContext } from "../../App";
 import kakao from "../../images/kakao_login_large_wide.png";
 export default function Login() {
-  const { setIsLogin } = useContext(PetContext);
   const navigate = useNavigate();
   const location = useLocation();
   // 쿼리스트링에서 redirectTo 추출
@@ -19,6 +18,7 @@ export default function Login() {
 
   //카카오오
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     if (window.Kakao && !window.Kakao.isInitialized()) {
       window.Kakao.init(REST_API_KEY);
       console.log("카카오 code를 받아옵니다.");

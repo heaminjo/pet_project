@@ -173,7 +173,7 @@ const CategoryComp = styled.div`
     border: 2px solid #fff;
     box-shadow: 2px 2px 2px #777;
     padding: 20px;
-    background-color: rgb(255, 251, 195);
+    background-color: #ede1dd;
     .category_text {
       display: flex;
       justify-content: space-between;

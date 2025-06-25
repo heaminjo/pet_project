@@ -15,7 +15,6 @@ export default function Best() {
     const result = await GoodsApi.getBest();
 
     setBest(result);
-    console.log(result);
   };
 
   // 별점 (배열)

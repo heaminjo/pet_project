@@ -6,8 +6,8 @@ export default function Modal({ clickEvt, setModal, content }) {
     width: 400px;
     height: 250px;
     background-color: #fff;
-    background-color: #f7f770;
-    border: 2px solid #d7d715;
+    background-color: #7a8f99;
+    border: 2px solid #585351;
     text-align: center;
     h3 {
       margin: 60px 0;

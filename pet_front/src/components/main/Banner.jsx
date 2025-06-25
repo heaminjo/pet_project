@@ -17,7 +17,6 @@ function Banner() {
     const result = await GoodsApi.getBanner();
 
     setBanner(result);
-    console.log(banner);
   };
   const sliderRef = useRef(null);
 
@@ -62,7 +61,7 @@ const BannerComp = styled.div`
     width: 99vw;
     height: 400px;
     margin: 0 auto;
-    background-color: rgb(255, 254, 242);
+
     border-radius: 40px;
 
     .item {
