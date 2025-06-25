@@ -172,9 +172,9 @@ const GradeComp = styled.div`
           border: 1px solid #ddd;
           width: 500px;
           border-radius: 0 70px 70px 0;
-          background-color: #ffffe7;
+          background-color: #dfdede;
           border: none;
-          box-shadow: 3px 3px 3px #fcfcb8;
+          box-shadow: 3px 3px 3px #3e3e3e;
         }
         .my_grade {
           font-size: 20px;

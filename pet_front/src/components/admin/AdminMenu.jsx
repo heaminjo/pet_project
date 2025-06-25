@@ -1,7 +1,7 @@
-import { useNavigate } from 'react-router-dom';
-import MemberApi from '../../api/MemberApi';
-import { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import { useNavigate } from "react-router-dom";
+import MemberApi from "../../api/MemberApi";
+import { useEffect, useState } from "react";
+import styled from "styled-components";
 
 //관리자 사이드 메뉴 컴포넌트
 export default function AdminMenu() {
@@ -9,19 +9,19 @@ export default function AdminMenu() {
     .side_menu {
       width: 200px;
       padding: 15px 10px;
-      background-color: rgb(255, 251, 195);
+      background-color: #e1e1e1;
       display: flex;
       flex-direction: column;
       gap: 10px;
-      box-shadow: 3px 3px 3px #ccc;
+      box-shadow: 3px 3px 3px #9a9999;
       .sub_menu {
         background-color: #fff;
         .menu_title {
-          background-color: #f8e776;
+          background-color: #c1b7b3;
           font-size: 17px;
           font-weight: bold;
           padding: 5px;
-          color: rgb(86, 82, 57);
+          color: rgb(69, 66, 47);
         }
         ul {
           padding: 10px;
@@ -38,9 +38,9 @@ export default function AdminMenu() {
   const navigate = useNavigate();
   return (
     <AdminMenuComp>
-      <div className='side_menu'>
-        <div className='sub_menu' id='user_menu'>
-          <p className='menu_title'>회원 관리</p>
+      <div className="side_menu">
+        <div className="sub_menu" id="user_menu">
+          <p className="menu_title">회원 관리</p>
           <ul>
             <li>
               <span onClick={() => navigate("/admin/page/statistics")}>
@@ -53,12 +53,14 @@ export default function AdminMenu() {
               </span>
             </li>
             <li>
-              <span onClick={() => navigate('/admin/page/grade')}>회원 등급 관리</span>
+              <span onClick={() => navigate("/admin/page/grade")}>
+                회원 등급 관리
+              </span>
             </li>
           </ul>
         </div>
-        <div className='sub_menu' id='goods_menu'>
-          <p className='menu_title'>상품 관리</p>
+        <div className="sub_menu" id="goods_menu">
+          <p className="menu_title">상품 관리</p>
           <ul>
             <li>
               <span onClick={() => navigate("/admin/page/goods/modify")}>
@@ -66,26 +68,32 @@ export default function AdminMenu() {
               </span>
             </li>
             <li>
-              <span onClick={() => navigate('/admin/page/category')}>상품 카테고리 관리</span>
+              <span onClick={() => navigate("/admin/page/category")}>
+                상품 카테고리 관리
+              </span>
             </li>
             <li>
-              <span onClick={() => navigate('/admin/page/inventory')}>상품 재고 관리</span>
+              <span onClick={() => navigate("/admin/page/inventory")}>
+                상품 재고 관리
+              </span>
             </li>
             <li>
-              <span onClick={() => navigate('/admin/page/goods/state')}>상품 상태 관리</span>
+              <span onClick={() => navigate("/admin/page/goods/state")}>
+                상품 상태 관리
+              </span>
             </li>
           </ul>
         </div>
-        <div className='sub_menu' id='order_menu'>
-          <p className='menu_title'>주문 관리</p>
+        <div className="sub_menu" id="order_menu">
+          <p className="menu_title">주문 관리</p>
           <ul>
             <li>
-              <span onClick={() => navigate('/admin/page/orderlist')}>
+              <span onClick={() => navigate("/admin/page/orderlist")}>
                 전체 주문 목록
               </span>
             </li>
             <li>
-              <span onClick={() => navigate('/admin/page/delivery')}>
+              <span onClick={() => navigate("/admin/page/delivery")}>
                 주문 상세 및 상태 변경
               </span>
             </li>
@@ -94,17 +102,21 @@ export default function AdminMenu() {
             </li>
           </ul>
         </div>
-        <div className='sub_menu' id='border_menu'>
-          <p className='menu_title'>메인 관리</p>
+        <div className="sub_menu" id="border_menu">
+          <p className="menu_title">메인 관리</p>
           <ul>
             <li>
-              <span onClick={() => navigate('/admin/page/banner')}>메인 배너 관리</span>
+              <span onClick={() => navigate("/admin/page/banner")}>
+                메인 배너 관리
+              </span>
             </li>
             <li>
               <span onClick={() => navigate("/admin/page/best")}>
                 추천 상품 관리
               </span>
-              <span onClick={() => navigate('/admin/page/best')}>베스트 상품 관리</span>
+              <span onClick={() => navigate("/admin/page/best")}>
+                베스트 상품 관리
+              </span>
             </li>
           </ul>
         </div>

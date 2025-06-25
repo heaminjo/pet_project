@@ -7,7 +7,7 @@ export default function MypageMenu() {
     .side_menu {
       width: 200px;
       padding: 15px 10px;
-      background-color: rgb(255, 251, 195);
+      background-color: #e1e1e1;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -15,11 +15,11 @@ export default function MypageMenu() {
       .sub_menu {
         background-color: #fff;
         .menu_title {
-          background-color: #f8e776;
+          background-color: #a89e9a;
           font-size: 17px;
           font-weight: bold;
           padding: 5px;
-          color: rgb(86, 82, 57);
+          color: rgb(69, 66, 47);
         }
         ul {
           padding: 10px;
@@ -99,7 +99,7 @@ export default function MypageMenu() {
               </span>
             </li>
             <li>
-              <span onClick={() => navigate('/user/mypage/withdrawlist')}>
+              <span onClick={() => navigate("/user/mypage/withdrawlist")}>
                 취소 내역
               </span>
             </li>
