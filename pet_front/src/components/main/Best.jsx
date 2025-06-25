@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import GoodsApi from "../../api/GoodsApi";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import styled from 'styled-components';
+import GoodsApi from '../../api/GoodsApi';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Best() {
   const [best, setBest] = useState([]);
@@ -19,31 +19,27 @@ export default function Best() {
 
   // 별점 (배열)
   const renderStars = (rating) => {
-    return "⭐".repeat(Math.floor(rating)); // 반올림이나 소수점 무시
+    return '⭐'.repeat(Math.floor(rating)); // 반올림이나 소수점 무시
   };
   return (
     <BestComp>
-      <div className="title">
+      <div className='title'>
         <h2>오늘의 추천 상품</h2>
       </div>
-      <div className="best_container">
+      <div className='best_container'>
         <ul>
           {best?.map((b) => (
-            <li
-              onClick={() => navigate("/goods/order", { state: { goods: b } })}
-            >
-              <div className="goods_image">
-                <img src={b.imageFile} alt="베스트 상품 이미지" />
+            <li onClick={() => navigate('/goods/order', { state: { goods: b } })}>
+              <div className='goods_image'>
+                <img src={b.imageFile} alt='베스트 상품 이미지' />
               </div>
-              <div className="goods_text">
+              <div className='goods_text'>
                 <h4>{b.goodsName}</h4>
                 <p>{b.description}</p>
               </div>
-              <div className="goods_rating">
+              <div className='goods_rating'>
                 <span>{renderStars(b.rating)}</span>
-                <span style={{ color: "red", fontSize: "12px" }}>
-                  {"( " + b.reviewNum + " )"}{" "}
-                </span>
+                <span style={{ color: 'red', fontSize: '12px' }}>{'( ' + b.reviewNum + ' )'} </span>
               </div>
             </li>
           ))}
@@ -113,6 +109,10 @@ const BestComp = styled.div`
           img {
             width: 100%;
             height: 100%;
+            transition: transform 0.3s ease; /* 부드러운 애니메이션 */
+          }
+          img:hover {
+            transform: scale(1.1);
           }
         }
         .goods_text {
