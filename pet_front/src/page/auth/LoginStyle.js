@@ -27,7 +27,7 @@ const LoginComp = styled.div`
         height: 150px;
         input {
           height: 40px;
-          width: 100%;
+          width: 340px;
           padding-left: 10px;
         }
         p {

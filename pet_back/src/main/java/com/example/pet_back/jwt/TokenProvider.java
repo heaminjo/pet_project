@@ -34,7 +34,7 @@ public class TokenProvider {
     //보안 강도가 높다.
     private final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     private static final String BEARER_TYPE = "Bearer"; // 토큰이 어떤 방식으로 발급되었는지
-    private static final long ACCESS_TOKEN_EXPIRE_TIME =1000 * 60 * 30;   // 30분(1000 * 60 * 30)
+    private static final long ACCESS_TOKEN_EXPIRE_TIME =3000;   // 30분(1000 * 60 * 30)
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
     private final CustomUserDetailsService customUserDetailsService;
     private final MemberRepository memberRepository;
