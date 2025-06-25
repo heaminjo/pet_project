@@ -80,6 +80,20 @@ public class OrderController {
         return orderService.payGoods(userDetails, dto);
     }
 
+    // 결제 시 등급, 등급별 할인율 표시 (백엔드 일괄 처리)
+    @PostMapping("/pay/preview")
+    public ResponseEntity<PaymentPreviewDTO> getPaymentPreview(
+            @RequestBody List<Long> goodsIds,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        log.info("** OrderController => getPaymentPreview() 실행됨 **");
+
+        for(Long goodsId : goodsIds){
+            System.out.println("상품ID: "+goodsId);
+        }
+        return ResponseEntity.ok(orderService.calculatePaymentPreview(goodsIds, userDetails));
+    }
+
+
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 배 송 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     @PostMapping("/delivery")
     public ResponseEntity<?> deliveryStatus(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("orderId") Long orderId) {

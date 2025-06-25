@@ -34,7 +34,7 @@ const MemberApi = {
     return result.data;
   },
 
-  //회원 수정정
+  //회원 수정
   update: async (user) => {
     const result = await instance.patch(`${KH_DOMAIN}/user/update`, user);
     return result.data;

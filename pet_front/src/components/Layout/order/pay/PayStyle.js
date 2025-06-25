@@ -116,6 +116,8 @@ const PayComp = styled.div`
     background-color: #fff;
     border: 1px solid #ddd;
     padding: 10px;
+    padding-left: 30px;
+
     .addr {
       display: flex;
       flex-direction: column;

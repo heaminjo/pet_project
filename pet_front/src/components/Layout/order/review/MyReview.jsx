@@ -12,6 +12,7 @@ export default function MyReview() {
   const imgUrl = 'http://localhost:8080/resources/webapp/userImages/';
   const { goods } = location.state || {};
   const [reviews, setReviews] = useState([]);
+  const [openStates, setOpenStates] = useState([]); // 각 리뷰들의 펼침 상태
 
   // 페이징 관련 상태변수
   const [type, setType] = useState('all');
@@ -77,9 +78,22 @@ export default function MyReview() {
     }
   };
 
+  // 리뷰 펼침 토글 (글이 긴 경우)
+  const toggleOpen = (index) => {
+    const newStates = [...openStates];
+    newStates[index] = !newStates[index];
+    setOpenStates(newStates);
+  };
+
+  // 리뷰 목록 가져옴
   useEffect(() => {
     getPageList();
   }, [page]);
+
+  // 리뷰 수 변경시 펼침 여부 배열 초기화
+  useEffect(() => {
+    setOpenStates(new Array(reviews.length).fill(false));
+  }, [reviews]);
 
   return (
     <MyReviewComp>
@@ -93,20 +107,18 @@ export default function MyReview() {
                 <div className='review-info'>
                   <div className='review-title'>{review.title}</div>
                   <div className='review-stars'>{'⭐'.repeat(review.score)}</div>
-                  <div className='review-content'>{review.content}</div>
+                  <div className={`review-content ${openStates[idx] ? 'open' : ''}`} onClick={() => toggleOpen(idx)} style={{ cursor: 'pointer' }}>
+                    {review.content}
+                  </div>
                 </div>
-                <div>
-                  {review.imageFile?.split(',').map((img, i) => (
-                    <img key={i} src={`${imgUrl}${img}`} alt={`이미지 ${i + 1}`} className='product-image' style={{ marginRight: '8px' }} />
-                  ))}
-                </div>
+                <div>{review.imageFile.length === 0 ? <></> : review.imageFile?.split(',').map((img, i) => <img key={i} src={`${imgUrl}${img}`} alt={`이미지 ${i + 1}`} className='product-image' style={{ marginRight: '8px' }} />)}</div>
               </div>
               <div className='button-box'>
                 <button onClick={() => handleEdit(review)} className='edit-btn'>
-                  수정
+                  리뷰수정
                 </button>
                 <button onClick={() => handleDelete(review.reviewId)} className='delete-btn'>
-                  삭제
+                  리뷰삭제
                 </button>
               </div>
             </div>
@@ -127,6 +139,7 @@ const MyReviewComp = styled.div`
 
   .review-card {
     display: flex;
+    min-height: 100px;
     flex-direction: row;
     align-items: flex-start;
     gap: 16px;
@@ -167,13 +180,33 @@ const MyReviewComp = styled.div`
     color: #ffc107;
   }
 
+  /* 리뷰 내용 */
   .review-content {
     font-size: 14px;
     color: #333;
+    margin: 10px 0;
+
+    /* 2줄 이상 넘어가면 ... 으로 요약 표시 */
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* 보여줄 최대 줄 수 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    transition: all 0.3s ease;
   }
+
+  /* 리뷰 펼쳤을 경우 */
+  .review-content.open {
+    -webkit-line-clamp: unset;
+    display: block;
+    overflow: visible;
+  }
+
   .button-box {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     margin: 0 50px;
   }
 
