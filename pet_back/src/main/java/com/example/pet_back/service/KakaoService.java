@@ -31,6 +31,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -131,10 +133,24 @@ public class KakaoService {
                 authentication = tokenProvider.getAuthentication(user.getId());
             } else {
                 log.info("카카오 계정이 존재합니다. 로그인 처리합니다.");//존재하는 경우 이메일 true
+
                 authentication = tokenProvider.getAuthentication(member.get().getId());
             }
 
             TokenDTO tokenDTO = tokenProvider.generateTokenDto(authentication);//이메일의 존재 여부를 넣어준다.
+
+            //마지막 로그인 시간 저장을 위해 id를 꺼낸다.
+            Long userId = tokenProvider.getUserId(tokenDTO.getAccessToken());
+
+            Member loginUser = memberRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            LocalDateTime lastLogin = loginUser.getLastLogin();
+
+            //만약 마지막 로그인이 null이거나 오늘보다 전날(isBefore) 이라면 누적
+            if(lastLogin == null || lastLogin.toLocalDate().isBefore(LocalDate.now())){
+                loginUser.setLoginCount(loginUser.getLoginCount() + 1);
+            }
+            //그리고 난 뒤 현재 시각으로 마지막 로그인 업데이트
+            loginUser.setLastLogin(LocalDateTime.now());
 
             //RefreshToken DB 저장하기
             RefreshToken refreshToken = RefreshToken.builder()
@@ -148,6 +164,8 @@ public class KakaoService {
                             "; Path=/; Max-Age=604800; HttpOnly; SameSite=Lax");
 
             refreshTokenRepository.save((refreshToken));
+
+
             log.info("카카오 로그인 성공 - userId : "+ dto.getId());
             //커스텀 응답 객체에 token을 담아 반환
             return new ApiResponse<TokenDTO>(true, tokenDTO, "로그인에 성공하였습니다.");
