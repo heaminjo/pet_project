@@ -72,30 +72,26 @@ const OrderApi = {
     payload.goodsList.forEach((item) => {
       console.log(`결제 시도 => 상품 ID: ${item.goodsId}, 상품 수량: ${item.quantity}`);
     });
-    const result = await instance.post(`/order/pay`, payload);
     try {
+      const result = await instance.post(`/order/pay`, payload);
       if (result != null) {
         return result.data;
       } else {
         //alert(`OrderApi.pay() null`);
         console.log(`OrderApi.pay() null`);
+        return;
       }
     } catch (err) {
       console.error('오류 발생:', err);
+      return;
     }
-
-    return result.data;
-    //console.log(JSON.stringify(payload, null, 2));
   },
 
   // 할인율 조회
-  getPayPrice: async (goodsIds, quantity) => {
-    const payload = {
-      goodsIds: goodsIds,
-      quantity: quantity
-    }
+  getPayPrice: async (goods) => {
     try {
-      const result = await instance.post(`/order/pay/preview`, goodsIds);
+      console.log('goodsList:', goods);
+      const result = await instance.post(`/order/pay/preview`, goods);
       if (result != null) {
         console.log(`findAddress 결과: ${result}`);
         return result.data;

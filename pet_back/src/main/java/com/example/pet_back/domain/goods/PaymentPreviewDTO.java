@@ -10,7 +10,7 @@ import lombok.Data;
 public class PaymentPreviewDTO {
     private int goodsPrice;
     private int deliveryPrice;
-    private int discount;
+    private int disCount;
     private int finalPrice;
     private String grade;
 }

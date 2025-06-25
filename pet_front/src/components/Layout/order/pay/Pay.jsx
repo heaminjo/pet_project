@@ -24,7 +24,7 @@ export default function Pay() {
   // 금액 관련
   const [goodsPrice, setGoodsPrice] = useState(0);
   const [deliveryPrice, setDeliveryPrice] = useState(0);
-  const [discount, setDiscount] = useState(0);
+  const [disCount, setDisCount] = useState(0);
   const [finalPrice, setFinalPrice] = useState(0);
   const [grade, setGrade] = useState(0);
 
@@ -149,11 +149,11 @@ export default function Pay() {
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 결 제 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 결제 로직 수행(BackEnd)
-  const pay = async (goods, payment, addressName, note, addrId, phone) => {
+  const pay = async (goods, payment, addrName, note, addrId, phone) => {
     const payload = {
       goodsList: goods,
       payment: payment,
-      deliveryName: addressName,
+      deliveryName: addrName,
       requestMessage: note,
       addressId: addrId,
       recipientPhone: phone,
@@ -207,18 +207,21 @@ export default function Pay() {
     MemberApi.detail()
       .then((response) => {
         setMember(response);
+        setPhone(response.phone);
       })
       .catch((err) => {});
 
     // 사용자 주소
     OrderApi.findAddress()
       .then((response) => {
-        // addressId
-        setAddrId(response.addressId);
-        setAddr(response.address1 + ' ' + response.address2);
-        setAddrName(response.addressName);
-        setAddrType(response.addrType);
-        console.log(`최초호출 OrderApi.findAddress() 결과 response.addressName = ${response.addressName}`);
+        if (response && response.addressId) {
+          setAddrId(response.addressId);
+          setAddr(response.address1 + ' ' + response.address2);
+          alert(`배송지주소: ${response.addressName}`);
+          setAddrName(response.addressName);
+          setAddrType(response.addrType);
+          console.log(`최초호출 OrderApi.findAddress() 결과 response.addressName = ${response.addressName}`);
+        }
       })
       .catch((err) => {
         // alert("주소 조회 실패");
@@ -234,13 +237,12 @@ export default function Pay() {
   // 비동기 문제 : member의 grade 불러온 후 그에 따른 할인율 적용
   useEffect(() => {
     if (!member.grade) return; // grade가 존재할 때만 실행
-    const goodsIds = goodsList.map((item) => item.goodsId); // ID만 추출
     // 등급별 할인율, 배달료, 최종결제금액 조회
-    OrderApi.getPayPrice(goodsIds, goods.quantity)
+    OrderApi.getPayPrice(goods)
       .then((response) => {
         setGoodsPrice(response.goodsPrice);
         setDeliveryPrice(response.deliveryPrice);
-        setDiscount(response.discount);
+        setDisCount(response.disCount);
         setFinalPrice(response.finalPrice);
         setGrade(response.grade);
       })
@@ -319,7 +321,6 @@ export default function Pay() {
                                     setAddrType(a.addrType);
                                     // 새로고침 방어
                                     sessionStorage.setItem('selectedAddress', JSON.stringify(a));
-
                                     setIsDestOpen(false);
                                   }}>
                                   선택
@@ -413,7 +414,7 @@ export default function Pay() {
                   <td></td>
                 ) : (
                   <td style={{ color: 'red' }}>
-                    <b>- {discount} 원</b>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <b>- {disCount} 원</b>&nbsp;&nbsp;&nbsp;&nbsp;
                     <span style={{ fontSize: '10px' }}> 회원님의 등급은 {grade} 입니다. </span>
                   </td>
                 )}

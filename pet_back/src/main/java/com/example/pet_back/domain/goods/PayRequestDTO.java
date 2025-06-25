@@ -16,9 +16,9 @@ public class PayRequestDTO {
     private List<GoodsRequestDTO> goodsList;
     private PAYMENT payment;
     // 배송정보
-    String deliveryName;
-    String requestMessage;
-    Long addressId;
-    String recipientPhone;
+    private String deliveryName;
+    private String requestMessage;
+    private Long addressId;
+    private String recipientPhone;
 
 }
