@@ -1,23 +1,27 @@
 import styled from "styled-components";
 
 const GradeComp = styled.div`
-  width: 1000px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 50px;
   .grade_info {
     height: 250px;
     width: 100%;
     display: flex;
     border-radius: 20px;
     box-shadow: 3px 3px 3px#ccc;
+    background-color: rgb(63, 63, 63);
     .my_grade {
-      width: 500px;
+      width: 50%;
       display: flex;
       border-right: 3px dashed #666;
       padding: 30px;
       .grade_name {
         width: 250px;
+        color: #fff;
+        svg {
+          font-size: 80px;
+        }
       }
       .user_activity {
         display: flex;
@@ -40,9 +44,10 @@ const GradeComp = styled.div`
       }
     }
     .boon {
-      width: 400px;
+      width: 50%;
       text-align: center;
       padding: 20px;
+      color: #fff;
       .text {
         display: flex;
         height: 100%;
@@ -51,65 +56,9 @@ const GradeComp = styled.div`
       }
     }
   }
-  .grade_graph {
-    position: relative;
-    width: 1000px;
-    height: 200px;
-    display: flex;
-    gap: 20px;
-    flex-direction: column;
-    justify-content: center;
-    ul {
-      display: flex;
-      width: 100%;
-      li {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        width: 200px;
-        text-align: center;
-        align-items: end;
-        span {
-          margin-right: 70px;
-        }
-        .my {
-          font-weight: bold;
-        }
-        .color_bar {
-          height: 10px;
-          width: 80px;
-          margin-right: 60px;
-        }
-        .tab {
-          width: 25px;
-          height: 25px;
-          background-color: #fff;
-          border: 2px solid #000;
-          z-index: 10;
-          border-radius: 100%;
-        }
-      }
-    }
-    .gauge {
-      position: absolute;
-      bottom: 73px;
-      background-color: #fff;
-      border: 1px solid #000;
-      height: 10px;
-      border-radius: 10px;
-    }
-    .active {
-      background-color: #fff;
-      width: 1000px;
-      border: 1px solid #000;
-    }
-    .back {
-      width: ${(props) => (props.data.width ? props.data.width : 0)};
-      background-color: #666;
-    }
-  }
+
   .next_grade {
-    width: 1000px;
+    width: 100%;
     justify-content: center;
     display: flex;
     justify-content: space-between;
@@ -129,7 +78,7 @@ const GradeComp = styled.div`
         props.data.backColor ? props.data.backColor : 0};
     }
     .upgrade_condition {
-      width: 500px;
+      width: 40%;
       h3 {
         text-align: center;
         margin-bottom: 50px;
@@ -139,7 +88,7 @@ const GradeComp = styled.div`
         justify-content: center;
         gap: 30px;
         li {
-          width: 200px;
+          width: 150px;
           padding: 10px;
           text-align: center;
           display: flex;
@@ -162,7 +111,6 @@ const GradeComp = styled.div`
   .detail_grade {
     display: flex;
     justify-content: end;
-    margin-top: 50px;
 
     .detail_text {
       height: 80px;

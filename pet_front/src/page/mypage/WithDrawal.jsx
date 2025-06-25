@@ -7,8 +7,9 @@ import Modal from "../../modal/Modal";
 export default function WithDrawal() {
   window.scrollTo({ top: 0, behavior: "smooth" });
   const WithDrawalComp = styled.div`
+    width: 100%;
     .withDrawal_container {
-      width: 800px;
+      width: 80%;
       height: 400px;
       border: 1px solid #ccc;
       text-align: center;

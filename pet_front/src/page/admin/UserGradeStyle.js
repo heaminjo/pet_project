@@ -5,24 +5,25 @@ const UserGradeComp = styled.div`
     background-color: #eaefef;
   }
   #grade02 {
-    background-color: #ffe99a;
+    background-color: #d2d7d9;
   }
   #grade03 {
-    background-color: #ffd586;
+    background-color: #bfb6b2;
   }
   #grade04 {
-    background-color: #ffaaaa;
+    background-color: #a69390;
   }
   #grade05 {
-    background-color: #ff9898;
+    background-color: #847c7a;
   }
   h2 {
     margin-bottom: 20px;
     color: #333;
     text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5); /* 살짝 반사 느낌 */
   }
+  width: 100%;
   .grade_intro {
-    width: 900px;
+    width: 90%;
     position: relative;
     display: flex;
     .chart {
@@ -36,7 +37,7 @@ const UserGradeComp = styled.div`
       left: -20px;
     }
     .line {
-      width: 800px;
+      width: 100%;
       height: 100%;
       display: flex;
       flex-direction: column;
@@ -59,18 +60,17 @@ const UserGradeComp = styled.div`
     }
   }
   .grade_table {
-    width: 100%;
+    width: 90%;
     padding: 30px 0;
     table {
       border-collapse: collapse;
+      width: 100%;
       text-align: center;
-      width: 900px;
       tr {
         height: 50px;
-
         th {
           height: 40px;
-          background-color: rgb(255, 115, 115);
+          background-color: #847c7a;
           color: #fff;
           text-shadow: 1px 1px 1px #ccc;
         }
@@ -88,12 +88,13 @@ const UserGradeComp = styled.div`
     }
   }
   .list_table {
-    width: 700px;
+    width: 90%;
     height: 350px;
     h4 {
       margin: 10px 0;
     }
     ul {
+      width: 100%;
       display: flex;
       gap: 10px;
       li {
@@ -116,7 +117,7 @@ const UserGradeComp = styled.div`
     }
     table {
       margin-top: 10px;
-      width: 660px;
+      width: 100%;
       text-align: center;
       border-collapse: collapse;
       tr {
@@ -145,7 +146,7 @@ const UserGradeComp = styled.div`
             height: 30px;
             width: 70px;
             border: none;
-            background-color: rgb(255, 89, 78);
+            background-color: lightslategrey;
             border-radius: 20px;
             color: #fff;
             font-weight: bold;

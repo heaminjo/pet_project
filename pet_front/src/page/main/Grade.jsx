@@ -24,7 +24,7 @@ export default function Grade() {
         <div className="grade_container">
           <div className="grade_intro">
             <div className="intro_text">
-              <h2>⭐몽냥마켓 회원 등급 안내⭐</h2>
+              <h2>몽냥마켓 회원 등급 안내</h2>
               <p>
                 우리 몽이, 냥이에게 더 많은 혜택을! 회원 등급에 따라 달라지는
                 특별한 혜택을 확인해보세요.
@@ -172,7 +172,7 @@ const GradeComp = styled.div`
           border: 1px solid #ddd;
           width: 500px;
           border-radius: 0 70px 70px 0;
-          background-color: #dfdede;
+          background-color: #eaefef;
           border: none;
           box-shadow: 3px 3px 3px #3e3e3e;
         }
@@ -215,16 +215,16 @@ const GradeComp = styled.div`
                 background-color: #eaefef;
               }
               #grade02 {
-                background-color: #ffe99a;
+                background-color: #d2d7d9;
               }
               #grade03 {
-                background-color: #ffd586;
+                background-color: #bfb6b2;
               }
               #grade04 {
-                background-color: #ffaaaa;
+                background-color: #a69390;
               }
               #grade05 {
-                background-color: #ff9898;
+                background-color: #847c7a;
               }
             }
             .grade_advantage {

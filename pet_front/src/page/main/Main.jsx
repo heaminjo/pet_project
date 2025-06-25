@@ -17,7 +17,10 @@ export default function Main() {
   );
 }
 const MainComp = styled.div`
+  width: 100%;
   .main_inner {
+    width: 100%;
+    max-width: 1920px;
     margin-top: 150px;
     padding: 0;
     display: flex;

@@ -62,6 +62,7 @@ export default function GoodsSearch({
   );
 }
 const SearchComp = styled.div`
+  width: 100%;
   .search_container {
     width: 100%;
     height: 100px;

@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 const HeaderComp = styled.header`
   width: 100%;
+  max-width: 1920px;
   height: 100px;
   position: fixed;
   z-index: 10000;

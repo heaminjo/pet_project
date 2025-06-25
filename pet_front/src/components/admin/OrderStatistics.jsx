@@ -157,7 +157,7 @@ export default function OrderStatistics() {
   );
 }
 const OrderStatisticsComp = styled.div`
-  width: 1000px;
+  width: 100%;
   h2 {
     text-align: center;
     margin-bottom: 20px;
@@ -172,7 +172,8 @@ const OrderStatisticsComp = styled.div`
       box-shadow: 3px 3px 3px #ccc;
       .inner_ {
         display: flex;
-
+        width: 90%;
+        margin: 0 auto;
         .date_ {
           width: 700px;
           padding: 20px 0;

@@ -159,6 +159,7 @@ export default function CategoryManage() {
   );
 }
 const CategoryComp = styled.div`
+  width: 100%;
   .modal {
     position: fixed;
     left: 600px;
@@ -169,11 +170,11 @@ const CategoryComp = styled.div`
     margin-bottom: 30px;
   }
   .category_container {
-    width: 700px;
+    width: 90%;
     border: 2px solid #fff;
     box-shadow: 2px 2px 2px #777;
     padding: 20px;
-    background-color: #ede1dd;
+    background-color: #d2d7d9;
     .category_text {
       display: flex;
       justify-content: space-between;

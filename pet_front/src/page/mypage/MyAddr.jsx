@@ -132,8 +132,9 @@ export default function MyAddr() {
   );
 }
 const AddrComp = styled.div`
+  width: 100%;
   .addr_inner {
-    width: 850px;
+    width: 90%;
     position: relative;
     .modal {
       position: fixed;

@@ -14,7 +14,7 @@ export default function UserGrade() {
     { name: "Group D", value: 200 },
     { name: "Group D", value: 200 },
   ];
-  const COLORS = ["#EAEFEF", "#FFE99A", "	#FFD586", "#FFAAAA", "	#FF9898"];
+  const COLORS = ["#EAEFEF", "#d2d7d9", "	#bfb6b2", "#a69390", "	#847c7a"];
 
   //등급 통계 데이터
   const [gradeData, setGradeData] = useState([]);

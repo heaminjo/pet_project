@@ -55,24 +55,21 @@ function Banner() {
 
 export default Banner;
 const BannerComp = styled.div`
-  margin-bottom: 100px;
+  height: calc(100vh - 200px);
+  width: 100%;
   .slider-container {
-    position: relative;
-    width: 99vw;
-    height: 400px;
-    margin: 0 auto;
-
+    width: 100%;
+    height: 90%;
     border-radius: 40px;
-
     .item {
       width: 100%;
-      height: 100%;
       margin-bottom: 50px;
       border: 2px solid #555;
+
       img {
         width: 100%;
-        height: 450px;
         margin: 0 auto;
+        height: 400px;
       }
     }
   }

@@ -4,6 +4,7 @@ import { PetContext } from "./MyPage";
 import React from "react";
 import GradeComp from "./MyGradeStyle";
 import { useNavigate } from "react-router-dom";
+import { FaMedal } from "react-icons/fa";
 
 export default function MyGrade() {
   const { user } = useContext(PetContext);
@@ -14,7 +15,7 @@ export default function MyGrade() {
   const gradeStyleMap = {
     새싹회원: {
       next: "초급회원",
-      nextColor: "#ffe99a",
+      nextColor: "#d2d7d9",
       backColor: "#eaefef",
       width: "190px",
       condition1: 3,
@@ -23,8 +24,8 @@ export default function MyGrade() {
     },
     초급회원: {
       next: "중급회원",
-      nextColor: "#ffd586",
-      backColor: "#ffe99a",
+      nextColor: "#bfb6b2",
+      backColor: "#d2d7d9",
       width: "390px",
       condition1: 5,
       condition2: 3,
@@ -33,8 +34,8 @@ export default function MyGrade() {
     },
     중급회원: {
       next: "상급회원",
-      nextColor: "#ffaaaa",
-      backColor: "#ffd586",
+      nextColor: "#a69390",
+      backColor: "#bfb6b2",
       width: "590px",
       condition1: 10,
       condition2: 10,
@@ -43,8 +44,8 @@ export default function MyGrade() {
     },
     상급회원: {
       next: "프리미엄회원",
-      nextColor: "#ff9898",
-      backColor: "#ffaaaa",
+      nextColor: "#847c7a",
+      backColor: "#a69390",
       width: "790px",
       condition1: 20,
       condition2: 15,
@@ -53,7 +54,7 @@ export default function MyGrade() {
     },
     "프리미엄 회원": {
       next: "---------",
-      backColor: "#ff9898",
+      backColor: "#847c7a",
       width: "1000px",
       boon: "구매 시 20% 할인",
     },
@@ -68,23 +69,21 @@ export default function MyGrade() {
   //등급별 UI를 위한 데이터
   const grades = [
     { name: "새싹회원", color: "#eaefef" },
-    { name: "초급회원", color: "#ffe99a" },
-    { name: "중급회원", color: "#ffd586" },
-    { name: "상급회원", color: "#ffaaaa" },
-    { name: "프리미엄 회원", color: "#ff9898" },
+    { name: "초급회원", color: "#d2d7d9" },
+    { name: "중급회원", color: " #bfb6b2" },
+    { name: "상급회원", color: "#a69390" },
+    { name: "프리미엄 회원", color: "#847c7a" },
   ];
 
   return (
     <GradeComp data={gradeData}>
-      <div
-        className="grade_info"
-        style={{ backgroundColor: gradeData.backColor }}
-      >
+      <div className="grade_info">
         <div className="my_grade">
           <div className="grade_name">
             <h2>
               {user.name}님의 등급 <br /> <span>{user.grade}</span>
             </h2>
+            <FaMedal style={{ color: gradeData.backColor }} />
           </div>
           <div className="user_activity">
             <h3>활동 내역</h3>
@@ -111,30 +110,7 @@ export default function MyGrade() {
           </div>
         </div>
       </div>
-      <div className="grade_graph">
-        <ul>
-          {grades.map((g) => (
-            <li>
-              {g == user.grade ? (
-                <span className="my">[{g.name}]</span>
-              ) : (
-                <span className="non">{g.name}</span>
-              )}
-              <div
-                className="color_bar"
-                style={{ backgroundColor: g.color }}
-              ></div>
-              {g.name == user.grade && (
-                <React.Fragment>
-                  <button className="tab" />
-                </React.Fragment>
-              )}
-            </li>
-          ))}
-        </ul>
-        <div className="gauge active"></div>
-        <div className="gauge back"></div>
-      </div>
+
       <div className="next_grade">
         <div className="upgrade prev">
           <h2>{user.grade}</h2>

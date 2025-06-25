@@ -6,8 +6,9 @@ export default function Layout() {
   return (
     <>
       <Header />
-
-      <Outlet />
+      <div style={{ maxWidth: "1920px" }}>
+        <Outlet />
+      </div>
       <Footer />
     </>
   );

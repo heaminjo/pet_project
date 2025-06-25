@@ -107,7 +107,7 @@ export default function GoodsStatistics() {
   );
 }
 const OrderStatisticsComp = styled.div`
-  width: 1000px;
+  width: 100%;
   h2 {
     text-align: center;
     margin-bottom: 20px;
@@ -127,12 +127,13 @@ const OrderStatisticsComp = styled.div`
       }
       .data_container {
         display: flex;
+        width: 100%;
         gap: 15px;
         .goods_data {
           display: flex;
-
+          width: 75%;
           table {
-            width: 650px;
+            width: 100%;
             border: 1px solid #000;
             border-collapse: collapse;
             text-align: center;
@@ -157,7 +158,7 @@ const OrderStatisticsComp = styled.div`
           }
         }
         .detail {
-          width: 300px;
+          width: 25%;
           border: 2px solid #ccc;
           box-shadow: 3px 3px 3px #ccc;
           height: 430px;

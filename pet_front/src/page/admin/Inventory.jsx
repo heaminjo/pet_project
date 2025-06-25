@@ -168,25 +168,28 @@ export default function Inventory() {
 }
 const InventoryComp = styled.div`
   height: 1150px;
+  width: 100%;
   .inventory_container {
-    width: 1000px;
+    width: 90%;
     padding: 20px 0;
 
     .list_container {
-      width: 1000px;
+      width: 100%;
       table {
         border: 1px solid #000;
-        width: 1000px;
+        width: 100%;
         text-align: center;
         border-collapse: collapse;
         padding-bottom: 20px;
         tr {
           height: 50px;
           th {
-            background-color: #61a366;
+            background-color: #847c7a;
+            color: #fff;
           }
           td {
             border-bottom: 1px solid #ccc;
+
             img {
               width: 80px;
               height: 80px;
@@ -205,7 +208,7 @@ const InventoryComp = styled.div`
               height: 40px;
               border: none;
               border-radius: 20px;
-              background-color: #28a745;
+              background-color: lightslategrey;
               cursor: pointer;
               font-weight: bold;
               color: #fff;

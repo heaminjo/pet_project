@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 const StatisticsComp = styled.div`
+  width: 100%;
   .text_chart {
     display: flex;
     width: 100%;
@@ -25,7 +26,7 @@ const StatisticsComp = styled.div`
     text-align: center;
   }
   .m_statis_container {
-    width: 1000px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     padding-bottom: 50px;
@@ -38,7 +39,7 @@ const StatisticsComp = styled.div`
         border: 1px solid #ccc;
         box-shadow: 4px 4px 3px #ccc;
         padding: 20px;
-        width: 450px;
+        width: 80%;
         .re_chart {
           width: 100%;
           ul {
@@ -85,11 +86,11 @@ const StatisticsComp = styled.div`
       }
     }
     .m_container02 {
-      width: 940px;
+      width: 100%;
       height: 250px;
       .chart {
         height: 100%;
-        width: 100%;
+
         border: 1px solid #ccc;
         padding: 30px;
         box-shadow: 3px 3px 3px #ccc;

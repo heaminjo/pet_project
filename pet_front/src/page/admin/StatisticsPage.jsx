@@ -51,7 +51,9 @@ export default function StatisticsPage() {
   );
 }
 const StatisComp = styled.div`
+  width: 100%;
   .statis_inner {
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 100px;

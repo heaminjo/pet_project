@@ -5,7 +5,7 @@ export default function MypageMenu() {
   const navigate = useNavigate();
   const MyPageMenuComp = styled.div`
     .side_menu {
-      width: 200px;
+      width: 80%;
       padding: 15px 10px;
       background-color: #e1e1e1;
       display: flex;

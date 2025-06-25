@@ -1,18 +1,18 @@
 import styled from "styled-components";
 
 const BannerSelectComp = styled.div`
-  width: 950px;
+  width: 100%;
   .select_container {
-    width: 100%;
+    width: 90%;
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 30px;
     .modal {
       position: fixed;
-      left: 600px;
+      top: 38%;
+      left: 38%;
       text-align: center;
-      top: 245px;
     }
     .banner_list {
       width: 100%;

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import MemberApi from "../../api/MemberApi";
-import MyPageComp from "./MyPageStyle";
 import MypageMenu from "../../components/mypage/MyPageMenu";
 import { Outlet, useNavigate } from "react-router-dom";
+import styled from "styled-components";
 export const PetContext = React.createContext();
 
 export default function MyPage() {
@@ -33,10 +33,33 @@ export default function MyPage() {
     <PetContext.Provider value={{ user, setUser, getLoginUser }}>
       <MyPageComp>
         <div className="mypage_inner">
-          <MypageMenu setModal={setModal} />
-          <Outlet context={{ user }} />
+          <div className="menu_inner">
+            <MypageMenu setModal={setModal} />
+          </div>
+          <div className="page_inner">
+            <Outlet context={{ user }} />
+          </div>
         </div>
       </MyPageComp>
     </PetContext.Provider>
   );
 }
+const MyPageComp = styled.div`
+  width: 100%;
+  margin-top: 150px;
+  position: relative;
+  .mypage_inner {
+    max-width: "1920px";
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    padding: 40px 0;
+    gap: 40px;
+    .menu_inner {
+      width: 20%;
+    }
+    .page_inner {
+      width: 80%;
+    }
+  }
+`;

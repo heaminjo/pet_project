@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
 const UserListComp = styled.div`
+  width: 100%;
   .list_container {
-    width: 900px;
+    width: 90%;
     border: 1px solid #000;
     padding: 20px;
     border: 1px solid #eee;
@@ -68,10 +69,10 @@ const UserListComp = styled.div`
     .list_view {
       height: 380px;
       table {
-        width: 880px;
+        width: 100%;
         border-collapse: collapse;
         th {
-          background-color: rgb(58, 50, 40);
+          background-color: #847c7a;
           color: rgb(244, 243, 243);
           padding: 5px 0;
           text-align: start;

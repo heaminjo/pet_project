@@ -1,8 +1,7 @@
 import styled from "styled-components";
-import { PiShoppingCartFill } from "react-icons/pi";
 const MyInfoComp = styled.div`
   .main_container {
-    width: 100%;
+    width: 90%;
     border: 1px solid #000;
     padding: 20px;
     border: 1px solid #eee;
@@ -16,7 +15,7 @@ const MyInfoComp = styled.div`
       display: flex;
       gap: 20px;
       .user_profile {
-        width: 680px;
+        width: 100%;
         height: 100%;
         border: 1px solid rgb(240, 240, 240);
         box-shadow: 3px 3px 3px #ccc;
