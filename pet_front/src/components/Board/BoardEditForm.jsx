@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import BoardInsertFormStyle from "./BoardInsertFormStyle";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import instance from "../../api/axiosInstance";
 
 export default function BoardEditForm() {
   const { category, board_id } = useParams(); // URL에서 게시글 id 추출
@@ -25,7 +26,7 @@ export default function BoardEditForm() {
 
   // 기존 게시글 데이터 불러오기 (수정 폼 진입 시 1회)
   useEffect(() => {
-    axios
+    instance
       .get(`/board/boardDetail/${category}/${board_id}`)
       .then((response) => {
         console.log("fileList", response.data.fileList);
@@ -78,7 +79,7 @@ export default function BoardEditForm() {
     const formData = new FormData();
     newFiles.forEach(file => formData.append("files", file));
     try {
-      const res = await axios.post("/board/uploadfile", formData, {
+      const res = await instance.post("/board/uploadfile", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       return res.data; // [{file_name, origin_name, file_type}, ...]
@@ -128,11 +129,7 @@ export default function BoardEditForm() {
     };
   
     try {
-      await axios.put(`/board/updateboard/${board_id}`, data, {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-        },
-      });
+      await instance.put(`/board/updateboard/${board_id}`, data);
       alert("게시글이 수정되었습니다.");
       navigate(`/boardList/${category}`); 
     } catch (err) {

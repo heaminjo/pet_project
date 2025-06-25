@@ -1,37 +1,24 @@
 package com.example.pet_back.mapper;
 
+import com.example.pet_back.constant.GOODSSTATE;
+import com.example.pet_back.constant.ORDERSTATE;
 import com.example.pet_back.domain.goods.OrderDetailResponseDTO;
+import com.example.pet_back.entity.Goods;
 import com.example.pet_back.entity.OrderDetail;
+import com.example.pet_back.entity.Orders;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeConstants;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-06-24T10:55:19+0900",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.11 (Oracle Corporation)"
+    date = "2025-06-25T10:14:10+0900",
+    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.12 (Oracle Corporation)"
 )
 @Component
 public class OrderDetailMapperImpl implements OrderDetailMapper {
-
-    private final DatatypeFactory datatypeFactory;
-
-    public OrderDetailMapperImpl() {
-        try {
-            datatypeFactory = DatatypeFactory.newInstance();
-        }
-        catch ( DatatypeConfigurationException ex ) {
-            throw new RuntimeException( ex );
-        }
-    }
 
     @Override
     public OrderDetailResponseDTO toDTO(OrderDetail orderDetail) {
@@ -41,10 +28,20 @@ public class OrderDetailMapperImpl implements OrderDetailMapper {
 
         OrderDetailResponseDTO.OrderDetailResponseDTOBuilder orderDetailResponseDTO = OrderDetailResponseDTO.builder();
 
+        orderDetailResponseDTO.goodsId( orderDetailGoodsGoodsId( orderDetail ) );
+        orderDetailResponseDTO.goodsName( orderDetailGoodsGoodsName( orderDetail ) );
+        orderDetailResponseDTO.price( orderDetailGoodsPrice( orderDetail ) );
+        orderDetailResponseDTO.description( orderDetailGoodsDescription( orderDetail ) );
+        orderDetailResponseDTO.goodsState( orderDetailGoodsGoodsState( orderDetail ) );
+        orderDetailResponseDTO.imageFile( orderDetailGoodsImageFile( orderDetail ) );
+        orderDetailResponseDTO.orderId( orderDetailOrdersOrderId( orderDetail ) );
+        orderDetailResponseDTO.totalPrice( orderDetailOrdersTotalPrice( orderDetail ) );
+        orderDetailResponseDTO.totalQuantity( orderDetailOrdersTotalQuantity( orderDetail ) );
+        orderDetailResponseDTO.regDate( orderDetailOrdersRegDate( orderDetail ) );
+        orderDetailResponseDTO.status( orderDetailOrdersStatus( orderDetail ) );
         orderDetailResponseDTO.orderDetailId( orderDetail.getOrderDetailId() );
         orderDetailResponseDTO.goodsQuantity( orderDetail.getGoodsQuantity() );
         orderDetailResponseDTO.goodsPrice( orderDetail.getGoodsPrice() );
-        orderDetailResponseDTO.regDate( xmlGregorianCalendarToLocalDate( localDateTimeToXmlGregorianCalendar( orderDetail.getRegDate() ) ) );
 
         return orderDetailResponseDTO.build();
     }
@@ -63,27 +60,159 @@ public class OrderDetailMapperImpl implements OrderDetailMapper {
         return list;
     }
 
-    private XMLGregorianCalendar localDateTimeToXmlGregorianCalendar( LocalDateTime localDateTime ) {
-        if ( localDateTime == null ) {
+    private Long orderDetailGoodsGoodsId(OrderDetail orderDetail) {
+        if ( orderDetail == null ) {
             return null;
         }
-
-        return datatypeFactory.newXMLGregorianCalendar(
-            localDateTime.getYear(),
-            localDateTime.getMonthValue(),
-            localDateTime.getDayOfMonth(),
-            localDateTime.getHour(),
-            localDateTime.getMinute(),
-            localDateTime.getSecond(),
-            localDateTime.get( ChronoField.MILLI_OF_SECOND ),
-            DatatypeConstants.FIELD_UNDEFINED );
+        Goods goods = orderDetail.getGoods();
+        if ( goods == null ) {
+            return null;
+        }
+        Long goodsId = goods.getGoodsId();
+        if ( goodsId == null ) {
+            return null;
+        }
+        return goodsId;
     }
 
-    private static LocalDate xmlGregorianCalendarToLocalDate( XMLGregorianCalendar xcal ) {
-        if ( xcal == null ) {
+    private String orderDetailGoodsGoodsName(OrderDetail orderDetail) {
+        if ( orderDetail == null ) {
             return null;
         }
+        Goods goods = orderDetail.getGoods();
+        if ( goods == null ) {
+            return null;
+        }
+        String goodsName = goods.getGoodsName();
+        if ( goodsName == null ) {
+            return null;
+        }
+        return goodsName;
+    }
 
-        return LocalDate.of( xcal.getYear(), xcal.getMonth(), xcal.getDay() );
+    private int orderDetailGoodsPrice(OrderDetail orderDetail) {
+        if ( orderDetail == null ) {
+            return 0;
+        }
+        Goods goods = orderDetail.getGoods();
+        if ( goods == null ) {
+            return 0;
+        }
+        int price = goods.getPrice();
+        return price;
+    }
+
+    private String orderDetailGoodsDescription(OrderDetail orderDetail) {
+        if ( orderDetail == null ) {
+            return null;
+        }
+        Goods goods = orderDetail.getGoods();
+        if ( goods == null ) {
+            return null;
+        }
+        String description = goods.getDescription();
+        if ( description == null ) {
+            return null;
+        }
+        return description;
+    }
+
+    private GOODSSTATE orderDetailGoodsGoodsState(OrderDetail orderDetail) {
+        if ( orderDetail == null ) {
+            return null;
+        }
+        Goods goods = orderDetail.getGoods();
+        if ( goods == null ) {
+            return null;
+        }
+        GOODSSTATE goodsState = goods.getGoodsState();
+        if ( goodsState == null ) {
+            return null;
+        }
+        return goodsState;
+    }
+
+    private String orderDetailGoodsImageFile(OrderDetail orderDetail) {
+        if ( orderDetail == null ) {
+            return null;
+        }
+        Goods goods = orderDetail.getGoods();
+        if ( goods == null ) {
+            return null;
+        }
+        String imageFile = goods.getImageFile();
+        if ( imageFile == null ) {
+            return null;
+        }
+        return imageFile;
+    }
+
+    private Long orderDetailOrdersOrderId(OrderDetail orderDetail) {
+        if ( orderDetail == null ) {
+            return null;
+        }
+        Orders orders = orderDetail.getOrders();
+        if ( orders == null ) {
+            return null;
+        }
+        Long orderId = orders.getOrderId();
+        if ( orderId == null ) {
+            return null;
+        }
+        return orderId;
+    }
+
+    private int orderDetailOrdersTotalPrice(OrderDetail orderDetail) {
+        if ( orderDetail == null ) {
+            return 0;
+        }
+        Orders orders = orderDetail.getOrders();
+        if ( orders == null ) {
+            return 0;
+        }
+        int totalPrice = orders.getTotalPrice();
+        return totalPrice;
+    }
+
+    private int orderDetailOrdersTotalQuantity(OrderDetail orderDetail) {
+        if ( orderDetail == null ) {
+            return 0;
+        }
+        Orders orders = orderDetail.getOrders();
+        if ( orders == null ) {
+            return 0;
+        }
+        int totalQuantity = orders.getTotalQuantity();
+        return totalQuantity;
+    }
+
+    private LocalDate orderDetailOrdersRegDate(OrderDetail orderDetail) {
+        if ( orderDetail == null ) {
+            return null;
+        }
+        Orders orders = orderDetail.getOrders();
+        if ( orders == null ) {
+            return null;
+        }
+        LocalDate regDate = orders.getRegDate();
+        if ( regDate == null ) {
+            return null;
+        }
+        return regDate;
+    }
+
+    private ORDERSTATE orderDetailOrdersStatus(OrderDetail orderDetail) {
+        if ( orderDetail == null ) {
+            return null;
+        }
+        Orders orders = orderDetail.getOrders();
+        if ( orders == null ) {
+            return null;
+        }
+        ORDERSTATE status = orders.getStatus();
+        if ( status == null ) {
+            return null;
+        }
+        return status;
     }
 }

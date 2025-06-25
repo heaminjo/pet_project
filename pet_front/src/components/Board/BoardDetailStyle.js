@@ -14,7 +14,7 @@ const boardDetailContainer = styled.div`
         border: none;
         border-radius: 10px;
         cursor: pointer;
-        background-color: #f8e776;
+        background-color: #E5DDD6;
         border-bottom: none;
       }
     }
