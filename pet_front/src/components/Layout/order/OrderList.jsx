@@ -183,6 +183,7 @@ export default function OrderDetail() {
                   </div>
                 </div>
               ))}
+              <hr />
             </div>
           ))}
         </div>

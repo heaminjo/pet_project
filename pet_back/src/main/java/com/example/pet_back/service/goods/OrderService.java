@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public interface OrderService {
 
@@ -21,14 +22,13 @@ public interface OrderService {
     public ResponseEntity<?> findMemberAddress(CustomUserDetails userDetails);
 
     // 결제시 할인율 계산, 결제금액 Preview (백엔드 일괄)
-    PaymentPreviewDTO calculatePaymentPreview(List<Long> goodsIds, CustomUserDetails userDetails);
+    PaymentPreviewDTO calculatePaymentPreview(List<Map<String, Object>> goodsList, CustomUserDetails userDetails);
 
     // 상품 결제
     ResponseEntity<?> payGoods(CustomUserDetails userDetails, PayRequestDTO dto);
 
     // 배송조회
     ResponseEntity<?> deliveryStatus(CustomUserDetails userDetails, Long orderId);
-
 
     // 리뷰 작성
     ResponseEntity<?> regReview(CustomUserDetails userDetails, ReviewUploadDTO dto) throws IOException;
