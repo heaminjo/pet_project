@@ -6,12 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3733d33e-44d5-4aae-a945-8dbce959f5d6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/generated/com/example/pet_back/mapper/GoodsMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/generated/com/example/pet_back/mapper/GoodsMapperImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/generated/com/example/pet_back/mapper/OrderMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/generated/com/example/pet_back/mapper/OrderMapperImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/generated/com/example/pet_back/mapper/ReviewMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/generated/com/example/pet_back/mapper/ReviewMapperImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Board/BoardDetail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Board/BoardDetail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Board/BoardEditForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Board/BoardEditForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Board/BoardInsertForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Board/BoardInsertForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Board/CommentList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Board/CommentList.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
