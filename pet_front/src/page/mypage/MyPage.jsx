@@ -24,7 +24,6 @@ export default function MyPage() {
         navigate("/join", { state: { kakao: "true" } });
       } else {
         setUser(result);
-        console.log(result);
       }
     } catch (e) {
       navigate("/error", { state: { message: "권한이 없는 페이지 입니다." } });

@@ -11,8 +11,8 @@ public interface AuthService {
     public ApiResponse<?> login(HttpServletResponse response, LoginRequestDTO dto);
 
     public ResponseEntity<?> join(MemberRequestDTO dto);
-
-    public ResponseEntity<?> getRefresh(String refreshToken);
+    //리프레쉬로 토큰 재발급
+    public ResponseEntity<?> getRefresh(String refreshToken,HttpServletResponse response);
 
     public ApiResponse logout(CustomUserDetails userDetails,HttpServletResponse response);
 }

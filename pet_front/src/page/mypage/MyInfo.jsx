@@ -14,6 +14,7 @@ import { PiShoppingCartFill } from "react-icons/pi";
 import { LuMoveRight } from "react-icons/lu";
 import { TbHandFingerRight } from "react-icons/tb";
 import { MdOutlineProductionQuantityLimits } from "react-icons/md";
+import { FaMedal } from "react-icons/fa";
 
 export default function MyInfo() {
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -31,10 +32,19 @@ export default function MyInfo() {
   //최근 주문 목록 리스트
   const getOrderList = async () => {
     const result = await MemberApi.getOrderList();
-    console.log(result);
-
     setOrderList(result);
   };
+
+  //유저 등급 컬러
+  const grades = [
+    { name: "새싹회원", color: "#eaefef" },
+    { name: "초급회원", color: "#ffe99a" },
+    { name: "중급회원", color: "#ffd586" },
+    { name: "상급회원", color: "#ffaaaa" },
+    { name: "프리미엄 회원", color: "#ff9898" },
+  ];
+  const grade = grades?.find((g) => g.name === user.grade);
+
   return (
     <MyInfoComp>
       <div className="main_container">
@@ -62,7 +72,7 @@ export default function MyInfo() {
           <div className="user_grade">
             {/* 등급별 이미지,등급 */}
             <div className="grade_image">
-              <img src={gradeImage} alt="" />
+              <FaMedal style={{ color: grade.color }} />
             </div>
             <div className="grade_text">
               <p className="grade_name">{user.grade}</p>

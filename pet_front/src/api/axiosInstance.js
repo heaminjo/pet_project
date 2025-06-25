@@ -1,6 +1,5 @@
 import axios from "axios";
 import MemberApi from "./MemberApi";
-import { useNavigate } from "react-router-dom";
 
 //공통 설정을 갖는 axios 인스턴스
 const instance = axios.create({
@@ -19,6 +18,12 @@ instance.interceptors.request.use((config) => {
 
 let isRefreshing = false; // 현재 요청중인지 확인
 let requestQueue = [];
+
+let navigate;
+export const setNavigate = (navFn) => {
+  navigate = navFn;
+};
+
 //응답 인터셉터
 instance.interceptors.response.use(
   //성공한 응답일 경우 그대로 넘기지만
@@ -47,7 +52,6 @@ instance.interceptors.response.use(
           const newToken = response.data.accessToken;
           console.log("새로운 토큰 발급:", newToken);
 
-          //
           sessionStorage.setItem("accessToken", newToken);
 
           //요청 헤더에 새 토큰 업데이트
@@ -61,7 +65,10 @@ instance.interceptors.response.use(
         } catch (error) {
           requestQueue = []; // 실패한 경우도 큐는 초기화해야 함
           //리프레쉬 토큰 401 시 로그아웃 처리하고 다시 로그인 요청하도록 하게 에러 객체 전달
-          return Promise.reject(error);
+          alert("세션이 만료되었습니다. 다시 로그인해주세요.");
+          sessionStorage.clear();
+          navigate("/login");
+          return new Promise(() => {}); // 무한 pending 상태 → UI에 에러 전달 안 됨
         } finally {
           isRefreshing = false;
         }

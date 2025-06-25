@@ -42,12 +42,12 @@ public class AuthController {
 
     //리프레쉬 토큰
     @GetMapping("/getrefresh")
-    public ResponseEntity<?> getRefresh(@CookieValue("refreshToken") String refreshToken) {
+    public ResponseEntity<?> getRefresh(@CookieValue("refreshToken") String refreshToken,HttpServletResponse response) {
         log.info("RefreshToken으로 토큰 재 발급 시도합니다.");
         if (refreshToken == null) {
             log.info("refreshToken이 null입니다.");
         }
-        return authService.getRefresh(refreshToken);
+        return authService.getRefresh(refreshToken,response);
     }
 
     //로그아웃

@@ -183,7 +183,7 @@ const InventoryComp = styled.div`
         tr {
           height: 50px;
           th {
-            background-color: #fdffce;
+            background-color: #61a366;
           }
           td {
             border-bottom: 1px solid #ccc;

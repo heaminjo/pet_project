@@ -80,9 +80,8 @@ const MyInfoComp = styled.div`
           display: flex;
           justify-content: center;
           align-items: center;
-          img {
-            width: 100px;
-            border-radius: 100%;
+          svg {
+            font-size: 100px;
           }
         }
         .grade_text {

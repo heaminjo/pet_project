@@ -8,6 +8,7 @@ import { MdGrade } from "react-icons/md";
 import { LuClipboardPenLine } from "react-icons/lu";
 import { FaUserAlt } from "react-icons/fa";
 import { RiAdminFill } from "react-icons/ri";
+import { IoMdHome } from "react-icons/io";
 
 export default function Nav() {
   const navigate = useNavigate();
@@ -29,6 +30,10 @@ export default function Nav() {
     <NavComp>
       <div className="nav_inner">
         <ul className="nav_menu">
+          <li onClick={() => navigate("/")}>
+            <span> 홈</span>
+            <IoMdHome />
+          </li>
           <li onClick={() => navigate("/goods/list")}>
             <span> 펫스토어</span>
             <BiSolidShoppingBag />

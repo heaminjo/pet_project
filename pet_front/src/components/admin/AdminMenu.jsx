@@ -114,9 +114,6 @@ export default function AdminMenu() {
               <span onClick={() => navigate("/admin/page/best")}>
                 추천 상품 관리
               </span>
-              <span onClick={() => navigate("/admin/page/best")}>
-                베스트 상품 관리
-              </span>
             </li>
           </ul>
         </div>

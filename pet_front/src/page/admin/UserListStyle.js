@@ -71,8 +71,8 @@ const UserListComp = styled.div`
         width: 880px;
         border-collapse: collapse;
         th {
-          background-color: rgb(255, 221, 0);
-          color: rgb(52, 45, 1);
+          background-color: rgb(58, 50, 40);
+          color: rgb(244, 243, 243);
           padding: 5px 0;
           text-align: start;
           padding-left: 5px;

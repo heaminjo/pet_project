@@ -69,6 +69,7 @@ export default function Join() {
     handleSubmit,
     trigger, //실시간 검사
     setValue,
+    unregister,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -77,6 +78,7 @@ export default function Join() {
       gender: "MALE",
     },
     context: { isKakao: location.kakaoMember },
+    shouldUnregister: true,
   });
 
   //중복버튼 이메일 유효성 검사사
@@ -120,7 +122,12 @@ export default function Join() {
   };
 
   useEffect(() => {
-    if (location.state?.kakao === "true") setIskakao(true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (location.state?.kakao === "true") {
+      setIskakao(true);
+      //   unregister("password");
+      // unregister("password2");
+    }
   }, []);
   //회원가입
   const saveMember = async () => {
