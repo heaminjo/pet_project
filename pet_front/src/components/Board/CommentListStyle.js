@@ -24,19 +24,19 @@ const CommentListStyle = styled.div`
         }
 
         &:focus-within {
-          border-bottom-color: #f8e776;
+          border-bottom-color: #E5DDD6;
         }
 
         input:focus {
           outline: none;  
-          border-bottom-color: #f8e776;
+          border-bottom-color: #E5DDD6;
         }
 
         button {
           width: 50px;
           height: 25px;
           margin-left: 10px;
-          background-color: #f8e776;
+          background-color: #E5DDD6;
           color: #333;
           border: none;
           border-radius: 5px;
@@ -75,7 +75,7 @@ const CommentListStyle = styled.div`
           height: 25px;
           line-height: 25px;
           margin-left: 3px;
-          background-color: #f8e776;
+          background-color: #E5DDD6;
           color: #333;
           border: none;
           border-radius: 5px;
@@ -95,7 +95,7 @@ const CommentListStyle = styled.div`
           height: 25px;
           line-height: 25px;
           margin-left: 3px;
-          background-color: #f8e776;
+          background-color: #E5DDD6;
           color: #333;
           border: none;
           border-radius: 5px;

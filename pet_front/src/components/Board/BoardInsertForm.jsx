@@ -2,6 +2,7 @@ import BoardInsertFormStyle from "./BoardInsertFormStyle";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import instance from "../../api/axiosInstance";
 
 export default function BoardInsertForm() {
   const [title, setTitle] = useState("");
@@ -40,7 +41,7 @@ export default function BoardInsertForm() {
     files.forEach( file => formData.append("files", file) );
   
     try {
-      const res = await axios.post("/board/uploadfile", formData, {
+      const res = await instance.post("/board/uploadfile", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       return res.data; // 서버에서 반환한 savedFileName
@@ -86,11 +87,7 @@ export default function BoardInsertForm() {
     let url = `/board/insertBoard/${category}`;
 
     try {
-      await axios.post(url, data, {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-        },
-      });
+      await instance.post(url, data);
       alert("게시글이 등록되었습니다.");
       console.log("category:", category, "url:", url);
 

@@ -28,7 +28,7 @@ const boardListContainer = styled.div`
         transition: background-color 0.3s;
       }
       li:hover {
-        background-color: #f8e776;
+        background-color: #E5DDD6;
         border-radius: 4px;
       }
     } //boardListMenu
@@ -70,7 +70,7 @@ const boardListContainer = styled.div`
             border: none;
             border-radius: 10px;
             cursor: pointer;
-            background-color: #f8e776;
+            background-color: #E5DDD6;
             border-bottom: none;
           }
         }
@@ -134,7 +134,7 @@ const boardListContainer = styled.div`
       color: #222;
       transition: background 0.2s;
       &:hover {
-        background: #f8e776;
+        background: #E5DDD6;
       }
     }
   }

@@ -4,6 +4,7 @@ import axios from "axios";
 import BoardDetailStyle from "./BoardDetailStyle";
 import CommentForm from "./CommentForm";
 import CommentList from "./CommentList";
+import instance from "../../api/axiosInstance";
 
 // jwt 토큰에서 로그인한 회원의 ID를 가져옴
 function getMemberIdFromToken(token) {
@@ -40,24 +41,16 @@ export default function BoardDetail() {
   const [editingContent, setEditingContent] = useState('');
 
   useEffect(() => {
-    axios
-      .get(`/board/boardDetail/${category}/${board_id}`, {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-        },
-      })
+    instance
+      .get(`/board/boardDetail/${category}/${board_id}`)
       .then((response) => setPost(response.data))
       .catch((error) => setError(error));
   }, [category, board_id]);
 
   // 댓글 목록 조회
   useEffect(() => {
-    axios
-      .get(`/board/${board_id}/comments`, {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-        }
-      })
+    instance
+      .get(`/board/${board_id}/comments`)
       .then((response) => setComments(response.data || []))
       .catch((error) => console.error("댓글 불러오기 실패:", error));
   }, [board_id]);
@@ -66,22 +59,13 @@ export default function BoardDetail() {
   const handleAddComment = async () => {
     if (!comment.trim()) return; // 빈 댓글은 추가하지 않음
     try {
-      await axios.post(
+      await instance.post(
         `/board/${board_id}/comments`,
-        { content: comment, member_id: loginMemberId, board_id: board_id },
-        {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-          },
-        }
+        { content: comment, member_id: loginMemberId, board_id: board_id }
       );
       setComment(""); // 댓글 입력란 초기화
       // 댓글 등록 후 다시 댓글 목록 조회
-      const res = await axios.get(`/board/${board_id}/comments`, {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-        }
-      });
+      const res = await instance.get(`/board/${board_id}/comments`);
       setComments(res.data || []);
     } catch (error) {
       alert("댓글 등록에 실패했습니다.");
@@ -92,20 +76,11 @@ export default function BoardDetail() {
   const handleDeleteComment = async (comment_id) => {
     if (!window.confirm("정말 댓글을 삭제하시겠습니까?")) return;
     try {
-      await axios.delete(
-        `/board/${board_id}/comments/${comment_id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-          },
-        }
+      await instance.delete(
+        `/board/${board_id}/comments/${comment_id}`
       );
       // 댓글 삭제 후 다시 댓글 목록 조회
-      const res = await axios.get(`/board/${board_id}/comments`, {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-        }
-      });
+      const res = await instance.get(`/board/${board_id}/comments`);
       setComments(res.data || []);
     } catch (error) {
       alert("댓글 삭제에 실패했습니다.");
@@ -128,23 +103,14 @@ export default function BoardDetail() {
   const handleEditSubmit = async (comment_id) => {
     if (!editingContent.trim()) return; // 빈 댓글은 수정하지 않음
     try {
-      await axios.put(
+      await instance.put(
         `/board/${board_id}/comments/${comment_id}`,
-        { content: editingContent },
-        {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-          },
-        }
+        { content: editingContent }
       );
       setEditingCommentId(null);
       setEditingContent('');
       // 댓글 수정 후 다시 댓글 목록 조회
-      const res = await axios.get(`/board/${board_id}/comments`, {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-        }
-      });
+      const res = await instance.get(`/board/${board_id}/comments`);
       setComments(res.data || []);
     } catch (error) {
       alert("댓글 수정에 실패했습니다.");
@@ -172,11 +138,7 @@ export default function BoardDetail() {
   const handleDelete = async () => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
       try {
-        await axios.delete(`/board/delete/${post.board_id}`, {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
-          },
-        });
+        await instance.delete(`/board/delete/${post.board_id}`);
         alert("삭제되었습니다.");
         navigate(`/boardList/${category}`);
       } catch (err) {

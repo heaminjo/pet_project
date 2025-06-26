@@ -50,7 +50,7 @@ const boardInsertFormStyle = styled.div`
       border-radius: 0;
       transition: border-color 0.2s;
       &:focus {
-        border-bottom: 2px solid #f8e776;
+        border-bottom: 2px solid #E5DDD6;
       }
     }
 
@@ -71,7 +71,7 @@ const boardInsertFormStyle = styled.div`
       outline: none;
       transition: border-color 0.2s;
       &:focus {
-        border-color: #f8e776;
+        border-color: #E5DDD6;
       }
     }
 
@@ -85,7 +85,7 @@ const boardInsertFormStyle = styled.div`
       resize: vertical;
       transition: border-color 0.2s;
       &:focus {
-        border-color: #f8e776;
+        border-color: #E5DDD6;
         outline: none;
       }
     }
@@ -116,7 +116,7 @@ const boardInsertFormStyle = styled.div`
         }
 
         .fileLabel:hover {
-          background: #f8e776;
+          background: #E5DDD6;
         }
 
         .fileNameText {
@@ -191,14 +191,14 @@ const boardInsertFormStyle = styled.div`
       width: 100%;
       padding: 10px 28px;
       font-size: 18px;
-      background: #f8e776;
+      background: #E5DDD6;
       border: none;
       border-radius: 8px;
       cursor: pointer;
       font-family: "GmarketSansMedium";
       transition: background 0.2s;
       &:hover {
-        background: #ffe066;
+        background: #E5DDD6;
       }
     }
   }

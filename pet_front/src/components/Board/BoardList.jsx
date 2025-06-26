@@ -3,6 +3,7 @@ import axios from "axios";
 import BoardListStyle from "./BoardListStyle";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import PageNumber from "../util/PageNumber";
+import instance from "../../api/axiosInstance";
 
 export default function BoardList() {
   const { category } = useParams(); // URL 파라미터에서 카테고리 추출
@@ -59,7 +60,7 @@ export default function BoardList() {
       params.searchType = searchType;
       params.searchKeyword = searchKeyword;
     }
-    axios
+    instance
       .get(apiUrl, { params })
       .then((response) => {
         setListData(response.data.content || []);
@@ -122,7 +123,7 @@ export default function BoardList() {
                 {categoryNameMap[category] || "자유게시판"}
               </td>
             </tr>
-            <tr style={{ backgroundColor: " #f8e776" }}>
+            <tr style={{ backgroundColor: " #E5DDD6" }}>
               <th>NO</th>
               <th>제목</th>
               <th>작성자</th>

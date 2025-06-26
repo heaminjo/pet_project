@@ -13,7 +13,7 @@ const CommentFormStyle = styled.div`
       padding-bottom: 2px;
 
       &:focus-within {
-        border-bottom-color: #f8e776;
+        border-bottom-color: #E5DDD6;
       }
       
       input {
@@ -36,7 +36,7 @@ const CommentFormStyle = styled.div`
         width: 5%;
         height: 30px;
         margin-left: 10px;
-        background-color: #f8e776;
+        background-color: #E5DDD6;
         color: #333;
         border: none;
         border-radius: 5px;
