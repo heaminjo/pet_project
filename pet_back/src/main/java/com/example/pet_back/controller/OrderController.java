@@ -47,8 +47,6 @@ public class OrderController {
         return ResponseEntity.ok("주문이 취소되었습니다.");
     }
 
-
-
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 관 리 자 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // <DeliveryGoods />
     @PostMapping("/page/list")
@@ -70,7 +68,6 @@ public class OrderController {
         log.info("** OrderController => orderDetailAllList() 실행됨 **");
         return orderDetailService.orderDetailAllList(pageRequestDTO);
     }
-
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 결 제 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // 결제 메서드
@@ -95,7 +92,6 @@ public class OrderController {
         return ResponseEntity.ok(orderService.calculatePaymentPreview(goodsList, userDetails));
     }
 
-
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 배 송 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     @PostMapping("/delivery")
     public ResponseEntity<?> deliveryStatus(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("orderId") Long orderId) {
@@ -109,7 +105,6 @@ public class OrderController {
         log.info("** OrderController => findMemberAddress() 실행됨 **");
         return orderService.findMemberAddress(userDetails);
     }
-
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 리 뷰 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 리뷰 업로드
@@ -128,8 +123,15 @@ public class OrderController {
         }
     }
 
+    // 리뷰 중복등록 여부 검증
+    @GetMapping("/review/state/{orderDetailId}")
+    public ResponseEntity<?> getReviewState(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long orderDetailId){
+        log.info("** OrderController => getReviewState() 실행됨 **");
+        return orderDetailService.getReviewState(userDetails, orderDetailId);
+    }
+
     // 내 리뷰 목록 출력
-    @PostMapping("/myreviews")
+    @PostMapping("/review/my")
     public ResponseEntity<?> showReviewList(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody PageRequestDTO pageRequestDTO) {
         log.info("** OrderController => showReviewList() 실행됨 **");
         return orderService.showMyReviews(userDetails, pageRequestDTO);

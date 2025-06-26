@@ -11,9 +11,9 @@ const OrderComp = styled.div`
 
     .product {
       display: flex;
-      // gap: 40px;
       flex-direction: row;
       border: 1px solid #ddd;
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.08);
 
       .left {
         width: 400px;
@@ -28,7 +28,7 @@ const OrderComp = styled.div`
           height: 300px;
           padding: 10px;
           border: 1px solid #ddd;
-          box-shadow: 1px 1px 10px rgb(150, 150, 150);
+          box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.1);
         }
       }
 
@@ -36,14 +36,42 @@ const OrderComp = styled.div`
         width: 700px;
         height: 300px;
         padding: 30px;
+        gap: 12px;
 
         .prodname {
           margin-top: 50px;
-
           font-size: larger;
           font-weight: bold;
         }
-        .rating {
+        .info-row {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          font-size: 14px;
+          padding: 1px;
+
+          label {
+            min-width: 100px; /* 라벨 너비 고정 */
+            font-weight: bold;
+            font-size: 16px;
+          }
+          .inventory {
+            margin: 5px 0px 5px 20px;
+          }
+          input {
+            width: 80px;
+            height: 26px;
+            padding: 4px;
+            font-size: 14px;
+            margin-left: 50px;
+          }
+
+          .sellerimg {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            margin-left: 50px;
+          }
         }
 
         .prodprice {
@@ -75,8 +103,14 @@ const OrderComp = styled.div`
           background: #fff;
           color: #222;
         }
+        .btn1:hover {
+          background: rgb(255, 145, 145);
+        }
         .btn2 {
-          background-color: #f8e776;
+          background: #ffaaaa;
+        }
+        .btn2:hover {
+          background: rgb(255, 145, 145);
         }
       }
     }
@@ -87,7 +121,6 @@ const OrderComp = styled.div`
       /* 테이블 */
       .product-table {
         width: 100%;
-        margin-top: 16px;
         border-top: 1px solid #ccc;
         border-bottom: 1px solid #ccc;
         border-collapse: collapse;
@@ -98,6 +131,7 @@ const OrderComp = styled.div`
           background-color: #f5f5f5;
           padding: 8px;
           vertical-align: top;
+          padding-left: 30px;
         }
 
         .product-td {

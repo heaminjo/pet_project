@@ -17,6 +17,7 @@ import com.example.pet_back.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -54,12 +55,15 @@ public class GoodsServiceImpl implements GoodsService {
     private final FavoriteRepository favoriteRepository;
     private final GoodsBannerRepository goodsBannerRepository;
     private final GoodsBestRepository goodsBestRepository;
-    private final FileUploadProperties fileUploadProperties;
     private final CategoryRepository categoryRepository;
 
     // Mapper
     private final GoodsMapper goodsMapper;
     private final ReviewMapper reviewMapper;
+
+    // 이미지 위치 백엔드 경로 지정
+    @Autowired
+    private FileUploadProperties fileUploadProperties;
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상 품 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // 상품상세정보
@@ -119,7 +123,7 @@ public class GoodsServiceImpl implements GoodsService {
                         .price(goods.getPrice())
                         .description(goods.getDescription())
                         .goodsState(goods.getGoodsState())
-                        .imageFile(goods.getImageFile())
+                        .imageFile(fileUploadProperties.getUrl() + goods.getImageFile()) // 백엔드 경로 설정
                         .rating(goods.getRating())
                         .views(goods.getViews())
                         .reviewNum(goods.getReviewNum())
@@ -323,7 +327,7 @@ public class GoodsServiceImpl implements GoodsService {
                         .price(goods.getPrice())
                         .description(goods.getDescription())
                         .goodsState(goods.getGoodsState())
-                        .imageFile(goods.getImageFile())
+                        .imageFile(fileUploadProperties.getUrl() + goods.getImageFile()) // 백엔드 경로 설정
                         .rating(goods.getRating())
                         .views(goods.getViews())
                         .reviewNum(goods.getReviewNum())

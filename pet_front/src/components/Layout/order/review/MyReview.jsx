@@ -9,7 +9,6 @@ export default function MyReview() {
   const navigate = useNavigate();
   const location = useLocation();
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상 태 변 수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  const imgUrl = 'http://localhost:8080/resources/webapp/userImages/';
   const { goods } = location.state || {};
   const [reviews, setReviews] = useState([]);
   const [openStates, setOpenStates] = useState([]); // 각 리뷰들의 펼침 상태
@@ -105,13 +104,14 @@ export default function MyReview() {
             <div className='review-card' key={idx}>
               <div className='review-left'>
                 <div className='review-info'>
+                  <div></div>
                   <div className='review-title'>{review.title}</div>
                   <div className='review-stars'>{'⭐'.repeat(review.score)}</div>
                   <div className={`review-content ${openStates[idx] ? 'open' : ''}`} onClick={() => toggleOpen(idx)} style={{ cursor: 'pointer' }}>
                     {review.content}
                   </div>
                 </div>
-                <div>{review.imageFile.length === 0 ? <></> : review.imageFile?.split(',').map((img, i) => <img key={i} src={`${imgUrl}${img}`} alt={`이미지 ${i + 1}`} className='product-image' style={{ marginRight: '8px' }} />)}</div>
+                <div>{review.imageFile.length === 0 ? <></> : review.imageFile?.split(',').map((img, i) => <img key={i} src={`${img}`} alt={`이미지 ${i + 1}`} className='product-image' style={{ marginRight: '8px' }} />)}</div>
               </div>
               <div className='button-box'>
                 <button onClick={() => handleEdit(review)} className='edit-btn'>
@@ -145,10 +145,12 @@ const MyReviewComp = styled.div`
     gap: 16px;
     padding: 16px;
     margin-bottom: 20px;
-    border: 1px solid #eee;
+    border: 1px solid #ddd;
     border-radius: 10px;
-    background-color: #fffdf7;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+  }
+  .review-card:hover {
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   }
 
   .product-image {
@@ -214,10 +216,10 @@ const MyReviewComp = styled.div`
   .delete-btn {
     width: 150px;
     height: 45px;
-    margin: 5px 0;
+    margin: 20px 0;
     font-size: 1rem;
     font-weight: bold;
-    background-color: #f6e96c;
+    background-color: #ffaaaa;
     border: 1px solid #ccc;
     border-radius: 3px;
     cursor: pointer;
@@ -226,6 +228,7 @@ const MyReviewComp = styled.div`
 
   .edit-btn:hover,
   .delete-btn:hover {
-    background-color: #f1d700;
+    background-color: rgb(255, 145, 145);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 `;

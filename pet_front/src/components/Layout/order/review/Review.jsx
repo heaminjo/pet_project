@@ -13,36 +13,28 @@ export default function Review() {
   // 'http://localhost:8080/resources/webapp/userImages/basicimg.jpg'
   const [prevImg, setPrevImg] = useState([]);
   const [userImage, setUserImage] = useState([]);
+  const { goods } = location.state || ''; // 리뷰작성 시만
 
-  const { goods } = location.state || {};
+  // 리뷰 ID
+  const searchParams = new URLSearchParams(location.search);
+  const reviewId = searchParams.get('reviewId'); // null 이면 작성모드
+  const [goodsId, setGoodsId] = useState('');
+  const orderDetailId = searchParams.get('orderDetailId');
 
-  const [activeTab, setActiveTab] = useState('상품상세');
-  const [reviews, setReviews] = useState([]);
-  const [comment, setComment] = useState([]);
+  const [title, setTitle] = useState([]);
   const [content, setContent] = useState([]);
 
-  const imgUrl = 'http://localhost:8080/resources/webapp/userImages/';
   const up = 'up.png';
   const down = 'down.png';
   const prodImg = 'istockphoto-1320314988-2048x2048.jpg';
   // c:\devv\pet_project\pet_back\src\main\resources\webapp\userImages\up.png
 
   // 별점 (배열)
-  const [stars, setStars] = useState(); // ⭐  🤍❤️
-
-  // 별점 상태추가
-  const [score, setScore] = useState(0); // 🤍❤️
-  const [isDragging, setIsDragging] = useState(false);
+  const [score, setScore] = useState(0); // ⭐ 🤍❤️
 
   const renderStars = (rating) => {
     return '⭐'.repeat(Math.floor(rating)); // 반올림이나 소수점 무시
   };
-
-  // 보여줄 데이터
-  const data = [
-    { label: '리뷰 작성', value: goods.goodsName },
-    { label: '작성한 리뷰', value: goods.description },
-  ];
 
   // 이미지 제거
   const removeImage = (index) => {
@@ -50,16 +42,16 @@ export default function Review() {
     setPrevImg((prev) => prev.filter((_, i) => i !== index));
   };
 
-  // 리뷰등록
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 리뷰등록 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const regReview = async () => {
-    console.log(`goodsId = ${reviews.goodsId}`);
+    console.log(`goodsId = ${goods.goodsId}`);
     console.log(`별점: ${score}`);
     const review = {
       memberId: '',
       goodsId: goods.goodsId,
       orderDetailId: goods.orderDetailId,
       score: score,
-      title: comment,
+      title: title,
       content: content,
     };
 
@@ -84,17 +76,19 @@ export default function Review() {
   };
 
   useEffect(() => {
-    console.log(`goodsId = ${goods.goodsId}`);
-    console.log(`goods 정보 확인 : ${Object.keys(goods)}`);
+    if (goods) {
+      console.log(`goodsId = ${goods.goodsId}`);
+      console.log(`goods 정보 확인 : ${Object.keys(goods)}`);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
+  }, [goods]);
 
   return (
     <ReviewComp>
       <div className='container'>
-        <h2>리뷰작성 페이지</h2>
+        <h2>{reviewId ? '리뷰 수정' : '리뷰 작성'}</h2>
         <div className='prod-info'>
-          <img src={`${imgUrl}${goods.imageFile}`} alt='' style={{ width: '400px', height: '400px' }} className='prod-img' />
+          {goods && <img src={`${goods.imageFile}`} alt='' style={{ width: '400px', height: '400px' }} className='prod-img' />}
           <div>
             <b>상품명</b>&nbsp;&nbsp;{goods.goodsName}
           </div>
@@ -118,18 +112,12 @@ export default function Review() {
         <hr />
         <form>
           <fieldset className='reviews'>
-            <legend>
-              <strong>한줄요약</strong>
-            </legend>
             <label>
-              <input type='text' name='title' className='comment' value={comment} onChange={(e) => setComment(e.target.value)} />
+              <input type='text' name='title' className='comment' value={title} onChange={(e) => setTitle(e.target.value)} placeholder='한줄 요약' />
             </label>
             <hr />
-            <legend>
-              <strong>상세 리뷰</strong>
-            </legend>
             <label>
-              <textarea name='contents' className='contents' value={content} onChange={(e) => setContent(e.target.value)} />
+              <textarea name='contents' className='contents' value={content} onChange={(e) => setContent(e.target.value)} placeholder='상세 리뷰' />
             </label>
           </fieldset>
         </form>

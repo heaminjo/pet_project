@@ -106,7 +106,7 @@ const PayComp = styled.div`
 
   th {
     width: 150px;
-    background-color: #f6e96c;
+    background-color: #ffaaaa;
     border: 1px solid #ddd;
     padding: 10px;
     text-align: center;
@@ -196,18 +196,25 @@ const PayComp = styled.div`
     height: 100px;
     margin: 50px 20px 0 0;
     font-size: 1.2rem;
-    background-color: #f6e96c;
+    background-color: #ffaaaa;
     color: #000;
     font-weight: bold;
     border: 1px solid #ccc;
+  }
+  .pay:hover {
+    background-color: rgb(255, 145, 145);
   }
 
   .cancel {
     width: 300px;
     height: 100px;
     font-size: 1.2rem;
+    background-color: rgb(238, 234, 234);
     background-color: #fff;
     border: 1px solid #ccc;
+  }
+  .cancel:hover {
+    background-color: rgb(221, 215, 215);
   }
 
   input[type='radio'] {
@@ -219,6 +226,12 @@ const PayComp = styled.div`
     height: 1px;
     background-color: #ddd;
     margin: 10px 0 20px 0;
+  }
+
+  .deliver-btn:hover,
+  .contact-btn:hover,
+  .message-btn:hover {
+    background-color: rgb(221, 215, 215);
   }
 `;
 

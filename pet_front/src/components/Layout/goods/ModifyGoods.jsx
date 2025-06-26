@@ -4,12 +4,13 @@ import React, { useEffect, useState } from 'react';
 import GoodsApi from '../../../api/GoodsApi';
 import styled from 'styled-components';
 import PageNumber from '../../util/PageNumber';
+import { FaStar, FaRegStar } from 'react-icons/fa';
 
 export default function ModifyGoods() {
   const navigate = useNavigate();
   const location = useLocation();
   const goodsImg = process.env.PUBLIC_URL + '/images/pic1.png';
-  const imgUrl = 'http://localhost:8080/resources/webapp/userImages/';
+  const [stars, setStars] = useState(); // ⭐
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상 태 변 수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -36,7 +37,17 @@ export default function ModifyGoods() {
 
   // 별점 (배열)
   const renderStars = (rating) => {
-    return '⭐'.repeat(Math.floor(rating)); // 반올림이나 소수점 무시
+    // return '⭐'.repeat(Math.floor(rating)); // 반올림이나 소수점 무시
+    const stars = [];
+    const fullStars = Math.floor(rating); // 채운 별 수
+    const emptyStars = 5 - fullStars; // 빈 별 수
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<FaStar key={`full-${i}`} color='gold' size={30} />);
+    }
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push(<FaRegStar key={`empty-${i}`} color='lightgray' size={30} />);
+    }
+    return stars;
   };
 
   // 페이징
@@ -130,7 +141,8 @@ export default function ModifyGoods() {
             setEditMode(false); // 등록모드
             setSelectedGoods(null);
             setShowModal(true);
-          }}>
+          }}
+          className='add-btn'>
           + 상품 추가
         </button>
         <ModalStyles>
@@ -157,7 +169,7 @@ export default function ModifyGoods() {
                 // onClick={() => clickProd(item)}
               >
                 <div className='prodimg'>
-                  <img src={`${imgUrl}${item.imageFile}`} alt={item.goodsName} />
+                  <img src={`${item.imageFile}`} alt={item.goodsName} />
                 </div>
                 <div className='goodsdetail'>
                   <div>
@@ -180,14 +192,16 @@ export default function ModifyGoods() {
                       setEditMode(true); // 수정모드
                       setSelectedGoods(item); // 선택된 상품 정보
                       setShowModal(true);
-                    }}>
+                    }}
+                    className='modify-btn'>
                     수정
                   </button>
                   <button
                     onClick={(e) => {
                       e.stopPropagation(); // 부모 클릭 방지
                       deleteGoods(item.goodsId);
-                    }}>
+                    }}
+                    className='cancel-btn'>
                     삭제
                   </button>
                 </div>
@@ -243,8 +257,10 @@ const ModifyGoodsComp = styled.div`
       color: #666;
     }
 
-    button {
-      background-color: #f6e96c;
+    .add-btn,
+    .modify-btn,
+    .cancel-btn {
+      background-color: #ffaaaa;
       color: #333;
       border: none;
       border-radius: 5px;
@@ -254,8 +270,10 @@ const ModifyGoodsComp = styled.div`
       transition: background-color 0.3s ease;
     }
 
-    button:hover {
-      background-color: #f1d700;
+    .add-btn:hover,
+    .modify-btn:hover,
+    .cancel-btn:hover {
+      background-color: rgb(255, 145, 145);
     }
 
     .list {
@@ -263,12 +281,14 @@ const ModifyGoodsComp = styled.div`
       flex-direction: column;
       gap: 20px;
       margin-top: 30px;
+      margin-bottom: 60px;
     }
 
     .goodslist {
       display: flex;
       align-items: center;
       padding: 16px;
+      border: 1px solid #ccc;
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
       background-color: #fff;

@@ -9,7 +9,6 @@ export default function Cart() {
   const navigate = useNavigate();
   // const cartImage1 = process.env.PUBLIC_URL + '/images/pic1.png';
   const seller = process.env.PUBLIC_URL + '/images/avatar.png';
-  const imgUrl = 'http://localhost:8080/resources/webapp/userImages/';
   const deliverPrice = 3000; // 배달료 (현재 고정)
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상 태 변 수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -69,7 +68,7 @@ export default function Cart() {
       .map((item) => ({
         ...item,
         quantity: quantityMap[item.goodsId],
-        imageFile: imgUrl + item.imageFile,
+        imageFile: item.imageFile,
       }));
 
     // 재고수량 검증
@@ -224,7 +223,7 @@ export default function Cart() {
                       />
                       &nbsp;&nbsp;&nbsp;
                     </label>
-                    <img src={`${imgUrl}${item.imageFile}`} alt={item.goodsName} className='prodimg' onClick={() => navigate('/goods/order', { state: { goods: item } })} />
+                    <img src={`${item.imageFile}`} alt={item.goodsName} className='prodimg' onClick={() => navigate('/goods/order', { state: { goods: item } })} />
                   </div>
                   <div className='prodright'>
                     <div>
@@ -325,7 +324,7 @@ export default function Cart() {
             <button className='buy' onClick={() => handleBuyClick()}>
               구매하기
             </button>
-            <button className='buy' onClick={() => navigate('/')}>
+            <button className='cancel' onClick={() => navigate('/')}>
               취소
             </button>
           </div>

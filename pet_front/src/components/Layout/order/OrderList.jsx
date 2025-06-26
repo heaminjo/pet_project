@@ -10,7 +10,6 @@ export default function OrderDetail() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
   const location = useLocation();
   const prodImg = process.env.PUBLIC_URL + '/images/pic1.png';
-  const imgUrl = 'http://localhost:8080/resources/webapp/userImages/';
   const navigate = useNavigate();
 
   // 페이징 위함
@@ -18,10 +17,9 @@ export default function OrderDetail() {
   const [quantityMap, setQuantityMap] = useState({}); // Map 용도( goods id : goods quantity )
 
   const [info, setInfo] = useState([]); // OrderDetailResponseDTO List
-
   const [showModal, setShowModal] = useState(false); // Y/N
-
   const [buyQuantity, setBuyQuantity] = useState(1);
+  const [reviewIdMap, setReviewIdMap] = useState({}); // { orderDetailId: reviewId }
 
   // 페이징 관련 상태변수
   const [type, setType] = useState('all');
@@ -45,6 +43,7 @@ export default function OrderDetail() {
     navigate('/user/mypage/cart/list');
   };
 
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~ 재주문 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 장바구니 담기
   const addToCart = async (goods, buyQuantity) => {
     try {
@@ -58,7 +57,7 @@ export default function OrderDetail() {
     }
   };
 
-  // 주문내역 리스트를 순회하며 날짜별로 그룹화 ~~~~~~~~~~~~~~~~~~~~
+  // ~~~~~~~~~~~~~~~~~ 주문내역 리스트를 순회하며 날짜별로 그룹화 ~~~~~~~~~~~~~~~~~~~~
   const groupByDate = (info) => {
     const grouped = {};
     info.forEach((item) => {
@@ -68,16 +67,13 @@ export default function OrderDetail() {
       if (!grouped[dateKey]) grouped[dateKey] = []; // 빈배열 방어
       grouped[dateKey].push(item);
     });
+
     return grouped;
   };
+  const groupedInfo = groupByDate(info); // 함수 실행
+  const sortedDates = Object.keys(groupedInfo).sort((a, b) => new Date(b) - new Date(a)); // 그룹화한 리스트 결과를 날짜 최신순 정렬
 
-  // 함수 실행
-  const groupedInfo = groupByDate(info);
-
-  // 그룹화한 리스트 결과를 날짜 최신순 정렬
-  const sortedDates = Object.keys(groupedInfo).sort((a, b) => new Date(b) - new Date(a));
-
-  // 주문취소 클릭시
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~ 주문취소 클릭시 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const withDraw = async (orderDetailId) => {
     console.log(`프론트 주문취소 요청 ID: ${orderDetailId}`);
     try {
@@ -100,8 +96,7 @@ export default function OrderDetail() {
     };
 
     try {
-      const response = await OrderApi.getOrderDetailPageList(pages); // 이건 Axios full response
-
+      const response = await OrderApi.getOrderDetailPageList(pages);
       if (Array.isArray(response?.content)) {
         setInfo(response.content);
       } else {
@@ -147,12 +142,13 @@ export default function OrderDetail() {
           )}
           {sortedDates.map((date) => (
             <div key={date} className='orderlist'>
+              <hr />
               {groupedInfo[date].map((item, index) => (
                 <div key={item.orderDetailId} className='ordertitle'>
                   {date} 주문
                   <div className='orderlist2'>
                     <div className='orderdesc'>
-                      <img src={`${imgUrl}${item.imageFile}`} alt={item.goodsName} className='prodimg' onClick={() => navigate('/user/order', { state: { goods: item } })} />
+                      <img src={`${item.imageFile}`} alt={item.goodsName} className='prodimg' onClick={() => navigate('/user/order', { state: { goods: item } })} />
                       <br />
                       <div className='proddesc'>
                         <b>결제완료</b> <br />
@@ -169,15 +165,15 @@ export default function OrderDetail() {
                         <button className='btn3' onClick={() => withDraw(item.orderDetailId)}>
                           주문취소
                         </button>
-                        <button
-                          className='btn4'
-                          onClick={() =>
-                            navigate('/user/mypage/review', {
-                              state: { goods: item },
-                            })
-                          }>
-                          리뷰작성
-                        </button>
+                        {item.reviewId ? (
+                          <button className='btn4' onClick={() => navigate(`/user/mypage/review?reviewId=${item.reviewId}`)}>
+                            리뷰수정
+                          </button>
+                        ) : (
+                          <button className='btn4' onClick={() => navigate('/user/mypage/review', { state: { goods: item } })}>
+                            리뷰작성
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>

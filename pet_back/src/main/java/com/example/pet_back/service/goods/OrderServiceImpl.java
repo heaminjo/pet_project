@@ -17,6 +17,7 @@ import com.example.pet_back.mapper.ReviewMapper;
 import com.example.pet_back.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -59,7 +60,10 @@ public class OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
     private final OrderDetailMapper orderDetailMapper;
     private final ReviewMapper reviewMapper;
-    private final FileUploadProperties fileUploadProperties;
+
+    // 이미지 위치 백엔드 경로 지정
+    @Autowired
+    private FileUploadProperties fileUploadProperties;
 
     // 결제페이지 - 고객 주소 가져오기
     @Override
@@ -271,8 +275,12 @@ public class OrderServiceImpl implements OrderService {
 
         reviewUploadDTO.setMemberId(member.getId());
         Optional<Goods> goods = goodsRepository.findById(reviewUploadDTO.getGoodsId());
-        Optional<OrderDetail> orderDetail = orderDetailRepository.findById(reviewUploadDTO.getOrderDetailId());
-        Review review = reviewMapper.toEntity(reviewUploadDTO, member, goods.orElse(null), orderDetail.orElse(null));
+        OrderDetail orderDetail = orderDetailRepository.findById(reviewUploadDTO.getOrderDetailId())
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 주문상세입니다."));
+        Review review = reviewMapper.toEntity(reviewUploadDTO, member, goods.get(), orderDetail);
+        reviewRepository.save(review);
+        orderDetail.setIsReviewed(true);
+        orderDetailRepository.save(orderDetail);
 
         // null 방어 코드
         review.setTitle(StringUtils.hasText(reviewUploadDTO.getTitle()) ? reviewUploadDTO.getTitle() : "");
@@ -314,6 +322,9 @@ public class OrderServiceImpl implements OrderService {
         List<ReviewResponseDTO> dtoList = reviewPage.getContent().stream()
                 .map(reviewMapper::toDTO)
                 .toList();
+        for(ReviewResponseDTO dto : dtoList){
+            dto.setImageFile(fileUploadProperties.getUrl() + dto.getImageFile());
+        }
 
         log.info("** 3. Page<Review> 의 content (DTO에 SET) **");
         log.info("getContent: "+reviewPage.getContent());
