@@ -110,23 +110,10 @@ export default function Login() {
     setValue("email", "");
     setValue("password", "");
     window.Kakao.Auth.authorize({
-      redirectUri: "https://54.180.195.59:3000/login", //
+      redirectUri: "http://54.180.195.59/login", //
     });
   };
 
-  // const kakaoCode = () => {
-  //   const REST_API_KEY = "카카오 REST API 키";
-  //   const REDIRECT_URI = "http://localhost:3000/login";
-
-  //   const KAKAO_AUTH_URL =
-  //     `https://kauth.kakao.com/oauth/authorize?` +
-  //     `client_id=${REST_API_KEY}` +
-  //     `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}` +
-  //     `&response_type=code` +
-  //     `&prompt=login`; // 요게 핵심
-
-  //   window.location.href = KAKAO_AUTH_URL;
-  // };
   return (
     <LoginComp>
       <div className="login_inner">
