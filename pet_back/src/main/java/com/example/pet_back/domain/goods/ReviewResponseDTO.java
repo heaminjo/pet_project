@@ -23,5 +23,9 @@ public class ReviewResponseDTO {
     private String title;
     private String content;
     private String imageFile;
+    private LocalDate regDate;
+    private LocalDate modDate;
+
+    private GoodsSimpleDTO goods;
 
 }

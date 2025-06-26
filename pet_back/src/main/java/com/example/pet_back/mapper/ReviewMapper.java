@@ -1,5 +1,7 @@
 package com.example.pet_back.mapper;
 
+import com.example.pet_back.config.FileUploadProperties;
+import com.example.pet_back.domain.goods.GoodsSimpleDTO;
 import com.example.pet_back.domain.goods.ReviewResponseDTO;
 import com.example.pet_back.domain.goods.ReviewUploadDTO;
 import com.example.pet_back.entity.Goods;
@@ -9,6 +11,7 @@ import com.example.pet_back.entity.Review;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -34,6 +37,25 @@ public interface ReviewMapper {
     @Mapping(target = "memberId", source = "member.id")
     @Mapping(target = "orderDetailId", source = "orderDetail.orderDetailId")
     @Mapping(target = "goodsId", source = "goods.goodsId")
+    @Mapping(target = "goods", source = "goods") // GoodsSimpleDTO 매핑 위함
+    @Mapping(target = "regDate", source = "regDate")
     ReviewResponseDTO toDTO(Review review);
+
+    // Goods → GoodsSimpleDTO
+    default GoodsSimpleDTO map(Goods goods) {
+        if (goods == null) return null;
+        return new GoodsSimpleDTO(
+                goods.getGoodsId(),
+                goods.getGoodsName(),
+                goods.getImageFile(),
+                goods.getCategory() != null ? goods.getCategory().getCategoryName() : null,
+                goods.getGoodsState().name(),
+                goods.getQuantity(),
+                goods.getRating(),
+                goods.getReviewNum(),
+                goods.getPrice()
+        );
+    }
+
 
 }

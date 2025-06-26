@@ -5,12 +5,17 @@ import GoodsApi from '../../../api/GoodsApi';
 import styled from 'styled-components';
 import PageNumber from '../../util/PageNumber';
 import { FaStar, FaRegStar } from 'react-icons/fa';
+import Modal from '../../../modal/Modal';
 
 export default function ModifyGoods() {
   const navigate = useNavigate();
   const location = useLocation();
   const goodsImg = process.env.PUBLIC_URL + '/images/pic1.png';
   const [stars, setStars] = useState(); // ⭐
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 모 달 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const [deleteTarget, setDeleteTarget] = useState(null); // 삭제 대상 상품 ID
+  const [confirmDeleteModal, setConfirmDeleteModal] = useState(false); // 삭제 확인 모달
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상 태 변 수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -106,6 +111,7 @@ export default function ModifyGoods() {
   const deleteGoods = async (goodsId) => {
     try {
       const result = await GoodsApi.deleteGoods(goodsId);
+      await getPageList();
     } catch (err) {
       console.error('getPageList 실패: ', err);
     }
@@ -199,6 +205,8 @@ export default function ModifyGoods() {
                   <button
                     onClick={(e) => {
                       e.stopPropagation(); // 부모 클릭 방지
+                      setDeleteTarget(item.goodsId); // 삭제할 상품 ID 저장
+                      setConfirmDeleteModal(true); // 모달 오픈
                       deleteGoods(item.goodsId);
                     }}
                     className='cancel-btn'>
@@ -208,8 +216,18 @@ export default function ModifyGoods() {
               </div>
             ))}
         </section>
-
         <PageNumber page={page} setPage={setPage} paging={paging} />
+        {/* 삭제 확인 모달 */}
+        {confirmDeleteModal && (
+          <Modal
+            content='정말 삭제하시겠습니까?'
+            clickEvt={async () => {
+              await deleteGoods(deleteTarget);
+              setConfirmDeleteModal(false);
+            }}
+            setModal={setConfirmDeleteModal}
+          />
+        )}
       </div>
     </ModifyGoodsComp>
   );

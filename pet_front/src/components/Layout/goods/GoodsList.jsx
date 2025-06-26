@@ -4,6 +4,7 @@ import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import GoodsApi from '../../../api/GoodsApi';
 import PageNumber from '../../util/PageNumber.jsx';
 import { FaStar, FaRegStar } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
 
 export default function GoodsList() {
   const navigate = useNavigate();
@@ -144,7 +145,7 @@ export default function GoodsList() {
               setPage(0); // 검색 버튼 클릭 시 페이지 초기화
             }}>
             <span role='img' aria-label='search'>
-              🔍
+              <FaSearch color='rgb(70, 66, 65)' size={30} style={{ width: '24px' }} />
             </span>
           </button>
         </div>

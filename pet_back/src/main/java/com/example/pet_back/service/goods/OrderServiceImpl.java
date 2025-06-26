@@ -242,10 +242,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public ResponseEntity<?> regReview(CustomUserDetails userDetails, //
                                        ReviewUploadDTO reviewUploadDTO) throws IOException {
-
         Member member = memberRepository.findById(userDetails.getMember().getId()).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
-
-
         List<MultipartFile> imageFiles = reviewUploadDTO.getImageFiles();
 
         // 이미지 로직
@@ -280,6 +277,7 @@ public class OrderServiceImpl implements OrderService {
         Review review = reviewMapper.toEntity(reviewUploadDTO, member, goods.get(), orderDetail);
         reviewRepository.save(review);
         orderDetail.setIsReviewed(true);
+        log.info("orderDetail.setIsReviewed(true) 후: "+orderDetail.isReviewed());
         orderDetailRepository.save(orderDetail);
 
         // null 방어 코드
@@ -287,7 +285,7 @@ public class OrderServiceImpl implements OrderService {
         review.setContent(StringUtils.hasText(reviewUploadDTO.getContent()) ? reviewUploadDTO.getContent() : "");
 
         log.info("등록할 리뷰 정보: memberId={}, goodsId={}, orderDetailId={}", member.getId(), review.getGoods().getGoodsId(), review.getOrderDetail().getOrderDetailId());
-        log.info("score={}, title={}, content={}, imageFiles={}", review.getScore(), review.getTitle(), review.getContent(), uploadImg);
+        log.info("score={}, title={}, content={}, imageFiles={}", review.getScore(), review.getTitle(), review.getContent(), review.getImageFile());
 
         try{
             reviewRepository.save(review);
@@ -298,7 +296,6 @@ public class OrderServiceImpl implements OrderService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("리뷰 등록 중 오류가 발생했습니다.");
         }
     }
-
 
     // 내 리뷰 목록 출력
     @Override
@@ -322,9 +319,21 @@ public class OrderServiceImpl implements OrderService {
         List<ReviewResponseDTO> dtoList = reviewPage.getContent().stream()
                 .map(reviewMapper::toDTO)
                 .toList();
-        for(ReviewResponseDTO dto : dtoList){
-            dto.setImageFile(fileUploadProperties.getUrl() + dto.getImageFile());
-        }
+
+        // 이미지 리스트 백엔드 경로 지정
+        dtoList.forEach(dto -> {
+            if (dto.getGoods() != null) {
+                dto.getGoods().setImageFile(fileUploadProperties.getUrl() + dto.getGoods().getImageFile());
+            }
+
+            if (dto.getImageFile() != null && !dto.getImageFile().isBlank()) {
+                String[] paths = dto.getImageFile().split(",");
+                for (int i = 0; i < paths.length; i++) {
+                    paths[i] = fileUploadProperties.getUrl() + paths[i].trim();
+                }
+                dto.setImageFile(String.join(",", paths));
+            }
+        });
 
         log.info("** 3. Page<Review> 의 content (DTO에 SET) **");
         log.info("getContent: "+reviewPage.getContent());

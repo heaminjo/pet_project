@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import OrderApi from '../../../../api/OrderApi';
 import PageNumber from '../../../util/PageNumber';
+import GoodsApi from '../../../../api/GoodsApi';
+import { FaStar, FaRegStar } from 'react-icons/fa';
 
 // 리뷰 페이지
 export default function MyReview() {
@@ -12,6 +14,9 @@ export default function MyReview() {
   const { goods } = location.state || {};
   const [reviews, setReviews] = useState([]);
   const [openStates, setOpenStates] = useState([]); // 각 리뷰들의 펼침 상태
+
+  const [stars, setStars] = useState(); // ⭐
+  const [goodsId, setGoodsId] = useState('');
 
   // 페이징 관련 상태변수
   const [type, setType] = useState('all');
@@ -29,6 +34,21 @@ export default function MyReview() {
     totalPages: 0,
   });
 
+  // 별점 (배열)
+  const renderStars = (rating) => {
+    // return '⭐'.repeat(Math.floor(rating)); // 반올림이나 소수점 무시
+    const stars = [];
+    const fullStars = Math.floor(rating); // 채운 별 수
+    const emptyStars = 5 - fullStars; // 빈 별 수
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<FaStar key={`full-${i}`} color='gold' size={20} />);
+    }
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push(<FaRegStar key={`empty-${i}`} color='lightgray' size={20} />);
+    }
+    return stars;
+  };
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 페이징 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 작성한 리뷰 목록 불러오기
   const getPageList = async () => {
@@ -41,6 +61,7 @@ export default function MyReview() {
     };
     try {
       const result = await OrderApi.getReviewsPageList(pages);
+      console.log(`${result}`);
       // 1. 리뷰
       setReviews(result.content);
 
@@ -56,6 +77,16 @@ export default function MyReview() {
       });
     } catch (err) {
       console.error('getPageList 실패: ', err);
+    }
+  };
+
+  // goodsId 로 상품정보 불러오기
+  const getGoodsInfo = async (goodsId) => {
+    try {
+      const result = await GoodsApi.goodsDetail(goodsId);
+      console.log(`${result}`);
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -103,15 +134,34 @@ export default function MyReview() {
           reviews.map((review, idx) => (
             <div className='review-card' key={idx}>
               <div className='review-left'>
-                <div className='review-info'>
-                  <div></div>
-                  <div className='review-title'>{review.title}</div>
-                  <div className='review-stars'>{'⭐'.repeat(review.score)}</div>
-                  <div className={`review-content ${openStates[idx] ? 'open' : ''}`} onClick={() => toggleOpen(idx)} style={{ cursor: 'pointer' }}>
-                    {review.content}
+                <div className='review-box'>
+                  <div className='prod-info'>
+                    <img src={review.goods.imageFile} alt={review.goods.goodsName} className='product-image' style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px' }} />
+                    <span>{review.goods.goodsName}</span>
+                    <div>{renderStars(review.goods.rating)}</div>
+                  </div>
+                  <div className='review-info'>
+                    <div className='review-date'>
+                      <h3>
+                        {review.regDate}&nbsp;&nbsp;reviewId : {review.reviewId}
+                      </h3>
+                    </div>
+                    <div className='review-title'>{review.title}</div>
+                    <div className='review-stars'>{renderStars(review.score)}</div>
+                    <div className={`review-content ${openStates[idx] ? 'open' : ''}`} onClick={() => toggleOpen(idx)} style={{ cursor: 'pointer' }}>
+                      {review.content}
+                    </div>
+                    <div>
+                      {review.imageFile.length === 0 || !review.imageFile ? (
+                        <>
+                          <span style={{ color: 'gray' }}>이미지 없음</span>
+                        </>
+                      ) : (
+                        review.imageFile && review.imageFile.split(',').map((img, i) => <img key={i} src={`${img.trim()}`} alt={`이미지 ${i + 1}`} className='product-image' style={{ marginRight: '8px' }} />)
+                      )}
+                    </div>
                   </div>
                 </div>
-                <div>{review.imageFile.length === 0 ? <></> : review.imageFile?.split(',').map((img, i) => <img key={i} src={`${img}`} alt={`이미지 ${i + 1}`} className='product-image' style={{ marginRight: '8px' }} />)}</div>
               </div>
               <div className='button-box'>
                 <button onClick={() => handleEdit(review)} className='edit-btn'>
@@ -163,13 +213,34 @@ const MyReviewComp = styled.div`
 
   .review-left {
     width: 600px;
-    margin: 0 50px;
+    margin: 20px;
   }
-  .review-info {
+  .review-box {
     flex: 1;
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    flex-direction: row;
+    gap: 50px;
+    .prod-info {
+      width: 150px;
+      height: 200px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      gap: 10px;
+      align-items: center;
+      border-radius: 3px;
+      box-shadow: 3px 3px 6px rgb(194, 194, 194);
+      display: flex;
+      flex-direction: column;
+      img {
+        width: 100px;
+        margin-top: 10px;
+      }
+    }
+    .review-info {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
   }
 
   .review-title {
@@ -206,6 +277,7 @@ const MyReviewComp = styled.div`
   }
 
   .button-box {
+    min-height: 250px;
     display: flex;
     flex-direction: column;
     justify-content: center;

@@ -1,11 +1,15 @@
-import styled from "styled-components";
-import GoodsApi from "../../api/GoodsApi";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import styled from 'styled-components';
+import GoodsApi from '../../api/GoodsApi';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FaStar, FaRegStar } from 'react-icons/fa';
 
 export default function Best() {
   const [best, setBest] = useState([]);
   const navigate = useNavigate();
+
+  const [stars, setStars] = useState(); // ⭐
+
   useEffect(() => {
     getBest();
   }, []);
@@ -19,34 +23,39 @@ export default function Best() {
 
   // 별점 (배열)
   const renderStars = (rating) => {
-    return "⭐".repeat(Math.floor(rating)); // 반올림이나 소수점 무시
+    // return '⭐'.repeat(Math.floor(rating)); // 반올림이나 소수점 무시
+    const stars = [];
+    const fullStars = Math.floor(rating); // 채운 별 수
+    const emptyStars = 5 - fullStars; // 빈 별 수
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<FaStar key={`full-${i}`} color='gold' size={24} />);
+    }
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push(<FaRegStar key={`empty-${i}`} color='lightgray' size={24} />);
+    }
+    return stars;
   };
+
   return (
     <BestComp>
-      <div className="best_inner">
-        <div className="title">
+      <div className='best_inner'>
+        <div className='title'>
           <h2>오늘의 추천 상품</h2>
         </div>
-        <div className="best_container">
+        <div className='best_container'>
           <ul>
             {best?.map((b) => (
-              <li
-                onClick={() =>
-                  navigate("/goods/order", { state: { goods: b } })
-                }
-              >
-                <div className="goods_image">
-                  <img src={b.imageFile} alt="베스트 상품 이미지" />
+              <li onClick={() => navigate('/goods/order', { state: { goods: b } })}>
+                <div className='goods_image'>
+                  <img src={b.imageFile} alt='베스트 상품 이미지' />
                 </div>
-                <div className="goods_text">
+                <div className='goods_text'>
                   <h4>{b.goodsName}</h4>
                   <p>{b.description}</p>
                 </div>
-                <div className="goods_rating">
-                  <span>{renderStars(b.rating)}</span>
-                  <span style={{ color: "red", fontSize: "12px" }}>
-                    {"( " + b.reviewNum + " )"}{" "}
-                  </span>
+                <div className='goods_rating'>
+                  <span style={{ textAlign: 'center' }}>{renderStars(b.rating)}</span>
+                  <span style={{ color: 'red', fontSize: '12px' }}>{'( ' + b.reviewNum + ' )'} </span>
                 </div>
               </li>
             ))}

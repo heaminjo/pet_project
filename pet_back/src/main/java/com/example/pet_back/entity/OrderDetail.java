@@ -38,6 +38,7 @@ public class OrderDetail extends BaseEntity {
     public void setIsReviewed(boolean b) {
         this.isReviewed = b;
     }
+
 }
 
 

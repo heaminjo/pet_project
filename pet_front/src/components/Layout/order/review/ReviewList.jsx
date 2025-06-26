@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import GoodsApi from '../../../../api/GoodsApi';
 import PageNumber from '../../../util/PageNumber';
+import { FaStar, FaRegStar } from 'react-icons/fa';
 
 // 리뷰 페이지
 export default function ReviewList({ stars, goodsId, reviewNum }) {
   useEffect(() => {
     console.log('props로 전달된 goodsId:', goodsId);
   }, [goodsId]);
+
+  const [loading, setLoading] = useState(true); // 로딩 상태 (비동기 대응)
 
   const [reviews, setReviews] = useState([]); // 유저 리뷰 리스트
   const [userStar, setUserStar] = useState(); // ⭐ 유저 별점
@@ -44,6 +47,7 @@ export default function ReviewList({ stars, goodsId, reviewNum }) {
       type: type,
     };
     try {
+      setLoading(true);
       const result = await GoodsApi.getReviewsPageList(pages, goodsId);
       // 1. 리뷰 목록
       setReviews(result.content);
@@ -60,12 +64,24 @@ export default function ReviewList({ stars, goodsId, reviewNum }) {
       });
     } catch (err) {
       console.error('getReviewsPageList 실패: ', err);
+    } finally {
+      setLoading(false);
     }
   };
 
   // 유저가 매긴 별점
   const getStars = (rating) => {
-    return '⭐'.repeat(Math.floor(rating)); // 반올림이나 소수점 무시
+    // return '⭐'.repeat(Math.floor(rating)); // 반올림이나 소수점 무시
+    const stars = [];
+    const fullStars = Math.floor(rating); // 채운 별 수
+    const emptyStars = 5 - fullStars; // 빈 별 수
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<FaStar key={`full-${i}`} color='gold' size={30} />);
+    }
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push(<FaRegStar key={`empty-${i}`} color='lightgray' size={30} />);
+    }
+    return stars;
   };
 
   useEffect(() => {
@@ -74,10 +90,12 @@ export default function ReviewList({ stars, goodsId, reviewNum }) {
 
   return (
     <ReviewListComp className={reviews.length === 0 ? 'no-review' : ''}>
-      <div className='container'>
+      <div className='review-container'>
         <div className='reviews'>
-          {reviews.length === 0 ? (
-            <div style={{ textAlign: 'center', color: '#888', marginTop: '70px' }}>아직 작성된 리뷰가 없습니다.</div>
+          {loading ? (
+            <div>리뷰</div>
+          ) : reviews.length === 0 ? (
+            <div className='no-review'>아직 작성된 리뷰가 없습니다.</div>
           ) : (
             reviews.map((item, index) => (
               <div className='review' key={index}>
@@ -105,11 +123,16 @@ export default function ReviewList({ stars, goodsId, reviewNum }) {
   );
 }
 const ReviewListComp = styled.div`
-  .container {
-    padding: 0;
-    margin: 0;
+  .review-container {
+    .no-review {
+      text-align: center;
+      padding: 60px 0;
+      font-size: 14px;
+      color: #888;
+    }
 
     .reviews {
+      width: 600px;
       display: flex;
       flex-direction: column;
       gap: 0;
@@ -120,6 +143,7 @@ const ReviewListComp = styled.div`
     .review {
       padding: 16px 0;
       margin: 0;
+      padding-left: 20px;
       border-bottom: 1px solid #ddd;
       font-size: 14px;
       color: #333;

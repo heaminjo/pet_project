@@ -1,5 +1,6 @@
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
+import { FaStar, FaRegStar } from 'react-icons/fa';
 
 import FavoriteComp from './FavoriteStyle';
 import PageNumber from '../../../util/PageNumber';
@@ -19,6 +20,7 @@ export default function Favorite() {
   const [sort, setSort] = useState('desc');
   const [page, setPage] = useState(0); // 1 페이지, 2 페이지, ...
   const [goods, setGoods] = useState([]); // 페이지에 사용되는 goods
+  const [stars, setStars] = useState(); // ⭐
 
   // 페이징 정보 상태변수 (현재 페이징 상태 핸들링 위함)
   const [paging, setPaging] = useState({
@@ -38,7 +40,17 @@ export default function Favorite() {
 
   // 별점 (배열)
   const renderStars = (rating) => {
-    return '⭐'.repeat(Math.floor(rating)); // 반올림이나 소수점 무시
+    // return '⭐'.repeat(Math.floor(rating)); // 반올림이나 소수점 무시
+    const stars = [];
+    const fullStars = Math.floor(rating); // 채운 별 수
+    const emptyStars = 5 - fullStars; // 빈 별 수
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<FaStar key={`full-${i}`} color='gold' size={20} />);
+    }
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push(<FaRegStar key={`empty-${i}`} color='lightgray' size={20} />);
+    }
+    return stars;
   };
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 페이징 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

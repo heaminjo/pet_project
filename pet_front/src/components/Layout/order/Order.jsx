@@ -168,26 +168,11 @@ export default function Order() {
               <label>구매 수량</label>
               <input type='number' min={1} max={goods.quantity} value={buyQuantity} onChange={(e) => setQuantity(Number(e.target.value))} />
             </div>
-            {showModal && (
-              <ModalContainer>
-                <Modal
-                  content={
-                    <>
-                      상품이 장바구니에 정상적으로 담겼습니다.
-                      <br />
-                      장바구니로 이동하시겠습니까?
-                    </>
-                  }
-                  clickEvt={goToCart}
-                  setModal={setShowModal}
-                />
-              </ModalContainer>
-            )}
             <br />
             <button className='btn1' onClick={() => addToCart(goods, buyQuantity)}>
               장바구니
             </button>
-            &nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;
             <button className='btn2' onClick={() => pay(goods)}>
               바로구매
             </button>
@@ -217,6 +202,21 @@ export default function Order() {
           {activeTab === `상품평 (${goods.reviewNum})` && <ReviewList stars={stars} goodsId={goods.goodsId} reviewNum={goods.reviewNum} />}
         </div>
       </div>
+      {showModal && (
+        <ModalContainer>
+          <Modal
+            content={
+              <>
+                상품이 장바구니에 정상적으로 담겼습니다.
+                <br />
+                장바구니로 이동하시겠습니까?
+              </>
+            }
+            clickEvt={goToCart}
+            setModal={setShowModal}
+          />
+        </ModalContainer>
+      )}
     </OrderComp>
   );
 }

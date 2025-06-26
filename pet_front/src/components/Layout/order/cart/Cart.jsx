@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import PageNumber from '../../../util/PageNumber';
 import GoodsApi from '../../../../api/GoodsApi';
 import MemberApi from '../../../../api/MemberApi';
+import { FaStar, FaRegStar } from 'react-icons/fa';
 
 export default function Cart() {
   const navigate = useNavigate();
@@ -18,6 +19,8 @@ export default function Cart() {
   const [member, setMember] = useState({});
   const [totalPrice, setTotalPrice] = useState(0);
   const [discount, setDiscount] = useState(0); // 등급별 할인율
+
+  const [stars, setStars] = useState(); // ⭐
 
   // 페이징 관련 상태변수
   const [type, setType] = useState('all');
@@ -34,6 +37,21 @@ export default function Cart() {
     totalElement: 0,
     totalPages: 0,
   });
+
+  // 유저가 매긴 별점
+  const renderStars = (rating) => {
+    // return '⭐'.repeat(Math.floor(rating)); // 반올림이나 소수점 무시
+    const stars = [];
+    const fullStars = Math.floor(rating); // 채운 별 수
+    const emptyStars = 5 - fullStars; // 빈 별 수
+    for (let i = 0; i < fullStars; i++) {
+      stars.push(<FaStar key={`full-${i}`} color='gold' size={20} />);
+    }
+    for (let i = 0; i < emptyStars; i++) {
+      stars.push(<FaRegStar key={`empty-${i}`} color='lightgray' size={20} />);
+    }
+    return stars;
+  };
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 체크박스 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 체크박스의 선택 상태를 토글
@@ -197,7 +215,7 @@ export default function Cart() {
 
   return (
     <CartComp>
-      <div className='container'>
+      <div className='cart-container'>
         <div className='top'>
           <h2> 장바구니 </h2>
         </div>
@@ -223,9 +241,14 @@ export default function Cart() {
                       />
                       &nbsp;&nbsp;&nbsp;
                     </label>
-                    <img src={`${item.imageFile}`} alt={item.goodsName} className='prodimg' onClick={() => navigate('/goods/order', { state: { goods: item } })} />
+                    <div>
+                      <img src={`${item.imageFile}`} alt={item.goodsName} className='prodimg' onClick={() => navigate('/goods/order', { state: { goods: item } })} />
+                      <p className='rating' style={{ color: 'red', fontSize: '12px', textAlign: 'center' }}>
+                        {renderStars(item.rating)}
+                      </p>
+                    </div>
                   </div>
-                  <div className='prodright'>
+                  <div className='prodright' style={{ alignContent: 'center' }}>
                     <div>
                       <b>상품명</b>&nbsp;&nbsp;{item.goodsName}
                     </div>
@@ -279,9 +302,8 @@ export default function Cart() {
 
                     <div>
                       <b>판매원</b>&nbsp;&nbsp;
-                      <img src={seller} className='seller' alt='판매원원' /> 몽냥마켓
+                      <img src={seller} className='seller' alt='판매원' /> 몽냥마켓
                     </div>
-                    <div>내일 7시 도착</div>
                   </div>
                 </div>
               ))

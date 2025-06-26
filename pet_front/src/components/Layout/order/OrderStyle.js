@@ -99,12 +99,12 @@ const OrderComp = styled.div`
           border-radius: 4px;
         }
         .btn1 {
-          border: 1px solid #ccc;
+          border: 1px solid rgb(143, 139, 139);
           background: #fff;
           color: #222;
         }
         .btn1:hover {
-          background: rgb(255, 145, 145);
+          background-color: rgb(221, 215, 215);
         }
         .btn2 {
           background: #ffaaaa;
@@ -115,7 +115,6 @@ const OrderComp = styled.div`
       }
     }
     .product-container {
-      padding: 16px;
       font-size: 14px;
 
       /* 테이블 */
@@ -137,12 +136,6 @@ const OrderComp = styled.div`
         .product-td {
           padding: 8px;
           border-top: 1px solid #eee;
-        }
-        modal {
-          position: fixed;
-          top: 20%;
-          left: 50%;
-          transform: translate(-50%, 0);
         }
       }
 

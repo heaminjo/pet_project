@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 const CartComp = styled.div`
-  .container {
+  .cart-container {
     width: 900px;
     margin: 0px auto;
     padding: 20px;
@@ -11,7 +11,6 @@ const CartComp = styled.div`
     border: 1px solid #ccc;
 
     .top {
-      margin-left: 20px;
       h2 {
         font-size: 1.6rem;
         padding: 10px 20px;
@@ -25,7 +24,7 @@ const CartComp = styled.div`
       gap: 20px;
 
       .left {
-        flex: 2;
+        flex: 3;
         display: flex;
         flex-direction: column;
         gap: 20px;
@@ -63,10 +62,12 @@ const CartComp = styled.div`
               box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
               cursor: pointer;
             }
+            .rating {
+            }
           }
 
           .prodright {
-            flex: 1;
+            flex: 2;
             padding-left: 20px;
             font-size: 14px;
             color: #444;
