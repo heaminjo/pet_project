@@ -10,7 +10,6 @@ export default function Pay() {
   const navigate = useNavigate();
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상태변수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const seller = process.env.PUBLIC_URL + '/images/avatar.png';
-  const imgUrl = 'http://localhost:8080/resources/webapp/userImages/';
   const [goods, setGoods] = useState([]);
   const [payment, setPayment] = useState(); // 결제수단
 
@@ -288,7 +287,9 @@ export default function Pay() {
                 <th>배송지</th>
                 <td>
                   <b>{addrType}</b> &nbsp;&nbsp;&nbsp;
-                  <button onClick={() => setIsDestOpen(true)}>배송지 수정</button>
+                  <button onClick={() => setIsDestOpen(true)} className='deliver-btn'>
+                    배송지 수정
+                  </button>
                   <br />
                   {addr}
                   {isDestOpen && (
@@ -340,7 +341,9 @@ export default function Pay() {
                 <td>
                   {phone || member.phone}
                   &nbsp;&nbsp;
-                  <button onClick={() => setIsPhoneOpen(true)}>수정</button>
+                  <button onClick={() => setIsPhoneOpen(true)} className='contact-btn'>
+                    연락처수정
+                  </button>
                   {isPhoneOpen && handleOpenPopupPhone()}
                 </td>
               </tr>
@@ -349,7 +352,9 @@ export default function Pay() {
                 <td>
                   {note || '배송 요청사항을 입력해주세요.'}
                   &nbsp;&nbsp;
-                  <button onClick={() => setIsReqOpen(true)}>수정</button>
+                  <button onClick={() => setIsReqOpen(true)} className='message-btn'>
+                    수정
+                  </button>
                   {isReqOpen && handleOpenPopupReq()}
                 </td>
               </tr>
@@ -448,10 +453,6 @@ export default function Pay() {
                     <input type='radio' name='payment' value='NOACCOUNT' checked={payment === 'NOACCOUNT'} onChange={handlePaymentChange} /> 무통장입금(상세조회) <br />
                   </label>
                 </td>
-              </tr>
-              <tr>
-                <th>연락처</th>
-                <td>{member.phone}</td>
               </tr>
             </tbody>
           </table>

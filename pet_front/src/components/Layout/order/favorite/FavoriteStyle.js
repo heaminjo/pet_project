@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 const FavoriteComp = styled.div`
   .container {
     width: 900px;
@@ -7,7 +7,7 @@ const FavoriteComp = styled.div`
     padding: 20px;
     border-radius: 8px;
 
-    font-family: "Arial", sans-serif;
+    font-family: 'Arial', sans-serif;
     color: #222;
 
     .top {
@@ -36,6 +36,7 @@ const FavoriteComp = styled.div`
         background-color: #fff;
         border-radius: 6px;
         padding: 20px;
+        padding-left: 30px;
         border: 1px solid #ddd;
         transition: box-shadow 0.3s ease;
         cursor: pointer;

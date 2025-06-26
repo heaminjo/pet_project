@@ -4,7 +4,7 @@ import GoodsApi from '../../../../api/GoodsApi';
 import PageNumber from '../../../util/PageNumber';
 
 // 리뷰 페이지
-export default function ReviewList({ stars, goodsId, reviewNum, imgUrl }) {
+export default function ReviewList({ stars, goodsId, reviewNum }) {
   useEffect(() => {
     console.log('props로 전달된 goodsId:', goodsId);
   }, [goodsId]);
@@ -73,11 +73,11 @@ export default function ReviewList({ stars, goodsId, reviewNum, imgUrl }) {
   }, [page, goodsId]);
 
   return (
-    <ReviewListComp>
+    <ReviewListComp className={reviews.length === 0 ? 'no-review' : ''}>
       <div className='container'>
         <div className='reviews'>
           {reviews.length === 0 ? (
-            <div style={{ textAlign: 'center', color: '#888' }}>아직 작성된 리뷰가 없습니다.</div>
+            <div style={{ textAlign: 'center', color: '#888', marginTop: '70px' }}>아직 작성된 리뷰가 없습니다.</div>
           ) : (
             reviews.map((item, index) => (
               <div className='review' key={index}>
@@ -89,7 +89,7 @@ export default function ReviewList({ stars, goodsId, reviewNum, imgUrl }) {
                   <div>{getStars(item.score)}</div>
                   <div className='images'>
                     {item.imageFiles?.map((img, i) => (
-                      <img key={i} src={`${imgUrl}${img}`} alt={`review-img-${i}`} />
+                      <img key={i} src={`${img}`} alt={`review-img-${i}`} />
                     ))}
                   </div>
                   <div>{item.title}</div>
@@ -106,69 +106,74 @@ export default function ReviewList({ stars, goodsId, reviewNum, imgUrl }) {
 }
 const ReviewListComp = styled.div`
   .container {
+    padding: 0;
+    margin: 0;
+
     .reviews {
       display: flex;
       flex-direction: column;
-      gap: 32px;
+      gap: 0;
+      padding: 0;
+      margin: 0;
+    }
 
-      .review {
-        padding: 16px;
-        border-bottom: 1px solid #ddd;
+    .review {
+      padding: 16px 0;
+      margin: 0;
+      border-bottom: 1px solid #ddd;
+      font-size: 14px;
+      color: #333;
 
-        .header {
-          display: flex;
-          flex-direction: column;
-          gap: 4px;
-          margin-bottom: 12px;
+      .header {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 4px;
 
-          .name {
-            font-weight: bold;
-            font-size: 15px;
-            color: #333;
-          }
-
-          .stars {
-            color: #f5a623;
-            font-size: 14px;
-          }
-
-          .date {
-            font-size: 12px;
-            color: #999;
-          }
+        .name {
+          font-weight: bold;
+          font-size: 15px;
         }
 
-        .product {
+        .date {
+          font-size: 12px;
+          color: #999;
+        }
+      }
+
+      .body {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+
+        .stars {
           font-size: 14px;
-          color: #444;
-          margin-bottom: 8px;
+          color: gold;
         }
 
         .images {
           display: flex;
-          overflow-x: auto;
+          flex-wrap: wrap;
           gap: 8px;
-          margin: 10px 0;
+          margin-top: 6px;
 
           img {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             object-fit: cover;
             border: 1px solid #ddd;
             border-radius: 4px;
-            flex-shrink: 0;
           }
         }
 
         .title {
-          font-size: 16px;
           font-weight: bold;
-          margin-bottom: 4px;
+          font-size: 14px;
+          margin: 4px 0;
         }
 
         .content {
           font-size: 14px;
-          line-height: 1.6;
+          line-height: 1.5;
           white-space: pre-wrap;
         }
       }

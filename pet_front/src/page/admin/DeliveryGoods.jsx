@@ -13,7 +13,6 @@ import OrdersSearch from '../../components/util/OrdersSearch';
 export default function DeliveryGoods() {
   const location = useLocation();
   const deliverImg = process.env.PUBLIC_URL + '/images/delivery.png';
-  const imgUrl = 'http://localhost:8080/resources/webapp/userImages/';
   const [members, setMembers] = useState([]);
   const [goods, setGoods] = useState([]);
   const { goodsId } = location.state || {};
@@ -167,7 +166,7 @@ const DeliveryGoodsComp = styled.div`
 
     .list_container {
       table {
-        border: 1px solid #000;
+        border: 1px solid #ccc;
         width: 1500px;
         text-align: center;
         border-collapse: collapse;
@@ -175,7 +174,9 @@ const DeliveryGoodsComp = styled.div`
         tr {
           height: 50px;
           th {
-            background-color: #b0befc;
+            background-color: rgb(202, 197, 197);
+            padding: 10px;
+            margin: 10px;
           }
           td {
             border-bottom: 1px solid #ccc;

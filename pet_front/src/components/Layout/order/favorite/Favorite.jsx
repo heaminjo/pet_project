@@ -6,18 +6,17 @@ import PageNumber from '../../../util/PageNumber';
 import GoodsApi from '../../../../api/GoodsApi';
 
 export default function Favorite() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
   const navigate = useNavigate();
   const location = useLocation();
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상 태 변 수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  const seller = process.env.PUBLIC_URL + "/images/avatar.png";
-  const imgUrl = "http://localhost:8080/resources/webapp/userImages/";
+  const seller = process.env.PUBLIC_URL + '/images/avatar.png';
 
   // 페이징 관련 상태변수
-  const [type, setType] = useState("all");
-  const [keyword, setKeyword] = useState("");
-  const [sort, setSort] = useState("desc");
+  const [type, setType] = useState('all');
+  const [keyword, setKeyword] = useState('');
+  const [sort, setSort] = useState('desc');
   const [page, setPage] = useState(0); // 1 페이지, 2 페이지, ...
   const [goods, setGoods] = useState([]); // 페이지에 사용되는 goods
 
@@ -33,15 +32,13 @@ export default function Favorite() {
 
   // 상품1개 클릭시
   const clickProd = (item) => {
-    alert(
-      `clickProd 선택된 상품: ${item.goodsId}, ${item.goodsName}, ${item.goodsState}, ${item.description}, ${item.price}`
-    );
-    navigate("/goods/order", { state: { goods: item } });
+    alert(`clickProd 선택된 상품: ${item.goodsId}, ${item.goodsName}, ${item.goodsState}, ${item.description}, ${item.price}`);
+    navigate('/goods/order', { state: { goods: item } });
   };
 
   // 별점 (배열)
   const renderStars = (rating) => {
-    return "⭐".repeat(Math.floor(rating)); // 반올림이나 소수점 무시
+    return '⭐'.repeat(Math.floor(rating)); // 반올림이나 소수점 무시
   };
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 페이징 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -69,7 +66,7 @@ export default function Favorite() {
         totalPages: result.totalPages,
       });
     } catch (err) {
-      console.error("getPageList 실패: ", err);
+      console.error('getPageList 실패: ', err);
     }
   };
 
@@ -79,28 +76,20 @@ export default function Favorite() {
 
   return (
     <FavoriteComp>
-      <div className="container">
-        <div className="top">
+      <div className='container'>
+        <div className='top'>
           <h2>찜 목록 리스트</h2>
         </div>
-        <div className="body">
+        <div className='body'>
           {goods.length === 0 ? (
             <p>찜한 상품이 없습니다.</p>
           ) : (
             goods.map((item) => (
-              <div
-                key={item.goodsId}
-                className="prod"
-                onClick={() => clickProd(item)}
-              >
-                <div className="prod-left">
-                  <img
-                    src={imgUrl + item.imageFile}
-                    alt={item.goodsName}
-                    width={150}
-                  />
+              <div key={item.goodsId} className='prod' onClick={() => clickProd(item)}>
+                <div className='prod-left'>
+                  <img src={item.imageFile} alt={item.goodsName} width={150} />
                 </div>
-                <div className="prod-right">
+                <div className='prod-right'>
                   <h4>{item.goodsName}</h4>
                   <p>{item.description}</p>
                   <p>가격: {item.price.toLocaleString()}원</p>

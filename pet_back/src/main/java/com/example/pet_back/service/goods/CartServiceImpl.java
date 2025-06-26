@@ -1,5 +1,6 @@
 package com.example.pet_back.service.goods;
 
+import com.example.pet_back.config.FileUploadProperties;
 import com.example.pet_back.domain.goods.GoodsRequestDTO;
 import com.example.pet_back.domain.goods.GoodsResponseDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
@@ -14,6 +15,7 @@ import com.example.pet_back.repository.GoodsRepository;
 import com.example.pet_back.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +39,10 @@ public class CartServiceImpl implements CartService {
     private final GoodsRepository goodsRepository;
     private final MemberRepository memberRepository;
     private final GoodsMapper goodsMapper;
+
+    // 이미지 위치 백엔드 경로 지정
+    @Autowired
+    private FileUploadProperties fileUploadProperties;
 
     // 장바구니 리스트 출력
     @Override
@@ -83,6 +89,7 @@ public class CartServiceImpl implements CartService {
         for (GoodsResponseDTO dto : goodsResponseDTOList) {
             Integer quantity = goodsIdToQuantityMap.get(dto.getGoodsId());
             dto.setCartQuantity(quantity);
+            dto.setImageFile(fileUploadProperties.getUrl() + dto.getImageFile()); // 백엔드 이미지경로 지정
         }
 
         // 6. 반환할 ResponseDTO 에 List 저장 (goodsResponseDTOList)

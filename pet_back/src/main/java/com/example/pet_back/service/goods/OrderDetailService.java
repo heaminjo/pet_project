@@ -6,6 +6,7 @@ import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -23,4 +24,10 @@ public interface OrderDetailService {
 
     // <OrderList /> : 주문취소
     ResponseEntity<?> withdraw(CustomUserDetails userDetails, Long orderDetailId);
+
+
+    // 리뷰 중복등록 검증
+    ResponseEntity<?> getReviewState (CustomUserDetails userDetails,Long orderDetailId);
+
+
 }

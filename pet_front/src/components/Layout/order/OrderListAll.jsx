@@ -47,7 +47,6 @@ export default function OrderListAll() {
     const withMember = await Promise.all(
       list.map(async (o) => {
         try {
-          
           const member = await MemberApi.detail(o.memberId);
           return { ...o, member };
         } catch (e) {
@@ -84,12 +83,15 @@ export default function OrderListAll() {
           <table>
             <thead>
               <tr>
-                <th style={{ width: '10px' }}>No</th>
+                <th>No</th>
                 <th>주문일</th>
                 <th>구매자</th>
                 <th>상품명</th>
+                <th>별점</th>
                 <th>가격</th>
                 <th>수량</th>
+                <th>재고</th>
+                <th>누적판매량</th>
               </tr>
             </thead>
             <tbody>
@@ -127,14 +129,14 @@ const OrderListAllComp = styled.div`
 
     .list_container {
       table {
-        border: 1px solid #000;
+        border: 1px solid #ccc;
         width: 100%;
         text-align: center;
         border-collapse: collapse;
         table-layout: fixed;
 
         thead {
-          background-color: #b0befc;
+          background-color: rgb(248, 246, 246);
 
           th {
             padding: 10px 5px;

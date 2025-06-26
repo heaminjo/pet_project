@@ -1,7 +1,15 @@
 import styled from 'styled-components';
 const OrderListComp = styled.div`
   modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 999;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   }
   .container {
     width: 900px;
@@ -13,11 +21,9 @@ const OrderListComp = styled.div`
   h2 {
     font-size: 1.6rem;
     color: #222;
-    margin-bottom: 30px;
-    background-color: #f6e96c;
+    margin-bottom: 10px;
     padding: 10px 20px;
     display: inline-block;
-    border-radius: 6px;
   }
 
   .orderlist {
@@ -27,11 +33,10 @@ const OrderListComp = styled.div`
   .ordertitle {
     font-weight: bold;
     font-size: 1.1rem;
-    background-color: #fffef5;
+    background-color: rgb(248, 246, 246);
     padding: 12px 16px;
     margin: 0 auto;
     border: 1px solid #ddd;
-    border-radius: 6px 6px 0 0;
     border-bottom: none;
   }
 
@@ -39,7 +44,6 @@ const OrderListComp = styled.div`
     display: flex;
     justify-content: center;
     padding: 0 0 10px 0;
-    background-color: #fff;
     border-top: none;
     border-radius: 0 0 6px 6px;
   }
@@ -47,7 +51,6 @@ const OrderListComp = styled.div`
   .orderdesc {
     display: flex;
     align-items: center;
-    background-color: #fffef5;
     border-radius: 6px 6px 0 0;
     padding: 10px;
     gap: 20px;
@@ -85,7 +88,7 @@ const OrderListComp = styled.div`
 
     button {
       padding: 8px 12px;
-      background-color: #f6e96c;
+      background-color: #ffaaaa;
       border: 1px solid #ccc;
       border-radius: 4px;
       font-size: 0.9rem;
@@ -94,7 +97,7 @@ const OrderListComp = styled.div`
     }
 
     button:hover {
-      background-color: #f1d700;
+      background-color: rgb(255, 145, 145);
     }
   }
 `;

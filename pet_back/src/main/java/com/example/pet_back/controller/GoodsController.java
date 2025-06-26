@@ -82,11 +82,8 @@ public class GoodsController {
     // 상품 리스트 출력 (메인)
     @PostMapping("/list")
     public ResponseEntity<?> showGoodsList(@RequestBody PageRequestDTO pageRequestDTO) {
-        //    public ResponseEntity<PageResponseDTO<GoodsResponseDTO>> showGoodsList(@RequestBody PageRequestDTO pageRequestDTO) {
         log.info("** GoodsController => showGoodsList() 실행됨 **");
-//        System.out.println("GoodsController 상품리스트출력 : " + goodsService.showGoodsList(pageRequestDTO).toString());
         return goodsService.showGoodsList(pageRequestDTO);
-        // return ResponseEntity.ok(goodsService.goodsPageList(pageRequestDTO));
     }
 
     // 상품등록 메서드 (관리자 페이지)

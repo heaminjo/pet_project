@@ -6,8 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -34,5 +36,7 @@ public class OrderDetailResponseDTO {
     private int totalQuantity;
     private LocalDate regDate;
     private ORDERSTATE status;
+
+    private boolean isReviewed;
 
 }

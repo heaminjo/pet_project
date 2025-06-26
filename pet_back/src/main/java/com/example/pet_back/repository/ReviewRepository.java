@@ -23,6 +23,10 @@ public interface ReviewRepository  extends JpaRepository<Review, Long> {
     @Transactional
     @Query("SELECT r FROM Review r WHERE r.member.id = :memberId")
     Page<Review> findAllByUserId(@Param("memberId") Long memberId, Pageable pageable);
-
+    
+    // 리뷰 중복등록 검증
+    @Transactional
+    Review findByMember_IdAndOrderDetail_OrderDetailId(Long memberId, Long orderDetailId);
+    
 
 }

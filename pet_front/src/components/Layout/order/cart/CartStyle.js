@@ -4,26 +4,23 @@ const CartComp = styled.div`
     width: 900px;
     margin: 0px auto;
     padding: 20px;
-    background-color: #fffef5;
+    background-color: rgb(248, 246, 246);
     font-family: 'Arial', sans-serif;
     color: #222;
-    border-radius: 8px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
 
     .top {
       margin-left: 20px;
-
       h2 {
         font-size: 1.6rem;
-        background-color: #f6e96c;
         padding: 10px 20px;
         display: inline-block;
-        border-radius: 6px;
         font-weight: bold;
       }
     }
 
     .body {
-      margin-top: 20px;
       display: flex;
       gap: 20px;
 
@@ -89,16 +86,6 @@ const CartComp = styled.div`
               margin-right: 5px;
             }
 
-            button {
-              width: 24px;
-              height: 24px;
-              border: 1px solid #ccc;
-              border-radius: 4px;
-              background-color: #f6e96c;
-              cursor: pointer;
-              font-weight: bold;
-            }
-
             span {
               font-size: 12px;
               color: red;
@@ -137,21 +124,29 @@ const CartComp = styled.div`
           }
         }
 
-        .buy {
+        .buy,
+        .cancel {
           width: 100%;
           height: 45px;
           margin: 5px 0;
           font-size: 1rem;
           font-weight: bold;
-          background-color: #f6e96c;
           border: 1px solid #ccc;
-          border-radius: 6px;
+          border-radius: 3px;
           cursor: pointer;
           transition: background-color 0.2s ease;
         }
-
+        .buy {
+          background-color: #ffaaaa;
+        }
         .buy:hover {
-          background-color: #f1d700;
+          background-color: rgb(255, 145, 145);
+        }
+        .cancel {
+          background-color: rgb(238, 234, 234);
+        }
+        .cancel:hover {
+          background-color: rgb(221, 215, 215);
         }
       }
     }

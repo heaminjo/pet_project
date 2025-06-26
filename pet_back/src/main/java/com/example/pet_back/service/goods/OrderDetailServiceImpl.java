@@ -1,19 +1,18 @@
 package com.example.pet_back.service.goods;
 
+import com.example.pet_back.config.FileUploadProperties;
 import com.example.pet_back.domain.admin.GoodsRankDTO;
 import com.example.pet_back.domain.goods.OrderDetailResponseDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
-import com.example.pet_back.entity.Goods;
-import com.example.pet_back.entity.Member;
-import com.example.pet_back.entity.OrderDetail;
-import com.example.pet_back.entity.Orders;
+import com.example.pet_back.entity.*;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.mapper.OrderDetailMapper;
 import com.example.pet_back.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,8 +39,13 @@ public class OrderDetailServiceImpl implements OrderDetailService{
     private final MemberRepository memberRepository;
     private final CartRepository cartRepository;
     private final AddressRepository addressRepository;
+    private final ReviewRepository reviewRepository;
 
     private final OrderDetailMapper orderDetailMapper;
+
+    // 이미지 위치 백엔드 경로 지정
+    @Autowired
+    private FileUploadProperties fileUploadProperties;
 
     // 회원이 주문한 OrderDetail
     @Override
@@ -79,13 +83,15 @@ public class OrderDetailServiceImpl implements OrderDetailService{
         Page<OrderDetail> orderDetailPage = orderDetailRepository.findAllByOrderIdList(orderIdList, pageable);
         log.info("** GoodsServiceImpl orderDetailPage 조회완료 **");
 
-        // 5. Map (goodsId/GOODS) & (orderId/ORDERS)
+        // 5. Map (goodsId/GOODS) & (orderId/ORDERS) & (reviewId/REVIEW)
         Map<Long, Goods> goodsMap = goodsList.stream().collect(Collectors.toMap(Goods::getGoodsId, g-> g));
         Map<Long, Orders> ordersMap = ordersList.stream().collect(Collectors.toMap(Orders::getOrderId, o->o));
 
         // DTO 리스트 생성
         List<OrderDetailResponseDTO> dtoList = orderDetailPage.stream() //
-                .map(od ->  OrderDetailResponseDTO.builder() //
+                .map(od ->  {
+
+                    return OrderDetailResponseDTO.builder() //
                         // OrderDetail
                         .orderDetailId(od.getOrderDetailId())
                         .goodsId(od.getGoods().getGoodsId())
@@ -97,14 +103,15 @@ public class OrderDetailServiceImpl implements OrderDetailService{
                         .price(od.getGoods().getPrice())
                         .description(od.getGoods().getDescription())
                         .goodsState(od.getGoods().getGoodsState())
-                        .imageFile(od.getGoods().getImageFile())
+                        .imageFile(fileUploadProperties.getUrl() + od.getGoods().getImageFile()) // 백엔드 경로 설정
                         // Orders
                         .totalPrice(od.getOrders().getTotalPrice())
                         .totalQuantity(od.getOrders().getTotalQuantity())
                         .regDate(od.getOrders().getRegDate())
                         .status(od.getOrders().getStatus())
-                        .build()
-                ).collect(Collectors.toList());
+                         .isReviewed(od.isReviewed())
+                        .build();
+                }).collect(Collectors.toList());
 
         // PageResponseDTO  생성 ★★★★★
         PageResponseDTO<OrderDetailResponseDTO> response = new PageResponseDTO<>(
@@ -179,6 +186,26 @@ public class OrderDetailServiceImpl implements OrderDetailService{
         orderDetailRepository.deleteById(orderDetailId);
         return ResponseEntity.status(HttpStatus.OK).body("삭제 성공");
     }
+
+    // <OrderList /> : 리뷰 중복등록 검증
+    // 리뷰 중복등록 검증
+    @Override
+    public ResponseEntity<?> getReviewState (CustomUserDetails userDetails,Long orderDetailId){
+        Member member = memberRepository.findById( //
+                userDetails.getMember().getId()).orElseThrow(() //
+                -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+        OrderDetail orderDetail = orderDetailRepository.findById(orderDetailId) //
+                .orElseThrow(() -> new NullPointerException("주문상세 내역이 존재하지 않습니다."));
+
+        Review review = reviewRepository.findByMember_IdAndOrderDetail_OrderDetailId(member.getId(), orderDetail.getOrderDetailId());
+        if(review!=null){
+            return ResponseEntity.status(HttpStatus.OK).body(review);
+        }else{
+            return ResponseEntity.status(HttpStatus.OK).body(true);
+        }
+    }
+
+
 
 
 }

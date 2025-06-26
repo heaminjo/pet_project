@@ -29,4 +29,6 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
             "ORDER BY SUM(g.price) DESC limit 10")
     List<GoodsRankDTO> goodsRank();
 
+    List<OrderDetail> findAllByOrdersOrderIdIn(List<Long> orderIds);
+
 }

@@ -127,8 +127,15 @@ const OrderApi = {
   getReviewsPageList: async (pages) => {
     // alert(`GoodsApi.getReviewPageList`);
     console.log(`GoodsApi.getReviewPageList`);
-    const result = await instance.post(`/order/myreviews`, pages);
+    const result = await instance.post(`/order/review/my`, pages);
     console.log('응답 결과:', result);
+    return result.data;
+  },
+
+  // 리뷰 중복등록 방지 검증
+  getReviewState: async (orderDetailId) => {
+    // 리턴: reviewId
+    const result = await instance.get(`/order/review/state/${orderDetailId}`);
     return result.data;
   },
 
