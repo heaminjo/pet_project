@@ -15,8 +15,8 @@ export default function MyGrade() {
   const gradeStyleMap = {
     새싹회원: {
       next: "초급회원",
-      nextColor: "#d2d7d9",
-      backColor: "#eaefef",
+      nextColor: "#cfe7f0",
+      backColor: "#f2fdff",
       width: "190px",
       condition1: 3,
       condition2: 1,
@@ -24,8 +24,8 @@ export default function MyGrade() {
     },
     초급회원: {
       next: "중급회원",
-      nextColor: "#bfb6b2",
-      backColor: "#d2d7d9",
+      nextColor: "#f0d5ce",
+      backColor: "#cfe7f0",
       width: "390px",
       condition1: 5,
       condition2: 3,
@@ -34,8 +34,8 @@ export default function MyGrade() {
     },
     중급회원: {
       next: "상급회원",
-      nextColor: "#a69390",
-      backColor: "#bfb6b2",
+      nextColor: "#ecbfb1",
+      backColor: "#f0d5ce",
       width: "590px",
       condition1: 10,
       condition2: 10,
@@ -44,8 +44,8 @@ export default function MyGrade() {
     },
     상급회원: {
       next: "프리미엄회원",
-      nextColor: "#847c7a",
-      backColor: "#a69390",
+      nextColor: "#de9d91",
+      backColor: "#ecbfb1",
       width: "790px",
       condition1: 20,
       condition2: 15,
@@ -54,7 +54,7 @@ export default function MyGrade() {
     },
     "프리미엄 회원": {
       next: "---------",
-      backColor: "#847c7a",
+      backColor: "#de9d91",
       width: "1000px",
       boon: "구매 시 20% 할인",
     },
@@ -68,11 +68,11 @@ export default function MyGrade() {
 
   //등급별 UI를 위한 데이터
   const grades = [
-    { name: "새싹회원", color: "#eaefef" },
-    { name: "초급회원", color: "#d2d7d9" },
-    { name: "중급회원", color: " #bfb6b2" },
-    { name: "상급회원", color: "#a69390" },
-    { name: "프리미엄 회원", color: "#847c7a" },
+    { name: "새싹회원", color: "	#f2fdff" },
+    { name: "초급회원", color: "	#cfe7f0" },
+    { name: "중급회원", color: " #f0d5ce " },
+    { name: "상급회원", color: "#ecbfb1" },
+    { name: "프리미엄 회원", color: "#de9d91" },
   ];
 
   return (

@@ -2,19 +2,19 @@ import styled from "styled-components";
 
 const UserGradeComp = styled.div`
   #grade01 {
-    background-color: #eaefef;
+    background-color: #f2fdff;
   }
   #grade02 {
-    background-color: #d2d7d9;
+    background-color: #cfe7f0;
   }
   #grade03 {
-    background-color: #bfb6b2;
+    background-color: #f0d5ce;
   }
   #grade04 {
-    background-color: #a69390;
+    background-color: #ecbfb1;
   }
   #grade05 {
-    background-color: #847c7a;
+    background-color: #de9d91;
   }
   h2 {
     margin-bottom: 20px;
@@ -70,7 +70,7 @@ const UserGradeComp = styled.div`
         height: 50px;
         th {
           height: 40px;
-          background-color: #847c7a;
+          background-color: #de9d91;
           color: #fff;
           text-shadow: 1px 1px 1px #ccc;
         }

@@ -212,19 +212,19 @@ const GradeComp = styled.div`
                 height: 15px;
               }
               #grade01 {
-                background-color: #eaefef;
+                background-color: #f2fdff;
               }
               #grade02 {
-                background-color: #d2d7d9;
+                background-color: #cfe7f0;
               }
               #grade03 {
-                background-color: #bfb6b2;
+                background-color: #f0d5ce;
               }
               #grade04 {
-                background-color: #a69390;
+                background-color: #ecbfb1;
               }
               #grade05 {
-                background-color: #847c7a;
+                background-color: #de9d91;
               }
             }
             .grade_advantage {
