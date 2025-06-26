@@ -33,6 +33,9 @@ public interface OrderService {
     // 리뷰 작성
     ResponseEntity<?> regReview(CustomUserDetails userDetails, ReviewUploadDTO dto) throws IOException;
 
+    // 리뷰 삭제
+    ResponseEntity<?> deleteReview(Long reviewId);
+    
     // 내 리뷰 목록 출력
     ResponseEntity<?> showMyReviews(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO);
 

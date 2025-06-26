@@ -137,6 +137,15 @@ public class OrderController {
         return orderService.showMyReviews(userDetails, pageRequestDTO);
     }
 
+    // 리뷰 삭제
+    @GetMapping("/review/delete/{reviewId}")
+    public ResponseEntity<?> deleteReview( @PathVariable Long reviewId){
+        log.info("** OrderController => deleteReview() 실행됨 **");
+        return orderService.deleteReview( reviewId);
+    }
+
+
+
 //        // 내 리뷰 출력 (수정필요)
 //    @GetMapping("/reviews/list/{goodsId}")
 //    public ResponseEntity<?> showReviewList(@PathVariable("goodsId") Long goodsId, @RequestBody PageRequestDTO pageRequestDTO) {

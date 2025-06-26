@@ -297,6 +297,24 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+    // 리뷰 삭제
+    @Override
+    @Transactional
+    public ResponseEntity<?> deleteReview(Long reviewId){
+        try {
+            reviewRepository.deleteById(reviewId);
+            return ResponseEntity.status(HttpStatus.OK).body("리뷰가 정상적으로 삭제되었습니다.");
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("리뷰 삭제에 실패하였습니다.");
+        }
+
+
+    }
+
+
+
+
+
     // 내 리뷰 목록 출력
     @Override
     public ResponseEntity<?> showMyReviews(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO){

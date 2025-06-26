@@ -55,8 +55,7 @@ export default function Order() {
     try {
       if (sessionStorage.getItem('loginName') != null) {
         const response = await GoodsApi.addToCart(goods, buyQuantity);
-        alert('장바구니에 ' + goods.goodsName + '이(가) 1개 담겼습니다.');
-        console.log(`장바구니 담기 성공, 상품ID:  => ${response}`);
+        // alert('장바구니에 ' + goods.goodsName + '이(가) 1개 담겼습니다.');
         // navigate("/user/mypage/cart/list");
         setShowModal(true); // 모달 표시
       } else {
@@ -207,7 +206,7 @@ export default function Order() {
           <Modal
             content={
               <>
-                상품이 장바구니에 정상적으로 담겼습니다.
+                {goods.goodsName} 상품 {goods.buyQuantity} 개가 장바구니에 추가되었습니다.
                 <br />
                 장바구니로 이동하시겠습니까?
               </>

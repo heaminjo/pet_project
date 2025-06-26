@@ -15,12 +15,12 @@ const OrderListComp = styled.div`
     width: 900px;
     margin: 0 auto;
     font-family: 'Arial', sans-serif;
-    color: #222;
+    color: #444;
   }
 
   h2 {
     font-size: 1.6rem;
-    color: #222;
+    color: #444;
     margin-bottom: 10px;
     padding: 10px 20px;
     display: inline-block;
@@ -75,7 +75,7 @@ const OrderListComp = styled.div`
     b {
       font-weight: bold;
       font-size: 0.95rem;
-      color: #111;
+      color: #444;
     }
   }
 

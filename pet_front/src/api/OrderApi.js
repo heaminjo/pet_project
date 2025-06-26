@@ -145,6 +145,12 @@ const OrderApi = {
     const result = await instance.post(`/order/review/register`, formData);
     return result.data;
   },
+
+  // 리뷰삭제
+  deleteReview: async (reviewId) => {
+    const result = await instance.get(`/order/review/delete/${reviewId}`);
+    return result.data;
+  },
 };
 
 export default OrderApi;

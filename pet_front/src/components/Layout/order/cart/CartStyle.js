@@ -12,6 +12,7 @@ const CartComp = styled.div`
 
     .top {
       h2 {
+        color: #444;
         font-size: 1.6rem;
         padding: 10px 20px;
         display: inline-block;
@@ -104,6 +105,7 @@ const CartComp = styled.div`
         padding: 20px;
         height: fit-content;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        color: #444;
 
         table {
           width: 100%;
