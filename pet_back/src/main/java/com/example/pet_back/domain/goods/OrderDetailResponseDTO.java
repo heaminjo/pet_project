@@ -35,8 +35,10 @@ public class OrderDetailResponseDTO {
     private int totalPrice;
     private int totalQuantity;
     private LocalDate regDate;
-    private ORDERSTATE status;
+    private String status; // Enum (BEFOREPAY, AFTERPAY, READY, DELIVERY, END, WITHDRAW, REFUND, EXCHANGE)
 
-    private boolean isReviewed;
+    // Review
+    private String score; // 별점
+    private boolean reviewed;
 
 }

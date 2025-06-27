@@ -126,8 +126,8 @@ export default function AddGoods({ onClose, refreshList, mode = 'create', target
   return (
     <GoodsComp>
       <div className='container'>
-        <h2>[관리자 페이지] 상품등록 페이지</h2>
-        <span>설명: 관리자가 상품에 대한 상세정보를 입력하고 등록하는 페이지</span>
+        <h2>상품등록 페이지</h2>
+        <span>신규 상품을 등록할 수 있습니다.</span>
         <hr />
         <div className='register-form'>
           <div className='left'>
@@ -213,10 +213,10 @@ export default function AddGoods({ onClose, refreshList, mode = 'create', target
                   <tr id='tr_btn'>
                     <td></td>
                     <td>
-                      <button className='btn' id='sub_btn' type='submit'>
+                      <button className='submit-btn' id='sub_btn' type='submit'>
                         {mode === 'edit' ? '수정' : '등록'}
                       </button>
-                      <button type='button' onClick={onClose}>
+                      <button className='exit-btn' type='button' onClick={onClose}>
                         닫기
                       </button>
                     </td>

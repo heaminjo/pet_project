@@ -13,6 +13,10 @@ export default function ModifyGoods() {
   const goodsImg = process.env.PUBLIC_URL + '/images/pic1.png';
   const [stars, setStars] = useState(); // ⭐
 
+  const [goods, setGoods] = useState([]); // 페이지에 사용되는 goods
+  const [page, setPage] = useState(0);
+  const [sort, setSort] = useState('desc');
+
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 모 달 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   const [deleteTarget, setDeleteTarget] = useState(null); // 삭제 대상 상품 ID
   const [confirmDeleteModal, setConfirmDeleteModal] = useState(false); // 삭제 확인 모달
@@ -24,11 +28,6 @@ export default function ModifyGoods() {
 
   // 팝업
   const [showModal, setShowModal] = useState(false);
-
-  // 상품 목록
-  const [goods, setGoods] = useState([]); // 페이지에 사용되는 goods
-  // 안전하게 URL에서 직접 읽기
-  const [page, setPage] = useState();
 
   // 페이징 정보 상태변수 (현재 페이징 상태 핸들링 위함)
   const [paging, setPaging] = useState({
@@ -57,27 +56,16 @@ export default function ModifyGoods() {
 
   // 페이징
   const getPageList = async () => {
-    // 검색조건 (URL에서 추출)
-    const params = new URLSearchParams(location.search);
-
-    const searchKeyword = params.get('searchKeyword') || ''; // 검색어
-    const searchType = params.get('searchType') || 'all'; // 검색필터
-    const sortParam = params.get('sort') || 'desc';
-    const pageParam = parseInt(params.get('page')) || 0;
     const pages = {
-      page: pageParam,
-      size: 4,
-      sortBy: sortParam,
-      keyword: searchKeyword,
-      type: searchType,
+      page,
+      size: 10,
+      sortBy: sort,
     };
     try {
       const result = await GoodsApi.getGoodsPageList(pages);
-      // 1. 상품 목록
       setGoods(result.content);
 
-      // 2. 페이지번호 정보
-      let temp = Math.floor(pageParam / 5) * 5;
+      let temp = Math.floor(page / 5) * 5;
       setPaging({
         start: temp,
         end: Math.min(temp + 5, result.totalPages),
@@ -120,6 +108,7 @@ export default function ModifyGoods() {
   // 페이징
   useEffect(() => {
     getPageList();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [page]);
 
   // 모달
@@ -138,8 +127,8 @@ export default function ModifyGoods() {
   return (
     <ModifyGoodsComp>
       <div className='container'>
-        <h2>상품 관리 </h2>
-        <span>설명: 관리자가 상품에 대한 상세정보를 입력하고 등록하는 페이지</span>
+        <h2>상품 수정 / 삭제 </h2>
+        <span>등록된 상품의 정보를 변경 및 삭제할 수 있습니다.</span>
         <hr />
         <button
           style={{ width: '200px', height: '50px' }}
@@ -187,8 +176,10 @@ export default function ModifyGoods() {
                   </div>
                   <div>{item.price} 원</div>
                   <div>
-                    <span>{renderStars(item.rating)}</span>
-                    <span style={{ color: 'red', fontSize: '12px' }}> {'( ' + item.reviewNum + ' )'} </span>
+                    <span style={{ color: 'red', fontSize: '20px' }}>
+                      {renderStars(item.rating)}
+                      {' ( ' + item.reviewNum + ' )'}
+                    </span>
                   </div>
                 </div>
                 <div className='modify'>
@@ -258,7 +249,7 @@ const ModalStyles = styled.div`
 `;
 const ModifyGoodsComp = styled.div`
   .container {
-    width: 1000px;
+    width: 900px;
     margin: 0 auto;
     font-family: 'Noto Sans KR', sans-serif;
 
@@ -316,7 +307,6 @@ const ModifyGoodsComp = styled.div`
       }
 
       .prodimg {
-        flex: 0 0 120px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -327,11 +317,15 @@ const ModifyGoodsComp = styled.div`
           border-radius: 8px;
           object-fit: cover;
           border: 1px solid #eee;
+          transition: transform 0.3s ease;
+        }
+        img:hover {
+          transform: scale(1.05);
         }
       }
 
       .goodsdetail {
-        flex: 1;
+        width: 450px;
         padding: 0 20px;
         display: flex;
         flex-direction: column;
@@ -347,15 +341,15 @@ const ModifyGoodsComp = styled.div`
       }
 
       .modify {
-        flex: 0 0 150px;
+        width: 150px;
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 20px;
         align-items: center;
 
         button {
           width: 100%;
-          height: 36px;
+          height: 40px;
           font-size: 14px;
         }
       }

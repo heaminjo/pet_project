@@ -2,6 +2,7 @@ package com.example.pet_back.service.goods;
 
 import com.example.pet_back.domain.admin.GoodsRankDTO;
 import com.example.pet_back.domain.goods.OrderDetailResponseDTO;
+import com.example.pet_back.domain.goods.WithDrawRequestDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.jwt.CustomUserDetails;
@@ -23,8 +24,10 @@ public interface OrderDetailService {
     PageResponseDTO<OrderDetailResponseDTO> orderDetailAllList(PageRequestDTO dto);
 
     // <OrderList /> : 주문취소
-    ResponseEntity<?> withdraw(CustomUserDetails userDetails, Long orderDetailId);
+    ResponseEntity<?> withdraw(CustomUserDetails userDetails, WithDrawRequestDTO withDrawRequestDTO);
 
+    // <WithDraw /> : 주문취소 내역
+    ResponseEntity<?> withdrawOrder(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO);
 
     // 리뷰 중복등록 검증
     ResponseEntity<?> getReviewState (CustomUserDetails userDetails,Long orderDetailId);
