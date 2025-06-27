@@ -9,6 +9,7 @@ import { useLocation } from 'react-router-dom';
 export default function Delivery() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
   const location = useLocation();
+
   const deliverImg = process.env.PUBLIC_URL + '/images/delivery.png';
   const [member, setMember] = useState([]);
   const [goods, setGoods] = useState([]);
@@ -16,6 +17,7 @@ export default function Delivery() {
   const query = new URLSearchParams(location.search);
   const goodsId = query.get('goodsId');
   const [delivery, setDelivery] = useState([]);
+  const orderDetailId = query.get('orderDetailId');
 
   // 회원정보 가져오기
   const memberInfo = async () => {
@@ -36,9 +38,18 @@ export default function Delivery() {
   };
 
   // 배송상태 가져오기
-  const deliveryStatus = async (goodsId) => {
-    OrderApi.deliveryStatus(goodsId)
+  const deliveryStatus = async (orderDetailId) => {
+    const payload = {
+      memberId: '',
+      goodsId: '',
+      orderId: '',
+      quantity: '',
+      reason: '',
+      returnDate: '',
+    };
+    OrderApi.deliveryStatus(orderDetailId)
       .then((response) => {
+        // ORDERSTATE.BEFOREPAY ....
         setDelivery(response);
       })
       .catch((err) => {});
@@ -49,9 +60,11 @@ export default function Delivery() {
     memberInfo();
     if (goodsId) {
       goodsInfo(goodsId);
-      deliveryStatus(goodsId);
     }
-  }, []);
+    if (orderDetailId) {
+      deliveryStatus(orderDetailId);
+    }
+  }, [goodsId, orderDetailId]);
 
   return (
     <DeliveryComp>

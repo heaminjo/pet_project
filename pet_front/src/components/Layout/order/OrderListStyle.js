@@ -38,6 +38,33 @@ const OrderListComp = styled.div`
     margin: 0 auto;
     border: 1px solid #ddd;
     border-bottom: none;
+
+    button {
+      width: 200px;
+      padding: 8px 12px;
+      background-color: #ffaaaa;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      margin-left: 20px;
+    }
+
+    button:hover {
+      background-color: rgb(255, 145, 145);
+    }
+  }
+
+  .orderstate {
+    width: inherit;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: start;
+    align-items: center;
+    font-size: 20px;
   }
 
   .orderlist2 {
@@ -58,12 +85,18 @@ const OrderListComp = styled.div`
   }
 
   .prodimg {
-    width: 150px;
-    height: 150px;
+    width: 80px;
+    height: 80px;
     object-fit: cover;
     border: 1px solid #ccc;
     border-radius: 6px;
     cursor: pointer;
+    transition: transform 0.3s ease; /* 부드러운 애니메이션 */
+    box-shadow: 1px 1px 3px rgb(150, 150, 150);
+  }
+
+  .prodimg:hover {
+    transform: scale(1.05);
   }
 
   .proddesc {

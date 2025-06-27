@@ -31,4 +31,7 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> 
 
     List<OrderDetail> findAllByOrdersOrderIdIn(List<Long> orderIds);
 
+    @Query("SELECT od FROM OrderDetail od WHERE od.orders.orderId = :orderId")
+    List<OrderDetail> findAllByOrderId(@Param("orderId") Long orderId);
+
 }

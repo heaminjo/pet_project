@@ -146,6 +146,7 @@ export default function MyReview() {
   return (
     <MyReviewComp>
       <div className='container'>
+        <h2>내 리뷰</h2>
         {reviews.length === 0 ? (
           <div style={{ padding: '20px', textAlign: 'center', color: '#888' }}>아직 작성한 리뷰가 없습니다.</div>
         ) : (
@@ -161,7 +162,7 @@ export default function MyReview() {
                   <div className='review-info'>
                     <div className='review-date'>
                       <h3>
-                        {review.regDate}&nbsp;&nbsp;reviewId : {review.reviewId}
+                        {review.regDate}
                       </h3>
                     </div>
                     <div className='review-title'>{review.title}</div>
@@ -248,8 +249,14 @@ const MyReviewComp = styled.div`
     object-fit: cover;
     border-radius: 8px;
     border: 1px solid #ccc;
+    cursor: pointer;
+    transition: transform 0.3s ease; /* 부드러운 애니메이션 */
+    box-shadow: 1px 1px 3px rgb(150, 150, 150);
   }
 
+  .product-image:hover {
+    transform: scale(1.05);
+  }
   .review-left {
     width: 600px;
     margin: 20px;

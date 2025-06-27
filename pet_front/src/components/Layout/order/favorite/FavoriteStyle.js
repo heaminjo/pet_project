@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 const FavoriteComp = styled.div`
-  .container {
+  .favorite-container {
     width: 900px;
     max-width: 1000px;
     margin: 0 auto;
     padding: 20px;
-    border-radius: 8px;
-
+    background-color: rgb(248, 246, 246);
+    border-radius: 3px;
+    border: 1px solid #ccc;
     font-family: 'Arial', sans-serif;
     color: #222;
 
@@ -65,7 +66,7 @@ const FavoriteComp = styled.div`
         }
 
         .prod-right {
-          flex-grow: 1;
+          width: 400px;
           display: flex;
           flex-direction: column;
           justify-content: space-between;

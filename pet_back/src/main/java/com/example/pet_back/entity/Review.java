@@ -57,7 +57,4 @@ public class Review {
         this.regDate = LocalDate.now(); // save 전 reg_date 오늘 날짜로 자동 세팅됨
     }
 
-    public Review(Member member, Goods goods, OrderDetail orderDetail, int score, String title, String content, String uploadImg) {
-        super();
-    }
 }

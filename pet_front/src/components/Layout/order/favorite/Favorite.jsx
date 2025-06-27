@@ -88,7 +88,7 @@ export default function Favorite() {
 
   return (
     <FavoriteComp>
-      <div className='container'>
+      <div className='favorite-container'>
         <div className='top'>
           <h2>찜 목록 리스트</h2>
         </div>

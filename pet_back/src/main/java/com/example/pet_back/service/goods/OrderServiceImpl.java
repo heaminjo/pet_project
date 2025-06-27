@@ -1,7 +1,6 @@
 package com.example.pet_back.service.goods;
 
 import com.example.pet_back.config.FileUploadProperties;
-import com.example.pet_back.constant.GOODSSTATE;
 import com.example.pet_back.constant.ORDERSTATE;
 import com.example.pet_back.domain.address.AddressResponseDTO;
 import com.example.pet_back.domain.admin.OrderStatisticsDTO;
@@ -15,6 +14,7 @@ import com.example.pet_back.mapper.OrderDetailMapper;
 import com.example.pet_back.mapper.OrderMapper;
 import com.example.pet_back.mapper.ReviewMapper;
 import com.example.pet_back.repository.*;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +55,7 @@ public class OrderServiceImpl implements OrderService {
     private final MemberRepository memberRepository;
     private final CartRepository cartRepository;
     private final AddressRepository addressRepository;
+    private final WithDrawRepository withdrawRepository;
 
     // Mapper
     private final OrderMapper orderMapper;
@@ -64,6 +65,10 @@ public class OrderServiceImpl implements OrderService {
     // 이미지 위치 백엔드 경로 지정
     @Autowired
     private FileUploadProperties fileUploadProperties;
+
+
+
+
 
     // 결제페이지 - 고객 주소 가져오기
     @Override
@@ -224,16 +229,19 @@ public class OrderServiceImpl implements OrderService {
     // 배송조회
     @Override
     @Transactional
-    public ResponseEntity<?> deliveryStatus(CustomUserDetails userDetails, Long orderId){
+    public ORDERSTATE deliveryStatus(CustomUserDetails userDetails, Long orderDetailId){
         Member member = memberRepository.findById( //
                         userDetails.getMember().getId()) //
                 .orElseThrow(() //
                         -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
-        Orders orders = orderRepository.findById(orderId).orElseThrow(() //
-                -> new UsernameNotFoundException("주문내역이 존재하지 않습니다."));
-
-
-        return null;
+        OrderDetail orderDetail = orderDetailRepository.findById(orderDetailId).orElseThrow(() //
+                -> new EntityNotFoundException("주문상세내역이 존재하지 않습니다."));
+        Goods goods = goodsRepository.findById(orderDetail.getGoods().getGoodsId()).orElseThrow(() //
+                -> new EntityNotFoundException("상품이 존재하지 않습니다."));
+        Orders order = orderRepository.findById(orderDetail.getOrders().getOrderId()).orElseThrow(() //
+                -> new EntityNotFoundException("주문내역이 존재하지 않습니다."));
+        ORDERSTATE orderState = orderRepository.findDeliveryStateByOrderId(order.getOrderId());
+        return orderState;
     }
 
 
@@ -276,8 +284,8 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 주문상세입니다."));
         Review review = reviewMapper.toEntity(reviewUploadDTO, member, goods.get(), orderDetail);
         reviewRepository.save(review);
-        orderDetail.setIsReviewed(true);
-        log.info("orderDetail.setIsReviewed(true) 후: "+orderDetail.isReviewed());
+        orderDetail.setReviewed(true);
+        log.info("orderDetail.setIsReviewed(true) 후: "+orderDetail.getReviewed());
         orderDetailRepository.save(orderDetail);
 
         // null 방어 코드
@@ -307,8 +315,6 @@ public class OrderServiceImpl implements OrderService {
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("리뷰 삭제에 실패하였습니다.");
         }
-
-
     }
 
 

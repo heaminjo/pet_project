@@ -27,7 +27,6 @@ public class Orders {
     @JoinColumn(name = "delivery_id", nullable = false) // FK => 연관관계 매핑
     private Delivery delivery; // 엔티티 자체 매핑 (private Long delivery_id X)
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false) // FK => 연관관계 매핑
     private Member member; // 엔티티 자체 매핑 (private Long member_id X)
@@ -45,7 +44,10 @@ public class Orders {
     @Column(name = "reg_date", nullable = false)
     private LocalDate regDate;
 
-    @Column(length = 20)
+    @Column(name = "cancel_date")
+    private LocalDate cancelDate;
+
+    @Column(name = "status", length = 20)
     @Enumerated(EnumType.STRING)
     private ORDERSTATE status;
 

@@ -1,9 +1,9 @@
 package com.example.pet_back.controller;
 
+import com.example.pet_back.constant.ORDERSTATE;
 import com.example.pet_back.domain.goods.*;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
-import com.example.pet_back.entity.Goods;
 import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.service.MemberService;
 import com.example.pet_back.service.goods.OrderDetailService;
@@ -40,12 +40,22 @@ public class OrderController {
     }
 
     // <OrderList /> : 주문취소
-    @PostMapping("/withdraw/{orderDetailId}")
-    public ResponseEntity<?> withdrawOrder(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long orderDetailId) {
+    @PostMapping("/withdraw")
+    public ResponseEntity<?> withdrawOrder(@AuthenticationPrincipal CustomUserDetails userDetails,  //
+                                           @RequestBody WithDrawRequestDTO withDrawRequestDTO) {
         log.info("** OrderController => withdrawOrder() 실행됨 **");
-        orderDetailService.withdraw(userDetails, orderDetailId);
+        orderDetailService.withdraw(userDetails, withDrawRequestDTO);
         return ResponseEntity.ok("주문이 취소되었습니다.");
     }
+
+    // <WithDrawList />  : 주문취소 이력 조회
+    @PostMapping("/withdraw/list")
+    public ResponseEntity<?> withdrawOrder(@AuthenticationPrincipal CustomUserDetails userDetails,  //
+                                           @RequestBody PageRequestDTO pageRequestDTO) {
+        log.info("** OrderController => withdrawOrder() 실행됨 **");
+        return orderDetailService.withdrawOrder(userDetails, pageRequestDTO);
+    }
+
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 관 리 자 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // <DeliveryGoods />
@@ -94,9 +104,10 @@ public class OrderController {
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 배 송 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     @PostMapping("/delivery")
-    public ResponseEntity<?> deliveryStatus(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("orderId") Long orderId) {
+    public ORDERSTATE deliveryStatus(@AuthenticationPrincipal CustomUserDetails userDetails, //
+                                     @RequestParam("orderDetailId") Long orderDetailId) {
         log.info("** OrderController => orderList() 실행됨 **");
-        return orderService.deliveryStatus(userDetails, orderId);
+        return orderService.deliveryStatus(userDetails, orderDetailId); // ORDERSTATE
     }
 
     // 고객 주소 가져오기

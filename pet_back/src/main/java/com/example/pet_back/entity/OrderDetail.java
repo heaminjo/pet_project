@@ -32,11 +32,11 @@ public class OrderDetail extends BaseEntity {
     @Column(name = "goods_price", nullable = false)
     private int goodsPrice;
 
-    @Column(name = "is_reviewed")
-    private boolean isReviewed;
+    @Column(name = "reviewed")
+    private boolean reviewed;
 
-    public void setIsReviewed(boolean b) {
-        this.isReviewed = b;
+    public boolean getReviewed() {
+        return reviewed;
     }
 
 }

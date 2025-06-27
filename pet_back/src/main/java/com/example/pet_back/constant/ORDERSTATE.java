@@ -11,7 +11,10 @@ public enum ORDERSTATE {
     AFTERPAY("결제완료"), // 결제완료
     READY("상품준비중"), // 판매자 상품준비중
     DELIVERY("배송중"), // 배송중
-    END("배송완료"); // 배송완료
+    END("배송완료"), // 배송완료
+    WITHDRAW("주문취소"), // 주문취소
+    REFUND("반품"), // 반품
+    EXCHANGE("교환"); // 교환
 
     private final String orderName;
 

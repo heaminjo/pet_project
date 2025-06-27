@@ -14,14 +14,27 @@ const OrderApi = {
   getOrderDetailPageList: async (pages) => {
     const result = await instance.post(`/order/detail`, pages);
     console.log('응답 결과:', result);
-    return result.data;
+    return result.data; // OrderDetailResponseDTO
   },
 
-  // <OrderList /> : 주문취소
-  withDraw: async (orderDetailId) => {
-    console.log(`withDraw: ${orderDetailId}`);
-    const result = await instance.post(`/order/withdraw/${orderDetailId}`);
-    return result.data;
+  // <OrderList /> : 주문취소 요청
+  withDraw: async (payload) => {
+    try {
+      const result = await instance.post('/order/withdraw', payload);
+      return result.data; // True / False / 잘못된 요청입니다.
+    } catch (e) {
+      alert(`OrderApi.withDraw 오류`);
+    }
+  },
+
+  // <WithDrawList /> : 주문취소내역
+  getWithDrawPageList: async () => {
+    try {
+      const result = await instance.post('/order/withdraw/list');
+      return result.data; // 
+    } catch (e) {
+      alert(`OrderApi.getWithDrawPageList 오류`);
+    }
   },
 
   // [관리자] 전체 Order List
@@ -55,10 +68,12 @@ const OrderApi = {
     }
   },
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 배  송 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  deliveryStatus: async (orderId) => {
+  deliveryStatus: async (orderDetailId) => {
+    // ORDERSTATE.BEFOREPAY ...
     console.log(`OrderApi.deliveryStatus`);
+    alert(`OrderApi.deliveryStatus`);
     try {
-      const result = await instance.post(`/order/delivery?orderId=${orderId}`); //
+      const result = await instance.post(`/order/delivery?orderDetailId=${orderDetailId}`); // ORDERSTATE 반환
       return result?.data;
     } catch (err) {
       alert('오류 발생');

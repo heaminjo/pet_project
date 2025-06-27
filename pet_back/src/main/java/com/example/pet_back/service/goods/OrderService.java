@@ -1,5 +1,6 @@
 package com.example.pet_back.service.goods;
 
+import com.example.pet_back.constant.ORDERSTATE;
 import com.example.pet_back.domain.admin.OrderStatisticsDTO;
 import com.example.pet_back.domain.custom.ApiResponse;
 import com.example.pet_back.domain.goods.OrderResponseDTO;
@@ -28,7 +29,7 @@ public interface OrderService {
     ResponseEntity<?> payGoods(CustomUserDetails userDetails, PayRequestDTO dto);
 
     // 배송조회
-    ResponseEntity<?> deliveryStatus(CustomUserDetails userDetails, Long orderId);
+    ORDERSTATE deliveryStatus(CustomUserDetails userDetails, Long orderDetailId);
 
     // 리뷰 작성
     ResponseEntity<?> regReview(CustomUserDetails userDetails, ReviewUploadDTO dto) throws IOException;
