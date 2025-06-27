@@ -123,7 +123,7 @@ export default function BoardList() {
                 {categoryNameMap[category] || "자유게시판"}
               </td>
             </tr>
-            <tr style={{ backgroundColor: " #E5DDD6" }}>
+            <tr style={{ backgroundColor: " #847c7a", height: "30px" }}>
               <th>NO</th>
               <th>제목</th>
               <th>작성자</th>
