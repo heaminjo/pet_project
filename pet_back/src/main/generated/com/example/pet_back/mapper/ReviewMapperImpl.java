@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-06-25T10:14:09+0900",
+    date = "2025-06-27T09:28:00+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.12 (Oracle Corporation)"
 )
 @Component
@@ -49,11 +49,14 @@ public class ReviewMapperImpl implements ReviewMapper {
         reviewResponseDTO.memberId( reviewMemberId( review ) );
         reviewResponseDTO.orderDetailId( reviewOrderDetailOrderDetailId( review ) );
         reviewResponseDTO.goodsId( reviewGoodsGoodsId( review ) );
+        reviewResponseDTO.goods( map( review.getGoods() ) );
+        reviewResponseDTO.regDate( review.getRegDate() );
         reviewResponseDTO.reviewId( review.getReviewId() );
         reviewResponseDTO.score( review.getScore() );
         reviewResponseDTO.title( review.getTitle() );
         reviewResponseDTO.content( review.getContent() );
         reviewResponseDTO.imageFile( review.getImageFile() );
+        reviewResponseDTO.modDate( review.getModDate() );
 
         return reviewResponseDTO.build();
     }

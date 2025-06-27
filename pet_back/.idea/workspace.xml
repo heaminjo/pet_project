@@ -5,17 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3733d33e-44d5-4aae-a945-8dbce959f5d6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/PetBackApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/PetBackApplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/controller/AuthController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/controller/AuthController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/controller/GoodsController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/controller/GoodsController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/controller/OrderController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/controller/OrderController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/jwt/TokenProvider.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/jwt/TokenProvider.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/AuthServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/AuthServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/KakaoService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/KakaoService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/goods/ReviewResponseDTO$ReviewResponseDTOBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/goods/ReviewResponseDTO$ReviewResponseDTOBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/goods/ReviewResponseDTO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/domain/goods/ReviewResponseDTO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/mapper/ReviewMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/mapper/ReviewMapper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/mapper/ReviewMapperImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/mapper/ReviewMapperImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/repository/ReviewRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/repository/ReviewRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/goods/GoodsServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/goods/GoodsServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/goods/OrderDetailService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/goods/OrderDetailService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/goods/OrderDetailServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/goods/OrderDetailServiceImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/goods/OrderService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/goods/OrderService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/goods/OrderServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/example/pet_back/service/goods/OrderServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Board/BoardEditForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Board/BoardEditForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Board/BoardInsertForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Board/BoardInsertForm.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pet_front/src/components/Board/BoardList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../pet_front/src/components/Board/BoardList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/generated/com/example/pet_back/mapper/ReviewMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/generated/com/example/pet_back/mapper/ReviewMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/webapp/userImages/108a7cf9-7d8c-4ba4-9020-2c049a42ba26.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/webapp/userImages/864b67ab-0f8d-4558-978d-1f532b540a5e.gif" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
