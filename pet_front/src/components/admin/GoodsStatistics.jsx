@@ -3,6 +3,7 @@ import styled from "styled-components";
 import AdminApi from "../../api/AdminApi";
 import GoodsApi from "../../api/GoodsApi";
 import { useNavigate } from "react-router-dom";
+import React from "react";
 
 export default function GoodsStatistics() {
   const [goods, setGoods] = useState([]);
