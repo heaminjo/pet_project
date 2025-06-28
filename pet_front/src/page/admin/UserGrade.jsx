@@ -20,7 +20,7 @@ export default function UserGrade() {
   const [gradeData, setGradeData] = useState([]);
   const [gradeType, setGradeType] = useState("NEWBIE");
   const [userList, setUserList] = useState([]); //초기 목록은 NEWBIE로로
-  const [backColor, setBackColor] = useState("#eaefef");
+  const [backColor, setBackColor] = useState("#f2fdff");
   const [render, setRender] = useState(0);
   useEffect(() => {
     getGradeStatistics();
@@ -174,19 +174,39 @@ export default function UserGrade() {
       <div className="list_table">
         <h4>등급 별 우수 회원 목록</h4>
         <ul className="line">
-          <li id="grade01" onClick={() => clickGrade("NEWBIE", "#eaefef")}>
+          <li
+            className={gradeType === "NEWBIE" ? "active" : ""}
+            id="grade01"
+            onClick={() => clickGrade("NEWBIE", "#eaefef")}
+          >
             <span>{gradeData[0]?.name}</span>
           </li>
-          <li id="grade02" onClick={() => clickGrade("BLOSSOM", "#ffe99a")}>
+          <li
+            className={gradeType === "BLOSSOM" ? "active" : ""}
+            id="grade02"
+            onClick={() => clickGrade("BLOSSOM", "#cfe7f0")}
+          >
             <span>{gradeData[1]?.name}</span>
           </li>
-          <li id="grade03" onClick={() => clickGrade("BREEZE", "#ffd586")}>
+          <li
+            className={gradeType === "BREEZE" ? "active" : ""}
+            id="grade03"
+            onClick={() => clickGrade("BREEZE", "#f0d5ce")}
+          >
             <span>{gradeData[2]?.name}</span>
           </li>
-          <li id="grade04" onClick={() => clickGrade("FLAME", "#ffaaaa")}>
+          <li
+            className={gradeType === "FLAME" ? "active" : ""}
+            id="grade04"
+            onClick={() => clickGrade("FLAME", "#ecbfb1")}
+          >
             <span>{gradeData[3]?.name}</span>
           </li>
-          <li id="grade05" onClick={() => clickGrade("AURORA", "#ff9898")}>
+          <li
+            className={gradeType === "AURORA" ? "active" : ""}
+            id="grade05"
+            onClick={() => clickGrade("AURORA", "#de9d91")}
+          >
             <span>{gradeData[4]?.name}</span>
           </li>
         </ul>

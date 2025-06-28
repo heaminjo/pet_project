@@ -1,6 +1,6 @@
 import axios from "axios";
 import instance from "./axiosInstance";
-const KH_DOMAIN = "http://localhost:8080";
+const KH_DOMAIN = "http://54.180.195.59:8080";
 const AdminApi = {
   //관리자자 조회
   detail: async () => {
