@@ -3,8 +3,10 @@ package com.example.pet_back.service.goods;
 import com.example.pet_back.config.FileUploadProperties;
 import com.example.pet_back.constant.ORDERSTATE;
 import com.example.pet_back.domain.admin.GoodsRankDTO;
+import com.example.pet_back.domain.goods.GoodsResponseDTO;
 import com.example.pet_back.domain.goods.OrderDetailResponseDTO;
 import com.example.pet_back.domain.goods.WithDrawRequestDTO;
+import com.example.pet_back.domain.goods.WithdrawResponseDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.entity.*;
@@ -30,6 +32,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -55,7 +58,7 @@ public class OrderDetailServiceImpl implements OrderDetailService{
 
     // 취소 / 교환 / 환불 내역
     @Override
-    public ResponseEntity<?> withdrawOrder(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO){
+    public ResponseEntity<?> withDrawList(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO){
         log.info("** GoodsServiceImpl orderList 실행됨 **");
 
         // 페이징 + 정렬 ★★★★★
@@ -70,6 +73,7 @@ public class OrderDetailServiceImpl implements OrderDetailService{
         Member member = memberRepository.findById(userDetails.getMember().getId()).orElseThrow(() //
                 -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
         // 2. Orders
+        // 취소 / 반품 / 교환 상태 주문 필터링
         List<ORDERSTATE> inValidStates = List.of(ORDERSTATE.WITHDRAW, ORDERSTATE.REFUND, ORDERSTATE.EXCHANGE);
         List<Orders> ordersList = orderRepository.findAllByUserIdWithDraw(member.getId(), inValidStates);
         // 3. Goods
@@ -86,7 +90,7 @@ public class OrderDetailServiceImpl implements OrderDetailService{
 
         // 페이징된 OrderDetail 목록 조회 ★★★★★
         Page<OrderDetail> orderDetailPage = orderDetailRepository.findAllByOrderIdList(orderIdList, pageable);
-        log.info("** GoodsServiceImpl orderDetailPage 조회완료 **");
+        log.info("** GoodsServiceImpl withDrawList => orderDetailPage 조회완료 **");
 
         // 5. Map (goodsId/GOODS) & (orderId/ORDERS) & (reviewId/REVIEW)
         Map<Long, Goods> goodsMap = goodsList.stream().collect(Collectors.toMap(Goods::getGoodsId, g-> g));
@@ -100,38 +104,74 @@ public class OrderDetailServiceImpl implements OrderDetailService{
         Map<Long, Review> reviewMap = reviewList.stream() // OrderDetail Id : Review객체
                 .collect(Collectors.toMap(r -> r.getOrderDetail().getOrderDetailId(), r -> r));
 
+
         // DTO 리스트 생성
-        List<OrderDetailResponseDTO> dtoList = orderDetailPage.stream() //
+        List<WithdrawResponseDTO> dtoList = orderDetailPage.stream() //
                 .map(od ->  {
+
+                    // 상품 정보
+                    Goods goods = goodsMap.get(od.getGoods().getGoodsId());
+                    GoodsResponseDTO goodsDTO = GoodsResponseDTO.builder()
+                            .goodsId(goods.getGoodsId())
+                            .categoryId(goods.getCategory().getCategoryId())
+                            .goodsName(goods.getGoodsName())
+                            .price(goods.getPrice())
+                            .description(goods.getDescription())
+                            .goodsState(goods.getGoodsState())
+                            .imageFile(fileUploadProperties.getUrl() + od.getGoods().getImageFile()) // 백엔드 경로 설정
+                            .rating(goods.getRating())
+                            .views(goods.getViews())
+                            .reviewNum(goods.getReviewNum())
+                            .quantity(goods.getQuantity())
+                            .regDate(goods.getRegDate())
+                            .cartQuantity(0) // 필드가 있다면 초기화
+                            .build();
+
+                    Orders order = ordersMap.get(od.getOrders().getOrderId());
                     Review review = reviewMap.get(od.getOrderDetailId());
-                    return OrderDetailResponseDTO.builder() //
-                            // OrderDetail
+                    Optional<Withdraw> withdrawOpt = withDrawRepository.findReason(
+                            od.getOrders().getOrderId(),
+                            od.getGoods().getGoodsId(),
+                            member.getId()
+                    );
+                    OrderDetailResponseDTO orderDetailDTO = OrderDetailResponseDTO.builder()
                             .orderDetailId(od.getOrderDetailId())
                             .goodsId(od.getGoods().getGoodsId())
-                            .orderId(od.getOrders().getOrderId())
+                            .orderId(order.getOrderId())
                             .goodsQuantity(od.getGoodsQuantity())
                             .goodsPrice(od.getGoodsPrice())
-                            // Goods
-                            .goodsName(od.getGoods().getGoodsName())
-                            .price(od.getGoods().getPrice())
-                            .description(od.getGoods().getDescription())
-                            .goodsState(od.getGoods().getGoodsState())
+                            .goodsName(goods.getGoodsName())
+                            .price(goods.getPrice())
+                            .description(goods.getDescription())
+                            .goodsState(goods.getGoodsState())
                             .imageFile(fileUploadProperties.getUrl() + od.getGoods().getImageFile()) // 백엔드 경로 설정
-                            // Orders
-                            .totalPrice(od.getOrders().getTotalPrice())
-                            .totalQuantity(od.getOrders().getTotalQuantity())
-                            .regDate(od.getOrders().getRegDate())
-                            .status(od.getOrders().getStatus().getOrderName())
-                            // Review
-                            .score(String.valueOf(review.getScore()))
-                            .reviewed(od.getReviewed())
+                            .totalPrice(order.getTotalPrice())
+                            .totalQuantity(order.getTotalQuantity())
+                            .regDate(order.getRegDate())
+                            .status(order.getStatus().getOrderName())
+                            .score(String.valueOf(review != null ? review.getScore() : null))
+                            .reviewed(review != null)
+                            .build();
+
+
+                    String reason = withdrawOpt.map(Withdraw::getReason).orElse("사유 없음");
+                    return WithdrawResponseDTO.builder() //
+                            .memberId(member.getId())
+                            .goodsId(od.getGoods().getGoodsId())
+                            .orderId(od.getOrders().getOrderId())
+                            .quantity(od.getGoodsQuantity())
+                            .reason(reason)
+                            .returnDate(od.getOrders().getCancelDate())
+                            // GoodsResponseDTO
+                            .goodsResponseDTO(goodsDTO)
+                            // OrderDetailResponseDTO
+                            .orderDetailResponseDTO(orderDetailDTO)
                             .build();
                 }).collect(Collectors.toList());
-
-
+        log.info("** GoodsServiceImpl withDrawList => dto 리스트 생성 **");
 
         // PageResponseDTO  생성 ★★★★★
-        PageResponseDTO<OrderDetailResponseDTO> response = new PageResponseDTO<>(
+        PageResponseDTO<WithdrawResponseDTO> response = new PageResponseDTO<>(
                 dtoList,
                 pageRequestDTO.getPage(),
                 pageRequestDTO.getSize(),
@@ -140,11 +180,11 @@ public class OrderDetailServiceImpl implements OrderDetailService{
                 orderDetailPage.hasNext(),
                 orderDetailPage.hasPrevious()
         );
+
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 
-    
     // 주문 / 배송내역 : status(BEFOREPAY, AFTERPAY, READY, DELIVERY, END)
     @Override
     public ResponseEntity<?> orderList(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO) {
@@ -226,7 +266,7 @@ public class OrderDetailServiceImpl implements OrderDetailService{
                         .status(od.getOrders().getStatus().getOrderName())
                         // Review
                         .score(String.valueOf(score))
-                        // .reviewed(od.getReviewed())
+                        .reviewed(od.getReviewed())
                         .build();
                 }).collect(Collectors.toList());
 
@@ -244,8 +284,7 @@ public class OrderDetailServiceImpl implements OrderDetailService{
     }
 
     
-    
-    
+
     @Override
     public List<GoodsRankDTO> goodsRank() {
         List<GoodsRankDTO> list = orderDetailRepository.goodsRank();

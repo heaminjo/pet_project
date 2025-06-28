@@ -27,7 +27,7 @@ public interface OrderDetailService {
     ResponseEntity<?> withdraw(CustomUserDetails userDetails, WithDrawRequestDTO withDrawRequestDTO);
 
     // <WithDraw /> : 주문취소 내역
-    ResponseEntity<?> withdrawOrder(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO);
+    ResponseEntity<?> withDrawList(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO);
 
     // 리뷰 중복등록 검증
     ResponseEntity<?> getReviewState (CustomUserDetails userDetails,Long orderDetailId);

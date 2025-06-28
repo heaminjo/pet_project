@@ -23,7 +23,7 @@ public enum ORDERSTATE {
     }
 
     public String getOrderName() {
-        return orderName;
+        return this.orderName;
     }
 }
 

@@ -69,7 +69,6 @@ public class OrderServiceImpl implements OrderService {
 
 
 
-
     // 결제페이지 - 고객 주소 가져오기
     @Override
     @Transactional
@@ -137,7 +136,6 @@ public class OrderServiceImpl implements OrderService {
                 .grade(grade)
                 .build();
     }
-
 
     // 결제 : Delivery > Orders > Order_Detail 테이블 save
     @Override
@@ -316,9 +314,6 @@ public class OrderServiceImpl implements OrderService {
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("리뷰 삭제에 실패하였습니다.");
         }
     }
-
-
-
 
 
     // 내 리뷰 목록 출력
