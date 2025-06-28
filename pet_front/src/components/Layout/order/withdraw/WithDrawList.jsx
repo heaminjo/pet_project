@@ -4,21 +4,13 @@ import styled from 'styled-components';
 import PageNumber from '../../../util/PageNumber';
 import GoodsApi from '../../../../api/GoodsApi';
 import OrderApi from '../../../../api/OrderApi';
+import Modal from '../../../../modal/Modal';
 
 export default function WithDrawList() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
   const location = useLocation();
   const prodImg = process.env.PUBLIC_URL + '/images/pic1.png';
   const navigate = useNavigate();
-
-  // 페이징 위함
-  const [goodsList, setGoodsList] = useState([]);
-  const [quantityMap, setQuantityMap] = useState({}); // Map 용도( goods id : goods quantity )
-
-  const [info, setInfo] = useState([]); // OrderDetailResponseDTO List
-  const [showModal, setShowModal] = useState(false); // Y/N
-  const [buyQuantity, setBuyQuantity] = useState(1);
-  const [reviewIdMap, setReviewIdMap] = useState({}); // { orderDetailId: reviewId }
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~ 페이징 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -27,6 +19,7 @@ export default function WithDrawList() {
   const [keyword, setKeyword] = useState('');
   const [sort, setSort] = useState('desc');
   const [page, setPage] = useState(0); // 1 페이지, 2 페이지, ...
+  const [info, setInfo] = useState([]); // OrderDetailResponseDTO List
 
   // 페이징 정보 상태변수 (현재 페이징 상태 핸들링 위함)
   const [paging, setPaging] = useState({
@@ -42,21 +35,31 @@ export default function WithDrawList() {
   // 장바구니 담기
   const addToCart = async (goods, buyQuantity) => {
     try {
-      const response = await GoodsApi.addToCart(goods, buyQuantity);
-      // alert("장바구니에 " + goods.goodsName + "이(가) 1개 담겼습니다.");
-      // navigate("/user/mypage/cart/list");
-      console.log(`장바구니 담기 성공, 상품ID:  => ${response}`);
-      setShowModal(true); // 모달 표시
+      if (sessionStorage.getItem('loginName') != null) {
+        const response = await GoodsApi.addToCart(goods, buyQuantity);
+        // alert('장바구니에 ' + goods.goodsName + '이(가) 1개 담겼습니다.');
+        // navigate("/user/mypage/cart/list");
+        setShowModal(true); // 모달 표시
+      } else {
+        alert('로그인이 필요한 서비스입니다.');
+      }
     } catch (err) {
       alert('장바구니 담기에 실패했습니다.');
     }
   };
 
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~ 모 달 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const [showModal, setShowModal] = useState(false); // Y/N
+  // 모달 핸들러 함수
+  const goToCart = () => {
+    setShowModal(false);
+    navigate('/user/mypage/cart/list');
+  };
   // ~~~~~~~~~~~~~~~~~ 내역 리스트를 순회하며 날짜별로 그룹화 ~~~~~~~~~~~~~~~~~~~~
   const groupByDate = (info) => {
     const grouped = {};
     info.forEach((item) => {
-      const dateKey = new Date(item.regDate).toISOString().split('T')[0]; // 'YYYY-MM-DD'
+      const dateKey = new Date(item.returnDate).toISOString().split('T')[0]; // 'YYYY-MM-DD'
       // toISOString() : 시차 방어 (UTC 기준)
       // 2025-06-05T15:57:22.427+09:00 --> '2025-06-05' 추출
       if (!grouped[dateKey]) grouped[dateKey] = []; // 빈배열 방어
@@ -79,9 +82,12 @@ export default function WithDrawList() {
     };
 
     try {
-      const response = await OrderApi.getWithDrawPageList(pages);
+      const response = await OrderApi.getWithDrawPageList(pages); // WithdrawResponseDTO
+      console.log(`OrderApi.getWithDrawPageList(pages) response = `, response);
+      console.log(`OrderApi.getWithDrawPageList(pages) response.content = `, response.content);
       if (Array.isArray(response?.content)) {
         setInfo(response.content);
+        console.log(`OrderApi.getWithDrawPageList(pages) response = `, info);
       } else {
         console.error('비정상 응답:', response);
         setInfo([]);
@@ -97,7 +103,7 @@ export default function WithDrawList() {
         totalPages: response.totalPages,
       });
     } catch (err) {
-      console.error('getPageList 실패:', err);
+      console.error('OrderApi.getWithDrawPageList(pages) 실패:', err);
     }
   };
 
@@ -112,149 +118,113 @@ export default function WithDrawList() {
         <div>
           {sortedDates.map((date) => (
             <div key={date} className='orderlist'>
-              <hr />
               {groupedInfo[date].map((item, index) => (
                 <div key={item.orderDetailId} className='ordertitle'>
                   <div className='orderstate'>
-                    {date} 반품일
-                    <button className='btn3'>주문취소</button>
+                    {item.returnDate}
+                    &nbsp;&nbsp;&nbsp;&nbsp;{item.orderDetailResponseDTO.status}
                   </div>
                   <div className='orderlist2'>
                     <div className='orderdesc'>
-                      <img src={`${item.imageFile}`} alt={item.goodsName} className='prodimg' onClick={() => navigate('/user/order', { state: { goods: item } })} />
+                      <img src={`${item.orderDetailResponseDTO.imageFile}`} alt={item.orderDetailResponseDTO.goodsName} className='prodimg' onClick={() => navigate('/user/order', { state: { goods: item } })} />
                       <br />
                       <div className='proddesc'>
-                        {item.status === '취소완료' ? <b> {item.status}</b> : <b style={{ color: 'red' }}>{item.status}</b>}
+                        유형 &nbsp;&nbsp;{item.orderDetailResponseDTO.status === '취소완료' ? <b> {item.orderDetailResponseDTO.status}</b> : <b style={{ color: 'red' }}>{item.orderDetailResponseDTO.status}</b>}
                         <br />
-                        {item.goodsName} <br />
-                        {item.goodsPrice} 원 / {item.goodsQuantity} 개
+                        {item.orderDetailResponseDTO.goodsName} <br />
+                        {item.orderDetailResponseDTO.goodsPrice} 원 / {item.orderDetailResponseDTO.goodsQuantity} 개
                       </div>
                       <div className='btn'>
                         <button className='btn1' onClick={() => addToCart(item, 1)}>
                           장바구니 담기
                         </button>
-                        <button className='btn2' onClick={() => navigate(`/user/mypage/delivery?orderDetailId=${item.orderDetailId}`)}>
-                          배송조회
-                        </button>
-
-                        {item.reviewId ? (
-                          <button className='btn4' onClick={() => navigate(`/user/mypage/review?reviewId=${item.reviewId}`)}>
-                            리뷰수정
-                          </button>
-                        ) : (
-                          <button className='btn4' onClick={() => navigate('/user/mypage/review', { state: { goods: item } })}>
-                            리뷰작성
-                          </button>
-                        )}
                       </div>
                     </div>
                   </div>
                 </div>
               ))}
-              <hr />
             </div>
           ))}
         </div>
         <PageNumber page={page} setPage={setPage} paging={paging} />
       </div>
+      {showModal && (
+        <Modal
+          content={
+            <>
+              상품이 장바구니에 정상적으로 담겼습니다.
+              <br />
+              장바구니로 이동하시겠습니까?
+            </>
+          }
+          clickEvt={goToCart}
+          setModal={setShowModal}
+        />
+      )}
     </WithDrawListComp>
   );
 }
 
 const WithDrawListComp = styled.div`
-  modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 999;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  }
   .container {
     width: 900px;
-    margin: 0 auto;
-    font-family: 'Arial', sans-serif;
-    color: #444;
+    margin: 30px auto;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #333;
   }
 
   h2 {
-    font-size: 1.6rem;
-    color: #444;
-    margin-bottom: 10px;
-    padding: 10px 20px;
-    display: inline-block;
+    font-size: 1.8rem;
+    margin-bottom: 24px;
+    font-weight: 600;
   }
 
   .orderlist {
     margin-bottom: 30px;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   }
 
   .ordertitle {
-    font-weight: bold;
-    font-size: 1.1rem;
-    background-color: rgb(248, 246, 246);
-    padding: 12px 16px;
-    margin: 0 auto;
-    border: 1px solid #ddd;
-    border-bottom: none;
+    padding: 0 10px;
   }
 
   .orderstate {
-    width: inherit;
-    height: 40px;
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    justify-content: start;
-    align-items: center;
-    font-size: 20px;
-
-    button {
-      width: 200px;
-      padding: 8px 12px;
-      background-color: #ffaaaa;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-      margin-left: 20px;
-    }
-
-    button:hover {
-      background-color: rgb(255, 145, 145);
-    }
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    color: #666;
+    font-size: 1.1rem;
+    font-weight: 600;
   }
 
   .orderlist2 {
     display: flex;
-    justify-content: center;
-    padding: 0 0 10px 0;
-    border-top: none;
-    border-radius: 0 0 6px 6px;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 12px 0;
+    border-top: 1px solid #eee;
   }
 
   .orderdesc {
     display: flex;
     align-items: center;
-    border-radius: 6px 6px 0 0;
-    padding: 10px;
-    gap: 20px;
     width: 100%;
+    gap: 20px;
   }
 
   .prodimg {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
     object-fit: cover;
-    border: 1px solid #ccc;
-    border-radius: 6px;
     cursor: pointer;
-    transition: transform 0.3s ease; /* 부드러운 애니메이션 */
-    box-shadow: 1px 1px 3px rgb(150, 150, 150);
+    border: 1px solid #ccc;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.25s ease;
   }
 
   .prodimg:hover {
@@ -268,31 +238,39 @@ const WithDrawListComp = styled.div`
     color: #444;
 
     b {
-      font-weight: bold;
-      font-size: 0.95rem;
-      color: #444;
+      font-weight: 600;
+      color: #333;
     }
   }
 
   .btn {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    width: 200px;
     justify-content: center;
+    gap: 10px;
+    min-width: 150px;
 
     button {
+      background: #ffaaaa;
+      width: 200px;
+      height: 40px;
       padding: 8px 12px;
-      background-color: #ffaaaa;
-      border: 1px solid #ccc;
-      border-radius: 4px;
       font-size: 0.9rem;
+      font-weight: 500;
+      border: none;
+      border-radius: 6px;
       cursor: pointer;
       transition: background-color 0.2s ease;
     }
 
     button:hover {
-      background-color: rgb(255, 145, 145);
+      background: rgb(255, 145, 145);
     }
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 16px 0;
   }
 `;

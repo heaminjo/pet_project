@@ -114,7 +114,7 @@ export default function Order() {
       });
   };
 
-  // 구매수량 제한한
+  // 구매수량 제한
   const setQuantity = (number) => {
     if (number > goods.quantity) {
       setBuyQuantity(goods.quantity);
@@ -206,7 +206,7 @@ export default function Order() {
           <Modal
             content={
               <>
-                {goods.goodsName} 상품 {goods.buyQuantity} 개가 장바구니에 추가되었습니다.
+                {goods.goodsName} 상품이 장바구니에 추가되었습니다.
                 <br />
                 장바구니로 이동하시겠습니까?
               </>
@@ -222,7 +222,4 @@ export default function Order() {
 
 const ModalContainer = styled.div`
   position: fixed;
-  top: 30%;
-  left: 40%;
-  transform: translate(-50%, -50%);
 `;

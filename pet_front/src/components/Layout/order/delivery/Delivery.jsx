@@ -71,12 +71,10 @@ export default function Delivery() {
       <div className='container'>
         <div className='title'>배송조회</div>
         <div className='box1'>
-          상품명: {goods.goodsName} <br />
+          상품명: {} <br />
           6/9(월) 배송 완료 <br />
           {/*ㄴ orders 테이블의 regDate 가져옴 (order response dto 활용) */}
         </div>
-
-        <hr />
         <div className='infotitle'>배송정보</div>
         <div className='info'>
           <section className='deliver'>
@@ -100,7 +98,6 @@ export default function Delivery() {
               </tr>
             </table>
           </section>
-          <hr />
           <section className='user'>
             <table className='userinfo'>
               <tr>
@@ -118,7 +115,6 @@ export default function Delivery() {
             </table>
           </section>
         </div>
-        <hr />
         <section className='desc'>
           <div className='title'>FAQ</div>
           <ul>

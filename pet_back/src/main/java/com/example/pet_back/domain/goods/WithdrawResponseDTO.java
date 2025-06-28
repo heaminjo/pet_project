@@ -24,7 +24,7 @@ public class WithdrawResponseDTO {
     private String reason;
     private LocalDate returnDate;
 
-    private Goods goods;
-    private OrderDetail orderDetail;
+     private GoodsResponseDTO goodsResponseDTO;
+    private OrderDetailResponseDTO orderDetailResponseDTO;
 
 }

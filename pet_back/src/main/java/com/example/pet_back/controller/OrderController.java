@@ -50,10 +50,10 @@ public class OrderController {
 
     // <WithDrawList />  : 주문취소 이력 조회
     @PostMapping("/withdraw/list")
-    public ResponseEntity<?> withdrawOrder(@AuthenticationPrincipal CustomUserDetails userDetails,  //
+    public ResponseEntity<?> withDrawList(@AuthenticationPrincipal CustomUserDetails userDetails,  //
                                            @RequestBody PageRequestDTO pageRequestDTO) {
         log.info("** OrderController => withdrawOrder() 실행됨 **");
-        return orderDetailService.withdrawOrder(userDetails, pageRequestDTO);
+        return orderDetailService.withDrawList(userDetails, pageRequestDTO);
     }
 
 

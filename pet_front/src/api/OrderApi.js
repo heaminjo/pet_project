@@ -28,10 +28,11 @@ const OrderApi = {
   },
 
   // <WithDrawList /> : 주문취소내역
-  getWithDrawPageList: async () => {
+  getWithDrawPageList: async (pages) => {
     try {
-      const result = await instance.post('/order/withdraw/list');
-      return result.data; // 
+      const result = await instance.post('/order/withdraw/list', pages); // WithdrawResponseDTO
+      console.log(`getWithDrawPageList result = `, result.data);
+      return result.data; //
     } catch (e) {
       alert(`OrderApi.getWithDrawPageList 오류`);
     }
