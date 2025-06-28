@@ -168,7 +168,7 @@ export default function OrderDetail() {
 
   return (
     <OrderListComp>
-      <div className='container'>
+      <div className='orderlist-container'>
         <h2>주문내역</h2>
         <div>
           {/* {showModal && (
@@ -186,33 +186,10 @@ export default function OrderDetail() {
           )} */}
           {sortedDates.map((date) => (
             <div key={date} className='orderlist'>
-              <hr />
               {groupedInfo[date].map((item, index) => (
                 <div key={item.orderDetailId} className='ordertitle'>
-                  <button
-                    className='btn3'
-                    onClick={async () => {
-                      try {
-                        const status = await OrderApi.deliveryStatus(item.orderDetailId); // 주문상태 조회
-                        const cancellableStates = ['BEFOREPAY', 'AFTERPAY', 'READY'];
-                        if (cancellableStates.includes(status)) {
-                          setTargetOrderId(item.orderId);
-                          setTargetOrderDetailId(item.orderDetailId);
-                          setIsOpen(true);
-                        } else if (status === 'DELIVERY') {
-                          alert('해당 주문은 이미 배송이 시작되어 취소가 불가합니다.');
-                        } else if (status === 'END') {
-                          alert('해당 주문은 배송이 완료되어 취소가 불가합니다.');
-                        }
-                      } catch (err) {
-                        console.error('배송 상태 조회 실패:', err);
-                        alert('주문 상태를 확인하는 데 실패했습니다.');
-                      }
-                    }}>
-                    주문취소
-                  </button>
                   <div className='orderstate'>
-                    {date} 주문
+                    {date}
                     {isOpen && item.orderDetailId === targetOrderDetailId && handleOpenPopup()} {/* 모달 오픈조건 && 현재 반복문 ID 일치시 팝업 모달 창 띄움 */}
                   </div>
                   <div className='orderlist2'>
@@ -226,6 +203,28 @@ export default function OrderDetail() {
                         {item.goodsPrice} 원 / {item.goodsQuantity} 개
                       </div>
                       <div className='btn'>
+                        <button
+                          className='btn3'
+                          onClick={async () => {
+                            try {
+                              const status = await OrderApi.deliveryStatus(item.orderDetailId); // 주문상태 조회
+                              const cancellableStates = ['BEFOREPAY', 'AFTERPAY', 'READY'];
+                              if (cancellableStates.includes(status)) {
+                                setTargetOrderId(item.orderId);
+                                setTargetOrderDetailId(item.orderDetailId);
+                                setIsOpen(true);
+                              } else if (status === 'DELIVERY') {
+                                alert('해당 주문은 이미 배송이 시작되어 취소가 불가합니다.');
+                              } else if (status === 'END') {
+                                alert('해당 주문은 배송이 완료되어 취소가 불가합니다.');
+                              }
+                            } catch (err) {
+                              console.error('배송 상태 조회 실패:', err);
+                              alert('주문 상태를 확인하는 데 실패했습니다.');
+                            }
+                          }}>
+                          주문취소
+                        </button>
                         <button className='btn1' onClick={() => addToCart(item, 1)}>
                           장바구니 담기
                         </button>
@@ -247,7 +246,6 @@ export default function OrderDetail() {
                   </div>
                 </div>
               ))}
-              <hr />
             </div>
           ))}
         </div>

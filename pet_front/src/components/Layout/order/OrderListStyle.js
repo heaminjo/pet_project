@@ -11,10 +11,11 @@ const OrderListComp = styled.div`
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   }
-  .container {
+  .orderlist-container {
     width: 900px;
     margin: 0 auto;
     font-family: 'Arial', sans-serif;
+    border-radius: 6px;
     color: #444;
   }
 
@@ -28,6 +29,10 @@ const OrderListComp = styled.div`
 
   .orderlist {
     margin-bottom: 30px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
   }
 
   .ordertitle {
@@ -59,6 +64,7 @@ const OrderListComp = styled.div`
   .orderstate {
     width: inherit;
     height: 40px;
+    margin-left: 30px;
     display: flex;
     flex-direction: row;
     gap: 20px;
@@ -85,8 +91,9 @@ const OrderListComp = styled.div`
   }
 
   .prodimg {
-    width: 80px;
-    height: 80px;
+    width: 150px;
+    height: 150px;
+    margin-left: 50px;
     object-fit: cover;
     border: 1px solid #ccc;
     border-radius: 6px;
@@ -104,6 +111,7 @@ const OrderListComp = styled.div`
     font-size: 0.95rem;
     line-height: 1.6;
     color: #444;
+    font-size: 1.2rem;
 
     b {
       font-weight: bold;
@@ -115,6 +123,7 @@ const OrderListComp = styled.div`
   .btn {
     display: flex;
     flex-direction: column;
+    margin-right: 50px;
     gap: 6px;
     width: 200px;
     justify-content: center;

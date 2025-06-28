@@ -24,6 +24,9 @@ public class ReviewUploadDTO {
     private List<MultipartFile> imageFiles;
     private String uploadImg; // 복수 저장을 위해 추가, 이미지 파일명
 
+    // 수정시
+    private Long reviewId;
+
     private LocalDate regDate;
     private LocalDate modDate;
 }

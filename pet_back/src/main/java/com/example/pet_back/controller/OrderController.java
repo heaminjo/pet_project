@@ -118,7 +118,7 @@ public class OrderController {
     }
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 리 뷰 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // 리뷰 업로드
+    // 리뷰 업로드
     @PostMapping("/review/register")
     public ResponseEntity<?> regReview(@AuthenticationPrincipal CustomUserDetails userDetails, //
                                        @RequestPart("review") ReviewUploadDTO reviewUploadDTO,
@@ -133,6 +133,23 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("리뷰 등록 중 오류가 발생했습니다.");
         }
     }
+
+    // 리뷰 수정
+    @PostMapping("/review/update")
+    public ResponseEntity<?> updateReview(@AuthenticationPrincipal CustomUserDetails userDetails, //
+                                       @RequestPart("review") ReviewUploadDTO reviewUploadDTO,
+                                       @RequestPart(value = "imageFile", required = false) List<MultipartFile> imageFiles) {
+        log.info("** OrderController => updateReview() 실행됨 **");
+        try {
+            reviewUploadDTO.setImageFiles(imageFiles);
+            log.info("** OrderController =>  reviewUploadDTO.setImageFile(imageFile) **");
+            return orderService.updateReview(userDetails, reviewUploadDTO);
+        } catch (Exception e) {
+            log.error("** OrderController.updateReview Exception => " + e.toString());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("리뷰 등록 중 오류가 발생했습니다.");
+        }
+    }
+
 
     // 리뷰 중복등록 여부 검증
     @GetMapping("/review/state/{orderDetailId}")
@@ -154,6 +171,7 @@ public class OrderController {
         log.info("** OrderController => deleteReview() 실행됨 **");
         return orderService.deleteReview( reviewId);
     }
+
 
 
 

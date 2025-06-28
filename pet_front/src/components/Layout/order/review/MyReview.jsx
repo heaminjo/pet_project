@@ -97,9 +97,13 @@ export default function MyReview() {
   };
 
   // 리뷰수정
-  const handleEdit = (review) => {
+  const handleEdit = (goods, review) => {
     // 페이지 이동 or 모달 팝업
-    navigate('/review/edit', { state: { review } });
+    const reviewWithGoods = {
+      ...review,
+      goods: goods,
+    };
+    navigate('/user/mypage/review', { state: { review: reviewWithGoods } });
   };
 
   // 리뷰삭제 시 모달 오픈
@@ -161,9 +165,7 @@ export default function MyReview() {
                   </div>
                   <div className='review-info'>
                     <div className='review-date'>
-                      <h3>
-                        {review.regDate}
-                      </h3>
+                      <h3>{review.regDate}</h3>
                     </div>
                     <div className='review-title'>{review.title}</div>
                     <div className='review-stars'>{renderStars(review.score)}</div>
@@ -183,7 +185,7 @@ export default function MyReview() {
                 </div>
               </div>
               <div className='button-box'>
-                <button onClick={() => handleEdit(review)} className='edit-btn'>
+                <button onClick={() => handleEdit(review.goods, review)} className='edit-btn'>
                   리뷰수정
                 </button>
                 <button onClick={() => modalOpen(review.reviewId)} className='delete-btn'>
