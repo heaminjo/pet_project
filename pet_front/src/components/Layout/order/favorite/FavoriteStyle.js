@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 const FavoriteComp = styled.div`
   .favorite-container {
-    width: 900px;
+    width: 80%;
     max-width: 1000px;
     margin: 0 auto;
     padding: 20px;
@@ -29,9 +29,11 @@ const FavoriteComp = styled.div`
     .body {
       display: flex;
       flex-direction: column;
+      align-items: center;
       gap: 20px;
 
       .prod {
+        width: 800px;
         display: flex;
         gap: 20px;
         background-color: #fff;

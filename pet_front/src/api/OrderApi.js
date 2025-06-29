@@ -72,7 +72,7 @@ const OrderApi = {
   deliveryStatus: async (orderDetailId) => {
     // ORDERSTATE.BEFOREPAY ...
     console.log(`OrderApi.deliveryStatus`);
-    alert(`OrderApi.deliveryStatus`);
+    // alert(`OrderApi.deliveryStatus`);
     try {
       const result = await instance.post(`/order/delivery?orderDetailId=${orderDetailId}`); // ORDERSTATE 반환
       return result?.data;

@@ -215,7 +215,9 @@ export default function OrderDetail() {
                           onClick={async () => {
                             try {
                               const status = await OrderApi.deliveryStatus(item.orderDetailId); // 주문상태 조회
+                              console.log('📦 배송 상태:', status);
                               const cancellableStates = ['BEFOREPAY', 'AFTERPAY', 'READY'];
+                              // const cancellableStates = ['결제전', '결제완료', '상품준비중'];
                               if (cancellableStates.includes(status)) {
                                 setTargetOrderId(item.orderId);
                                 setTargetOrderDetailId(item.orderDetailId);

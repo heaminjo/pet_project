@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-import GoodsApi from "../../api/GoodsApi";
-import OrderApi from "../../api/OrderApi";
-import AdminApi from "../../api/AdminApi";
-import PageNumber from "../../components/util/PageNumber";
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import GoodsApi from '../../api/GoodsApi';
+import OrderApi from '../../api/OrderApi';
+import AdminApi from '../../api/AdminApi';
+import PageNumber from '../../components/util/PageNumber';
 
-import React from "react";
-import { useLocation } from "react-router-dom";
-import GoodsSearch from "../../components/util/GoodsSearch";
-import OrdersSearch from "../../components/util/OrdersSearch";
+import React from 'react';
+import { useLocation } from 'react-router-dom';
+import GoodsSearch from '../../components/util/GoodsSearch';
+import OrdersSearch from '../../components/util/OrdersSearch';
 
 export default function DeliveryGoods() {
   const location = useLocation();
@@ -25,14 +25,14 @@ export default function DeliveryGoods() {
   // 페이징 관련 상태변수 (검색기능 포함)
   //페이지
   const [category, setCategory] = useState(0);
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState('');
   const [page, setPage] = useState(0);
-  const [sort, setSort] = useState("desc");
-  const [state, setState] = useState("all");
+  const [sort, setSort] = useState('desc');
+  const [state, setState] = useState('all');
   const [select, setSelect] = useState([]);
 
   const params = new URLSearchParams(location.search);
-  const sortParam = params.get("sort") || "desc";
+  const sortParam = params.get('sort') || 'desc';
 
   // 페이징 정보 상태변수 (현재 페이징 상태 핸들링 위함)
   const [paging, setPaging] = useState({
@@ -46,11 +46,11 @@ export default function DeliveryGoods() {
 
   // 결제 상태
   const statusMap = {
-    결제전: "BEFOREPAY",
-    결제완료: "AFTERPAY",
-    상품준비중: "READY",
-    배송중: "DELIVERY",
-    배송완료: "END",
+    결제전: 'BEFOREPAY',
+    결제완료: 'AFTERPAY',
+    상품준비중: 'READY',
+    배송중: 'DELIVERY',
+    배송완료: 'END',
   };
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 페이징 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -60,7 +60,7 @@ export default function DeliveryGoods() {
       size: 5,
       keyword: keyword,
       sortBy: sort,
-      state: state !== "all" ? state : null, // ORDERSTATE ENUM
+      state: state !== 'all' ? state : null, // ORDERSTATE ENUM
     };
 
     // 주문 현황(전체) API 요청
@@ -82,8 +82,8 @@ export default function DeliveryGoods() {
 
   //주문상태 업데이트
   const updateState = async (id, prevState, newState) => {
-    if (!id || id === "undefined") {
-      alert("ID가 유효하지 않습니다. 1");
+    if (!id || id === 'undefined') {
+      alert('ID가 유효하지 않습니다. 1');
       return;
     }
 
@@ -96,26 +96,19 @@ export default function DeliveryGoods() {
 
   useEffect(() => {
     getOrderList();
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [page, category, state, sort]);
 
   return (
     <DeliveryGoodsComp>
       <h2>주문상태 관리(결제전/결제완료/배송중)</h2>
-      <div className="container">
-        <OrdersSearch
-          setSort={setSort}
-          sort={sort}
-          setOrderList={setOrderList}
-          getOrderList={getOrderList}
-          setKeyword={setKeyword}
-          setState={setState}
-        />
-        <div className="list_container">
+      <div className='container'>
+        <OrdersSearch setSort={setSort} sort={sort} setOrderList={setOrderList} getOrderList={getOrderList} setKeyword={setKeyword} setState={setState} />
+        <div className='list_container'>
           <table>
             <thead>
               <tr>
-                <th style={{ width: "10px" }}>No</th>
+                <th style={{ width: '10px' }}>No</th>
                 <th>주문자 [메일]</th>
                 <th>주문자 [연락처]</th>
                 <th>주문일</th>
@@ -140,24 +133,10 @@ export default function DeliveryGoods() {
                     <td>{`[ ${o.zipCode} ]${o.address}`}</td>
                     <td>
                       {/* 상태 변경 */}
-                      {[
-                        "결제전",
-                        "결제완료",
-                        "상품준비중",
-                        "배송중",
-                        "배송완료",
-                      ].map((stateKor) => {
+                      {['결제전', '결제완료', '상품준비중', '배송중', '배송완료'].map((stateKor) => {
                         const engState = statusMap[stateKor]; // 영어 ENUM 값
                         return (
-                          <button
-                            key={stateKor}
-                            onClick={() =>
-                              updateState(o.orderId, o.status, engState)
-                            }
-                            className={
-                              o.status === engState ? "btn active" : "btn"
-                            }
-                          >
+                          <button key={stateKor} onClick={() => updateState(o.orderId, o.status, engState)} className={o.status === engState ? 'btn active' : 'btn'}>
                             {stateKor}
                           </button>
                         );
