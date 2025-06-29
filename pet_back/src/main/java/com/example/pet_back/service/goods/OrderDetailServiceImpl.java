@@ -203,7 +203,7 @@ public class OrderDetailServiceImpl implements OrderDetailService{
                         userDetails.getMember().getId()).orElseThrow(() //
                         -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
         // 2. Orders
-        List<ORDERSTATE> validStates = List.of(ORDERSTATE.BEFOREPAY, ORDERSTATE.AFTERPAY, ORDERSTATE.READY);
+        List<ORDERSTATE> validStates = List.of(ORDERSTATE.BEFOREPAY, ORDERSTATE.AFTERPAY, ORDERSTATE.READY, ORDERSTATE.DELIVERY, ORDERSTATE.END);
         List<Orders> ordersList = orderRepository.findAllByUserIdValidState(member.getId(), validStates);
         // List<Orders> ordersList = orderRepository.findAllByUserId(member.getId()); -> 전체조회
         
