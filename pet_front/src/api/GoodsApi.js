@@ -82,6 +82,7 @@ const GoodsApi = {
       }
     } catch (err) {}
   },
+  
   // 현재 상품의 찜 상태 불러오기
   favoriteInfo: async (goodsId) => {
     const result = await instance.post(`/goods/favoriteinfo/${goodsId}`);
@@ -91,6 +92,7 @@ const GoodsApi = {
       return result.data;
     }
   },
+
   getFavoritePageList: async (pages) => {
     // alert(`getGoodsPageList() 호출됨, pages = ${JSON.stringify(pages)}`);
     try {
@@ -108,7 +110,7 @@ const GoodsApi = {
     try {
       const result = await instance.post('/goods/register', formData);
       if (result.data != null) {
-        alert(`상품등록 완료 => ${result.data}`);
+        //alert(`상품등록 완료 => ${result.data}`);
         return result.data;
       }
     } catch (err) {
@@ -156,7 +158,7 @@ const GoodsApi = {
   getReviewsPageList: async (pages, goodsId) => {
     console.log(`getPageList() 호출됨, goodsId = ${JSON.stringify(goodsId)}`);
     const result = await instance.get(`/goods/reviews/${goodsId}`, {
-      params: pages,
+      params: pages, 
     });
 
     if (result.data != null) {

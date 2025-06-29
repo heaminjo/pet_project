@@ -198,7 +198,7 @@ export default function ModifyGoods() {
                       e.stopPropagation(); // 부모 클릭 방지
                       setDeleteTarget(item.goodsId); // 삭제할 상품 ID 저장
                       setConfirmDeleteModal(true); // 모달 오픈
-                      deleteGoods(item.goodsId);
+                      // deleteGoods(item.goodsId);
                     }}
                     className='cancel-btn'>
                     삭제

@@ -1,5 +1,6 @@
 package com.example.pet_back.domain.goods;
 
+import com.example.pet_back.domain.member.MemberResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,5 +28,6 @@ public class ReviewResponseDTO {
     private LocalDate modDate;
 
     private GoodsSimpleDTO goods;
+    private MemberResponseDTO memberResponseDTO;
 
 }

@@ -149,7 +149,7 @@ export default function MyReview() {
 
   return (
     <MyReviewComp>
-      <div className='container'>
+      <div className='myreview-container'>
         <h2>내 리뷰</h2>
         {reviews.length === 0 ? (
           <div style={{ padding: '20px', textAlign: 'center', color: '#888' }}>아직 작성한 리뷰가 없습니다.</div>
@@ -178,19 +178,19 @@ export default function MyReview() {
                           <span style={{ color: 'gray' }}>이미지 없음</span>
                         </>
                       ) : (
-                        review.imageFile && review.imageFile.split(',').map((img, i) => <img key={i} src={`${img.trim()}`} alt={`이미지 ${i + 1}`} className='product-image' style={{ marginRight: '8px' }} />)
+                        review.imageFile && review.imageFile.split(',').map((img, i) => <img key={i} src={`${img.trim()}`} alt={`이미지 ${i + 1}`} className='review-image' style={{ marginRight: '8px' }} />)
                       )}
                     </div>
+                    <button onClick={() => modalOpen(review.reviewId)} className='delete-btn'>
+                      리뷰삭제
+                    </button>
                   </div>
                 </div>
               </div>
               <div className='button-box'>
-                <button onClick={() => handleEdit(review.goods, review)} className='edit-btn'>
+                {/* <button onClick={() => handleEdit(review.goods, review)} className='edit-btn'>
                   리뷰수정
-                </button>
-                <button onClick={() => modalOpen(review.reviewId)} className='delete-btn'>
-                  리뷰삭제
-                </button>
+                </button> */}
               </div>
             </div>
           ))
@@ -198,38 +198,29 @@ export default function MyReview() {
         <PageNumber page={page} setPage={setPage} paging={paging} />
       </div>
       {showModal && (
-        <ModalContainer>
-          <Modal
-            content={<>리뷰를 삭제하시겠습니까?</>}
-            clickEvt={handleDelete}
-            cancelEvt={() => {
-              setShowModal(false);
-              setTargetReviewId(null);
-            }}
-            setModal={setShowModal}
-          />
-        </ModalContainer>
+        <Modal
+          content={<>리뷰를 삭제하시겠습니까?</>}
+          clickEvt={handleDelete}
+          cancelEvt={() => {
+            setShowModal(false);
+            setTargetReviewId(null);
+          }}
+          setModal={setShowModal}
+        />
       )}
     </MyReviewComp>
   );
 }
 
-const ModalContainer = styled.div`
-  background-color: rgb(233, 232, 232);
-  position: fixed;
-  top: 30%;
-  left: 40%;
-  transform: translate(-50%, -50%);
-`;
-
 const MyReviewComp = styled.div`
-  .container {
-    width: 900px;
+  .myreview-container {
+    width: 90%;
     margin: 0 auto;
     color: #444;
   }
 
   .review-card {
+    width: 900px;
     display: flex;
     min-height: 100px;
     flex-direction: row;
@@ -245,9 +236,8 @@ const MyReviewComp = styled.div`
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   }
 
-  .product-image {
-    width: 80px;
-    height: 80px;
+  .product-image,
+  .review-image {
     object-fit: cover;
     border-radius: 8px;
     border: 1px solid #ccc;
@@ -256,11 +246,22 @@ const MyReviewComp = styled.div`
     box-shadow: 1px 1px 3px rgb(150, 150, 150);
   }
 
-  .product-image:hover {
+  .product-image {
+    width: 150px;
+    height: 150px;
+  }
+
+  .review-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .product-image:hover,
+  review-image:hover {
     transform: scale(1.05);
   }
   .review-left {
-    width: 600px;
+    width: 800px;
     margin: 20px;
   }
   .review-box {
@@ -285,10 +286,11 @@ const MyReviewComp = styled.div`
       }
     }
     .review-info {
-      width: 400px;
+      width: 600px;
       display: flex;
       flex-direction: column;
       gap: 10px;
+      position: relative;
     }
   }
 
@@ -336,11 +338,12 @@ const MyReviewComp = styled.div`
 
   .edit-btn,
   .delete-btn {
-    width: 150px;
-    height: 45px;
-    margin: 20px 0;
-    font-size: 1rem;
-    font-weight: bold;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 120px;
+    height: 35px;
+    font-size: 0.9rem;
     background-color: #ffaaaa;
     border: 1px solid #ccc;
     border-radius: 3px;

@@ -11,8 +11,9 @@ const OrderListComp = styled.div`
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   }
+
   .orderlist-container {
-    width: 900px;
+    width: 100%;
     margin: 0 auto;
     font-family: 'Arial', sans-serif;
     border-radius: 6px;
@@ -28,6 +29,7 @@ const OrderListComp = styled.div`
   }
 
   .orderlist {
+    width: 900px;
     margin-bottom: 30px;
     background-color: #fff;
     border: 1px solid #ccc;

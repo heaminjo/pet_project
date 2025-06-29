@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 const PayComp = styled.div`
-  .container {
-    width: 900px;
+  .pay-container {
+    width: 100%;
     margin: 0 auto;
     font-family: 'Arial', sans-serif;
     color: #222;
@@ -68,7 +68,7 @@ const PayComp = styled.div`
             height: 24px;
             border: 1px solid #ccc;
             border-radius: 4px;
-            background-color: #f6e96c;
+            background-color: rgb(255, 206, 206);
             cursor: pointer;
             font-weight: bold;
           }
@@ -106,7 +106,7 @@ const PayComp = styled.div`
 
   th {
     width: 150px;
-    background-color: #ffaaaa;
+    background-color:rgb(223, 214, 214);
     border: 1px solid #ddd;
     padding: 10px;
     text-align: center;
@@ -143,7 +143,7 @@ const PayComp = styled.div`
             }
           }
           .addr2 {
-            width: 450px;
+            width: 150px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -160,9 +160,10 @@ const PayComp = styled.div`
             cursor: pointer;
             border: none;
             font-weight: bold;
+            background-color: rgb(255, 232, 232);
           }
-          button:nth-child(2) {
-            background-color: lightslategrey;
+          button:hover {
+            background-color: rgb(255, 211, 211);
           }
         }
       }

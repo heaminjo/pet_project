@@ -8,6 +8,7 @@ import ReviewList from './review/ReviewList.jsx';
 import GoodsApi from '../../../api/GoodsApi.js';
 import Modal from '../../../modal/Modal.jsx';
 import { FaStar, FaRegStar } from 'react-icons/fa';
+import { FaHeart } from 'react-icons/fa';
 
 export default function Order() {
   const navigate = useNavigate();
@@ -18,6 +19,8 @@ export default function Order() {
   const EMPTY_HEART = '🤍';
   const FULL_HEART = '❤️';
   const [heart, setHeart] = useState('🤍');
+  const [isFavorite, setIsFavorite] = useState(false);
+
   const [stars, setStars] = useState(); // ⭐
 
   const [activeTab, setActiveTab] = useState('상품상세');
@@ -86,12 +89,7 @@ export default function Order() {
     console.log(`찜한 상품의 goods Id => ${goods.goodsId}`);
     GoodsApi.favorite(goods.goodsId)
       .then((response) => {
-        // 상태 토글
-        if (heart === EMPTY_HEART) {
-          setHeart('❤️');
-        } else if (heart === FULL_HEART) {
-          setHeart('🤍');
-        }
+        setIsFavorite((prev) => !prev);
       })
       .catch((err) => {
         // alert(`에러발생 => ${err}`);
@@ -102,12 +100,8 @@ export default function Order() {
   const favoriteInfo = () => {
     GoodsApi.favoriteInfo(goods.goodsId)
       .then((response) => {
-        // 상태 토글
-        if (response.data === 'TRUE') {
-          setHeart(FULL_HEART);
-        } else {
-          setHeart(EMPTY_HEART);
-        }
+        setIsFavorite(response === 'TRUE');
+        console.log(`찜 상태 가져오기 => ${response}`);
       })
       .catch((err) => {
         // alert(`에러발생 => ${err}`);
@@ -131,7 +125,13 @@ export default function Order() {
     if (goods) {
       renderStars(goods.rating || 0);
     }
-    favoriteInfo();
+  }, [goods]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (goods) {
+      favoriteInfo(); // 최초 로딩 시 찜 상태 불러오기
+    }
   }, [goods]);
 
   return (
@@ -143,14 +143,15 @@ export default function Order() {
           </div>
           <div className='right'>
             <div className='prodname' onClick={() => addFavorite()}>
-              {goods.goodsName}&nbsp;&nbsp;{heart}
+              {goods.goodsName}&nbsp;&nbsp;
+              <FaHeart color={isFavorite ? 'red' : 'white'} size={24} style={{ stroke: 'gray', strokeWidth: 24 }} />
             </div>
             <p className='rating' style={{ color: 'red', fontSize: '12px' }}>
               {renderStars(goods.rating)}&nbsp;&nbsp;
-              {'( ' + goods.reviewNum + ' 개 상품평 )'}
+              {goods.reviewNum === 'undefined' ? '1 개 상품평' : '( ' + goods.reviewNum + ' 개 상품평 )'}
             </p>
             <div className='prodprice'>
-              {goods.price} 원<span className='prodprice2'>(1kg당 1000원)</span>
+              {goods.price} 원<span className='prodprice2'></span>
             </div>
             <div className='info-row'>
               <label>판매자</label>

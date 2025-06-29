@@ -19,7 +19,7 @@ export default function Review() {
 
   // const { goods, review } = location.state || ''; // 리뷰작성 시만
   const locationState = location.state || {};
-  const goods = locationState.goods || null;
+  const orderDetail = locationState.orderDetail || null;
   const review = locationState.review || null;
 
   // form 필드 state
@@ -29,11 +29,11 @@ export default function Review() {
   // goodsId와 reviewId 저장
   const [goodsId, setGoodsId] = useState('');
   const reviewId = review?.reviewId; // null 이면 작성모드
+  const orderDetailId = orderDetail?.orderDetailId;
+  // const orderDetailId = searchParams.get('orderDetailId');
 
   // 리뷰 ID
   const searchParams = new URLSearchParams(location.search);
-
-  const orderDetailId = searchParams.get('orderDetailId');
 
   const up = 'up.png';
   const down = 'down.png';
@@ -61,8 +61,8 @@ export default function Review() {
   const regReview = async () => {
     const review = {
       memberId: '',
+      orderDetailId: orderDetailId,
       goodsId,
-      orderDetailId,
       score,
       title,
       content,
@@ -88,9 +88,9 @@ export default function Review() {
     const review = {
       memberId: '',
       reviewId: review.reviewId,
-      score,
-      title,
-      content,
+      score: score,
+      title: title,
+      content: content,
     };
 
     const formData = new FormData();
@@ -121,24 +121,24 @@ export default function Review() {
         const imgArr = review.imageFile.split(',').map((s) => s.trim());
         setPrevImg(imgArr);
       }
-    } else if (goods) {
+    } else if (orderDetail) {
       // 등록 모드
-      setGoodsId(goods.goodsId);
+      setGoodsId(orderDetail.goodsId);
     } else {
       // 이상 시 홈으로 리다이렉트 방지
       console.error('goods와 review 정보가 모두 없습니다!');
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [goods, review]);
+  }, [orderDetail, review]);
 
   useEffect(() => {
-    if (goods) {
-      console.log(`goods = `, goods);
+    if (orderDetail) {
+      console.log(`goods = `, orderDetail);
       console.log(`review = `, review);
-      console.log(`goods 정보 확인 : ${Object.keys(goods)}`);
+      console.log(`goods 정보 확인 : ${Object.keys(orderDetail)}`);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [goods]);
+  }, [orderDetail]);
 
   return (
     <ReviewComp>
@@ -146,12 +146,13 @@ export default function Review() {
         <h2>{reviewId ? '리뷰 수정' : '리뷰 작성'}</h2>
         <div className='prod-info'>
           {review && <img src={`${review.goods.imageFile}`} alt='' style={{ width: '400px', height: '400px' }} className='prod-img' />}
+          {orderDetail && <img src={`${orderDetail.imageFile}`} alt='' style={{ width: '400px', height: '400px' }} className='prod-img' />}
 
           <div>
-            <b>상품명</b>&nbsp;&nbsp;{review.goods.goodsName}
+            <b>상품명</b>&nbsp;&nbsp;{review ? review.goods.goodsName : orderDetail?.goodsName}
           </div>
           <div>
-            <b>상세</b>&nbsp;&nbsp;{review.goods.description}
+            <b>상세</b>&nbsp;&nbsp;{review ? review.goods.description : orderDetail?.description}
           </div>
           <div
             className='star-container'

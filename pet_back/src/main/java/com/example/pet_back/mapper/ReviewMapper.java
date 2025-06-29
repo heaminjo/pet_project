@@ -4,6 +4,7 @@ import com.example.pet_back.config.FileUploadProperties;
 import com.example.pet_back.domain.goods.GoodsSimpleDTO;
 import com.example.pet_back.domain.goods.ReviewResponseDTO;
 import com.example.pet_back.domain.goods.ReviewUploadDTO;
+import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.entity.Goods;
 import com.example.pet_back.entity.Member;
 import com.example.pet_back.entity.OrderDetail;
@@ -38,6 +39,7 @@ public interface ReviewMapper {
     @Mapping(target = "orderDetailId", source = "orderDetail.orderDetailId")
     @Mapping(target = "goodsId", source = "goods.goodsId")
     @Mapping(target = "goods", source = "goods") // GoodsSimpleDTO 매핑 위함
+    @Mapping(target = "memberResponseDTO", source = "member")
     @Mapping(target = "regDate", source = "regDate")
     ReviewResponseDTO toDTO(Review review);
 
@@ -56,6 +58,21 @@ public interface ReviewMapper {
                 goods.getPrice()
         );
     }
+
+    // Member → MemberResponseDTO
+    default MemberResponseDTO map(Member member) {
+        if (member == null) return null;
+
+        return MemberResponseDTO.builder()
+                .id(member.getId())
+                .name(member.getName())
+                .email(member.getEmail())
+                .phone(member.getPhone())
+                // 필요 시 추가 필드
+                .build();
+    }
+
+
 
 
 }

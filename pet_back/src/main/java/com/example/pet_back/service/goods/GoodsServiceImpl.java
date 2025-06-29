@@ -87,6 +87,7 @@ public class GoodsServiceImpl implements GoodsService {
         Sort sort = pageRequestDTO.getSortBy().equals("desc") ? // desc라면
                 Sort.by("regDate").descending() // regDate 필드 기준으로 desc
                 : Sort.by("regDate").ascending();
+        log.info("sort: "+pageRequestDTO.getSortBy());
 
         // 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬
         Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(), sort);
@@ -137,6 +138,7 @@ public class GoodsServiceImpl implements GoodsService {
                 goodsResponseDTOList, //
                 pageRequestDTO.getPage(), pageRequestDTO.getSize(),  //
                 page.getTotalElements(), page.getTotalPages(), page.hasNext(), page.hasPrevious());
+
 
         log.info("** 반환할 ResponseDTO 에 List 저장 (goodsResponseDTOList) **");
         return ResponseEntity.status(HttpStatus.OK).body(response);
