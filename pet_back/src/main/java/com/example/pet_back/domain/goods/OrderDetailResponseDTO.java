@@ -38,6 +38,7 @@ public class OrderDetailResponseDTO {
     private String status; // Enum (BEFOREPAY, AFTERPAY, READY, DELIVERY, END, WITHDRAW, REFUND, EXCHANGE)
 
     // Review
+    private ReviewResponseDTO reviewResponseDTO;
     private String score; // 별점
     private boolean reviewed;
 

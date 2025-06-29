@@ -198,29 +198,19 @@ export default function MyReview() {
         <PageNumber page={page} setPage={setPage} paging={paging} />
       </div>
       {showModal && (
-        <ModalContainer>
-          <Modal
-            content={<>리뷰를 삭제하시겠습니까?</>}
-            clickEvt={handleDelete}
-            cancelEvt={() => {
-              setShowModal(false);
-              setTargetReviewId(null);
-            }}
-            setModal={setShowModal}
-          />
-        </ModalContainer>
+        <Modal
+          content={<>리뷰를 삭제하시겠습니까?</>}
+          clickEvt={handleDelete}
+          cancelEvt={() => {
+            setShowModal(false);
+            setTargetReviewId(null);
+          }}
+          setModal={setShowModal}
+        />
       )}
     </MyReviewComp>
   );
 }
-
-const ModalContainer = styled.div`
-  background-color: rgb(233, 232, 232);
-  position: fixed;
-  top: 30%;
-  left: 40%;
-  transform: translate(-50%, -50%);
-`;
 
 const MyReviewComp = styled.div`
   .container {

@@ -48,6 +48,12 @@ export default function OrderDetail() {
   const [targetOrderId, setTargetOrderId] = useState(null);
   const [targetOrderDetailId, setTargetOrderDetailId] = useState(null);
 
+  // 모달 핸들러 함수
+  const goToCart = () => {
+    setShowModal(false);
+    navigate('/user/mypage/cart/list');
+  };
+
   // 팝업 Open / Close
   const handleWithDraw = () => {
     setIsOpen(false); // 팝업창 닫음
@@ -171,7 +177,7 @@ export default function OrderDetail() {
       <div className='orderlist-container'>
         <h2>주문내역</h2>
         <div>
-          {/* {showModal && (
+          {showModal && (
             <Modal
               content={
                 <>
@@ -183,7 +189,7 @@ export default function OrderDetail() {
               clickEvt={goToCart}
               setModal={setShowModal}
             />
-          )} */}
+          )}
           {sortedDates.map((date) => (
             <div key={date} className='orderlist'>
               {groupedInfo[date].map((item, index) => (
@@ -233,11 +239,20 @@ export default function OrderDetail() {
                         </button>
 
                         {item.reviewId ? (
-                          <button className='btn4' onClick={() => navigate(`/user/mypage/review?reviewId=${item.reviewId}`)}>
+                          // <button className='btn4' onClick={() => navigate(`/user/mypage/review?reviewId=${item.reviewId}`)}>
+                          //   리뷰수정
+                          // </button>
+                          <button
+                            className='btn4'
+                            onClick={() =>
+                              navigate('/user/mypage/review', {
+                                state: { orderDetail: item, review: item.review },
+                              })
+                            }>
                             리뷰수정
                           </button>
                         ) : (
-                          <button className='btn4' onClick={() => navigate('/user/mypage/review', { state: { goods: item } })}>
+                          <button className='btn4' onClick={() => navigate('/user/mypage/review', { state: { orderDetail: item } })}>
                             리뷰작성
                           </button>
                         )}

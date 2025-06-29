@@ -109,7 +109,12 @@ export default function GoodsList() {
       <div className='container'>
         <div className='search-bar'>
           <div className='custom-select'>
-            <select value={sort} onChange={(e) => setSort(e.target.value)}>
+            <select
+              value={sort}
+              onChange={(e) => {
+                setSort(e.target.value);
+                setPage(0);
+              }}>
               <option value='desc'>최신순</option>
               <option value='asc'>오래된 순</option>
             </select>
@@ -117,6 +122,7 @@ export default function GoodsList() {
               value={category}
               onChange={(e) => {
                 setCategory(parseInt(e.target.value));
+                setPage(0);
               }}>
               <option value='0'>전체</option>
               {categories.map((cat) => (

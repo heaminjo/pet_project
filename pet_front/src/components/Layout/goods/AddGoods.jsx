@@ -11,7 +11,7 @@ export default function AddGoods({ onClose, refreshList, mode = 'create', target
   // 카테고리
   const [categories, setCategories] = useState([]);
 
-  // 이미지 미리보기 위한 상태변수 추가
+  // 이미지 미리보기 위한 상태변수
   const [prevImg, setPrevImg] = useState('http://localhost:8080/resources/webapp/userImages/basicimg.jpg');
 
   // form의 input 값들을 state로 관리하고

@@ -100,8 +100,9 @@ export default function ReviewList({ stars, goodsId, reviewNum }) {
             reviews.map((item, index) => (
               <div className='review' key={index}>
                 <div className='header'>
-                  <span className='name'>{item.userName || '작성자'}</span>
-                  <span className='date'>{item.createdDate || '날짜없음'}</span>
+                  {/* <span className='name'>{item.memberResponseDTO.email || '작성자'}</span> */}
+                  {item.memberResponseDTO?.email?.split('@')[0] || '작성자'}
+                  <span className='date'>{item.regDate || '날짜없음'} 작성됨</span>
                 </div>
                 <div className='body'>
                   <div>{getStars(item.score)}</div>

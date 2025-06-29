@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
 const PayComp = styled.div`
-  .container {
-    width: 900px;
+  .pay-container {
+    width: 100%;
     margin: 0 auto;
     font-family: 'Arial', sans-serif;
     color: #222;

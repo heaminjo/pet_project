@@ -160,7 +160,7 @@ export default function Pay() {
     // alert("pay 동작테스트");
     OrderApi.pay(payload) // 여기가 호출
       .then((response) => {
-        alert('결제 성공적으로 마무리 되었습니다.');
+        alert('결제가 성공적으로 마무리 되었습니다.');
         conditionCheck();
         navigate('/user/mypage/orderlist');
       })
@@ -216,7 +216,7 @@ export default function Pay() {
         if (response && response.addressId) {
           setAddrId(response.addressId);
           setAddr(response.address1 + ' ' + response.address2);
-          alert(`배송지주소: ${response.addressName}`);
+          // alert(`배송지주소: ${response.addressName}`);
           setAddrName(response.addressName);
           setAddrType(response.addrType);
           console.log(`최초호출 OrderApi.findAddress() 결과 response.addressName = ${response.addressName}`);
@@ -252,7 +252,7 @@ export default function Pay() {
 
   return (
     <PayComp>
-      <div className='container'>
+      <div className='pay-container'>
         <section>
           <div className='title'>구매자 정보</div>
           <hr />

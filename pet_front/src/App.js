@@ -99,7 +99,7 @@ function RouterInner() {
           <Route path="orderlist" element={<OrderList />} />
           <Route path="favorite" element={<Favorite />} />
           <Route path="review" element={<Review />} />
-          <Route path="myreview" element={<MyReview />} />
+          <Route path="cart-container" element={<MyReview />} />
           <Route path="withdrawlist" element={<WithDrawList />} />
           <Route path="pay" element={<Pay />} />
         </Route>

@@ -71,32 +71,78 @@ export default function Delivery() {
       <div className='container'>
         <div className='title'>배송조회</div>
         <div className='box1'>
-          상품명: {} <br />
-          6/9(월) 배송 완료 <br />
+          {delivery === 'AFTERPAY' ? (
+            <>
+              결제완료
+              <br />
+              판매자가 주문을 확인 중입니다.
+            </>
+          ) : delivery === 'READY' ? (
+            <>
+              상품준비중
+              <br />
+              판매자가 상품을 준비 중입니다.
+            </>
+          ) : delivery === 'DELIVERY' ? (
+            <>
+              배송중
+              <br />
+              배송이 시작되었습니다.
+            </>
+          ) : delivery === 'END' ? (
+            <>
+              배송완료
+              <br />
+              해당 상품의 배송이 완료되었습니다.
+            </>
+          ) : (
+            ''
+          )}
           {/*ㄴ orders 테이블의 regDate 가져옴 (order response dto 활용) */}
         </div>
         <div className='infotitle'>배송정보</div>
         <div className='info'>
           <section className='deliver'>
             <img src={deliverImg} alt='' className='deliverimg' />
-            <table className='deliverinfo'>
-              <tr>
-                <td>택배사</td>
-                <td>CJ 대한통운</td>
-              </tr>
-              <tr>
-                <td>전화번호</td>
-                <td>1588-1255</td>
-              </tr>
-              <tr>
-                <td>송장번호</td>
-                <td>45646546</td>
-              </tr>
-              <tr>
-                <td>판매자</td>
-                <td>몽냥마켓</td>
-              </tr>
-            </table>
+            {delivery === 'DELIVERY' ? (
+              <table className='deliverinfo'>
+                <tr>
+                  <td>택배사</td>
+                  <td>CJ 대한통운</td>
+                </tr>
+                <tr>
+                  <td>전화번호</td>
+                  <td>1588-1255</td>
+                </tr>
+                <tr>
+                  <td>송장번호</td>
+                  <td>45646546</td>
+                </tr>
+                <tr>
+                  <td>판매자</td>
+                  <td>몽냥마켓</td>
+                </tr>
+              </table>
+            ) : (
+              <table className='deliverinfo'>
+                <tr>
+                  <td>택배사</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>전화번호</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>송장번호</td>
+                  <td>01</td>
+                </tr>
+                <tr>
+                  <td>판매자</td>
+                  <td>몽냥마켓</td>
+                </tr>
+              </table>
+            )}
           </section>
           <section className='user'>
             <table className='userinfo'>

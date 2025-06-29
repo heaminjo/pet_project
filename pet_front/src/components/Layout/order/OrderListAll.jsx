@@ -48,6 +48,7 @@ export default function OrderListAll() {
       list.map(async (o) => {
         try {
           const member = await MemberApi.detail(o.memberId);
+          console.log(member);
           return { ...o, member };
         } catch (e) {
           console.error('회원 조회 실패', o.memberId, e);
@@ -85,13 +86,10 @@ export default function OrderListAll() {
               <tr>
                 <th>No</th>
                 <th>주문일</th>
-                <th>구매자</th>
                 <th>상품명</th>
-                <th>별점</th>
                 <th>가격</th>
-                <th>수량</th>
+                <th>주문수량</th>
                 <th>재고</th>
-                <th>누적판매량</th>
               </tr>
             </thead>
             <tbody>
@@ -100,9 +98,9 @@ export default function OrderListAll() {
                   <tr key={od.orderDetailId}>
                     <td>{index + 1}</td>
                     <td>{od.regDate}</td>
-                    <td>{od.memberId}</td>
                     <td>{od.goodsName}</td>
                     <td>{od.price}</td>
+                    <td>1</td>
                     <td>{od.goodsQuantity}</td>
                   </tr>
                 ))
