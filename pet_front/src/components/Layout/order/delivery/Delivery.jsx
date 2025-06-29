@@ -13,6 +13,10 @@ export default function Delivery() {
   const deliverImg = process.env.PUBLIC_URL + '/images/delivery.png';
   const [member, setMember] = useState([]);
   const [goods, setGoods] = useState([]);
+  const [addr, setAddr] = useState('');
+  const [addrId, setAddrId] = useState('');
+  const [addrName, setAddrName] = useState('');
+  const [addrType, setAddrType] = useState('');
 
   const query = new URLSearchParams(location.search);
   const goodsId = query.get('goodsId');
@@ -65,6 +69,33 @@ export default function Delivery() {
       deliveryStatus(orderDetailId);
     }
   }, [goodsId, orderDetailId]);
+
+  // 기본정보
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // 사용자 정보
+    MemberApi.detail()
+      .then((response) => {
+        setMember(response);
+      })
+      .catch((err) => {});
+
+    // 사용자 주소
+    OrderApi.findAddress()
+      .then((response) => {
+        if (response && response.addressId) {
+          setAddrId(response.addressId);
+          setAddr(response.address1 + ' ' + response.address2);
+          // alert(`배송지주소: ${response.addressName}`);
+          setAddrName(response.addressName);
+          setAddrType(response.addrType);
+          console.log(`최초호출 OrderApi.findAddress() 결과 response.addressName = ${response.addressName}`);
+        }
+      })
+      .catch((err) => {
+        // alert("주소 조회 실패");
+      });
+  }, []);
 
   return (
     <DeliveryComp>
@@ -135,7 +166,7 @@ export default function Delivery() {
                 </tr>
                 <tr>
                   <td>송장번호</td>
-                  <td>01</td>
+                  <td></td>
                 </tr>
                 <tr>
                   <td>판매자</td>
@@ -152,7 +183,7 @@ export default function Delivery() {
               </tr>
               <tr>
                 <td>받는주소</td>
-                <td>{member.address || '경기 성남시 분당구'}</td>
+                <td>{member.addressName || '경기 성남시 분당구'}</td>
               </tr>
               <tr>
                 <td>요청사항</td>

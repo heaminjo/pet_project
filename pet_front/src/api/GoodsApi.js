@@ -82,6 +82,7 @@ const GoodsApi = {
       }
     } catch (err) {}
   },
+  
   // 현재 상품의 찜 상태 불러오기
   favoriteInfo: async (goodsId) => {
     const result = await instance.post(`/goods/favoriteinfo/${goodsId}`);
@@ -91,6 +92,7 @@ const GoodsApi = {
       return result.data;
     }
   },
+
   getFavoritePageList: async (pages) => {
     // alert(`getGoodsPageList() 호출됨, pages = ${JSON.stringify(pages)}`);
     try {

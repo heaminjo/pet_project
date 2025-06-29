@@ -167,7 +167,7 @@ export default function WithDrawList() {
 
 const WithDrawListComp = styled.div`
   .container {
-    width: 900px;
+    width: 100%;
     margin: 30px auto;
     font-family: 'Noto Sans KR', sans-serif;
     color: #333;
@@ -180,6 +180,7 @@ const WithDrawListComp = styled.div`
   }
 
   .orderlist {
+    width: 800px;
     margin-bottom: 30px;
     background-color: #fff;
     border: 1px solid #eee;

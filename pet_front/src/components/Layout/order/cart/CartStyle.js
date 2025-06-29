@@ -22,7 +22,7 @@ const CartComp = styled.div`
 
     .body {
       display: flex;
-      gap: 40px;
+      gap: 20px;
 
       .left {
         flex: 3;

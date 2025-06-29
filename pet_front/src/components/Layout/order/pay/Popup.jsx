@@ -19,13 +19,15 @@ const PopupComp = styled.div`
     background: white;
     padding: 20px;
     border-radius: 12px;
-    width: 800px;
+    width: 600px;
     max-width: 90%;
     position: relative;
   }
 
   .close {
     position: absolute;
+    width: 30px;
+    height: 30px;
     top: 8px;
     right: 10px;
     background: transparent;
@@ -42,7 +44,7 @@ export default function Popup({ isOpen, onClose, children }) {
     <PopupComp>
       <div className='container'>
         <div className='content'>
-          <button className='close' onClick={onClose}>
+          <button className='close' onClick={onClose} style={{ width: '30px' }}>
             ✖
           </button>
           {children}
