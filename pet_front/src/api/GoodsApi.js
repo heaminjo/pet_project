@@ -3,7 +3,6 @@ import instance from "../api/axiosInstance"; // 인스턴스 불러오기
 import url from "../api/axiosInstance"; // 인스턴스 불러오기
 import { useNavigate } from "react-router-dom";
 import ModifyGoods from "../components/Layout/goods/ModifyGoods";
-const REACT_APP_KH_DOMAIN = "http://54.180.195.59:8080";
 const GoodsApi = {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 장 바 구 니 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 장바구니 추가

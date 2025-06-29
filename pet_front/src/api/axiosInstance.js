@@ -1,13 +1,13 @@
 import axios from "axios";
 import MemberApi from "./MemberApi";
-const REACT_APP_KH_DOMAIN = "http://54.180.195.59:8080";
+
 //공통 설정을 갖는 axios 인스턴스
 const instance = axios.create({
-  baseURL: process.env.REACT_APP_KH_DOMAIN,
+  baseURL: process.env.REACT_APP_API_BASE_URL,
 });
 
 const url = axios.create({
-  baseURL: process.env.REACT_APP_KH_DOMAIN,
+  baseURL: process.env.REACT_APP_API_BASE_URL,
 });
 
 //요청 인터셉터

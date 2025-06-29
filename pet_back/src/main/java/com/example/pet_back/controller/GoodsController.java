@@ -32,7 +32,7 @@ import java.util.Map;
 @RequiredArgsConstructor // private final만
 @RequestMapping(value = "/goods")
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "${cors.allowed.origins}")
 public class GoodsController {
 
     private final GoodsService goodsService;

@@ -10,7 +10,6 @@ export default function Review() {
   const location = useLocation();
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상 태 변 수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 이미지 미리보기 위한 상태변수 추가
-  // 'http://localhost:8080/resources/webapp/userImages/basicimg.jpg'
   const [prevImg, setPrevImg] = useState([]);
   const [userImage, setUserImage] = useState([]);
   const { goods } = location.state || ""; // 리뷰작성 시만
@@ -27,8 +26,6 @@ export default function Review() {
   const up = "up.png";
   const down = "down.png";
   const prodImg = "istockphoto-1320314988-2048x2048.jpg";
-
-  // c:\devv\pet_project\pet_back\src\main\resources\webapp\userImages\up.png
 
   // 별점 (배열)
   const [score, setScore] = useState(0); // ⭐ 🤍❤️

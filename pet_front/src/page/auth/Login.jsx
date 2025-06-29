@@ -109,7 +109,7 @@ export default function Login() {
     setValue("email", "");
     setValue("password", "");
     window.Kakao.Auth.authorize({
-      redirectUri: "http://54.180.195.59/login", //
+      redirectUri: process.env.REACT_APP_API_BASE_URL + "/login", //
     });
   };
 

@@ -71,10 +71,7 @@ const MemberApi = {
     const formData = new FormData();
     formData.append("file", file);
 
-    const result = await instance.post(
-      `http://54.180.195.59:8080/user/uploadimage`,
-      formData
-    );
+    const result = await instance.post(`/user/uploadimage`, formData);
     return result.data;
   },
 
