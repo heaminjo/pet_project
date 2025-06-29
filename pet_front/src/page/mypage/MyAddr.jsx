@@ -44,7 +44,6 @@ export default function MyAddr() {
   const addressDelete = async () => {
     console.log("삭제" + del);
     const result = await MemberApi.addressDelete(del);
-    alert(result.message);
     setModal(false);
   };
 
