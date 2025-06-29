@@ -24,13 +24,5 @@ public class WebMvcConfig implements WebMvcConfigurer {
         ;
     }
 
-    // 파일 경로
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        //멤버 이미지 경로 설정
-        registry.addResourceHandler("/resources/webapp/userImages/**")
-                .addResourceLocations("file:/home/ubuntu/pet_back/src/main/resources/webapp/userImages/");
-//                .addResourceLocations("file:src/main/resources/webapp/userImages/");
-    }
 
 }

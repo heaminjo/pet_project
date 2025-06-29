@@ -1,6 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import MemberApi from "../../api/MemberApi";
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 //관리자 사이드 메뉴 컴포넌트

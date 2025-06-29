@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { FaMedal } from "react-icons/fa";
-import { PiDogFill, PiSneakerMoveFill } from "react-icons/pi";
+import { PiSneakerMoveFill } from "react-icons/pi";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 

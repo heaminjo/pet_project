@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import GoodsApi from "../../api/GoodsApi";
 import OrderApi from "../../api/OrderApi";
 import AdminApi from "../../api/AdminApi";
 import PageNumber from "../../components/util/PageNumber";
-
-import React from "react";
 import { useLocation } from "react-router-dom";
-import GoodsSearch from "../../components/util/GoodsSearch";
 import OrdersSearch from "../../components/util/OrdersSearch";
 
 export default function DeliveryGoods() {
   const location = useLocation();
-  const deliverImg = process.env.PUBLIC_URL + '/images/delivery.png';
+  const deliverImg = process.env.PUBLIC_URL + "/images/delivery.png";
+  const imgUrl = "http://54.180.195.59:8080/resources/webapp/userImages/";
   const [members, setMembers] = useState([]);
   const [goods, setGoods] = useState([]);
   const { goodsId } = location.state || {};
@@ -187,7 +184,7 @@ const DeliveryGoodsComp = styled.div`
 
     .list_container {
       table {
-        border: 1px solid #ccc;
+        border: 1px solid #000;
         width: 1500px;
         text-align: center;
         border-collapse: collapse;
@@ -195,9 +192,7 @@ const DeliveryGoodsComp = styled.div`
         tr {
           height: 50px;
           th {
-            background-color: rgb(202, 197, 197);
-            padding: 10px;
-            margin: 10px;
+            background-color: #b0befc;
           }
           td {
             border-bottom: 1px solid #ccc;

@@ -1,8 +1,9 @@
-import axios from 'axios';
-import instance from '../api/axiosInstance'; // 인스턴스 불러오기
-import { useNavigate } from 'react-router-dom';
-import ModifyGoods from '../components/Layout/goods/ModifyGoods';
-const KH_DOMAIN = 'http://localhost:8080';
+import axios from "axios";
+import instance from "../api/axiosInstance"; // 인스턴스 불러오기
+import url from "../api/axiosInstance"; // 인스턴스 불러오기
+import { useNavigate } from "react-router-dom";
+import ModifyGoods from "../components/Layout/goods/ModifyGoods";
+const REACT_APP_KH_DOMAIN = "http://54.180.195.59:8080";
 const GoodsApi = {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 장 바 구 니 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 장바구니 추가
@@ -18,11 +19,11 @@ const GoodsApi = {
         console.log(`장바구니 담기 성공, 상품ID: ${result.data.goodsId}`);
         return result.data;
       } else {
-        console.log('장바구니 담기 실패');
+        console.log("장바구니 담기 실패");
       }
     } catch (err) {
-      console.error('장바구니 추가 실패:', err);
-      alert('장바구니 추가 중 에러가 발생했습니다.');
+      console.error("장바구니 추가 실패:", err);
+      alert("장바구니 추가 중 에러가 발생했습니다.");
     }
   },
 
@@ -63,7 +64,7 @@ const GoodsApi = {
     try {
       const result = await instance.post(`/goods/favorite`, pages);
       if (result.data != null) {
-        console.log(' getFavoritePageList 응답 결과:', result.data);
+        console.log(" getFavoritePageList 응답 결과:", result.data);
         return result.data;
       }
     } catch (err) {}
@@ -76,7 +77,7 @@ const GoodsApi = {
     try {
       const result = await instance.post(`/goods/list`, pages);
       if (result.data != null) {
-        console.log(' getGoodsPageList 응답 결과:', result.data);
+        console.log(" getGoodsPageList 응답 결과:", result.data);
         // alert(`getGoodsPageList() 호출됨`);
         return result.data;
       }
@@ -96,7 +97,7 @@ const GoodsApi = {
     try {
       const result = await instance.post(`/goods/favorite`, pages);
       if (result.data != null) {
-        console.log(' getGoodsPageList 응답 결과:', result.data);
+        console.log(" getGoodsPageList 응답 결과:", result.data);
         // alert(`getGoodsPageList() 호출됨`);
         return result.data;
       }
@@ -106,28 +107,28 @@ const GoodsApi = {
   // <AddGoods /> : 상품등록
   regGoods: async (formData) => {
     try {
-      const result = await instance.post('/goods/register', formData);
+      const result = await instance.post("/goods/register", formData);
       if (result.data != null) {
         alert(`상품등록 완료 => ${result.data}`);
         return result.data;
       }
     } catch (err) {
-      console.error('상품 등록 실패:', err);
-      alert('상품 등록 중 에러가 발생했습니다.');
+      console.error("상품 등록 실패:", err);
+      alert("상품 등록 중 에러가 발생했습니다.");
     }
   },
 
   // <ModifyGoods /> : 상품 수정
   modifyGoods: async (formData) => {
     try {
-      const result = await instance.post('/goods/update', formData);
+      const result = await instance.post("/goods/update", formData);
       if (result.data != null) {
         console.log(`상품수정 완료 => ${result.data}`);
         return result.data;
       }
     } catch (err) {
-      console.error('상품수정 등록 실패:', err);
-      alert('상품 수정 중 에러가 발생했습니다.');
+      console.error("상품수정 등록 실패:", err);
+      alert("상품 수정 중 에러가 발생했습니다.");
     }
   },
 
@@ -140,8 +141,8 @@ const GoodsApi = {
         return result.data;
       }
     } catch (err) {
-      console.error('상품 삭제 실패:', err);
-      alert('상품 삭제 중 에러가 발생했습니다.');
+      console.error("상품 삭제 실패:", err);
+      alert("상품 삭제 중 에러가 발생했습니다.");
     }
   },
 
@@ -160,34 +161,34 @@ const GoodsApi = {
     });
 
     if (result.data != null) {
-      console.log('getReviewsPageList 응답 결과:', result.data);
+      console.log("getReviewsPageList 응답 결과:", result.data);
       return result.data;
     } else {
-      console.log('getReviewsPageList 호출 중 오류 발생:', result.data);
+      console.log("getReviewsPageList 호출 중 오류 발생:", result.data);
       return result.data;
     }
   },
 
   //배너 가져오기
   getBanner: async () => {
-    const result = await axios.get(`${KH_DOMAIN}/goods/banner/list`);
+    const result = await url.get(`/goods/banner/list`);
     return result.data;
   },
 
   //카테고리 목록 가져오기
   getCategoryList: async () => {
-    const result = await axios.get(`${KH_DOMAIN}/goods/category/list`);
+    const result = await url.get(`/goods/category/list`);
     return result.data;
   },
   //상품 페이징 목록록
   getGoodsList: async (pages) => {
-    const result = await axios.post(`${KH_DOMAIN}/goods/page/list`, pages);
+    const result = await url.post(`/goods/page/list`, pages);
     return result.data;
   },
 
   //베스트 상품 가져오기
   getBest: async () => {
-    const result = await axios.get(`${KH_DOMAIN}/goods/best/list`);
+    const result = await url.get(`/goods/best/list`);
     return result.data;
   },
 };
