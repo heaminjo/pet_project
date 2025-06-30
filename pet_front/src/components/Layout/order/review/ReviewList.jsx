@@ -6,10 +6,6 @@ import { FaStar, FaRegStar } from 'react-icons/fa';
 
 // 리뷰 페이지
 export default function ReviewList({ stars, goodsId, reviewNum }) {
-  useEffect(() => {
-    console.log('props로 전달된 goodsId:', goodsId);
-  }, [goodsId]);
-
   const [loading, setLoading] = useState(true); // 로딩 상태 (비동기 대응)
 
   const [reviews, setReviews] = useState([]); // 유저 리뷰 리스트
@@ -49,6 +45,7 @@ export default function ReviewList({ stars, goodsId, reviewNum }) {
     try {
       setLoading(true);
       const result = await GoodsApi.getReviewsPageList(pages, goodsId);
+      console.log('GoodsApi.getReviewsPageList(pages, goodsId) :', result);
       // 1. 리뷰 목록
       setReviews(result.content);
 
@@ -83,6 +80,11 @@ export default function ReviewList({ stars, goodsId, reviewNum }) {
     }
     return stars;
   };
+
+  useEffect(() => {
+    console.log('props로 전달된 goodsId:', goodsId);
+    console.log('props로 전달된 reviewNum:', reviewNum);
+  }, [goodsId, reviewNum]);
 
   useEffect(() => {
     if (goodsId) getPageList(goodsId);
