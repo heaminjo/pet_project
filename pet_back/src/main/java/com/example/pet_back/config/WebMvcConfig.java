@@ -16,7 +16,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
 
         registry.addMapping("/**")
-                .allowedOrigins("http://54.180.195.59:3000","http://54.180.195.59:8080","http://54.180.195.59")
+                .allowedOrigins("http://localhost:3000","http://localhost:8080","http://localhost")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true)
@@ -29,8 +29,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         //멤버 이미지 경로 설정
         registry.addResourceHandler("/resources/webapp/userImages/**")
-                .addResourceLocations("file:/home/ubuntu/pet_back/src/main/resources/webapp/userImages/");
-//                .addResourceLocations("file:src/main/resources/webapp/userImages/");
-    }
+                .addResourceLocations("file:src/main/resources/webapp/userImages/");
+
+
+}
 
 }

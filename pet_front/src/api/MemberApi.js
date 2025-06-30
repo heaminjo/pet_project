@@ -1,6 +1,6 @@
 import axios from "axios";
 import instance from "./axiosInstance";
-const KH_DOMAIN = "http://54.180.195.59:8080";
+const KH_DOMAIN = "http://localhost:8080";
 const MemberApi = {
   //로그인
   login: async (email, password) => {
@@ -75,10 +75,7 @@ const MemberApi = {
     const formData = new FormData();
     formData.append("file", file);
 
-    const result = await instance.post(
-      `http://54.180.195.59:8080/user/uploadimage`,
-      formData
-    );
+    const result = await instance.post(`/user/uploadimage`, formData);
     return result.data;
   },
 
