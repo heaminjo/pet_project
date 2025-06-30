@@ -56,235 +56,235 @@ export default function OrderDetail() {
   const handleWithDraw = () => {
     setIsOpen(false); // 팝업창 닫음
     withDraw(); //
+  };
 
-    // 장바구니 담기
-    const addToCart = async (goods, buyQuantity) => {
-      try {
-        const response = await GoodsApi.addToCart(goods, buyQuantity);
-        // alert("장바구니에 " + goods.goodsName + "이(가) 1개 담겼습니다.");
-        // navigate("/user/mypage/cart/list");
-        console.log(`장바구니 담기 성공, 상품ID:  => ${response}`);
-        setShowModal(true); // 모달 표시
-      } catch (err) {
-        alert("장바구니 담기에 실패했습니다.");
-      }
+  // 장바구니 담기
+  const addToCart = async (goods, buyQuantity) => {
+    try {
+      const response = await GoodsApi.addToCart(goods, buyQuantity);
+      // alert("장바구니에 " + goods.goodsName + "이(가) 1개 담겼습니다.");
+      // navigate("/user/mypage/cart/list");
+      console.log(`장바구니 담기 성공, 상품ID:  => ${response}`);
+      setShowModal(true); // 모달 표시
+    } catch (err) {
+      alert("장바구니 담기에 실패했습니다.");
+    }
+  };
+
+  // 주문내역 리스트를 순회하며 날짜별로 그룹화 ~~~~~~~~~~~~~~~~~~~~
+  const groupByDate = (info) => {
+    const grouped = {};
+    info.forEach((item) => {
+      const dateKey = new Date(item.regDate).toISOString().split("T")[0]; // 'YYYY-MM-DD'
+      // toISOString() : 시차 방어 (UTC 기준)
+      // 2025-06-05T15:57:22.427+09:00 --> '2025-06-05' 추출
+      if (!grouped[dateKey]) grouped[dateKey] = []; // 빈배열 방어
+      grouped[dateKey].push(item);
+    });
+    return grouped;
+  };
+
+  // 함수 실행
+  const groupedInfo = groupByDate(info);
+
+  // 그룹화한 리스트 결과를 날짜 최신순 정렬
+  const sortedDates = Object.keys(groupedInfo).sort(
+    (a, b) => new Date(b) - new Date(a)
+  );
+
+  // 주문취소 클릭시
+  const withDraw = async (orderDetailId) => {
+    console.log(`프론트 주문취소 요청 ID: ${orderDetailId}`);
+    try {
+      const result = await OrderApi.withDraw(orderDetailId);
+      await getPageList();
+      setPage(0);
+    } catch (err) {
+      console.error("getPageList 실패: ", err);
+    }
+  };
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 페이징 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const getPageList = async () => {
+    const pages = {
+      page: page,
+      size: 5,
+      sortBy: "desc",
+      keyword: keyword,
+      type: type,
     };
 
-    // 주문내역 리스트를 순회하며 날짜별로 그룹화 ~~~~~~~~~~~~~~~~~~~~
-    const groupByDate = (info) => {
-      const grouped = {};
-      info.forEach((item) => {
-        const dateKey = new Date(item.regDate).toISOString().split("T")[0]; // 'YYYY-MM-DD'
-        // toISOString() : 시차 방어 (UTC 기준)
-        // 2025-06-05T15:57:22.427+09:00 --> '2025-06-05' 추출
-        if (!grouped[dateKey]) grouped[dateKey] = []; // 빈배열 방어
-        grouped[dateKey].push(item);
+    try {
+      const response = await OrderApi.getOrderDetailPageList(pages); // 이건 Axios full response
+
+      if (Array.isArray(response?.content)) {
+        setInfo(response.content);
+      } else {
+        console.error("비정상 응답:", response);
+        setInfo([]);
+      }
+
+      let temp = Math.floor(page / 5) * 5;
+      setPaging({
+        start: temp,
+        end: Math.min(temp + 5, response.totalPages),
+        isPrev: response.prev,
+        isNext: response.next,
+        totalElement: response.totalElements,
+        totalPages: response.totalPages,
       });
-      return grouped;
-    };
+    } catch (err) {
+      console.error("getPageList 실패:", err);
+    }
+  };
 
-    // 함수 실행
-    const groupedInfo = groupByDate(info);
+  useEffect(() => {
+    getPageList();
+  }, [page]);
 
-    // 그룹화한 리스트 결과를 날짜 최신순 정렬
-    const sortedDates = Object.keys(groupedInfo).sort(
-      (a, b) => new Date(b) - new Date(a)
-    );
-
-    // 주문취소 클릭시
-    const withDraw = async (orderDetailId) => {
-      console.log(`프론트 주문취소 요청 ID: ${orderDetailId}`);
-      try {
-        const result = await OrderApi.withDraw(orderDetailId);
-        await getPageList();
-        setPage(0);
-      } catch (err) {
-        console.error("getPageList 실패: ", err);
-      }
-    };
-
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 페이징 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    const getPageList = async () => {
-      const pages = {
-        page: page,
-        size: 5,
-        sortBy: "desc",
-        keyword: keyword,
-        type: type,
-      };
-
-      try {
-        const response = await OrderApi.getOrderDetailPageList(pages); // 이건 Axios full response
-
-        if (Array.isArray(response?.content)) {
-          setInfo(response.content);
-        } else {
-          console.error("비정상 응답:", response);
-          setInfo([]);
-        }
-
-        let temp = Math.floor(page / 5) * 5;
-        setPaging({
-          start: temp,
-          end: Math.min(temp + 5, response.totalPages),
-          isPrev: response.prev,
-          isNext: response.next,
-          totalElement: response.totalElements,
-          totalPages: response.totalPages,
-        });
-      } catch (err) {
-        console.error("getPageList 실패:", err);
-      }
-    };
-
-    useEffect(() => {
-      getPageList();
-    }, [page]);
-
-    return (
-      <OrderListComp>
-        <div className="orderlist-container">
-          <h2>주문내역</h2>
-          <div>
-            {showModal && (
-              <Modal
-                content={
-                  <>
-                    상품이 장바구니에 정상적으로 담겼습니다.
-                    <br />
-                    장바구니로 이동하시겠습니까?
-                  </>
-                }
-                clickEvt={goToCart}
-                setModal={setShowModal}
-              />
-            )}
-            {sortedDates.map((date) => (
-              <div key={date} className="orderlist">
-                {groupedInfo[date].map((item, index) => (
-                  <div key={item.orderDetailId} className="ordertitle">
-                    <div className="orderstate">
-                      {date}
-                      {isOpen &&
-                        item.orderDetailId === targetOrderDetailId &&
-                        handleOpenPopup()}{" "}
-                      {/* 모달 오픈조건 && 현재 반복문 ID 일치시 팝업 모달 창 띄움 */}
-                    </div>
-                    <div className="orderlist2">
-                      <div className="orderdesc">
-                        <img
-                          src={`${item.imageFile}`}
-                          alt={item.goodsName}
-                          className="prodimg"
-                          onClick={() =>
-                            navigate("/user/order", { state: { goods: item } })
-                          }
-                        />
+  return (
+    <OrderListComp>
+      <div className="orderlist-container">
+        <h2>주문내역</h2>
+        <div>
+          {showModal && (
+            <Modal
+              content={
+                <>
+                  상품이 장바구니에 정상적으로 담겼습니다.
+                  <br />
+                  장바구니로 이동하시겠습니까?
+                </>
+              }
+              clickEvt={goToCart}
+              setModal={setShowModal}
+            />
+          )}
+          {sortedDates.map((date) => (
+            <div key={date} className="orderlist">
+              {groupedInfo[date].map((item, index) => (
+                <div key={item.orderDetailId} className="ordertitle">
+                  <div className="orderstate">
+                    {date}
+                    {isOpen &&
+                      item.orderDetailId === targetOrderDetailId &&
+                      handleOpenPopup()}{" "}
+                    {/* 모달 오픈조건 && 현재 반복문 ID 일치시 팝업 모달 창 띄움 */}
+                  </div>
+                  <div className="orderlist2">
+                    <div className="orderdesc">
+                      <img
+                        src={`${item.imageFile}`}
+                        alt={item.goodsName}
+                        className="prodimg"
+                        onClick={() =>
+                          navigate("/user/order", { state: { goods: item } })
+                        }
+                      />
+                      <br />
+                      <div className="proddesc">
+                        {item.status === "결제완료" ? (
+                          <b> {item.status}</b>
+                        ) : (
+                          <b style={{ color: "red" }}>{item.status}</b>
+                        )}
                         <br />
-                        <div className="proddesc">
-                          {item.status === "결제완료" ? (
-                            <b> {item.status}</b>
-                          ) : (
-                            <b style={{ color: "red" }}>{item.status}</b>
-                          )}
-                          <br />
-                          {item.goodsId}
-                          {item.goodsName} <br />
-                          {item.goodsPrice} 원 / {item.goodsQuantity} 개
-                        </div>
-                        <div className="btn">
-                          <button
-                            className="btn3"
-                            onClick={async () => {
-                              try {
-                                const status = await OrderApi.deliveryStatus(
-                                  item.orderDetailId
-                                ); // 주문상태 조회
-                                console.log("📦 배송 상태:", status);
-                                const cancellableStates = [
-                                  "BEFOREPAY",
-                                  "AFTERPAY",
-                                  "READY",
-                                ];
-                                // const cancellableStates = ['결제전', '결제완료', '상품준비중'];
-                                if (cancellableStates.includes(status)) {
-                                  setTargetOrderId(item.orderId);
-                                  setTargetOrderDetailId(item.orderDetailId);
-                                  setIsOpen(true);
-                                } else if (status === "DELIVERY") {
-                                  alert(
-                                    "해당 주문은 이미 배송이 시작되어 취소가 불가합니다."
-                                  );
-                                } else if (status === "END") {
-                                  alert(
-                                    "해당 주문은 배송이 완료되어 취소가 불가합니다."
-                                  );
-                                }
-                              } catch (err) {
-                                console.error("배송 상태 조회 실패:", err);
-                                alert("주문 상태를 확인하는 데 실패했습니다.");
+                        {item.goodsId}
+                        {item.goodsName} <br />
+                        {item.goodsPrice} 원 / {item.goodsQuantity} 개
+                      </div>
+                      <div className="btn">
+                        <button
+                          className="btn3"
+                          onClick={async () => {
+                            try {
+                              const status = await OrderApi.deliveryStatus(
+                                item.orderDetailId
+                              ); // 주문상태 조회
+                              console.log("📦 배송 상태:", status);
+                              const cancellableStates = [
+                                "BEFOREPAY",
+                                "AFTERPAY",
+                                "READY",
+                              ];
+                              // const cancellableStates = ['결제전', '결제완료', '상품준비중'];
+                              if (cancellableStates.includes(status)) {
+                                setTargetOrderId(item.orderId);
+                                setTargetOrderDetailId(item.orderDetailId);
+                                setIsOpen(true);
+                              } else if (status === "DELIVERY") {
+                                alert(
+                                  "해당 주문은 이미 배송이 시작되어 취소가 불가합니다."
+                                );
+                              } else if (status === "END") {
+                                alert(
+                                  "해당 주문은 배송이 완료되어 취소가 불가합니다."
+                                );
                               }
-                            }}
-                          >
-                            주문취소
-                          </button>
+                            } catch (err) {
+                              console.error("배송 상태 조회 실패:", err);
+                              alert("주문 상태를 확인하는 데 실패했습니다.");
+                            }
+                          }}
+                        >
+                          주문취소
+                        </button>
+                        <button
+                          className="btn1"
+                          onClick={() => addToCart(item, 1)}
+                        >
+                          장바구니 담기
+                        </button>
+                        <button
+                          className="btn2"
+                          onClick={() =>
+                            navigate(
+                              `/user/mypage/delivery?orderId=${item.orderId}`
+                            )
+                          }
+                        >
+                          배송조회
+                        </button>
+
+                        {item.reviewId ? (
+                          // <button className='btn4' onClick={() => navigate(`/user/mypage/review?reviewId=${item.reviewId}`)}>
+                          //   리뷰수정
+                          // </button>
                           <button
-                            className="btn1"
-                            onClick={() => addToCart(item, 1)}
-                          >
-                            장바구니 담기
-                          </button>
-                          <button
-                            className="btn2"
+                            className="btn4"
                             onClick={() =>
-                              navigate(
-                                `/user/mypage/delivery?orderId=${item.orderId}`
-                              )
+                              navigate("/user/mypage/review", {
+                                state: {
+                                  orderDetail: item,
+                                  review: item.review,
+                                },
+                              })
                             }
                           >
-                            배송조회
+                            리뷰수정
                           </button>
-
-                          {item.reviewId ? (
-                            // <button className='btn4' onClick={() => navigate(`/user/mypage/review?reviewId=${item.reviewId}`)}>
-                            //   리뷰수정
-                            // </button>
-                            <button
-                              className="btn4"
-                              onClick={() =>
-                                navigate("/user/mypage/review", {
-                                  state: {
-                                    orderDetail: item,
-                                    review: item.review,
-                                  },
-                                })
-                              }
-                            >
-                              리뷰수정
-                            </button>
-                          ) : (
-                            <button
-                              className="btn4"
-                              onClick={() =>
-                                navigate("/user/mypage/review", {
-                                  state: { orderDetail: item },
-                                })
-                              }
-                            >
-                              리뷰작성
-                            </button>
-                          )}
-                        </div>
+                        ) : (
+                          <button
+                            className="btn4"
+                            onClick={() =>
+                              navigate("/user/mypage/review", {
+                                state: { orderDetail: item },
+                              })
+                            }
+                          >
+                            리뷰작성
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
-            ))}
-          </div>
-          <PageNumber page={page} setPage={setPage} paging={paging} />
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
-      </OrderListComp>
-    );
-  };
+        <PageNumber page={page} setPage={setPage} paging={paging} />
+      </div>
+    </OrderListComp>
+  );
 }
