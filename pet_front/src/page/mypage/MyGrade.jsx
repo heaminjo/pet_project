@@ -1,14 +1,11 @@
-import { useContext, useEffect, useState } from "react";
-import styled from "styled-components";
+import { useContext, useState } from "react";
 import { PetContext } from "./MyPage";
-import React from "react";
 import GradeComp from "./MyGradeStyle";
 import { useNavigate } from "react-router-dom";
 import { FaMedal } from "react-icons/fa";
 
 export default function MyGrade() {
   const { user } = useContext(PetContext);
-  const [lastGrade, setLastGrade] = useState(user.grade == "프리미엄 회원"); //마지막 등급인가?
   const navigate = useNavigate();
   window.scrollTo({ top: 0, behavior: "smooth" });
   //회원의 등급에 따른 등급 정보

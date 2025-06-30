@@ -3,7 +3,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useContext, useEffect, useRef, useState } from "react";
 import MemberApi from "../../api/MemberApi";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MyEditComp from "./MyEditStyle";
 import { PetContext } from "./MyPage";
 //회원 수정 페이지
@@ -14,7 +14,7 @@ export default function MyEdit() {
   const [selectImage, setSelectImage] = useState(null); //선택 프로필(서버용)
   const [prevImage, setPrevImage] = useState(null); //이전 프로필필
 
-  const { user, setUser, getLoginUser } = useContext(PetContext);
+  const { user, setUser } = useContext(PetContext);
 
   //로드 시 회원 정보 불러오기(MyPage에서 전역으로 뿌린 user를 Context를 통해 가져온다.)
   useEffect(() => {
@@ -101,8 +101,6 @@ export default function MyEdit() {
         const result = await MemberApi.uploadImage(selectImage);
         if (result.success) {
           alert(result.message);
-          // setUser({...user})
-          console.log(result.data.imageURL);
         }
       } catch (e) {
         console.log(e);

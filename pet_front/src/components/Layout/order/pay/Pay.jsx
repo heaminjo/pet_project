@@ -237,6 +237,7 @@ export default function Pay() {
 
           setAddr(response.address1 + " " + response.address2);
           // alert(`배송지주소: ${response.addressName}`);
+
           setAddrName(response.addressName);
           setAddrType(response.addrType);
           console.log(
@@ -267,9 +268,7 @@ export default function Pay() {
         setFinalPrice(response.finalPrice);
         setGrade(response.grade);
       })
-      .catch((err) => {
-        // alert('OrderApi.pay() 에러');
-      });
+      .catch((err) => {});
   }, [member, goods]);
 
   return (
@@ -550,6 +549,10 @@ export default function Pay() {
                     무통장입금(상세조회) <br />
                   </label>
                 </td>
+              </tr>
+              <tr>
+                <th>연락처</th>
+                <td>{member.phone}</td>
               </tr>
             </tbody>
           </table>

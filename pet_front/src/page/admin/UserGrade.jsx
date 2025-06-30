@@ -1,19 +1,9 @@
-import styled from "styled-components";
 import PieRing from "../../components/util/PieRing";
-import PieComp from "../../components/util/PieComp";
 import { useEffect, useState } from "react";
 import AdminApi from "../../api/AdminApi";
 import UserGradeComp from "./UserGradeStyle";
-import MemberApi from "../../api/MemberApi";
 
 export default function UserGrade() {
-  const data = [
-    { name: "Group A", value: 400 },
-    { name: "Group B", value: 300 },
-    { name: "Group C", value: 300 },
-    { name: "Group D", value: 200 },
-    { name: "Group D", value: 200 },
-  ];
   const COLORS = ["#f2fdff", "#cfe7f0", "	#f0d5ce", "#ecbfb1", "	#de9d91"];
 
   //등급 통계 데이터

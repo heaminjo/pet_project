@@ -3,7 +3,11 @@ import MemberApi from "./MemberApi";
 
 //공통 설정을 갖는 axios 인스턴스
 const instance = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: process.env.REACT_APP_API_BASE_URL,
+});
+
+const url = axios.create({
+  baseURL: process.env.REACT_APP_API_BASE_URL,
 });
 
 //요청 인터셉터

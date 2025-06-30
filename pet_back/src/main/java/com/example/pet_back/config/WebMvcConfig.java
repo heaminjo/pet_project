@@ -24,6 +24,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         ;
     }
 
+
     // 파일 경로
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -33,5 +34,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 
 }
+
 
 }

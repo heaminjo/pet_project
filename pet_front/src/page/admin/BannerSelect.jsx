@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
-import styled from "styled-components";
 import GoodsApi from "../../api/GoodsApi";
 import React from "react";
 import Modal from "../../modal/Modal";
 import AdminApi from "../../api/AdminApi";
 import BannerSelectComp from "./BannerSelectStyle";
-import PageNumber from "../../components/util/PageNumber";
-import GoodsSelectList from "../../components/util/GoodsSelectList";
 export default function BannerSelect() {
   const [banner, setBanner] = useState([]); //배너 데이터
   const [modal, setModal] = useState(false); //삭제 확인 모달

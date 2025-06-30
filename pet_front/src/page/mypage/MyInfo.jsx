@@ -1,14 +1,7 @@
-import {
-  Navigate,
-  useLocation,
-  useNavigate,
-  useOutlet,
-  useOutletContext,
-} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import MyInfoComp from "./MyInfoStyle";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import MemberApi from "../../api/MemberApi";
-import gradeImage from "../../images/d1nrwjnej10dkwnrnksj423kj.jpg";
 import { PetContext } from "./MyPage";
 import { PiShoppingCartFill } from "react-icons/pi";
 import { LuMoveRight } from "react-icons/lu";
@@ -20,7 +13,6 @@ export default function MyInfo() {
   window.scrollTo({ top: 0, behavior: "smooth" });
   const { user, setUser } = useContext(PetContext);
 
-  const location = useLocation();
   const navigate = useNavigate();
   const [orderList, setOrderList] = useState([]);
 
