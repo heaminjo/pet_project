@@ -146,7 +146,7 @@ export default function OrderDetail() {
     };
 
     try {
-      const response = await OrderApi.getOrderDetailPageList(pages);
+      const response = await OrderApi.getOrderDetailPageList(pages); // OrderDetailResponseDTO
       if (Array.isArray(response?.content)) {
         setInfo(response.content);
       } else {
@@ -192,78 +192,83 @@ export default function OrderDetail() {
           )}
           {sortedDates.map((date) => (
             <div key={date} className='orderlist'>
-              {groupedInfo[date].map((item, index) => (
-                <div key={item.orderDetailId} className='ordertitle'>
-                  <div className='orderstate'>
-                    {date}
-                    {isOpen && item.orderDetailId === targetOrderDetailId && handleOpenPopup()} {/* 모달 오픈조건 && 현재 반복문 ID 일치시 팝업 모달 창 띄움 */}
-                  </div>
-                  <div className='orderlist2'>
-                    <div className='orderdesc'>
-                      <img src={`${item.imageFile}`} alt={item.goodsName} className='prodimg' onClick={() => navigate('/user/order', { state: { goods: item } })} />
-                      <br />
-                      <div className='proddesc'>
-                        {item.status === '결제완료' ? <b> {item.status}</b> : <b style={{ color: 'red' }}>{item.status}</b>}
+              {groupedInfo[date].map(
+                (
+                  item,
+                  index // item: OrderDetailResponseDTO
+                ) => (
+                  <div key={item.orderDetailId} className='ordertitle'>
+                    <div className='orderstate'>
+                      {date}
+                      {isOpen && item.orderDetailId === targetOrderDetailId && handleOpenPopup()} {/* 모달 오픈조건 && 현재 반복문 ID 일치시 팝업 모달 창 띄움 */}
+                    </div>
+                    <div className='orderlist2'>
+                      <div className='orderdesc'>
+                        <img src={`${item.imageFile}`} alt={item.goodsName} className='prodimg' onClick={() => navigate('/user/order', { state: { goods: item } })} />
                         <br />
-                        {item.goodsId}
-                        {item.goodsName} <br />
-                        {item.goodsPrice} 원 / {item.goodsQuantity} 개
-                      </div>
-                      <div className='btn'>
-                        <button
-                          className='btn3'
-                          onClick={async () => {
-                            try {
-                              const status = await OrderApi.deliveryStatus(item.orderDetailId); // 주문상태 조회
-                              console.log('📦 배송 상태:', status);
-                              const cancellableStates = ['BEFOREPAY', 'AFTERPAY', 'READY'];
-                              // const cancellableStates = ['결제전', '결제완료', '상품준비중'];
-                              if (cancellableStates.includes(status)) {
-                                setTargetOrderId(item.orderId);
-                                setTargetOrderDetailId(item.orderDetailId);
-                                setIsOpen(true);
-                              } else if (status === 'DELIVERY') {
-                                alert('해당 주문은 이미 배송이 시작되어 취소가 불가합니다.');
-                              } else if (status === 'END') {
-                                alert('해당 주문은 배송이 완료되어 취소가 불가합니다.');
-                              }
-                            } catch (err) {
-                              console.error('배송 상태 조회 실패:', err);
-                              alert('주문 상태를 확인하는 데 실패했습니다.');
-                            }
-                          }}>
-                          주문취소
-                        </button>
-                        <button className='btn1' onClick={() => addToCart(item, 1)}>
-                          장바구니 담기
-                        </button>
-                        <button className='btn2' onClick={() => navigate(`/user/mypage/delivery?orderDetailId=${item.orderDetailId}`)}>
-                          배송조회
-                        </button>
-
-                        {item.reviewId ? (
-                          // <button className='btn4' onClick={() => navigate(`/user/mypage/review?reviewId=${item.reviewId}`)}>
-                          //   리뷰수정
-                          // </button>
+                        <div className='proddesc'>
+                          {item.status === '결제완료' ? <b> {item.status}</b> : <b style={{ color: 'red' }}>{item.status}</b>}
+                          <br />
+                          {/* {item.goodsId} */}
+                          {item.goodsName} <br />
+                          {item.goodsPrice} 원 / {item.goodsQuantity} 개
+                        </div>
+                        <div className='btn'>
                           <button
-                            className='btn4'
-                            onClick={() =>
-                              navigate('/user/mypage/review', {
-                                state: { orderDetail: item, review: item.review },
-                              })
-                            }>
-                            리뷰수정
+                            className='btn3'
+                            onClick={async () => {
+                              try {
+                                const status = await OrderApi.deliveryStatus(item.orderDetailId); // 주문상태 조회
+                                console.log('📦 배송 상태:', status);
+                                const cancellableStates = ['BEFOREPAY', 'AFTERPAY', 'READY'];
+                                // const cancellableStates = ['결제전', '결제완료', '상품준비중'];
+                                if (cancellableStates.includes(status)) {
+                                  setTargetOrderId(item.orderId);
+                                  setTargetOrderDetailId(item.orderDetailId);
+                                  setIsOpen(true);
+                                } else if (status === 'DELIVERY') {
+                                  alert('해당 주문은 이미 배송이 시작되어 취소가 불가합니다.');
+                                } else if (status === 'END') {
+                                  alert('해당 주문은 배송이 완료되어 취소가 불가합니다.');
+                                }
+                              } catch (err) {
+                                console.error('배송 상태 조회 실패:', err);
+                                alert('주문 상태를 확인하는 데 실패했습니다.');
+                              }
+                            }}>
+                            주문취소
                           </button>
-                        ) : (
-                          <button className='btn4' onClick={() => navigate('/user/mypage/review', { state: { orderDetail: item } })}>
-                            리뷰작성
+                          <button className='btn1' onClick={() => addToCart(item, 1)}>
+                            장바구니 담기
                           </button>
-                        )}
+                          <button className='btn2' onClick={() => navigate(`/user/mypage/delivery?orderDetailId=${item.orderDetailId}`)}>
+                            배송조회
+                          </button>
+
+                          {item.reviewId ? (
+                            // <button className='btn4' onClick={() => navigate(`/user/mypage/review?reviewId=${item.reviewId}`)}>
+                            //   리뷰수정
+                            // </button>
+                            <button
+                              className='btn4'
+                              onClick={() =>
+                                navigate('/user/mypage/review', {
+                                  state: { orderDetail: item, review: item.review },
+                                })
+                              }>
+                              리뷰수정
+                            </button>
+                          ) : (
+                            <button className='btn4' onClick={() => navigate('/user/mypage/review', { state: { orderDetail: item } })}>
+                              리뷰작성
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                )
+              )}
             </div>
           ))}
         </div>

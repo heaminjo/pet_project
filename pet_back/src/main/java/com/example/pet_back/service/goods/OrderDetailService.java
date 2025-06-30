@@ -29,8 +29,8 @@ public interface OrderDetailService {
     // <WithDraw /> : 주문취소 내역
     ResponseEntity<?> withDrawList(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO);
 
-    // 리뷰 중복등록 검증
-    ResponseEntity<?> getReviewState (CustomUserDetails userDetails,Long orderDetailId);
+//    // 리뷰 중복등록 검증
+//    ResponseEntity<?> getReviewState (CustomUserDetails userDetails,Long orderDetailId);
 
 
 }
