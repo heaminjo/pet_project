@@ -205,7 +205,7 @@ export default function OrderDetail() {
                       <div className='proddesc'>
                         {item.status === '결제완료' ? <b> {item.status}</b> : <b style={{ color: 'red' }}>{item.status}</b>}
                         <br />
-                        {item.goodsId}
+                        {/* {item.goodsId} */}
                         {item.goodsName} <br />
                         {item.goodsPrice} 원 / {item.goodsQuantity} 개
                       </div>
