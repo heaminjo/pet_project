@@ -93,8 +93,8 @@ const OrderListComp = styled.div`
   }
 
   .prodimg {
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     margin-left: 50px;
     object-fit: cover;
     border: 1px solid #ccc;
@@ -110,8 +110,8 @@ const OrderListComp = styled.div`
 
   .proddesc {
     flex: 1;
-    font-size: 1.5rem;
-    line-height: 2;
+    font-size: 0.95rem;
+    line-height: 1.6;
     color: #444;
     font-size: 1.2rem;
 
