@@ -39,7 +39,7 @@ public interface OrderService {
                                           ReviewUploadDTO reviewUploadDTO) throws IOException;
     // 리뷰 삭제
     ResponseEntity<?> deleteReview(Long reviewId);
-    
+
     // 내 리뷰 목록 출력
     ResponseEntity<?> showMyReviews(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO);
 

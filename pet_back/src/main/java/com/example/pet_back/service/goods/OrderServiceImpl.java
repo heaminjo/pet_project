@@ -277,11 +277,13 @@ public class OrderServiceImpl implements OrderService {
         reviewUploadDTO.setMemberId(member.getId());
 
         reviewUploadDTO.setMemberId(member.getId());
-        Optional<Goods> goods = goodsRepository.findById(reviewUploadDTO.getGoodsId());
+        Goods goods = goodsRepository.findById(reviewUploadDTO.getGoodsId()) //
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 상품입니다."));
+
         OrderDetail orderDetail = orderDetailRepository.findById(reviewUploadDTO.getOrderDetailId())
-                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 주문상세입니다."));
-        Review review = reviewMapper.toEntity(reviewUploadDTO, member, goods.get(), orderDetail);
-        reviewRepository.save(review);
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 주문상세입니다."));
+        Review review = reviewMapper.toEntity(reviewUploadDTO, member, goods, orderDetail);
+
         orderDetail.setReviewed(true);
         log.info("orderDetail.setIsReviewed(true) 후: "+orderDetail.getReviewed());
         orderDetailRepository.save(orderDetail);
@@ -293,16 +295,45 @@ public class OrderServiceImpl implements OrderService {
         log.info("등록할 리뷰 정보: memberId={}, goodsId={}, orderDetailId={}", member.getId(), review.getGoods().getGoodsId(), review.getOrderDetail().getOrderDetailId());
         log.info("score={}, title={}, content={}, imageFiles={}", review.getScore(), review.getTitle(), review.getContent(), review.getImageFile());
 
-        try{
-            reviewRepository.save(review);
-            log.info("** OrderServiceImpl => regReview() reviewRepository.save(review) 완료 **");
+        // 리뷰 중복 확인 (중복 허용 방지를 위해 findReviews는 List로 변경 권장)
+        List<Review> preReviews = reviewRepository.findReviews(member.getId(), reviewUploadDTO.getOrderDetailId());
+        Review updateReview;
+        try {
+            // 최초 등록 vs 업데이트 분기
+            if(preReviews.isEmpty()) { // 최초 등록인 경우
+                updateReview = reviewMapper.toEntity(reviewUploadDTO, member, goods, orderDetail);
+                updateReview.setRegDate(LocalDate.now());
+                // 등록 시 Goods 에도 review 추가함
+                goods.setReviewNum(goods.getReviewNum()+1); // 리뷰 + 1
+                goodsRepository.save(goods);
+
+                reviewRepository.save(updateReview); // 저장
+            }else{ // 리뷰 수정의 경우
+                updateReview = preReviews.get(0);
+                updateReview.setScore(reviewUploadDTO.getScore());
+                updateReview.setTitle(StringUtils.hasText(reviewUploadDTO.getTitle()) ? reviewUploadDTO.getTitle() : "");
+                updateReview.setContent(StringUtils.hasText(reviewUploadDTO.getContent()) ? reviewUploadDTO.getContent() : "");
+                updateReview.setImageFile(uploadImg);
+                updateReview.setModDate(LocalDate.now());
+
+                reviewRepository.save(updateReview); // 수정
+            }
+
+
+            // 주문상세에도 상태 업데이트, orderDetailID 업데이트
+            orderDetail.setReviewed(true);
+            orderDetailRepository.save(orderDetail);
+
+            // update goods set
+            log.info("등록/수정된 리뷰 정보: memberId={}, goodsId={}, orderDetailId={}, score={}, title={}, content={}, imageFiles={}",
+                    member.getId(), goods.getGoodsId(), orderDetail.getOrderDetailId(),
+                    review.getScore(), review.getTitle(), review.getContent(), review.getImageFile());
             return ResponseEntity.status(HttpStatus.OK).body("리뷰가 정상적으로 등록되었습니다.");
         } catch (Exception e) {
             log.error("리뷰 등록 중 오류: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("리뷰 등록 중 오류가 발생했습니다.");
         }
     }
-
 
     // 리뷰 수정
     @Override

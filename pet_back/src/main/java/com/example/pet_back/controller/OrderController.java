@@ -51,7 +51,7 @@ public class OrderController {
     // <WithDrawList />  : 주문취소 이력 조회
     @PostMapping("/withdraw/list")
     public ResponseEntity<?> withDrawList(@AuthenticationPrincipal CustomUserDetails userDetails,  //
-                                           @RequestBody PageRequestDTO pageRequestDTO) {
+                                          @RequestBody PageRequestDTO pageRequestDTO) {
         log.info("** OrderController => withdrawOrder() 실행됨 **");
         return orderDetailService.withDrawList(userDetails, pageRequestDTO);
     }
@@ -134,29 +134,30 @@ public class OrderController {
         }
     }
 
-    // 리뷰 수정
-    @PostMapping("/review/update")
-    public ResponseEntity<?> updateReview(@AuthenticationPrincipal CustomUserDetails userDetails, //
-                                       @RequestPart("review") ReviewUploadDTO reviewUploadDTO,
-                                       @RequestPart(value = "imageFile", required = false) List<MultipartFile> imageFiles) {
-        log.info("** OrderController => updateReview() 실행됨 **");
-        try {
-            reviewUploadDTO.setImageFiles(imageFiles);
-            log.info("** OrderController =>  reviewUploadDTO.setImageFile(imageFile) **");
-            return orderService.updateReview(userDetails, reviewUploadDTO);
-        } catch (Exception e) {
-            log.error("** OrderController.updateReview Exception => " + e.toString());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("리뷰 등록 중 오류가 발생했습니다.");
-        }
-    }
+//
+//    // 리뷰 수정
+//    @PostMapping("/review/update")
+//    public ResponseEntity<?> updateReview(@AuthenticationPrincipal CustomUserDetails userDetails, //
+//                                       @RequestPart("review") ReviewUploadDTO reviewUploadDTO,
+//                                       @RequestPart(value = "imageFile", required = false) List<MultipartFile> imageFiles) {
+//        log.info("** OrderController => updateReview() 실행됨 **");
+//        try {
+//            reviewUploadDTO.setImageFiles(imageFiles);
+//            log.info("** OrderController =>  reviewUploadDTO.setImageFile(imageFile) **");
+//            return orderService.updateReview(userDetails, reviewUploadDTO);
+//        } catch (Exception e) {
+//            log.error("** OrderController.updateReview Exception => " + e.toString());
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("리뷰 등록 중 오류가 발생했습니다.");
+//        }
+//    }
 
 
-    // 리뷰 중복등록 여부 검증
-    @GetMapping("/review/state/{orderDetailId}")
-    public ResponseEntity<?> getReviewState(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long orderDetailId){
-        log.info("** OrderController => getReviewState() 실행됨 **");
-        return orderDetailService.getReviewState(userDetails, orderDetailId);
-    }
+//    // 리뷰 중복등록 여부 검증
+//    @GetMapping("/review/state/{orderDetailId}")
+//    public ResponseEntity<?> getReviewState(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long orderDetailId){
+//        log.info("** OrderController => getReviewState() 실행됨 **");
+//        return orderDetailService.getReviewState(userDetails, orderDetailId);
+//    }
 
     // 내 리뷰 목록 출력
     @PostMapping("/review/my")
@@ -171,17 +172,6 @@ public class OrderController {
         log.info("** OrderController => deleteReview() 실행됨 **");
         return orderService.deleteReview( reviewId);
     }
-
-
-
-
-//        // 내 리뷰 출력 (수정필요)
-//    @GetMapping("/reviews/list/{goodsId}")
-//    public ResponseEntity<?> showReviewList(@PathVariable("goodsId") Long goodsId, @RequestBody PageRequestDTO pageRequestDTO) {
-//        log.info("** GoodsController => reviews() 실행됨 **");
-//        return goodsService.showReviewList(goodsId, pageRequestDTO);
-//    }
-
 
 
 }

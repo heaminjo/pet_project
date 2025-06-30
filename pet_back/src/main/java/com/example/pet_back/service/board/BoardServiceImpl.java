@@ -50,7 +50,7 @@ public class BoardServiceImpl implements BoardService {
         if (dto != null){
             dto.setFileList(boardMapper.selectImageFileNamesByBoardId(board_id));
         }
-        
+
         return dto;
     }
 

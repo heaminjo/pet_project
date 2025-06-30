@@ -9,13 +9,17 @@ export default function Review() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상 태 변 수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // 이미지 미리보기 위한 상태변수 추가
+  // 'http://localhost:8080/resources/webapp/userImages/basicimg.jpg'
+
   // 이미지 및 파일 state
   const [prevImg, setPrevImg] = useState([]); // 기존 이미지 URL들
   const [userImage, setUserImage] = useState([]); // 새로 업로드된 File들
 
   // const { goods, review } = location.state || ''; // 리뷰작성 시만
   const locationState = location.state || {};
-  const orderDetail = locationState.orderDetail || null;
+  const orderDetail = locationState.orderDetail || null; // OrderDetailResponseDTO
   const review = locationState.review || null;
 
   // form 필드 state

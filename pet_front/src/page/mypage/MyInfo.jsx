@@ -127,10 +127,6 @@ export default function MyInfo() {
                         <TbHandFingerRight />
                       </div>
                     </div>
-                    <div className="menu_">
-                      <button>배송 조회</button>
-                      <button>장바구니 담기</button>
-                    </div>
                   </div>
                 </li>
               ))}
