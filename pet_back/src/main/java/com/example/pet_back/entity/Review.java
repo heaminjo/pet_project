@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "review")
+@Table(name = "review", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"member_id", "order_detail_id"}) // 복합 유니크 제약 설정: 중복이 DB단위에서 막힘
+})
 @Builder
 @Data
 @AllArgsConstructor

@@ -35,8 +35,8 @@ public interface OrderService {
     ResponseEntity<?> regReview(CustomUserDetails userDetails, ReviewUploadDTO dto) throws IOException;
 
     // 리뷰 수정
-    ResponseEntity<?> updateReview(CustomUserDetails userDetails, //
-                                          ReviewUploadDTO reviewUploadDTO) throws IOException;
+//    ResponseEntity<?> updateReview(CustomUserDetails userDetails, //
+//                                          ReviewUploadDTO reviewUploadDTO) throws IOException;
     // 리뷰 삭제
     ResponseEntity<?> deleteReview(Long reviewId);
     

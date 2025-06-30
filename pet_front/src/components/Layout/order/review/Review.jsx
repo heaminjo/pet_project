@@ -19,7 +19,7 @@ export default function Review() {
 
   // const { goods, review } = location.state || ''; // 리뷰작성 시만
   const locationState = location.state || {};
-  const orderDetail = locationState.orderDetail || null;
+  const orderDetail = locationState.orderDetail || null; // OrderDetailResponseDTO
   const review = locationState.review || null;
 
   // form 필드 state

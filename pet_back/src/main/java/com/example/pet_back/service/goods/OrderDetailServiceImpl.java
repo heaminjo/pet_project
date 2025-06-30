@@ -381,26 +381,27 @@ public class OrderDetailServiceImpl implements OrderDetailService{
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("잘못된 요청입니다.");
     }
 
-    // <OrderList /> : 리뷰 중복등록 검증
-    // 리뷰 중복등록 검증
-    @Override
-    public ResponseEntity<?> getReviewState (CustomUserDetails userDetails,Long orderDetailId){
-        Member member = memberRepository.findById( //
-                userDetails.getMember().getId()).orElseThrow(() //
-                -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
-        OrderDetail orderDetail = orderDetailRepository.findById(orderDetailId) //
-                .orElseThrow(() -> new NullPointerException("주문상세 내역이 존재하지 않습니다."));
 
-        Review review = reviewRepository
-                .findReviews(member.getId(), orderDetailId)
-                .orElseThrow(() -> new EntityNotFoundException("리뷰 내역이 존재하지 않습니다."));
-        if(review!=null){
-            return ResponseEntity.status(HttpStatus.OK).body(review);
-        }else{
-            return ResponseEntity.status(HttpStatus.OK).body(true);
-        }
-        // return ResponseEntity.status(HttpStatus.OK).body(true);
-    }
+
+//    // <OrderList /> : 리뷰 중복등록 검증
+//    // 리뷰 중복등록 검증
+//    @Override
+//    public ResponseEntity<?> getReviewState (CustomUserDetails userDetails,Long orderDetailId){
+//        Member member = memberRepository.findById( //
+//                userDetails.getMember().getId()).orElseThrow(() //
+//                -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
+//        OrderDetail orderDetail = orderDetailRepository.findById(orderDetailId) //
+//                .orElseThrow(() -> new NullPointerException("주문상세 내역이 존재하지 않습니다."));
+//
+//        Review review = reviewRepository
+//                .findReviews(member.getId(), orderDetailId));
+//        if(review!=null){
+//            return ResponseEntity.status(HttpStatus.OK).body(review);
+//        }else{
+//            return ResponseEntity.status(HttpStatus.OK).body(true);
+//        }
+//        // return ResponseEntity.status(HttpStatus.OK).body(true);
+//    }
 
 
 
