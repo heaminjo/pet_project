@@ -88,7 +88,6 @@ export default function BoardInsertForm() {
 
     try {
       await instance.post(url, data);
-      alert("게시글이 등록되었습니다.");
       console.log("category:", category, "url:", url);
 
       // 등록 후 해당 게시판 목록으로 이동  

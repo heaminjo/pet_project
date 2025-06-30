@@ -1,5 +1,5 @@
+import { IoSearchSharp } from "react-icons/io5";
 import styled from "styled-components";
-import searchIcon from "../../images/searchmagnifierinterfacesymbol_79894.png";
 
 //카테고리 리스트/ 상품변경 함수
 //category,keyword,setState 만 있으면 사용 가능
@@ -28,7 +28,7 @@ export default function GoodsSearch({
             onChange={(e) => setKeyword(e.target.value)}
           />
           <button onClick={() => getGoodsList()}>
-            <img src={searchIcon} alt="검색 아이콘" />
+            <IoSearchSharp />
           </button>
         </div>
         <div className="category_">
@@ -88,7 +88,7 @@ const SearchComp = styled.div`
         padding-right: 5px;
         cursor: pointer;
         border-radius: 0 5px 5px 0;
-        img {
+        svg {
           width: 30px;
         }
       }

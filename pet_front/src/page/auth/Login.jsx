@@ -4,15 +4,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import MemberApi from "../../api/MemberApi";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useContext, useEffect } from "react";
-import { PetContext } from "../../App";
+import { useEffect } from "react";
 import kakao from "../../images/kakao_login_large_wide.png";
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   // 쿼리스트링에서 redirectTo 추출
   const params = new URLSearchParams(location.search);
-  const redirectTo = params.get("redirectTo") || "/"; // 기본값은 홈으로 설정
+  // const redirectTo = params.get("redirectTo") || "/"; // 기본값은 홈으로 설정
 
   const REST_API_KEY = "f61e8c06e81e7134bf354ceb1c687438";
 
@@ -110,23 +109,10 @@ export default function Login() {
     setValue("email", "");
     setValue("password", "");
     window.Kakao.Auth.authorize({
-      redirectUri: "http://localhost:3000/login", //
+      redirectUri: process.env.REACT_APP_API_BASE_URL + "/login", //
     });
   };
 
-  // const kakaoCode = () => {
-  //   const REST_API_KEY = "카카오 REST API 키";
-  //   const REDIRECT_URI = "http://localhost:3000/login";
-
-  //   const KAKAO_AUTH_URL =
-  //     `https://kauth.kakao.com/oauth/authorize?` +
-  //     `client_id=${REST_API_KEY}` +
-  //     `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}` +
-  //     `&response_type=code` +
-  //     `&prompt=login`; // 요게 핵심
-
-  //   window.location.href = KAKAO_AUTH_URL;
-  // };
   return (
     <LoginComp>
       <div className="login_inner">

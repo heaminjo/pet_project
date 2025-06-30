@@ -59,7 +59,7 @@ public class AdminServiceImpl implements AdminService {
         //만약 카카오 회원이라면 이미지 경로가 다름
         if(member.getKakaoId() == null){
             //디렉토리에서 파일 가져오기
-            String realPath = fileUploadProperties.getUrl(); // http://localhost:8080/resources/webapp
+            String realPath = fileUploadProperties.getUrl();
 
             //해당파일은 MvcConfig에 매핑되어 이미지를 매핑
             dto.setImageFile(realPath + member.getImageFile());

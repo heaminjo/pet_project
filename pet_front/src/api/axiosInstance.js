@@ -3,7 +3,11 @@ import MemberApi from "./MemberApi";
 
 //공통 설정을 갖는 axios 인스턴스
 const instance = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: process.env.REACT_APP_API_BASE_URL,
+});
+
+const url = axios.create({
+  baseURL: process.env.REACT_APP_API_BASE_URL,
 });
 
 //요청 인터셉터
@@ -35,7 +39,7 @@ instance.interceptors.response.use(
     const originalRequest = error.config;
 
     //토큰이 만료되었을 경우
-    if (error.response.status == 401 && !originalRequest._retry) {
+    if (error.response?.status == 401 && !originalRequest._retry) {
       //계속 401 에러가 날경우 무한 요청 에러를 방지지
       originalRequest._retry = true;
 

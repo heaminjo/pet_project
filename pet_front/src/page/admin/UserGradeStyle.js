@@ -69,10 +69,8 @@ const UserGradeComp = styled.div`
       tr {
         height: 50px;
         th {
+          background-color: rgb(234, 239, 239);
           height: 40px;
-          background-color: #de9d91;
-          color: #fff;
-          text-shadow: 1px 1px 1px #ccc;
         }
         td {
           border-bottom: 1px solid #ccc;
@@ -113,6 +111,9 @@ const UserGradeComp = styled.div`
       }
       li:hover {
         font-size: 15px;
+      }
+      .active {
+        border: 2px solid #555;
       }
     }
     table {

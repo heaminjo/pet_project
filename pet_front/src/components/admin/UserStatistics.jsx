@@ -1,7 +1,4 @@
-import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import PieComp from "../util/PieComp";
-import styled from "styled-components";
-import { useEffect } from "react";
 import AreaComp from "../util/AreaComp";
 import StatisticsComp from "./UserStatisticsStyle";
 

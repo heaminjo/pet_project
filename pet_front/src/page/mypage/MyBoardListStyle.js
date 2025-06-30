@@ -60,7 +60,11 @@ const UserListComp = styled.div`
         width: 100%;
         border-collapse: collapse;
         th {
+<<<<<<< HEAD
           background-color: rgb(206, 200, 200);
+=======
+          background-color: #847c7a;
+>>>>>>> main
           color: rgb(52, 45, 1);
           padding: 5px 0;
           text-align: start;
