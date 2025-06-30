@@ -11,11 +11,11 @@ export default function Upgrade() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
   const grades = [
-    { name: "새싹회원", color: "#eaefef" },
-    { name: "초급회원", color: "#ffe99a" },
-    { name: "중급회원", color: "#ffd586" },
-    { name: "상급회원", color: "#ffaaaa" },
-    { name: "프리미엄 회원", color: "#ff9898" },
+    { name: "새싹회원", color: "#f2fdff" },
+    { name: "초급회원", color: "#cfe7f0" },
+    { name: "중급회원", color: "#f0d5ce" },
+    { name: "상급회원", color: "#ecbfb1" },
+    { name: "프리미엄 회원", color: "#de9d91" },
   ];
   const grade = grades?.find((g) => g.name === location.state?.nextGrade);
 

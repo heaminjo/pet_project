@@ -1,8 +1,7 @@
 import React from "react";
 import CommentFormStyle from "./CommentFormStyle";
 
-function CommentForm({ comment, setComment, onAddComment}) {
-  
+function CommentForm({ comment, setComment, onAddComment }) {
   // 폼 제출 시 onAddComment 함수를 호출하여 댓글 추가
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -19,19 +18,17 @@ function CommentForm({ comment, setComment, onAddComment}) {
             type="text"
             value={comment}
             onChange={(e) => setComment(e.target.value)}
-            onKeyDown={e => {if (e.key === "Enter") onAddComment(); }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") onAddComment();
+            }}
             placeholder="댓글을 입력하세요"
-            maxLength={ 200 }>
-          </input>
+            maxLength={200}
+          ></input>
           <button type="submit">등록</button>
         </form>
       </div>
     </CommentFormStyle>
-  )
-
-
-
-
+  );
 }
 
 export default CommentForm;

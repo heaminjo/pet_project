@@ -81,6 +81,12 @@ public class KakaoService {
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> Mono.error(new RuntimeException("Invalid Parameter")))
                 .onStatus(HttpStatusCode::is5xxServerError, clientResponse -> Mono.error(new RuntimeException("Internal Server Error")))
+                .onStatus(HttpStatusCode::is4xxClientError, clientResponse ->
+                        clientResponse.bodyToMono(String.class).flatMap(errorBody -> {
+                            log.error("Kakao 400 error: {}", errorBody);
+                            return Mono.error(new RuntimeException("Invalid Parameter: " + errorBody));
+                        })
+                )
                 .bodyToMono(KakaoTokenResponseDTO.class)//DTO에 받아온 JSON형태의 토큰을 매핑 시켜준다.
                 .block(); //비동기 호출 결과를 동기적으로 대기한다.
 
