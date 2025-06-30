@@ -23,7 +23,7 @@ import java.util.Map;
 @RequiredArgsConstructor // private final만
 @RequestMapping(value = "/order")
 @RestController
-@CrossOrigin(origins = "${cors.allowed.origins}")
+@CrossOrigin(origins = "http://localhost:3000")
 public class OrderController {
 
     private final MemberService memberService;

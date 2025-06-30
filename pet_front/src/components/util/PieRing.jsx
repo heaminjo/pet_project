@@ -1,4 +1,5 @@
-import { PieChart, Pie, Cell } from "recharts";
+import React, { PureComponent } from "react";
+import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
 
 //  onMouseEnter={this.onPieEnter} 마우스 올라갈 시 실행행
 export default function PieRing({ data, COLORS }) {

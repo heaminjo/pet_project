@@ -70,9 +70,8 @@ const MyInfoComp = styled.div`
       }
       .user_grade {
         width: 250px;
-        background-color: rgb(63, 63, 63);
+        border: 1px solid rgb(240, 240, 240);
         box-shadow: 3px 3px 3px #ccc;
-        background-color: #333;
         .grade_image {
           padding-top: 20px;
           width: 100%;
@@ -82,13 +81,11 @@ const MyInfoComp = styled.div`
           align-items: center;
           svg {
             font-size: 100px;
-            text-shadow: 1px 1px 1px #000;
           }
         }
         .grade_text {
           padding: 10px;
           text-align: center;
-          color: #fff;
           .grade_name {
             font-size: 20px;
             font-weight: bold;

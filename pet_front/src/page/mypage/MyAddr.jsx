@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
-import MemberApi from "../../api/MemberApi";
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import AddressInsert from "../../components/mypage/AddressInsert";
-import Modal from "../../modal/Modal";
+import { useEffect, useState } from 'react';
+import MemberApi from '../../api/MemberApi';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import AddressInsert from '../../components/mypage/AddressInsert';
+import Modal from '../../modal/Modal';
 
 export default function MyAddr() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 
   const navigate = useNavigate();
   const [isInsert, setIsInsert] = useState(false); //추가 창
@@ -28,7 +28,7 @@ export default function MyAddr() {
   //배송지 추가 버튼 클릭
   const clickInsert = () => {
     if (addrList.length == 5) {
-      alert("배송지는 최대 5개까지 저장 가능합니다.");
+      alert('배송지는 최대 5개까지 저장 가능합니다.');
     } else {
       setIsInsert(true);
     }
@@ -42,8 +42,9 @@ export default function MyAddr() {
 
   //배송지 삭제
   const addressDelete = async () => {
-    console.log("삭제" + del);
+    console.log('삭제' + del);
     const result = await MemberApi.addressDelete(del);
+    alert(result.message);
     setModal(false);
   };
 
@@ -56,10 +57,10 @@ export default function MyAddr() {
   };
   return (
     <AddrComp>
-      <div className="addr_inner">
+      <div className='addr_inner'>
         {isUpdate && (
-          <div className="insert_modal">
-            <div className="modal_head">
+          <div className='insert_modal'>
+            <div className='modal_head'>
               <h4>배송지 수정</h4>
               <button onClick={() => setIsUpdate(false)}>❌</button>
             </div>
@@ -67,8 +68,8 @@ export default function MyAddr() {
           </div>
         )}
         {isInsert && (
-          <div className="insert_modal">
-            <div className="modal_head">
+          <div className='insert_modal'>
+            <div className='modal_head'>
               <h4>배송지 추가</h4>
               <button onClick={() => setIsInsert(false)}>❌</button>
             </div>
@@ -77,15 +78,11 @@ export default function MyAddr() {
         )}
 
         {modal && (
-          <div className="modal">
-            <Modal
-              content="정말 삭제하시겠습니까?"
-              setModal={setModal}
-              clickEvt={addressDelete}
-            />
+          <div className='modal'>
+            <Modal content='정말 삭제하시겠습니까?' setModal={setModal} clickEvt={addressDelete} />
           </div>
         )}
-        <div className="addr_head">
+        <div className='addr_head'>
           <h2>
             배송지 관리 <span>({addrList.length} / 5)</span>
           </h2>
@@ -93,34 +90,26 @@ export default function MyAddr() {
           <button onClick={() => clickInsert()}>배송지 추가</button>
         </div>
         {addrList.length > 0 && (
-          <ul className="addr">
+          <ul className='addr'>
             {addrList.map((a, index) => (
               <li>
-                <div className="addr_item">
-                  <div className="addr1">
-                    {index == 0 ? (
-                      <p style={{ fontWeight: "bold" }}>{a.addrType}</p>
-                    ) : (
-                      <p>{a.addrType}</p>
-                    )}
+                <div className='addr_item'>
+                  <div className='addr1'>
+                    {index == 0 ? <p style={{ fontWeight: 'bold' }}>{a.addrType}</p> : <p>{a.addrType}</p>}
                     <span>{a.addressName}</span>
                   </div>
 
-                  <div className="addr2">
+                  <div className='addr2'>
                     <p>[우편번호]{a.addressZip}</p>
                     <span>
                       {a.address1} {a.address2}
                     </span>
                   </div>
                 </div>
-                <div className="addr_btn">
+                <div className='addr_btn'>
                   <button onClick={() => clickUpdate(a.addressId)}>수정</button>
                   {/* 기본배송지는 삭제 불가능 */}
-                  {a.addrType == "일반배송지" && (
-                    <button onClick={() => clickDelete(a.addressId)}>
-                      삭제
-                    </button>
-                  )}
+                  {a.addrType == '일반배송지' && <button onClick={() => clickDelete(a.addressId)}>삭제</button>}
                 </div>
               </li>
             ))}

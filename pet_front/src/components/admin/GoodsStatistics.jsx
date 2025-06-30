@@ -3,7 +3,6 @@ import styled from "styled-components";
 import AdminApi from "../../api/AdminApi";
 import GoodsApi from "../../api/GoodsApi";
 import { useNavigate } from "react-router-dom";
-import React from "react";
 
 export default function GoodsStatistics() {
   const [goods, setGoods] = useState([]);
@@ -43,27 +42,17 @@ export default function GoodsStatistics() {
                   <th>판매 수량</th>
                   <th>매출액</th>
                 </tr>
-                {goodsData.length > 0 ? (
-                  <React.Fragment>
-                    {goodsData.map((g, index) => (
-                      <tr
-                        className={index == 0 && "top"}
-                        onClick={() => goodsDetail(g.goodsId)}
-                      >
-                        <td>{index + 1}</td>
-                        {g.goodsName}
-                        <td>{g.totalPurchaseCount}</td>
-                        <td>{g.totalPurchasePrice?.toLocaleString()}</td>
-                      </tr>
-                    ))}
-                  </React.Fragment>
-                ) : (
-                  <React.Fragment>
-                    <tr>
-                      <td colSpan={4}>등록된 상품이 1건도 없습니다.</td>
-                    </tr>
-                  </React.Fragment>
-                )}
+                {goodsData.map((g, index) => (
+                  <tr
+                    className={index == 0 && "top"}
+                    onClick={() => goodsDetail(g.goodsId)}
+                  >
+                    <td>{index + 1}</td>
+                    {g.goodsName}
+                    <td>{g.totalPurchaseCount}</td>
+                    <td>{g.totalPurchasePrice?.toLocaleString()}</td>
+                  </tr>
+                ))}
               </table>
             </div>
             {goods.length !== 0 ? (

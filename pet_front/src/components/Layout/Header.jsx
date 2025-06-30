@@ -1,11 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import HeaderComp from "./Headerstyle";
 import Nav from "./Nav";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { PetContext } from "../../App";
 import MemberApi from "../../api/MemberApi";
 
 export default function Header() {
   const navigate = useNavigate();
+  const [role, setRole] = useState(sessionStorage.getItem("role"));
 
   //로그아웃 클릭
   const clickLogout = async () => {

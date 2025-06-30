@@ -1,6 +1,7 @@
 import styled from "styled-components";
-
-import { useEffect } from "react";
+import backImage from "../../images/1749788315496.jpg";
+import { useContext, useEffect } from "react";
+import { PetContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 //등급 안내 페이지
 export default function Grade() {
@@ -18,7 +19,7 @@ export default function Grade() {
     }
   };
   return (
-    <GradeComp>
+    <GradeComp backImage={backImage}>
       <div className="grade_inner">
         <div className="grade_container">
           <div className="grade_intro">

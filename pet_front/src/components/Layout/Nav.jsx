@@ -1,5 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import NavComp from "./NavStyle";
+import { PetContext } from "../../App";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
 import { BiSolidShoppingBag } from "react-icons/bi";
 import { MdGrade } from "react-icons/md";
 import { LuClipboardPenLine } from "react-icons/lu";

@@ -26,7 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/user")
 @PreAuthorize("hasRole('USER')")
-@CrossOrigin(origins = "${cors.allowed.origins}", allowedHeaders = "*", allowCredentials = "true")
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", allowCredentials = "true")
 public class MemberController {
     private final MemberService memberService;
     private final ImageService imageService;

@@ -1,8 +1,8 @@
 import styled from "styled-components";
+import searchIcon from "../../images/free-icon-search-149852.png";
 import { useEffect, useState } from "react";
 import PageNumber from "./PageNumber";
 import GoodsApi from "../../api/GoodsApi";
-import { IoSearchSharp } from "react-icons/io5";
 
 export default function GoodsSelectList({ selectEvt }) {
   const [categoryList, setCategoryList] = useState([]); //카테고리 리스트
@@ -94,7 +94,7 @@ export default function GoodsSelectList({ selectEvt }) {
             onChange={(e) => setKeyword(e.target.value)}
           />
           <button onClick={() => getGoodsList()}>
-            <IoSearchSharp />
+            <img src={searchIcon} alt="검색 아이콘" />
           </button>
         </div>
         <div className="goods_list">
@@ -179,7 +179,7 @@ const Comp = styled.div`
         border-bottom: 2px solid #000;
         background-color: #fff;
         cursor: pointer;
-        svg {
+        img {
           width: 100%;
           height: 100%;
         }

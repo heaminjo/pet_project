@@ -130,6 +130,7 @@ export default function BoardEditForm() {
   
     try {
       await instance.put(`/board/updateboard/${board_id}`, data);
+      alert("게시글이 수정되었습니다.");
       navigate(`/boardList/${category}`); 
     } catch (err) {
       alert("게시글 수정에 실패했습니다.");

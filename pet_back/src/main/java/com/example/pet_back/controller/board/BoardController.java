@@ -19,7 +19,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/board")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "${cors.allowed.origins}")
+@CrossOrigin(origins = "http://localhost:3000")
 public class BoardController {
     //d
     private final BoardService boardService;

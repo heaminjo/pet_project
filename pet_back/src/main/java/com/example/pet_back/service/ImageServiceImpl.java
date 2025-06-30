@@ -30,7 +30,8 @@ public class ImageServiceImpl implements ImageService {
     private final GoodsBannerRepository goodsBannerRepository;
     //물리적 저장 위치 경로
     public String getRealPath() {
-        log.info("realpath 실행");
+        //반환
+        // C:/devv/pet_project/pet_back/src/main/resources/webapp/userImages/
         String realPath = "C:"
                 + File.separator + "devv"
                 + File.separator + "pet_project"

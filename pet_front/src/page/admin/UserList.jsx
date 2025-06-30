@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import AdminMenu from "../../components/admin/AdminMenu";
 import UserListComp from "./UserListStyle";
 import AdminApi from "../../api/AdminApi";
 import PageNumber from "../../components/util/PageNumber";

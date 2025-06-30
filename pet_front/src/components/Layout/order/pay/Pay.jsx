@@ -1,24 +1,24 @@
-import PayComp from "./PayStyle";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import Popup from "./Popup";
-import OrderApi from "../../../../api/OrderApi";
-import MemberApi from "../../../../api/MemberApi";
+import PayComp from './PayStyle';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import Popup from './Popup';
+import OrderApi from '../../../../api/OrderApi';
+import MemberApi from '../../../../api/MemberApi';
 
 export default function Pay() {
   const location = useLocation();
   const navigate = useNavigate();
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상태변수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  const seller = process.env.PUBLIC_URL + "/images/avatar.png";
+  const seller = process.env.PUBLIC_URL + '/images/avatar.png';
   const [goods, setGoods] = useState([]);
   const [payment, setPayment] = useState(); // 결제수단
 
   // 회원정보 & 주소정보
   const [member, setMember] = useState({});
-  const [addr, setAddr] = useState("");
-  const [addrId, setAddrId] = useState("");
-  const [addrName, setAddrName] = useState("");
-  const [addrType, setAddrType] = useState("");
+  const [addr, setAddr] = useState('');
+  const [addrId, setAddrId] = useState('');
+  const [addrName, setAddrName] = useState('');
+  const [addrType, setAddrType] = useState('');
 
   // 금액 관련
   const [goodsPrice, setGoodsPrice] = useState(0);
@@ -29,20 +29,16 @@ export default function Pay() {
 
   // 수량
   const rawGoods = location.state?.goods;
-  const goodsList = Array.isArray(rawGoods)
-    ? rawGoods
-    : rawGoods
-    ? [rawGoods]
-    : []; // 단일 상품이 오더라도 강제로 배열로 감싸기
+  const goodsList = Array.isArray(rawGoods) ? rawGoods : rawGoods ? [rawGoods] : []; // 단일 상품이 오더라도 강제로 배열로 감싸기
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 팝 업 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // ~~~~~~~~~~~~~~~~~~~ 모달 사용 (연락처 변경) ~~~~~~~~~~~~~~~~~~~~~~~~~~
   const [isPhoneOpen, setIsPhoneOpen] = useState(false);
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState('');
 
   // 연락처 유효성 검사
   const handlePhoneChange = (e) => {
-    const value = e.target.value.replace(/[^0-9]/g, ""); // 숫자만 허용
+    const value = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 허용
     if (value.length <= 11) {
       setPhone(value);
     }
@@ -50,10 +46,10 @@ export default function Pay() {
 
   // 팝업 Open / Close
   const handlePhoneSave = () => {
-    console.log("수정된 연락처:", phone);
+    console.log('수정된 연락처:', phone);
     const phoneRegex = /^010\d{8}$/;
     if (!phoneRegex.test(phone)) {
-      alert("유효한 연락처를 입력해주세요. (예: 01012345678)");
+      alert('유효한 연락처를 입력해주세요. (예: 01012345678)');
       return;
     }
     setIsPhoneOpen(false); // 팝업창 닫음
@@ -64,12 +60,7 @@ export default function Pay() {
     return (
       <Popup isOpen={isPhoneOpen} onClose={() => setIsPhoneOpen(false)}>
         <h3>연락처 변경</h3>
-        <textarea
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          rows={4}
-          style={{ width: "100%" }}
-        />
+        <textarea value={phone} onChange={(e) => setPhone(e.target.value)} rows={4} style={{ width: '100%' }} />
         <br />
         <button onClick={handlePhoneSave}>저장</button>
       </Popup>
@@ -78,11 +69,11 @@ export default function Pay() {
 
   // ~~~~~~~~~~~~~~~~~~~~~~ 모달 사용 (요청메시지 변경) ~~~~~~~~~~~~~~~~~~~~~~~
   const [isReqOpen, setIsReqOpen] = useState(false); // 배송요청사항 Open / Close
-  const [note, setNote] = useState(""); // 배송요청 메시지
+  const [note, setNote] = useState(''); // 배송요청 메시지
 
   // 팝업 Open / Close
   const handleReqSave = () => {
-    console.log("요청사항 저장:", note);
+    console.log('요청사항 저장:', note);
     setIsReqOpen(false); // 팝업창 닫음
   };
 
@@ -91,12 +82,7 @@ export default function Pay() {
     return (
       <Popup isOpen={isReqOpen} onClose={() => setIsReqOpen(false)}>
         <h3>요청사항 입력</h3>
-        <textarea
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
-          rows={4}
-          style={{ width: "100%" }}
-        />
+        <textarea value={note} onChange={(e) => setNote(e.target.value)} rows={4} style={{ width: '100%' }} />
         <br />
         <button onClick={handleReqSave}>저장</button>
       </Popup>
@@ -116,7 +102,7 @@ export default function Pay() {
 
   // 팝업 Open / Close
   const handleDestSave = () => {
-    console.log("요청사항 저장:", note);
+    console.log('요청사항 저장:', note);
     setIsDestOpen(false); // 팝업창 닫음
   };
 
@@ -135,20 +121,16 @@ export default function Pay() {
         <h3>배송지 변경 창</h3>
         <br />
         {addrList.length > 0 && (
-          <ul className="addr">
+          <ul className='addr'>
             {addrList.map((a, index) => (
               <li>
-                <div className="addr_item">
-                  <div className="addr1">
-                    {index == 0 ? (
-                      <p style={{ fontWeight: "bold" }}>{a.addrType}</p>
-                    ) : (
-                      <p>{a.addrType}</p>
-                    )}
+                <div className='addr_item'>
+                  <div className='addr1'>
+                    {index == 0 ? <p style={{ fontWeight: 'bold' }}>{a.addrType}</p> : <p>{a.addrType}</p>}
                     <span>{a.addressName}</span>
                   </div>
 
-                  <div className="addr2">
+                  <div className='addr2'>
                     <p>[우편번호]{a.addressZip}</p>
                     <span>
                       {a.address1} {a.address2}
@@ -178,13 +160,12 @@ export default function Pay() {
     // alert("pay 동작테스트");
     OrderApi.pay(payload) // 여기가 호출
       .then((response) => {
-        alert("결제가 성공적으로 마무리 되었습니다.");
-
+        alert('결제가 성공적으로 마무리 되었습니다.');
         conditionCheck();
-        navigate("/user/mypage/orderlist");
+        navigate('/user/mypage/orderlist');
       })
       .catch((err) => {
-        // alert('OrderApi.pay() 에러');
+        alert('OrderApi.pay() 에러');
       });
 
     //주문이 성공한 이후에 등급 업그레이드 조건이 충족 되었는지 검사하는 API 호출
@@ -196,7 +177,7 @@ export default function Pay() {
 
     //만약 업그레이드 조건이 중족됐다면 이동
     if (result.success) {
-      navigate("/upgrade", { state: { nextGrade: result.data } });
+      navigate('/upgrade', { state: { nextGrade: result.data } });
     }
   };
 
@@ -220,7 +201,7 @@ export default function Pay() {
 
   // 기본정보
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     // 사용자 정보
     MemberApi.detail()
       .then((response) => {
@@ -234,15 +215,11 @@ export default function Pay() {
       .then((response) => {
         if (response && response.addressId) {
           setAddrId(response.addressId);
-
-          setAddr(response.address1 + " " + response.address2);
+          setAddr(response.address1 + ' ' + response.address2);
           // alert(`배송지주소: ${response.addressName}`);
-
           setAddrName(response.addressName);
           setAddrType(response.addrType);
-          console.log(
-            `최초호출 OrderApi.findAddress() 결과 response.addressName = ${response.addressName}`
-          );
+          console.log(`최초호출 OrderApi.findAddress() 결과 response.addressName = ${response.addressName}`);
         }
       })
       .catch((err) => {
@@ -253,7 +230,7 @@ export default function Pay() {
     if (goodsList.length > 0) {
       setGoods(goodsList);
     }
-    console.log("goodsList:", goodsList);
+    console.log('goodsList:', goodsList);
   }, []);
 
   // 비동기 문제 : member의 grade 불러온 후 그에 따른 할인율 적용
@@ -268,16 +245,18 @@ export default function Pay() {
         setFinalPrice(response.finalPrice);
         setGrade(response.grade);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        alert('OrderApi.pay() 에러');
+      });
   }, [member, goods]);
 
   return (
     <PayComp>
-      <div className="pay-container">
+      <div className='pay-container'>
         <section>
-          <div className="title">구매자 정보</div>
+          <div className='title'>구매자 정보</div>
           <hr />
-          <table className="payment">
+          <table className='payment'>
             <tbody>
               <tr>
                 <th>이름</th>
@@ -296,7 +275,7 @@ export default function Pay() {
         </section>
         <br />
         <section>
-          <div className="title">배송지 정보</div>
+          <div className='title'>배송지 정보</div>
           <hr />
           <table>
             <tbody>
@@ -308,45 +287,33 @@ export default function Pay() {
                 <th>배송지</th>
                 <td>
                   <b>{addrType}</b> &nbsp;&nbsp;&nbsp;
-                  <button
-                    onClick={() => setIsDestOpen(true)}
-                    className="deliver-btn"
-                  >
+                  <button onClick={() => setIsDestOpen(true)} className='deliver-btn'>
                     배송지 수정
                   </button>
                   <br />
                   {addr}
                   {isDestOpen && (
-                    <Popup
-                      isOpen={isDestOpen}
-                      onClose={() => setIsDestOpen(false)}
-                    >
+                    <Popup isOpen={isDestOpen} onClose={() => setIsDestOpen(false)}>
                       <h3>배송지 변경 창</h3>
                       <br />
                       {addrList.length > 0 && (
-                        <ul className="addr">
+                        <ul className='addr'>
                           {addrList.map((a, index) => (
                             <li>
-                              <div className="addr_item">
-                                <div className="addr1">
-                                  {index == 0 ? (
-                                    <p style={{ fontWeight: "bold" }}>
-                                      {a.addrType}
-                                    </p>
-                                  ) : (
-                                    <p>{a.addrType}</p>
-                                  )}
+                              <div className='addr_item'>
+                                <div className='addr1'>
+                                  {index == 0 ? <p style={{ fontWeight: 'bold' }}>{a.addrType}</p> : <p>{a.addrType}</p>}
                                   <span>{a.addressName}</span>
                                 </div>
 
-                                <div className="addr2">
+                                <div className='addr2'>
                                   <p>[우편번호]{a.addressZip}</p>
                                   <span>
                                     {a.address1} {a.address2}
                                   </span>
                                 </div>
                               </div>
-                              <div className="addr_btn">
+                              <div className='addr_btn'>
                                 <button
                                   onClick={() => {
                                     setAddrId(a.addressId);
@@ -354,13 +321,9 @@ export default function Pay() {
                                     setAddr(`${a.address1} ${a.address2}`);
                                     setAddrType(a.addrType);
                                     // 새로고침 방어
-                                    sessionStorage.setItem(
-                                      "selectedAddress",
-                                      JSON.stringify(a)
-                                    );
+                                    sessionStorage.setItem('selectedAddress', JSON.stringify(a));
                                     setIsDestOpen(false);
-                                  }}
-                                >
+                                  }}>
                                   선택
                                 </button>
                               </div>
@@ -378,10 +341,7 @@ export default function Pay() {
                 <td>
                   {phone || member.phone}
                   &nbsp;&nbsp;
-                  <button
-                    onClick={() => setIsPhoneOpen(true)}
-                    className="contact-btn"
-                  >
+                  <button onClick={() => setIsPhoneOpen(true)} className='contact-btn'>
                     연락처수정
                   </button>
                   {isPhoneOpen && handleOpenPopupPhone()}
@@ -390,12 +350,9 @@ export default function Pay() {
               <tr>
                 <th>요청메시지</th>
                 <td>
-                  {note || "배송 요청사항을 입력해주세요."}
+                  {note || '배송 요청사항을 입력해주세요.'}
                   &nbsp;&nbsp;
-                  <button
-                    onClick={() => setIsReqOpen(true)}
-                    className="message-btn"
-                  >
+                  <button onClick={() => setIsReqOpen(true)} className='message-btn'>
                     수정
                   </button>
                   {isReqOpen && handleOpenPopupReq()}
@@ -406,23 +363,16 @@ export default function Pay() {
         </section>
         <br />
         <section>
-          <div className="title">상품 정보</div>
+          <div className='title'>상품 정보</div>
           <hr />
 
-          <div className="goods">
+          <div className='goods'>
             {goods.map((item, index) => (
-              <div className="prod" key={index}>
-                <div className="prodleft">
-                  <img
-                    src={`${item.imageFile}`}
-                    alt={item.goodsName}
-                    className="prodimg"
-                    onClick={() =>
-                      navigate("/goods/order", { state: { goods: item } })
-                    }
-                  />
+              <div className='prod' key={index}>
+                <div className='prodleft'>
+                  <img src={`${item.imageFile}`} alt={item.goodsName} className='prodimg' onClick={() => navigate('/goods/order', { state: { goods: item } })} />
                 </div>
-                <div className="prodright">
+                <div className='prodright'>
                   <div>
                     <b>상품명</b>&nbsp;&nbsp;{item.goodsName}
                   </div>
@@ -438,8 +388,7 @@ export default function Pay() {
                   </div>
                   <div>
                     <b>판매원</b>&nbsp;&nbsp;
-                    <img src={seller} className="seller" alt="판매원" />{" "}
-                    몽냥마켓
+                    <img src={seller} className='seller' alt='판매원' /> 몽냥마켓
                   </div>
                 </div>
               </div>
@@ -448,7 +397,7 @@ export default function Pay() {
         </section>
         <br />
         <section>
-          <div className="title">결제 정보</div>
+          <div className='title'>결제 정보</div>
           <hr />
           <table>
             <tbody>
@@ -466,15 +415,12 @@ export default function Pay() {
               </tr>
               <tr>
                 <th>할인금액</th>
-                {grade === "새싹회원" ? (
+                {grade === '새싹회원' ? (
                   <td></td>
                 ) : (
-                  <td style={{ color: "red" }}>
+                  <td style={{ color: 'red' }}>
                     <b>- {disCount} 원</b>&nbsp;&nbsp;&nbsp;&nbsp;
-                    <span style={{ fontSize: "10px" }}>
-                      {" "}
-                      회원님의 등급은 {grade} 입니다.{" "}
-                    </span>
+                    <span style={{ fontSize: '10px' }}> 회원님의 등급은 {grade} 입니다. </span>
                   </td>
                 )}
               </tr>
@@ -488,89 +434,42 @@ export default function Pay() {
                 <th>결제방법</th>
                 <td>
                   <label>
-                    <input
-                      type="radio"
-                      name="payment"
-                      value="ACCOUNT"
-                      checked={payment === "ACCOUNT"}
-                      onChange={handlePaymentChange}
-                    />{" "}
-                    계좌이체 <br />
+                    <input type='radio' name='payment' value='ACCOUNT' checked={payment === 'ACCOUNT'} onChange={handlePaymentChange} /> 계좌이체 <br />
                   </label>
                   <label>
-                    <input
-                      type="radio"
-                      name="payment"
-                      value="POINT"
-                      checked={payment === "POINT"}
-                      onChange={handlePaymentChange}
-                    />{" "}
-                    포인트결제 &nbsp; &nbsp; &nbsp;
-                    <span className="badge">최대 캐시적립</span> <br />
+                    <input type='radio' name='payment' value='POINT' checked={payment === 'POINT'} onChange={handlePaymentChange} /> 포인트결제 &nbsp; &nbsp; &nbsp;
+                    <span className='badge'>최대 캐시적립</span> <br />
                   </label>
                   <label>
-                    <input
-                      type="radio"
-                      name="payment"
-                      value="CARD"
-                      checked={payment === "CARD"}
-                      onChange={handlePaymentChange}
-                    />{" "}
-                    신용/체크카드 <br />
+                    <input type='radio' name='payment' value='CARD' checked={payment === 'CARD'} onChange={handlePaymentChange} /> 신용/체크카드 <br />
                   </label>
                   <label>
-                    <input
-                      type="radio"
-                      name="payment"
-                      value="CORPCARD"
-                      checked={payment === "CORPCARD"}
-                      onChange={handlePaymentChange}
-                    />{" "}
-                    법인카드 <br />
+                    <input type='radio' name='payment' value='CORPCARD' checked={payment === 'CORPCARD'} onChange={handlePaymentChange} /> 법인카드 <br />
                   </label>
                   <label>
-                    <input
-                      type="radio"
-                      name="payment"
-                      value="PHONE"
-                      checked={payment === "PHONE"}
-                      onChange={handlePaymentChange}
-                    />{" "}
-                    휴대폰 <br />
+                    <input type='radio' name='payment' value='PHONE' checked={payment === 'PHONE'} onChange={handlePaymentChange} /> 휴대폰 <br />
                   </label>
                   <label>
-                    <input
-                      type="radio"
-                      name="payment"
-                      value="NOACCOUNT"
-                      checked={payment === "NOACCOUNT"}
-                      onChange={handlePaymentChange}
-                    />{" "}
-                    무통장입금(상세조회) <br />
+                    <input type='radio' name='payment' value='NOACCOUNT' checked={payment === 'NOACCOUNT'} onChange={handlePaymentChange} /> 무통장입금(상세조회) <br />
                   </label>
                 </td>
-              </tr>
-              <tr>
-                <th>연락처</th>
-                <td>{member.phone}</td>
               </tr>
             </tbody>
           </table>
         </section>
         <section>
           <button
-            className="pay"
+            className='pay'
             onClick={() => {
               if (!payment) {
-                alert("결제 수단을 선택해 주세요!");
+                alert('결제 수단을 선택해 주세요!');
                 return;
               }
               pay(goods, payment, addrName, note, addrId, phone);
-            }}
-          >
+            }}>
             결제하기
           </button>
-          &nbsp;&nbsp; <button className="cancel">메인 페이지로</button>
+          &nbsp;&nbsp; <button className='cancel'>메인 페이지로</button>
         </section>
       </div>
     </PayComp>

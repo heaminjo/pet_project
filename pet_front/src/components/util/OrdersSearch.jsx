@@ -1,18 +1,12 @@
-import styled from "styled-components";
+import styled from 'styled-components';
+import searchIcon from '../../images/searchmagnifierinterfacesymbol_79894.png';
 
 //카테고리 리스트/ 상품변경 함수
 //category,keyword,setState 만 있으면 사용 가능
-export default function OrdersSearch({
-  setSort,
-  categoryList,
-  getOrderList,
-  setCategory,
-  setKeyword,
-  setState,
-}) {
+export default function OrdersSearch({ setSort, categoryList, getOrderList, setCategory, setKeyword, setState }) {
   //검색버튼 엔터
   const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       //검색
       getOrderList();
     }
@@ -20,37 +14,29 @@ export default function OrdersSearch({
 
   return (
     <SearchComp>
-      <div className="search_container">
+      <div className='search_container'>
         {/* <div className='keyword_'>
           <input type='text' onKeyDown={handleKeyDown} onChange={(e) => setKeyword(e.target.value)} />
           <button onClick={() => getOrderList()}>
             <img src={searchIcon} alt='검색 아이콘' />
           </button>
         </div> */}
-        <div className="sort_">
-          <label htmlFor="sort">기간</label>
-          <select
-            name="sort"
-            id="sort"
-            onChange={(e) => setSort(e.target.value)}
-          >
-            <option value="desc">최신순</option>
-            <option value="asc">오래된 순</option>
+        <div className='sort_'>
+          <label htmlFor='sort'>기간</label>
+          <select name='sort' id='sort' onChange={(e) => setSort(e.target.value)}>
+            <option value='desc'>최신순</option>
+            <option value='asc'>오래된 순</option>
           </select>
         </div>
-        <div className="state_">
-          <label htmlFor="state">주문 상태</label>
-          <select
-            name="state"
-            id="state"
-            onChange={(e) => setState(e.target.value)}
-          >
-            <option value="all">전체</option>
-            <option value="BEFOREPAY">결제전</option>
-            <option value="AFTERPAY">결제완료</option>
-            <option value="READY">상품준비중</option>
-            <option value="DELIVERY">배송중</option>
-            <option value="END">배송완료</option>
+        <div className='state_'>
+          <label htmlFor='state'>주문 상태</label>
+          <select name='state' id='state' onChange={(e) => setState(e.target.value)}>
+            <option value='all'>전체</option>
+            <option value='BEFOREPAY'>결제전</option>
+            <option value='AFTERPAY'>결제완료</option>
+            <option value='READY'>상품준비중</option>
+            <option value='DELIVERY'>배송중</option>
+            <option value='END'>배송완료</option>
           </select>
         </div>
       </div>
