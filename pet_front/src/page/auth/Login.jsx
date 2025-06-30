@@ -110,7 +110,7 @@ export default function Login() {
     setValue("email", "");
     setValue("password", "");
     window.Kakao.Auth.authorize({
-      redirectUri: "http://localhost:3000/login", //
+      redirectUri: process.env.REACT_APP_KAKAO_REDIRECT_URI, //
     });
   };
 

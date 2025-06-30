@@ -31,16 +31,10 @@ public class ImageServiceImpl implements ImageService {
     //물리적 저장 위치 경로
     public String getRealPath() {
         log.info("realpath 실행");
-        String realPath = "C:"
-                + File.separator + "devv"
-                + File.separator + "pet_project"
-                + File.separator + "pet_back"
-                + File.separator + "src"
-                + File.separator + "main"
-                + File.separator + "resources"
-                + File.separator + "webapp"
-                + File.separator + "userImages"
-                + File.separator;
+
+        String realPath = "/var/www/html/images/upload/";
+        System.out.println("realPath=> "+realPath);
+        log.info("realPath=> "+realPath);
 
         return realPath;
     }

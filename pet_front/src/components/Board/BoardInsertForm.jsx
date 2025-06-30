@@ -56,9 +56,10 @@ export default function BoardInsertForm() {
   const memberState = async () => {
     const member = await MemberApi.detail();
     console.log(member);
-    if (member.state == "정지회원");
-    alert("정지된 회원은 게시글을 작성할 수 없습니다.");
-    navigate(-1);
+    if (member.state == "정지회원") {
+      alert("정지된 회원은 게시글을 작성할 수 없습니다.");
+      navigate(-1);
+    }
   };
 
   useEffect(() => {

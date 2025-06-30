@@ -33,14 +33,14 @@ public interface CartRepository extends JpaRepository<Cart, CartId> {
     // 값을 누적시키는 쿼리 (nativeQuery=true 경우만 가능.) : demo/repository/TestKeyRepository 부분 참고
     @Transactional
     @Modifying
-    @Query(nativeQuery = true, value = "INSERT INTO Cart VALUES(" +
+    @Query(nativeQuery = true, value = "INSERT INTO cart VALUES(" +
             ":member_id, :goods_id, :quantity, :reg_date) ON DUPLICATE KEY UPDATE quantity=quantity+:quantity")
     int addToCart(@Param("member_id") Long member_id, @Param("goods_id") Long goods_id, @Param("quantity") int quantity, @Param("reg_date") LocalDate reg_date);
 
     // Goods id 로 장바구니 삭제 (결제완료후)
     @Transactional
     @Modifying
-    @Query(nativeQuery = true, value = "DELETE FROM Cart WHERE goods_id = :goods_id")
+    @Query(nativeQuery = true, value = "DELETE FROM cart WHERE goods_id = :goods_id")
     void deleteByGoodsId(@Param("goods_id") Long goods_id);
 
     @Query(nativeQuery = true,value = "select count(*) from cart where member_id = :id")
