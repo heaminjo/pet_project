@@ -110,7 +110,7 @@ export default function Login() {
     setValue("email", "");
     setValue("password", "");
     window.Kakao.Auth.authorize({
-      redirectUri: "http://54.180.195.59/login", //
+      redirectUri: "http://localhost:3000/login", //
     });
   };
 

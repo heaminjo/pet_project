@@ -35,7 +35,7 @@ instance.interceptors.response.use(
     const originalRequest = error.config;
 
     //토큰이 만료되었을 경우
-    if (error.response.status == 401 && !originalRequest._retry) {
+    if (error.response?.status == 401 && !originalRequest._retry) {
       //계속 401 에러가 날경우 무한 요청 에러를 방지지
       originalRequest._retry = true;
 

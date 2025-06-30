@@ -103,9 +103,6 @@ export default function MyEdit() {
           alert(result.message);
           // setUser({...user})
           console.log(result.data.imageURL);
-          navigate("/user/mypage/myinfo", {
-            state: { newImage: result.data },
-          });
         }
       } catch (e) {
         console.log(e);
