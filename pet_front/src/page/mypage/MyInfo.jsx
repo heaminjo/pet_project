@@ -25,9 +25,15 @@ export default function MyInfo() {
   const [orderList, setOrderList] = useState([]);
 
   useEffect(() => {
+    getLoginUser();
     getOrderList();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
+
+  const getLoginUser = async () => {
+    const result = await MemberApi.detail();
+    setUser(result);
+  };
 
   //최근 주문 목록 리스트
   const getOrderList = async () => {

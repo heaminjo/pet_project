@@ -12,7 +12,13 @@ const AdminApi = {
 
   //회원 리스트
   getPageList: async (pages) => {
-    const result = await instance.post(`${KH_DOMAIN}/admin/list/search`, pages);
+    const result = await instance.post(
+      `${KH_DOMAIN}/admin/list/search`,
+      pages,
+      {
+        withCredentials: true,
+      }
+    );
     return result.data;
   },
   //회원 상세조회

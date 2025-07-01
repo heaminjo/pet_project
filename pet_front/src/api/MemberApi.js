@@ -16,7 +16,10 @@ const MemberApi = {
   //이메일 중복 체크
   dupEmail: async (email) => {
     const result = await axios.get(
-      `${KH_DOMAIN}/auth/emailcheck?email=${email}`
+      `${KH_DOMAIN}/auth/emailcheck?email=${email}`,
+      {
+        withCredentials: true,
+      }
     );
     return result.data;
   },
@@ -30,7 +33,9 @@ const MemberApi = {
   //회원 조회
   detail: async () => {
     //요청 인터셉터를 통해 header
-    const result = await instance.get(`${KH_DOMAIN}/user/detail`);
+    const result = await instance.get(`${KH_DOMAIN}/user/detail`, {
+      withCredentials: true,
+    });
     return result.data;
   },
 

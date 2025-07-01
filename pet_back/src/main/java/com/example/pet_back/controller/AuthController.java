@@ -57,8 +57,10 @@ public class AuthController {
     }
 
     @GetMapping("/emailcheck")
-    public ResponseEntity<Boolean> emailCheck(@RequestParam("email") String email) {
+    public ResponseEntity<Boolean> emailCheck(@RequestParam("email") String email,@CookieValue("JSESSIONID") String sessionId) {
         log.info("이메일 중복 체크 요청된 이메일=>" + email);
+//        log.info("세션아이디 => "+ sessionId);
+
         return memberService.emailCheck(email);
     }
 

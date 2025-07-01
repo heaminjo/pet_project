@@ -109,6 +109,7 @@ public class AuthServiceImpl implements AuthService {
 
             log.info("일반 로그인 성공 - userId :"+userId);
 
+            //DB에 RefreshToken 저장
             refreshTokenRepository.save((refreshToken));
             //커스텀 응답 객체에 token을 담아 반환
             return new ApiResponse<TokenDTO>(true, tokenDTO, "로그인에 성공하였습니다.");

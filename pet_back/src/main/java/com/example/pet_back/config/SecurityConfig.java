@@ -78,9 +78,6 @@ public class SecurityConfig {
                         //관리자와 회원의 경로가 나올때마다 즉시 추가
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasRole("USER")
-                        .requestMatchers("/goods/**").permitAll()
-                        .requestMatchers("/order/**").permitAll()
-                        .requestMatchers("/auth/**").permitAll()
                         //OPTIONS 메서드로 들어오는 모든 요청을 인증없이 허용
                         //프론트엔드가 API 요청 전 보내는 CORS 사전 확인 요청을 막지 않기 위해
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()

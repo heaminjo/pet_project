@@ -11,11 +11,18 @@ import com.example.pet_back.jwt.CustomUserDetails;
 import com.example.pet_back.service.ImageService;
 import com.example.pet_back.service.MemberService;
 import com.example.pet_back.service.goods.OrderService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Session;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,7 +40,8 @@ public class MemberController {
     private final OrderService orderService;
 
     @GetMapping("/detail")
-    public ResponseEntity<?> memberDetail(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<?> memberDetail(@AuthenticationPrincipal CustomUserDetails userDetails ) {
+//        log.info("세션아이디 => "+ sessionId);
         return memberService.selectOne(userDetails);
     }
 
