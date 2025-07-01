@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 @RestController
 @RequiredArgsConstructor
-
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @Log4j2
 
 public class AuthController {

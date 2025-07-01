@@ -1,7 +1,7 @@
-import axios from 'axios';
-import instance from '../api/axiosInstance'; // 인스턴스 불러오기
+import axios from "axios";
+import instance from "../api/axiosInstance"; // 인스턴스 불러오기
+import url from "../api/axiosInstance"; // 인스턴스 불러오기
 
-const KH_DOMAIN = 'http://localhost:8080';
 const OrderApi = {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 주  문 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // <Order /> : 주문하기
@@ -13,35 +13,21 @@ const OrderApi = {
   // <OrderDetail /> 페이징 : 주문상세 보기
   getOrderDetailPageList: async (pages) => {
     const result = await instance.post(`/order/detail`, pages);
-    console.log('응답 결과:', result);
-    return result.data; // OrderDetailResponseDTO
+    console.log("응답 결과:", result);
+    return result.data;
   },
 
-  // <OrderList /> : 주문취소 요청
-  withDraw: async (payload) => {
-    try {
-      const result = await instance.post('/order/withdraw', payload);
-      return result.data; // True / False / 잘못된 요청입니다.
-    } catch (e) {
-      alert(`OrderApi.withDraw 오류`);
-    }
-  },
-
-  // <WithDrawList /> : 주문취소내역
-  getWithDrawPageList: async (pages) => {
-    try {
-      const result = await instance.post('/order/withdraw/list', pages); // WithdrawResponseDTO
-      console.log(`getWithDrawPageList result = `, result.data);
-      return result.data; //
-    } catch (e) {
-      alert(`OrderApi.getWithDrawPageList 오류`);
-    }
+  // <OrderList /> : 주문취소
+  withDraw: async (orderDetailId) => {
+    console.log(`withDraw: ${orderDetailId}`);
+    const result = await instance.post(`/order/withdraw/${orderDetailId}`);
+    return result.data;
   },
 
   // [관리자] 전체 Order List
   orderList: async (pages) => {
     const result = await instance.post(`/order/list/all`, pages);
-    console.log('응답 결과:', result);
+    console.log("응답 결과:", result);
     return result.data;
   },
 
@@ -52,8 +38,8 @@ const OrderApi = {
       const result = await instance.post(`/order/page/details`, pages); //
       return result?.data;
     } catch (err) {
-      alert('오류 발생');
-      console.error('오류 발생:', err);
+      alert("오류 발생");
+      console.error("오류 발생:", err);
     }
   },
 
@@ -64,21 +50,19 @@ const OrderApi = {
       const result = await instance.post(`/order/page/list`, pages); //
       return result?.data;
     } catch (err) {
-      alert('오류 발생');
-      console.error('오류 발생:', err);
+      alert("오류 발생");
+      console.error("오류 발생:", err);
     }
   },
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 배  송 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  deliveryStatus: async (orderDetailId) => {
-    // ORDERSTATE.BEFOREPAY ...
+  deliveryStatus: async (orderId) => {
     console.log(`OrderApi.deliveryStatus`);
-    // alert(`OrderApi.deliveryStatus`);
     try {
-      const result = await instance.post(`/order/delivery?orderDetailId=${orderDetailId}`); // ORDERSTATE 반환
+      const result = await instance.post(`/order/delivery?orderId=${orderId}`); //
       return result?.data;
     } catch (err) {
-      alert('오류 발생');
-      console.error('오류 발생:', err);
+      alert("오류 발생");
+      console.error("오류 발생:", err);
     }
   },
 
@@ -86,7 +70,9 @@ const OrderApi = {
   // 결제
   pay: async (payload) => {
     payload.goodsList.forEach((item) => {
-      console.log(`결제 시도 => 상품 ID: ${item.goodsId}, 상품 수량: ${item.quantity}`);
+      console.log(
+        `결제 시도 => 상품 ID: ${item.goodsId}, 상품 수량: ${item.quantity}`
+      );
     });
     try {
       const result = await instance.post(`/order/pay`, payload);
@@ -98,7 +84,7 @@ const OrderApi = {
         return;
       }
     } catch (err) {
-      console.error('오류 발생:', err);
+      console.error("오류 발생:", err);
       return;
     }
   },
@@ -106,7 +92,7 @@ const OrderApi = {
   // 할인율 조회
   getPayPrice: async (goods) => {
     try {
-      console.log('goodsList:', goods);
+      console.log("goodsList:", goods);
       const result = await instance.post(`/order/pay/preview`, goods);
       if (result != null) {
         console.log(`findAddress 결과: ${result}`);
@@ -116,7 +102,7 @@ const OrderApi = {
         console.log(`OrderApi.findAddress() null`);
       }
     } catch (err) {
-      console.error('오류 발생:', err);
+      console.error("오류 발생:", err);
     }
   },
 
@@ -132,7 +118,7 @@ const OrderApi = {
         console.log(`OrderApi.findAddress() null`);
       }
     } catch (err) {
-      console.error('오류 발생:', err);
+      console.error("오류 발생:", err);
     }
     return result.data;
   },
@@ -143,15 +129,8 @@ const OrderApi = {
   getReviewsPageList: async (pages) => {
     // alert(`GoodsApi.getReviewPageList`);
     console.log(`GoodsApi.getReviewPageList`);
-    const result = await instance.post(`/order/review/my`, pages);
-    console.log('응답 결과:', result);
-    return result.data;
-  },
-
-  // 리뷰 중복등록 방지 검증
-  getReviewState: async (orderDetailId) => {
-    // 리턴: reviewId
-    const result = await instance.get(`/order/review/state/${orderDetailId}`);
+    const result = await instance.post(`/order/myreviews`, pages);
+    console.log("응답 결과:", result);
     return result.data;
   },
 
@@ -159,19 +138,6 @@ const OrderApi = {
   // <Review />
   registerReview: async (formData) => {
     const result = await instance.post(`/order/review/register`, formData);
-    return result.data;
-  },
-
-  // 리뷰 수정 (사진 포함)
-  // <Review />
-  updateReview: async (formData) => {
-    const result = await instance.post(`/order/review/update`, formData);
-    return result.data;
-  },
-
-  // 리뷰삭제
-  deleteReview: async (reviewId) => {
-    const result = await instance.get(`/order/review/delete/${reviewId}`);
     return result.data;
   },
 };

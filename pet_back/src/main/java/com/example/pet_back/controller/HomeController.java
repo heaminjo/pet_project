@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Log4j2
 @RequiredArgsConstructor // private final만
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 public class HomeController {
 
 

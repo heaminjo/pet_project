@@ -10,9 +10,6 @@ export default function Review() {
   const location = useLocation();
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상 태 변 수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // 이미지 미리보기 위한 상태변수 추가
-  // 'http://localhost:8080/resources/webapp/userImages/basicimg.jpg'
-
   // 이미지 및 파일 state
   const [prevImg, setPrevImg] = useState([]); // 기존 이미지 URL들
   const [userImage, setUserImage] = useState([]); // 새로 업로드된 File들
