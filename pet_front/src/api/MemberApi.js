@@ -16,10 +16,7 @@ const MemberApi = {
   //이메일 중복 체크
   dupEmail: async (email) => {
     const result = await axios.get(
-      `${KH_DOMAIN}/auth/emailcheck?email=${email}`,
-      {
-        withCredentials: true,
-      }
+      `${KH_DOMAIN}/auth/emailcheck?email=${email}`
     );
     return result.data;
   },

@@ -56,14 +56,20 @@ public class AdminServiceImpl implements AdminService {
 
         MemberResponseDTO dto = mapper.toDto(member);
 
-
-        String imageFile = "";
-        //등록한 사진이 없을 경우 기본 사진으로
-        if (member.getImageFile() == null) imageFile = fileUploadProperties.getUrl()+"basicimg.jpg";
-        else imageFile = member.getImageFile();
+        if(member.getKakaoId() == null){
+            String imageFile = "";
+            //등록한 사진이 없을 경우 기본 사진으로
+            if (member.getImageFile() == null) imageFile = fileUploadProperties.getUrl()+"basicimg.jpg";
+            else imageFile = fileUploadProperties.getUrl()+member.getImageFile();
 
             //해당파일은 MvcConfig에 매핑되어 이미지를 매핑
-        dto.setImageFile(imageFile);
+            dto.setImageFile(imageFile);
+        }
+
+
+
+
+
 
         return ResponseEntity.ok(dto);
     }
