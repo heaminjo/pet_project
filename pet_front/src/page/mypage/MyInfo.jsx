@@ -19,7 +19,6 @@ import { FaMedal } from "react-icons/fa";
 export default function MyInfo() {
   window.scrollTo({ top: 0, behavior: "smooth" });
   const { user, setUser } = useContext(PetContext);
-
   const location = useLocation();
   const navigate = useNavigate();
   const [orderList, setOrderList] = useState([]);
@@ -33,6 +32,7 @@ export default function MyInfo() {
   const getLoginUser = async () => {
     const result = await MemberApi.detail();
     setUser(result);
+    console.log(result.imageFile);
   };
 
   //최근 주문 목록 리스트
@@ -132,10 +132,6 @@ export default function MyInfo() {
                         <span>상세보기</span>
                         <TbHandFingerRight />
                       </div>
-                    </div>
-                    <div className="menu_">
-                      <button>배송 조회</button>
-                      <button>장바구니 담기</button>
                     </div>
                   </div>
                 </li>

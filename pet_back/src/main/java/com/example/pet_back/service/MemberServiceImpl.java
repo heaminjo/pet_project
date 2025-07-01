@@ -69,7 +69,7 @@ public class MemberServiceImpl implements MemberService {
 
         String imageFile = "";
         //등록한 사진이 없을 경우 기본 사진으로
-        if (member.getImageFile() == null) imageFile = "dec6f8725b7669004655f3bbe7178d41.jpg";
+        if (member.getImageFile() == null) imageFile = fileUploadProperties.getUrl()+"basicimg.jpg";
         else imageFile = member.getImageFile();
 
 
@@ -77,15 +77,8 @@ public class MemberServiceImpl implements MemberService {
         //디렉토리에서 파일 가져오기
 
         MemberResponseDTO dto = mapper.toDto(member);
+        dto.setImageFile(imageFile);
 
-        //만약 카카오 회원이라면 이미지 경로가 다름
-        if(member.getKakaoId() == null){
-            //디렉토리에서 파일 가져오기
-            String realPath = fileUploadProperties.getUrl(); // http://localhost:8080/resources/webapp
-
-            //해당파일은 MvcConfig에 매핑되어 이미지를 매핑
-            dto.setImageFile(realPath + member.getImageFile());
-        }
 
         int cartCount = cartRepository.cartCount(member.getId());
 

@@ -45,8 +45,7 @@ public class AdminController {
 
     //회원 목록 검색 리스트
     @PostMapping("/list/search")
-    public ResponseEntity<PageResponseDTO<MemberResponseDTO>> memberSearchList(@RequestBody PageRequestDTO dto,@CookieValue("JSESSIONID") String sessionId) {
-        log.info("세션 아이디 => "+ sessionId);
+    public ResponseEntity<PageResponseDTO<MemberResponseDTO>> memberSearchList(@RequestBody PageRequestDTO dto ) {
         return ResponseEntity.ok(adminService.memberSearchList(dto));
     }
 
