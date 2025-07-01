@@ -67,25 +67,17 @@ public class MemberServiceImpl implements MemberService {
         //유저 details에서 id 가져와 회원을 가져온다.
         Member member = memberRepository.findById(userDetails.getMember().getId()).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
 
-        String imageFile = "";
-        //등록한 사진이 없을 경우 기본 사진으로
-        if (member.getImageFile() == null) imageFile = "dec6f8725b7669004655f3bbe7178d41.jpg";
-        else imageFile = member.getImageFile();
-
-
-
         //디렉토리에서 파일 가져오기
 
         MemberResponseDTO dto = mapper.toDto(member);
 
-        //만약 카카오 회원이라면 이미지 경로가 다름
-        if(member.getKakaoId() == null){
-            //디렉토리에서 파일 가져오기
-            String realPath = fileUploadProperties.getUrl(); // http://localhost:8080/resources/webapp
+        String imageFile = "";
+        //등록한 사진이 없을 경우 기본 사진으로
+        if (member.getImageFile() == null) imageFile = fileUploadProperties.getUrl()+"basicimg.jpg";
+        else imageFile = fileUploadProperties.getUrl()+member.getImageFile();
 
-            //해당파일은 MvcConfig에 매핑되어 이미지를 매핑
-            dto.setImageFile(realPath + member.getImageFile());
-        }
+        //해당파일은 MvcConfig에 매핑되어 이미지를 매핑
+        dto.setImageFile(imageFile);
 
         int cartCount = cartRepository.cartCount(member.getId());
 
