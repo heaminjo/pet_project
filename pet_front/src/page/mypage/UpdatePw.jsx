@@ -51,7 +51,7 @@ export default function UpdatePw() {
       sessionStorage.clear();
       navigate("/login");
     } else {
-      alert("비밀번호 변경에 실패하였습니다.");
+      alert("기존 비밀번호가 틀립니다. 다시 입력해주세요.");
       navigate("/user/mypage/updatepw");
       //gngn
     }
