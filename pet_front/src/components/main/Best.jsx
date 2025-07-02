@@ -77,14 +77,11 @@ const BestComp = styled.div`
   width: 100%;
 
   .best_inner {
-    width: 1000px;
+    width: 100%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    @media (max-width: 767px) {
-      width: 500px;
-    }
     @keyframes best {
       0% {
         transform: scale(0.7);
@@ -132,6 +129,7 @@ const BestComp = styled.div`
       ul {
         display: flex;
         @media (max-width: 767px) {
+          width: 100%;
           flex-direction: column;
           gap: 20px;
         }
@@ -145,8 +143,8 @@ const BestComp = styled.div`
           flex-direction: column;
           gap: 10px;
           @media (max-width: 767px) {
-            width: 450px;
-            height: 500px;
+            width: 300px;
+            height: 400px;
             border: none;
             margin: 0 auto;
             padding: 0;
@@ -158,8 +156,8 @@ const BestComp = styled.div`
             width: 100%;
             height: 200px;
             @media (max-width: 767px) {
-              height: 350px;
-              width: 350px;
+              height: 250px;
+              width: 250px;
               margin: 0 auto;
               border-radius: 20px;
               padding: 10px 0;
@@ -181,7 +179,7 @@ const BestComp = styled.div`
             height: 70px;
             @media (max-width: 767px) {
               text-align: center;
-              font-size: 20px;
+              font-size: 15px;
             }
           }
           .goods_rating {

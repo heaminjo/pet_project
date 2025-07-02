@@ -18,7 +18,7 @@ export default function Layout() {
 }
 const LayoutComp = styled.div`
   .layout_inner {
-    /* width: 100%; */
+    width: 100%;
     max-width: 1920px;
   }
 `;

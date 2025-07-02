@@ -1,14 +1,20 @@
 import styled from "styled-components";
 
 const FooterComp = styled.footer`
-  /* width: 100%; */
-  max-width: 1920px;
+  width: 100vw;
+  max-width: 100vw;
   background-color: #fef7ec;
   padding: 40px 20px;
   color: #444;
   text-align: center;
   font-family: "Pretendard", sans-serif;
   border-top: 2px solid #f4d19b;
+  @media (max-width: 767px) {
+    width: 100vw;
+    max-width: 100vw;
+    min-width: 100vw;
+    box-sizing: border-box;
+  }
   .footer-content {
     max-width: 800px;
     text-align: center;
