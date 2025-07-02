@@ -44,7 +44,7 @@ const NavComp = styled.nav`
   }
   .min_nav {
     width: 500px;
-    height: 100vh;
+    height: 100dvh;
     background-color: #222;
     opacity: 0.8;
     z-index: 10;

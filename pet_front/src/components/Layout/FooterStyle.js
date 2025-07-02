@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 const FooterComp = styled.footer`
+  width: 100%;
   max-width: 1920px;
   .footer {
     background-color: #fef7ec;
