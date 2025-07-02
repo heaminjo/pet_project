@@ -149,6 +149,9 @@ export default function Login() {
               </button>
             </div>
           </form>
+          <div className="join">
+            <span onClick={() => navigate("/join")}>회원가입</span>
+          </div>
         </div>
       </div>
     </LoginComp>

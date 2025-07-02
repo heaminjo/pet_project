@@ -57,14 +57,18 @@ export default Banner;
 const BannerComp = styled.div`
   height: calc(100vh - 200px);
   width: 100%;
+  @media (max-width: 767px) {
+    height: 50%;
+  }
   .slider-container {
     width: 100%;
     height: 90%;
     border-radius: 40px;
+
     .item {
       width: 100%;
       margin-bottom: 50px;
-      border: 2px solid #555;
+      border-bottom: 2px solid #555;
 
       img {
         width: 100%;

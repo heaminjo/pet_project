@@ -4,11 +4,13 @@ import Nav from "./Nav";
 import { useContext, useEffect, useState } from "react";
 import { PetContext } from "../../App";
 import MemberApi from "../../api/MemberApi";
+import { IoMdMenu } from "react-icons/io";
+import { BsPersonFill } from "react-icons/bs";
 
 export default function Header() {
   const navigate = useNavigate();
   const [role, setRole] = useState(sessionStorage.getItem("role"));
-
+  const [menu, setMenu] = useState(false);
   //로그아웃 클릭
   const clickLogout = async () => {
     await MemberApi.logout();
@@ -35,17 +37,23 @@ export default function Header() {
             </>
           ) : (
             <>
-              <li>
+              <li className="max_sign">
                 <span onClick={() => navigate("/login")}>로그인</span>
-              </li>
-              <li>
                 <span onClick={() => navigate("/join")}>회원가입</span>
+              </li>
+              <li className="min_sign">
+                <span onClick={() => navigate("/login")}>
+                  <BsPersonFill />
+                </span>
+                <span>
+                  <IoMdMenu onClick={() => setMenu(true)} />
+                </span>
               </li>
             </>
           )}
         </ul>
       </div>
-      <Nav />
+      <Nav menu={menu} setMenu={setMenu} />
     </HeaderComp>
   );
 }

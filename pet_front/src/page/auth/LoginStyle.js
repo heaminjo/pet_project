@@ -54,6 +54,17 @@ const LoginComp = styled.div`
           cursor: pointer;
         }
       }
+      .join {
+        text-align: center;
+        height: 50px;
+        line-height: 70px;
+        font-size: 14px;
+        color: #555;
+        span {
+          border-bottom: #555;
+          cursor: pointer;
+        }
+      }
     }
   }
 `;
