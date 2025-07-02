@@ -9,7 +9,6 @@ const HeaderComp = styled.header`
   top: 0;
   background-color: #fffdf6;
   @media (max-width: 767px) {
-    height: 100px;
     background-color: #c1b7b3;
     border-bottom: 2px solid #000;
   }
@@ -35,6 +34,14 @@ const HeaderComp = styled.header`
       font-size: 13px;
       font-weight: bold;
       gap: 10px;
+      .login {
+        display: flex;
+        gap: 10px;
+        line-height: 150px;
+        span {
+          cursor: pointer;
+        }
+      }
       .max_sign {
         display: flex;
         gap: 10px;
@@ -45,12 +52,19 @@ const HeaderComp = styled.header`
       }
       .min_sign {
         display: none;
-
+        height: 100%;
+        position: relative;
         span {
-          font-size: 60px;
+          font-size: 40px;
           line-height: 110px;
+          height: 100%;
           margin: 0 10px;
           cursor: pointer;
+          p {
+            font-size: 11px;
+            position: absolute;
+            bottom: 0;
+          }
         }
         @media (max-width: 767px) {
           display: block;
