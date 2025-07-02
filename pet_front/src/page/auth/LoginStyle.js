@@ -4,14 +4,22 @@ const LoginComp = styled.div`
   height: calc(100vh - 140px);
   width: 100%;
   margin-top: 140px;
+  @media (max-width: 767px) {
+    margin-bottom: 200px;
+  }
   .login_inner {
     width: 500px;
     height: 100%;
     margin: 0 auto;
     padding-top: 100px;
+
+    @media (max-width: 767px) {
+      width: 90%;
+      margin: 0 auto;
+    }
     .login_container {
       padding-top: 130px;
-      width: 350px;
+      width: 80%;
       margin: 0 auto;
       border: 1px solid #eee;
       box-shadow: 2px 2px 2px #ccc;
@@ -19,15 +27,19 @@ const LoginComp = styled.div`
       h2 {
         margin: 20px 0;
         text-align: start;
+        text-align: center;
       }
       .login_form {
+        width: 90%;
         display: flex;
         flex-direction: column;
         gap: 10px;
         height: 150px;
+        margin: 0 auto;
         input {
           height: 40px;
-          width: 340px;
+          width: 95%;
+
           padding-left: 10px;
         }
         p {
@@ -40,6 +52,8 @@ const LoginComp = styled.div`
         display: flex;
         flex-direction: column;
         gap: 10px;
+        width: 90%;
+        margin: 0 auto;
         button {
           height: 50px;
           width: 100%;
