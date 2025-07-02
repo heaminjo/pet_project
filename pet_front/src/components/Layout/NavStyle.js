@@ -43,7 +43,7 @@ const NavComp = styled.nav`
     }
   }
   .min_nav {
-    width: 500px;
+    width: 70%;
     height: 100dvh;
     background-color: #222;
     opacity: 0.8;
@@ -70,8 +70,8 @@ const NavComp = styled.nav`
       margin: 0 auto;
       text-align: center;
       li {
-        height: 100px;
-        line-height: 100px;
+        height: 80px;
+        line-height: 80px;
         font-size: 20px;
         font-weight: bold;
         border-bottom: 1px solid #fff;
