@@ -110,7 +110,7 @@ export default function Login() {
     setValue("email", "");
     setValue("password", "");
     window.Kakao.Auth.authorize({
-      redirectUri: process.env.REACT_APP_KAKAO_REDIRECT_URI, //
+      redirectUri: "http://localhost:3000/login", //
     });
   };
 
@@ -149,6 +149,9 @@ export default function Login() {
               </button>
             </div>
           </form>
+          <div className="join">
+            <span onClick={() => navigate("/join")}>회원가입</span>
+          </div>
         </div>
       </div>
     </LoginComp>

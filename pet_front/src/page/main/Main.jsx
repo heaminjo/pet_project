@@ -27,6 +27,8 @@ const MainComp = styled.div`
     flex-direction: column;
     gap: 100px;
     padding-bottom: 30px;
-    /* background-color: rgb(255, 254, 242); */
+    @media (max-width: 767px) {
+      margin-top: 100px;
+    }
   }
 `;

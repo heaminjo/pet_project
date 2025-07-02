@@ -7,14 +7,24 @@ const HeaderComp = styled.header`
   position: fixed;
   z-index: 10000;
   top: 0;
-  /* background-color: rgb(245, 242, 219); */
   background-color: #fffdf6;
+  @media (max-width: 767px) {
+    height: 100px;
+    background-color: #c1b7b3;
+    border-bottom: 2px solid #000;
+  }
   .header_inner {
     width: 80%;
     margin: 0 auto;
     height: 100%;
     display: flex;
     justify-content: space-between;
+    @media (max-width: 767px) {
+      width: 90%;
+      h1 {
+        font-size: 25px;
+      }
+    }
     h1 {
       margin: 0;
       line-height: 100px;
@@ -25,10 +35,25 @@ const HeaderComp = styled.header`
       font-size: 13px;
       font-weight: bold;
       gap: 10px;
-      li {
+      .max_sign {
+        display: flex;
+        gap: 10px;
+        line-height: 150px;
+        @media (max-width: 767px) {
+          display: none;
+        }
+      }
+      .min_sign {
+        display: none;
+
         span {
+          font-size: 60px;
+          line-height: 110px;
+          margin: 0 10px;
           cursor: pointer;
-          line-height: 150px;
+        }
+        @media (max-width: 767px) {
+          display: block;
         }
       }
     }

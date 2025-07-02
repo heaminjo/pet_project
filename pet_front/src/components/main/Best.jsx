@@ -1,8 +1,8 @@
-import styled from 'styled-components';
-import GoodsApi from '../../api/GoodsApi';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FaStar, FaRegStar } from 'react-icons/fa';
+import styled from "styled-components";
+import GoodsApi from "../../api/GoodsApi";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FaStar, FaRegStar } from "react-icons/fa";
 
 export default function Best() {
   const [best, setBest] = useState([]);
@@ -28,34 +28,42 @@ export default function Best() {
     const fullStars = Math.floor(rating); // 채운 별 수
     const emptyStars = 5 - fullStars; // 빈 별 수
     for (let i = 0; i < fullStars; i++) {
-      stars.push(<FaStar key={`full-${i}`} color='gold' size={24} />);
+      stars.push(<FaStar key={`full-${i}`} color="gold" size={24} />);
     }
     for (let i = 0; i < emptyStars; i++) {
-      stars.push(<FaRegStar key={`empty-${i}`} color='lightgray' size={24} />);
+      stars.push(<FaRegStar key={`empty-${i}`} color="lightgray" size={24} />);
     }
     return stars;
   };
 
   return (
     <BestComp>
-      <div className='best_inner'>
-        <div className='title'>
+      <div className="best_inner">
+        <div className="title">
           <h2>오늘의 추천 상품</h2>
         </div>
-        <div className='best_container'>
+        <div className="best_container">
           <ul>
             {best?.map((b) => (
-              <li onClick={() => navigate('/goods/order', { state: { goods: b } })}>
-                <div className='goods_image'>
-                  <img src={b.imageFile} alt='베스트 상품 이미지' />
+              <li
+                onClick={() =>
+                  navigate("/goods/order", { state: { goods: b } })
+                }
+              >
+                <div className="goods_image">
+                  <img src={b.imageFile} alt="베스트 상품 이미지" />
                 </div>
-                <div className='goods_text'>
+                <div className="goods_text">
                   <h4>{b.goodsName}</h4>
                   <p>{b.description}</p>
                 </div>
-                <div className='goods_rating'>
-                  <span style={{ textAlign: 'center' }}>{renderStars(b.rating)}</span>
-                  <span style={{ color: 'red', fontSize: '12px' }}>{'( ' + b.reviewNum + ' )'} </span>
+                <div className="goods_rating">
+                  <span style={{ textAlign: "center" }}>
+                    {renderStars(b.rating)}
+                  </span>
+                  <span style={{ color: "red", fontSize: "12px" }}>
+                    {"( " + b.reviewNum + " )"}{" "}
+                  </span>
                 </div>
               </li>
             ))}
@@ -67,12 +75,16 @@ export default function Best() {
 }
 const BestComp = styled.div`
   width: 100%;
+
   .best_inner {
     width: 1000px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    @media (max-width: 767px) {
+      width: 500px;
+    }
     @keyframes best {
       0% {
         transform: scale(0.7);
@@ -111,20 +123,51 @@ const BestComp = styled.div`
       background-color: #fff;
       padding: 20px;
       border-radius: 10px;
+      @media (max-width: 767px) {
+        height: auto;
+        padding: 0;
+        border: none;
+        box-shadow: none;
+      }
       ul {
         display: flex;
+        @media (max-width: 767px) {
+          flex-direction: column;
+          gap: 20px;
+        }
         li {
           cursor: pointer;
-          width: 220px;
+          width: 100%;
           height: 100%;
           border-right: 1px solid #ccc;
           padding: 10px 20px;
           display: flex;
           flex-direction: column;
           gap: 10px;
+          @media (max-width: 767px) {
+            width: 450px;
+            height: 500px;
+            border: none;
+            margin: 0 auto;
+            padding: 0;
+            border: 1px solid #ccc;
+            box-shadow: 3px 3px 3px #ccc;
+          }
+
           .goods_image {
             width: 100%;
             height: 200px;
+            @media (max-width: 767px) {
+              height: 350px;
+              width: 350px;
+              margin: 0 auto;
+              border-radius: 20px;
+              padding: 10px 0;
+              img {
+                border-radius: 20px;
+                border: 1px solid #ccc;
+              }
+            }
             img {
               width: 100%;
               height: 100%;
@@ -136,6 +179,15 @@ const BestComp = styled.div`
           }
           .goods_text {
             height: 70px;
+            @media (max-width: 767px) {
+              text-align: center;
+              font-size: 20px;
+            }
+          }
+          .goods_rating {
+            @media (max-width: 767px) {
+              text-align: center;
+            }
           }
         }
         li:nth-last-child(1) {
