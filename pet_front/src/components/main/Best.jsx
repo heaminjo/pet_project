@@ -193,6 +193,11 @@ const BestComp = styled.div`
         li:nth-last-child(1) {
           border: none;
         }
+        @media (max-width: 767px) {
+          li:nth-last-child(1) {
+            border: 1px solid #ccc;
+          }
+        }
       }
     }
   }

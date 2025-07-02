@@ -1,30 +1,27 @@
 import styled from "styled-components";
 
 const FooterComp = styled.footer`
-  width: 100%;
+  /* width: 100%; */
   max-width: 1920px;
-  .footer {
-    background-color: #fef7ec;
-    padding: 40px 20px;
-    color: #444;
-    text-align: center;
-    font-family: "Pretendard", sans-serif;
-    border-top: 2px solid #f4d19b;
-  }
-
+  background-color: #fef7ec;
+  padding: 40px 20px;
+  color: #444;
+  text-align: center;
+  font-family: "Pretendard", sans-serif;
+  border-top: 2px solid #f4d19b;
   .footer-content {
     max-width: 800px;
     text-align: center;
     margin: 0 auto;
   }
 
-  .footer h3 {
+  h3 {
     font-size: 24px;
     margin-bottom: 10px;
     color: #d08543;
   }
 
-  .footer p {
+  p {
     margin: 8px 0;
     font-size: 16px;
   }
