@@ -71,7 +71,7 @@ export default function MyInfo() {
                 <span>멍코인</span>
               </div>
               <div className="print_point">
-                <span>{user.point}</span>
+                <span>{user.point}P</span>
               </div>
             </div>
           </div>

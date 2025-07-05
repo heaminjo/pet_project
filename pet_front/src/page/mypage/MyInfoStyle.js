@@ -9,11 +9,18 @@ const MyInfoComp = styled.div`
     display: flex;
     flex-direction: column;
     gap: 30px;
+    @media (max-width: 767px) {
+      width: 100%;
+      margin: 0 auto;
+    }
     .user_info {
       height: 250px;
       width: 100%;
       display: flex;
       gap: 20px;
+      @media (max-width: 767px) {
+        height: 300px;
+      }
       .user_profile {
         width: 100%;
         height: 100%;
@@ -21,6 +28,12 @@ const MyInfoComp = styled.div`
         box-shadow: 3px 3px 3px #ccc;
         display: flex;
         gap: 20px;
+        @media (max-width: 767px) {
+          flex-direction: column;
+          gap: 0;
+          text-align: center;
+          width: 60%;
+        }
         .image {
           flex: 1;
           display: flex;
@@ -59,6 +72,9 @@ const MyInfoComp = styled.div`
             flex: 1;
             display: flex;
             align-items: center;
+            @media (max-width: 767px) {
+              display: none;
+            }
           }
           .print_point {
             flex: 2;
@@ -70,9 +86,10 @@ const MyInfoComp = styled.div`
       }
       .user_grade {
         width: 250px;
-        background-color: rgb(63, 63, 63);
         box-shadow: 3px 3px 3px #ccc;
-        background-color: #333;
+        @media (max-width: 767px) {
+          width: 40%;
+        }
         .grade_image {
           padding-top: 20px;
           width: 100%;
@@ -82,13 +99,13 @@ const MyInfoComp = styled.div`
           align-items: center;
           svg {
             font-size: 100px;
-            text-shadow: 1px 1px 1px #000;
+            filter: drop-shadow(1px 0 0 #ccc) drop-shadow(0 1px 0 #ccc)
+              drop-shadow(-1px 0 0 #ccc) drop-shadow(0 -1px 0 #ccc);
           }
         }
         .grade_text {
           padding: 10px;
           text-align: center;
-          color: #fff;
           .grade_name {
             font-size: 20px;
             font-weight: bold;
