@@ -55,11 +55,23 @@ const MyPageComp = styled.div`
     display: flex;
     padding: 40px 0;
     gap: 40px;
+    @media (max-width: 767px) {
+      display: block;
+      width: 90%;
+      margin: 0 auto;
+    }
     .menu_inner {
       width: 20%;
+      @media (max-width: 767px) {
+        display: none;
+      }
     }
     .page_inner {
       width: 80%;
+      @media (max-width: 767px) {
+        width: 90%;
+        margin: 0 auto;
+      }
     }
   }
 `;
