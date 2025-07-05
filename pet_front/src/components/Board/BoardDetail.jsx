@@ -35,10 +35,10 @@ export default function BoardDetail() {
   const [post, setPost] = useState(null);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [editingCommentId, setEditingCommentId] = useState(null);
-  const [editingContent, setEditingContent] = useState('');
+  const [editingContent, setEditingContent] = useState("");
 
   useEffect(() => {
     instance
@@ -59,10 +59,11 @@ export default function BoardDetail() {
   const handleAddComment = async () => {
     if (!comment.trim()) return; // 빈 댓글은 추가하지 않음
     try {
-      await instance.post(
-        `/board/${board_id}/comments`,
-        { content: comment, member_id: loginMemberId, board_id: board_id }
-      );
+      await instance.post(`/board/${board_id}/comments`, {
+        content: comment,
+        member_id: loginMemberId,
+        board_id: board_id,
+      });
       setComment(""); // 댓글 입력란 초기화
       // 댓글 등록 후 다시 댓글 목록 조회
       const res = await instance.get(`/board/${board_id}/comments`);
@@ -76,9 +77,7 @@ export default function BoardDetail() {
   const handleDeleteComment = async (comment_id) => {
     if (!window.confirm("정말 댓글을 삭제하시겠습니까?")) return;
     try {
-      await instance.delete(
-        `/board/${board_id}/comments/${comment_id}`
-      );
+      await instance.delete(`/board/${board_id}/comments/${comment_id}`);
       // 댓글 삭제 후 다시 댓글 목록 조회
       const res = await instance.get(`/board/${board_id}/comments`);
       setComments(res.data || []);
@@ -91,31 +90,30 @@ export default function BoardDetail() {
   const handleEditStart = (comment) => {
     setEditingCommentId(comment.comment_id);
     setEditingContent(comment.content);
-  }
+  };
 
   // 댓글 수정 취소 함수
   const handleEditCancel = () => {
     setEditingCommentId(null);
-    setEditingContent('');
-  }
+    setEditingContent("");
+  };
 
   // 댓글 수정 완료 함수
   const handleEditSubmit = async (comment_id) => {
     if (!editingContent.trim()) return; // 빈 댓글은 수정하지 않음
     try {
-      await instance.put(
-        `/board/${board_id}/comments/${comment_id}`,
-        { content: editingContent }
-      );
+      await instance.put(`/board/${board_id}/comments/${comment_id}`, {
+        content: editingContent,
+      });
       setEditingCommentId(null);
-      setEditingContent('');
+      setEditingContent("");
       // 댓글 수정 후 다시 댓글 목록 조회
       const res = await instance.get(`/board/${board_id}/comments`);
       setComments(res.data || []);
     } catch (error) {
       alert("댓글 수정에 실패했습니다.");
     }
-  }
+  };
 
   if (error) {
     return <div>게시글을 불러오지 못했습니다. {error.message}</div>;
@@ -130,7 +128,9 @@ export default function BoardDetail() {
   //const loginRole = sessionStorage.getItem("role"); // "ADMIN" 또는 "USER"
 
   // 작성자(member_id) 또는 관리자(ADMIN)만 버튼 보이게
-  const canEditOrDelete = String(post.member_id) === String(loginMemberId) || sessionStorage.getItem("role") === "ROLE_ADMIN";
+  const canEditOrDelete =
+    String(post.member_id) === String(loginMemberId) ||
+    sessionStorage.getItem("role") === "ROLE_ADMIN";
 
   console.log("board_Id:", board_id);
 
@@ -154,10 +154,12 @@ export default function BoardDetail() {
     });
   };
 
-  console.log("loginMemberId:", loginMemberId, "post.member_id:", post.member_id);
-
-  
-  
+  console.log(
+    "loginMemberId:",
+    loginMemberId,
+    "post.member_id:",
+    post.member_id
+  );
 
   return (
     <BoardDetailStyle>
@@ -175,19 +177,35 @@ export default function BoardDetail() {
           작성자: {post.name} | 조회수: {post.views} | 작성일: {post.reg_date}
         </div>
         <div
-          style={{ minHeight: "100px", fontSize: "18px", marginTop: "20px", marginBottom: "20px" }}
+          style={{
+            minHeight: "100px",
+            fontSize: "18px",
+            marginTop: "20px",
+            marginBottom: "20px",
+          }}
         >
           {post.content}
         </div>
-        <div className="image-gallery" style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-          {post?.fileList && post.fileList.filter(f => f.file_type && f.file_type.startsWith("image/")).map((file, idx) => (
-            <img
-              key={file.file_name}
-              src={`http://localhost:8080/resources/webapp/userImages/${file.file_name}`}
-              alt={file.origin_name}
-              style={{ width: "200px", height: "auto", borderRadius: "8px", objectFit: "cover" }}
-            />
-          ))}
+        <div
+          className="image-gallery"
+          style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}
+        >
+          {post?.fileList &&
+            post.fileList
+              .filter((f) => f.file_type && f.file_type.startsWith("image/"))
+              .map((file, idx) => (
+                <img
+                  key={file.file_name}
+                  src={""}
+                  alt={file.origin_name}
+                  style={{
+                    width: "200px",
+                    height: "auto",
+                    borderRadius: "8px",
+                    objectFit: "cover",
+                  }}
+                />
+              ))}
         </div>
         {canEditOrDelete && (
           <div style={{ marginTop: "30px", textAlign: "right" }}>
@@ -197,16 +215,19 @@ export default function BoardDetail() {
             <button onClick={handleDelete}>삭제</button>
           </div>
         )}
-        <hr style={{marginBottom:"100px", marginTop:"5px"}}></hr>
-        <h3>댓글쓰기</h3><br></br>
+        <hr style={{ marginBottom: "100px", marginTop: "5px" }}></hr>
+        <h3>댓글쓰기</h3>
+        <br></br>
         <CommentForm
           comment={comment}
           setComment={setComment}
           onAddComment={handleAddComment}
         />
-        <br></br><br></br>
-        <h3>댓글 ({comments.length})</h3><br></br>
-        <CommentList 
+        <br></br>
+        <br></br>
+        <h3>댓글 ({comments.length})</h3>
+        <br></br>
+        <CommentList
           comments={comments}
           onDeleteComment={handleDeleteComment}
           editingCommentId={editingCommentId}

@@ -113,7 +113,7 @@ const BestComp = styled.div`
       }
     }
     .best_container {
-      width: 100%;
+      margin: 0 auto;
       height: 320px;
       border: 1px solid #ccc;
       box-shadow: 3px 3px 3px #ccc;
@@ -121,6 +121,7 @@ const BestComp = styled.div`
       padding: 20px;
       border-radius: 10px;
       @media (max-width: 767px) {
+        width: 100%;
         height: auto;
         padding: 0;
         border: none;

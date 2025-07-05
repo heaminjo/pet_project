@@ -78,7 +78,7 @@ export default function GoodsSelectList({ selectEvt }) {
           {categoryList.map((c, index) => (
             <li
               onClick={() => {
-                setCategory(category.categoryId);
+                setCategory(c.categoryId);
                 setPage(0);
               }}
             >

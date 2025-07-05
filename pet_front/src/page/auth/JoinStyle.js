@@ -9,6 +9,9 @@ const JoinComp = styled.div`
     height: 100%;
     margin: 0 auto;
     /* background-color: #fff; */
+    @media (max-width: 767px) {
+      width: 90%;
+    }
     .join_container {
       padding: 150px 50px 50px;
       h2 {
@@ -16,6 +19,7 @@ const JoinComp = styled.div`
       }
       table {
         margin-top: 30px;
+        /* width: 100%; */
         tbody {
           display: flex;
           flex-direction: column;
@@ -25,12 +29,18 @@ const JoinComp = styled.div`
             th {
               width: 150px;
               text-align: left;
+              @media (max-width: 767px) {
+                display: none;
+              }
             }
             td {
               input {
                 width: 350px;
                 height: 40px;
                 padding-left: 10px;
+                @media (max-width: 767px) {
+                  width: 90%;
+                }
               }
               ul {
                 display: flex;
@@ -41,6 +51,9 @@ const JoinComp = styled.div`
                   justify-content: space-between;
                   input {
                     width: 240px;
+                    /* @media (max-width: 767px) {
+                      width: 80%;
+                    } */
                   }
                 }
               }
