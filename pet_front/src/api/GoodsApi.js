@@ -2,7 +2,11 @@ import axios from 'axios';
 import instance from '../api/axiosInstance'; // 인스턴스 불러오기
 import { useNavigate } from 'react-router-dom';
 import ModifyGoods from '../components/Layout/goods/ModifyGoods';
-const KH_DOMAIN = 'http://localhost:8080';
+
+import { API_BASE_URL } from '../services/app-config';
+// const KH_DOMAIN = 'http://localhost:8080'; // 개발용
+const KH_DOMAIN = `${API_BASE_URL}`; // 배포용
+
 const GoodsApi = {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 장 바 구 니 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // 장바구니 추가
@@ -82,7 +86,7 @@ const GoodsApi = {
       }
     } catch (err) {}
   },
-  
+
   // 현재 상품의 찜 상태 불러오기
   favoriteInfo: async (goodsId) => {
     const result = await instance.post(`/goods/favoriteinfo/${goodsId}`);
@@ -158,7 +162,7 @@ const GoodsApi = {
   getReviewsPageList: async (pages, goodsId) => {
     console.log(`getPageList() 호출됨, goodsId = ${JSON.stringify(goodsId)}`);
     const result = await instance.get(`/goods/reviews/${goodsId}`, {
-      params: pages, 
+      params: pages,
     });
 
     if (result.data != null) {
@@ -171,25 +175,46 @@ const GoodsApi = {
   },
 
   //배너 가져오기
+  // getBanner: async () => {
+  //   const result = await axios.get(`${KH_DOMAIN}/goods/banner/list`);
+  //   return result.data;
+  // },
+  // 배포
   getBanner: async () => {
-    const result = await axios.get(`${KH_DOMAIN}/goods/banner/list`);
+    const result = await instance.get(`/goods/banner/list`);
     return result.data;
   },
 
-  //카테고리 목록 가져오기
+  // //카테고리 목록 가져오기
+  // getCategoryList: async () => {
+  //   const result = await axios.get(`${KH_DOMAIN}/goods/category/list`);
+  //   return result.data;
+  // },
+  // 배포
   getCategoryList: async () => {
-    const result = await axios.get(`${KH_DOMAIN}/goods/category/list`);
-    return result.data;
-  },
-  //상품 페이징 목록록
-  getGoodsList: async (pages) => {
-    const result = await axios.post(`${KH_DOMAIN}/goods/page/list`, pages);
+    const result = await instance.get(`/goods/category/list`);
     return result.data;
   },
 
-  //베스트 상품 가져오기
+  // //상품 페이징 목록
+  // getGoodsList: async (pages) => {
+  //   const result = await axios.post(`${KH_DOMAIN}/goods/page/list`, pages);
+  //   return result.data;
+  // },
+  // 배포
+  getGoodsList: async (pages) => {
+    const result = await instance.post(`/goods/page/list`, pages);
+    return result.data;
+  },
+
+  // //베스트 상품 가져오기
+  // getBest: async () => {
+  //   const result = await axios.get(`${KH_DOMAIN}/goods/best/list`);
+  //   return result.data;
+  // },
+  // 배포
   getBest: async () => {
-    const result = await axios.get(`${KH_DOMAIN}/goods/best/list`);
+    const result = await instance.get(`/goods/banner/list`);
     return result.data;
   },
 };

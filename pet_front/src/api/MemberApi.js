@@ -1,23 +1,39 @@
-import axios from "axios";
-import instance from "./axiosInstance";
-const KH_DOMAIN = "http://localhost:8080";
+import axios from 'axios';
+import instance from './axiosInstance';
+
+import { API_BASE_URL } from '../services/app-config';
+// const KH_DOMAIN = 'http://localhost:8080'; // 개발용
+const KH_DOMAIN = `${API_BASE_URL}`; // 배포용
+
 const MemberApi = {
-  //로그인
+  // //로그인
+  // login: async (email, password) => {
+  //   const login = {
+  //     email: email,
+  //     password: password,
+  //   };
+  //   const result = await axios.post(`${KH_DOMAIN}/auth/login`, login, {
+  //     withCredentials: true,
+  //   });
+  //   return result.data;
+  // },
+  // 배포
   login: async (email, password) => {
-    const login = {
-      email: email,
-      password: password,
-    };
-    const result = await axios.post(`${KH_DOMAIN}/auth/login`, login, {
+    const login = { email, password };
+    const result = await instance.post(`/auth/login`, login, {
       withCredentials: true,
     });
     return result.data;
   },
-  //이메일 중복 체크
+
+  // //이메일 중복 체크
+  // dupEmail: async (email) => {
+  //   const result = await axios.get(`${KH_DOMAIN}/auth/emailcheck?email=${email}`);
+  //   return result.data;
+  // },
+  // 이메일 중복 체크
   dupEmail: async (email) => {
-    const result = await axios.get(
-      `${KH_DOMAIN}/auth/emailcheck?email=${email}`
-    );
+    const result = await instance.get(`/auth/emailcheck?email=${email}`);
     return result.data;
   },
 
@@ -42,20 +58,25 @@ const MemberApi = {
 
   //비밀번호 변경
   updatePw: async (passwords) => {
-    const result = await instance.patch(
-      `${KH_DOMAIN}/user/pwupdate`,
-      passwords
-    );
+    const result = await instance.patch(`${KH_DOMAIN}/user/pwupdate`, passwords);
     return result.data;
   },
 
-  //리프레쉬 가져오기기
+  // //리프레쉬 가져오기기
+  // getRefresh: async () => {
+  //   const result = await axios.get(`${KH_DOMAIN}/auth/getrefresh`, {
+  //     withCredentials: true,
+  //   });
+  //   return result.data;
+  // },
+  // 리프레시 토큰
   getRefresh: async () => {
-    const result = await axios.get(`${KH_DOMAIN}/auth/getrefresh`, {
+    const result = await instance.get(`/auth/getrefresh`, {
       withCredentials: true,
     });
     return result.data;
   },
+
   //로그아웃
   logout: async () => {
     const result = await instance.get(`${KH_DOMAIN}/auth/logout`, {
@@ -65,7 +86,7 @@ const MemberApi = {
   },
   //회원 탈퇴
   withdrawal: async () => {
-    console.log("처리 실행");
+    console.log('처리 실행');
     const result = await instance.get(`${KH_DOMAIN}/user/withdrawal`);
     return result.data;
   },
@@ -73,12 +94,9 @@ const MemberApi = {
   //업로드 이미지
   uploadImage: async (file) => {
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append('file', file);
 
-    const result = await instance.post(
-      `${KH_DOMAIN}/user/uploadimage`,
-      formData
-    );
+    const result = await instance.post(`${KH_DOMAIN}/user/uploadimage`, formData);
     return result.data;
   },
 
@@ -87,11 +105,17 @@ const MemberApi = {
     const result = await instance.put(`${KH_DOMAIN}/auth/login/history`);
     return result.data;
   },
-  //카카오 로그인인
+  // //카카오 로그인인
+  // kakaoLogin: async (code) => {
+  //   const result = await axios.get(`${KH_DOMAIN}/kakao/login?code=${code}`);
+  //   return result.data;
+  // },
+  // 카카오 로그인
   kakaoLogin: async (code) => {
-    const result = await axios.get(`${KH_DOMAIN}/kakao/login?code=${code}`);
+    const result = await instance.get(`/kakao/login?code=${code}`);
     return result.data;
   },
+
   //소셜 로그인 추가 정보 업데이트트
   socialUpdate: async (user) => {
     const result = await instance.put(`${KH_DOMAIN}/kakao/social/update`, user);
@@ -105,32 +129,22 @@ const MemberApi = {
   },
   //배송지 추가
   addrInsert: async (address) => {
-    const result = await instance.post(
-      `${KH_DOMAIN}/user/address/insert`,
-      address
-    );
+    const result = await instance.post(`${KH_DOMAIN}/user/address/insert`, address);
     return result.data;
   },
   //배송지 삭제
   addressDelete: async (id) => {
-    const result = await instance.delete(
-      `${KH_DOMAIN}/user/address/delete?addressId=${id}`
-    );
+    const result = await instance.delete(`${KH_DOMAIN}/user/address/delete?addressId=${id}`);
     return result.data;
   },
   //배송지 조회
   addrDetail: async (id) => {
-    const result = await instance.get(
-      `${KH_DOMAIN}/user/address/detail?addressId=${id}`
-    );
+    const result = await instance.get(`${KH_DOMAIN}/user/address/detail?addressId=${id}`);
     return result.data;
   },
   //배송지 수정
   addrUpdate: async (address) => {
-    const result = await instance.put(
-      `${KH_DOMAIN}/user/address/update`,
-      address
-    );
+    const result = await instance.put(`${KH_DOMAIN}/user/address/update`, address);
     return result.data;
   },
 

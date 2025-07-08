@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,6 +19,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.List;
 
 //SecurityConfig
 //어플리케이션의 보안 관련 설정들을 커스텀하고 관리하기 위한 설정파일
@@ -63,17 +70,17 @@ public class SecurityConfig {
         // cors : Cors 설정은 기본 활성화 클라이언트에서 다른 도메인으로 요창할때 CORS 정책에 맞춰야한다.
         // sessionManagement: 세션을 아예 만들지 않고 서버에 세션 정보를 저장하지 않겠다는 의미 jwt는 서버가 상태를 저장하지 않는 인증 방식이며
         //      세션을 사용하지 않고 요청마다 JWT 토큰으로 인증
-        return http.httpBasic(httpBasic -> httpBasic.disable()) // HTTP 기본 인증 비활성화
-                .formLogin(formLogin -> formLogin.disable()) // formLogin 비활성화
-
-                .logout(logout -> logout.disable()) // logout 비활성화
+        return http
+                .cors(cors -> {}) // CORS설정 활성화(기본값)_필수항목 // 개발용
+//                .cors(Customizer.withDefaults()) // 배포용
                 .csrf(csrf -> csrf.disable()) // CSRF 비활성화
-                .cors(cors -> {
-                }) // CORS설정 활성화(기본값)_필수항목
+                .httpBasic(httpBasic -> httpBasic.disable()) // HTTP 기본 인증 비활성화
+                .formLogin(formLogin -> formLogin.disable()) // formLogin 비활성화
+                .logout(logout -> logout.disable()) // logout 비활성화
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 비활성화 (무상태)
 
-//인가 설정 경로 별로 권한에 따른 설정
+                //인가 설정 경로 별로 권한에 따른 설정
                 .authorizeHttpRequests(auth -> auth
                         //관리자와 회원의 경로가 나올때마다 즉시 추가
                         .requestMatchers("/admin/**").hasRole("ADMIN")
@@ -105,4 +112,46 @@ public class SecurityConfig {
                 .passwordEncoder(passwordEncoder);
         return builder.build();
     }
+
+    
+    // CORS 정책 : 둘 중 하나만 사용
+    // 택1
+//    @Bean
+//    public CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.setAllowedOrigins(List.of(
+//                "http://13.209.222.217",
+//                "http://13.209.222.217:3000",
+//                "http://13.209.222.217:8080",
+//                "http://localhost:3000"
+//        ));
+//        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+//        configuration.setAllowedHeaders(List.of("*"));
+//        configuration.setExposedHeaders(List.of("Authorization"));
+//        configuration.setAllowCredentials(true);
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
+
+    // 배포: corsFilter를 별도로 등록해 Spring Security보다 먼저 적용
+    // 택2 : 기본값
+    @Bean
+    public CorsFilter corsFilter() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.setAllowedOrigins(List.of(
+                "http://13.209.222.217",
+                "http://13.209.222.217:3000",
+                "http://localhost:3000"
+        ));
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        config.setExposedHeaders(List.of("Authorization"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
+    }
+
 }

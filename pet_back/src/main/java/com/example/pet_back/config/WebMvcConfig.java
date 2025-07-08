@@ -16,9 +16,17 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
 
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000")
+                // .allowedOrigins("http://localhost:3000") // 개발용
+                .allowedOrigins(
+                        "http://13.209.222.217:3000",
+                        "http://13.209.222.217:8080",
+                        "http://13.209.222.217",
+                        "http://localhost:3000",
+                        "http://localhost:8080"
+                        ) // 배포용
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
+                .exposedHeaders("Authorization") // 프론트에서 응답헤더 읽을 수 있게 (배포용)
                 .allowCredentials(true)
                 .maxAge(MAX_AGE_SECS);
         ;

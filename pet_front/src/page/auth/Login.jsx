@@ -1,32 +1,32 @@
-import { useForm } from "react-hook-form";
-import LoginComp from "./LoginStyle";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import MemberApi from "../../api/MemberApi";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useContext, useEffect } from "react";
-import { PetContext } from "../../App";
-import kakao from "../../images/kakao_login_large_wide.png";
+import { useForm } from 'react-hook-form';
+import LoginComp from './LoginStyle';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import MemberApi from '../../api/MemberApi';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useContext, useEffect } from 'react';
+import { PetContext } from '../../App';
+import kakao from '../../images/kakao_login_large_wide.png';
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   // 쿼리스트링에서 redirectTo 추출
   const params = new URLSearchParams(location.search);
-  const redirectTo = params.get("redirectTo") || "/"; // 기본값은 홈으로 설정
+  const redirectTo = params.get('redirectTo') || '/'; // 기본값은 홈으로 설정
 
-  const REST_API_KEY = "f61e8c06e81e7134bf354ceb1c687438";
+  const REST_API_KEY = 'f61e8c06e81e7134bf354ceb1c687438';
 
   //카카오오
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     if (window.Kakao && !window.Kakao.isInitialized()) {
       window.Kakao.init(REST_API_KEY);
-      console.log("카카오 code를 받아옵니다.");
+      console.log('카카오 code를 받아옵니다.');
     }
 
     //코드 받아왔는지 검사
     const params = new URLSearchParams(window.location.search);
-    const code = params.get("code");
+    const code = params.get('code');
 
     if (!code) return;
     else {
@@ -38,22 +38,13 @@ export default function Login() {
   const schema = yup.object({
     email: yup
       .string()
-      .matches(
-        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-        "올바른 이메일 형식이 아닙니다."
-      )
-      .matches(
-        /^[^\s@]+@[^\s@]+\.(com|net|kr)$/i,
-        "이메일 형식은 .com, .net, .kr 만 허용됩니다."
-      )
-      .required("필수 입력입니다."),
+      .matches(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, '올바른 이메일 형식이 아닙니다.')
+      .matches(/^[^\s@]+@[^\s@]+\.(com|net|kr)$/i, '이메일 형식은 .com, .net, .kr 만 허용됩니다.')
+      .required('필수 입력입니다.'),
     password: yup
       .string()
-      .required("필수 입력입니다.")
-      .matches(
-        /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?/~`\-=|\\]).{10,16}$/,
-        "10~16자 대소문자+영문+특수 기호로 조합해주세요."
-      ),
+      .required('필수 입력입니다.')
+      .matches(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?/~`\-=|\\]).{10,16}$/, '10~16자 대소문자+영문+특수 기호로 조합해주세요.'),
   });
 
   //폼 상태관리
@@ -66,12 +57,12 @@ export default function Login() {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
-    mode: "onBlur", // 실시간 검사
+    mode: 'onBlur', // 실시간 검사
   });
 
   //로그인 버튼 클릭
   const clickLogin = async () => {
-    const result = await MemberApi.login(watch("email"), watch("password"));
+    const result = await MemberApi.login(watch('email'), watch('password'));
     loginResponse(result);
   };
   //카카오 로그인
@@ -83,13 +74,13 @@ export default function Login() {
   //로그인 응답처리
   const loginResponse = (result) => {
     if (result.success) {
-      sessionStorage.setItem("loginName", result.data.memberName);
-      sessionStorage.setItem("accessToken", result.data.accessToken);
-      sessionStorage.setItem("role", result.data.role);
+      sessionStorage.setItem('loginName', result.data.memberName);
+      sessionStorage.setItem('accessToken', result.data.accessToken);
+      sessionStorage.setItem('role', result.data.role);
 
       //만약
-      if (result.data.role == "ROLE_USER") conditionCheck();
-      const url = location.state?.nextUrl ? -1 : "/";
+      if (result.data.role == 'ROLE_USER') conditionCheck();
+      const url = location.state?.nextUrl ? -1 : '/';
       navigate(url);
     } else {
       alert(result.message);
@@ -102,15 +93,16 @@ export default function Login() {
 
     //만약 업그레이드 조건이 중족됐다면 이동
     if (result.success) {
-      navigate("/upgrade/", { state: { nextGrade: result.data } });
+      navigate('/upgrade/', { state: { nextGrade: result.data } });
     }
   };
   //카카오에 인가 코드를 발급받아서 다시 /login으로 온다.
   const kakaoCode = async () => {
-    setValue("email", "");
-    setValue("password", "");
+    setValue('email', '');
+    setValue('password', '');
     window.Kakao.Auth.authorize({
-      redirectUri: "http://localhost:3000/login", //
+      // redirectUri: "http://localhost:3000/login", // 개발용
+      redirectUri: 'http://13.209.222.217:3000/login', // 배포용
     });
   };
 
@@ -129,36 +121,24 @@ export default function Login() {
   // };
   return (
     <LoginComp>
-      <div className="login_inner">
-        <div className="login_container">
+      <div className='login_inner'>
+        <div className='login_container'>
           <h2>로그인</h2>
           <form onSubmit={handleSubmit(() => clickLogin())}>
-            <ul className="login_form">
+            <ul className='login_form'>
               <li>
-                <input
-                  type="email"
-                  placeholder="Email"
-                  {...register("email")}
-                />
-                {errors.email && (
-                  <p className="error_message">{errors.email.message}</p>
-                )}
+                <input type='email' placeholder='Email' {...register('email')} />
+                {errors.email && <p className='error_message'>{errors.email.message}</p>}
               </li>
               <li>
-                <input
-                  type="password"
-                  placeholder="Password"
-                  {...register("password")}
-                />
-                {errors.password && (
-                  <p className="error_message">{errors.password.message}</p>
-                )}
+                <input type='password' placeholder='Password' {...register('password')} />
+                {errors.password && <p className='error_message'>{errors.password.message}</p>}
               </li>
             </ul>
-            <div className="login_btn">
-              <button type="submit">로그인</button>
+            <div className='login_btn'>
+              <button type='submit'>로그인</button>
               <button onClick={() => kakaoCode()}>
-                <img src={kakao} alt="카카오 로그인 버튼" />
+                <img src={kakao} alt='카카오 로그인 버튼' />
               </button>
             </div>
           </form>

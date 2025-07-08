@@ -55,7 +55,8 @@ public interface GoodsMapper {
 
     @Named("imageFileUrl")
     public static String imageFileUrl(String imageFile) {
-        return "http://localhost:8080/resources/webapp/userImages/" + imageFile;
+        // return "http://localhost:8080/resources/webapp/userImages/" + imageFile; // 개발용
+        return "http://13.209.222.217:8080/resources/webapp/userImages/" + imageFile; // 배포용
     }
     @Named("toCategoryName")
     public static String imageFileUrl(Category category) {

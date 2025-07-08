@@ -1,7 +1,11 @@
 import axios from 'axios';
 import instance from '../api/axiosInstance'; // 인스턴스 불러오기
 
-const KH_DOMAIN = 'http://localhost:8080';
+import { API_BASE_URL } from '../services/app-config';
+// const KH_DOMAIN = 'http://localhost:8080'; // 개발용
+const KH_DOMAIN = `${API_BASE_URL}`; // 배포용
+
+
 const OrderApi = {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 주  문 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // <Order /> : 주문하기

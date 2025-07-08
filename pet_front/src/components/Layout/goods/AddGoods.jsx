@@ -4,15 +4,19 @@ import { useEffect, useState } from 'react';
 import GoodsApi from '../../../api/GoodsApi';
 import GoodsComp from './AddGoodsStyle';
 
+import { API_BASE_URL } from '../../../services/app-config';
+// const KH_DOMAIN = 'http://localhost:8080'; // 개발용
+const KH_DOMAIN = `${API_BASE_URL}`; // 배포용
+
 export default function AddGoods({ onClose, refreshList, mode = 'create', targetGoods = null }) {
   const navigate = useNavigate();
   //const goodsImg = process.env.PUBLIC_URL + '/images/pic1.png';
-  const imgUrl = 'http://localhost:8080/resources/webapp/userImages/';
+  const imgUrl = `${KH_DOMAIN}/resources/webapp/userImages/`;
   // 카테고리
   const [categories, setCategories] = useState([]);
 
   // 이미지 미리보기 위한 상태변수
-  const [prevImg, setPrevImg] = useState('http://localhost:8080/resources/webapp/userImages/basicimg.jpg');
+  const [prevImg, setPrevImg] = useState(`${KH_DOMAIN}/resources/webapp/userImages/basicimg.jpg`);
 
   // form의 input 값들을 state로 관리하고
   // submit 버튼 클릭 시 axios.post()로 데이터 전송
@@ -115,7 +119,7 @@ export default function AddGoods({ onClose, refreshList, mode = 'create', target
         quantity: targetGoods.quantity,
         price: targetGoods.price,
       });
-      setPrevImg(`http://localhost:8080/resources/webapp/userImages/${targetGoods.imageFile}`);
+      setPrevImg(`${KH_DOMAIN}/resources/webapp/userImages/${targetGoods.imageFile}`);
     }
   }, [mode, targetGoods]);
 

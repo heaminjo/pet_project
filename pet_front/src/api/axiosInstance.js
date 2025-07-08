@@ -1,17 +1,20 @@
-import axios from "axios";
-import MemberApi from "./MemberApi";
+import axios from 'axios';
+import MemberApi from './MemberApi';
 
 //공통 설정을 갖는 axios 인스턴스
 const instance = axios.create({
-  baseURL: "http://localhost:8080",
+  // baseURL: "http://localhost:8080", // 개발용
+  baseURL: 'http://13.209.222.217:8080', // 배포용
+  // baseURL: 'http://13.209.222.217', // 배포용
+  withCredentials: true, // 배포용
 });
 
 //요청 인터셉터
 instance.interceptors.request.use((config) => {
-  const token = sessionStorage.getItem("accessToken");
+  const token = sessionStorage.getItem('accessToken');
   //토큰이 존재 할 경우 Header에 토큰을 담는다.
   if (token != null) {
-    config.headers["authorization"] = `Bearer ${token}`;
+    config.headers['Authorization'] = `Bearer ${token}`;
   }
   return config;
 });
@@ -50,12 +53,12 @@ instance.interceptors.response.use(
 
           //새로 발급된 엑세스 토큰
           const newToken = response.data.accessToken;
-          console.log("새로운 토큰 발급:", newToken);
+          console.log('새로운 토큰 발급:', newToken);
 
-          sessionStorage.setItem("accessToken", newToken);
+          sessionStorage.setItem('accessToken', newToken);
 
           //요청 헤더에 새 토큰 업데이트
-          originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
+          originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
 
           // 모든 대기 중이던 요청에 새 토큰 전달
           requestQueue.forEach((cb) => cb(newToken));
@@ -65,9 +68,9 @@ instance.interceptors.response.use(
         } catch (error) {
           requestQueue = []; // 실패한 경우도 큐는 초기화해야 함
           //리프레쉬 토큰 401 시 로그아웃 처리하고 다시 로그인 요청하도록 하게 에러 객체 전달
-          alert("세션이 만료되었습니다. 다시 로그인해주세요.");
+          alert('세션이 만료되었습니다. 다시 로그인해주세요.');
           sessionStorage.clear();
-          navigate("/login");
+          navigate('/login');
           return new Promise(() => {}); // 무한 pending 상태 → UI에 에러 전달 안 됨
         } finally {
           isRefreshing = false;
@@ -79,7 +82,7 @@ instance.interceptors.response.use(
           //요청 대기 큐에 함수를 넣어놓는다.
           //리프레쉬 토큰이 오게된다면 token으로 들어가 해당 함수들을 실행하게 됌
           requestQueue.push((token) => {
-            originalRequest.headers["Authorization"] = `Bearer ${token}`;
+            originalRequest.headers['Authorization'] = `Bearer ${token}`;
             resolve(instance(originalRequest));
           });
         });
