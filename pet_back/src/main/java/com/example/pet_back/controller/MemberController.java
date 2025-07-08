@@ -26,14 +26,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/user")
 @PreAuthorize("hasRole('USER')")
-// @CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", allowCredentials = "true")
-
 @CrossOrigin(origins = {
+        "http://13.209.222.217",
         "http://13.209.222.217:3000",
         "http://13.209.222.217:8080",
         "http://localhost:3000",
         "http://localhost:8080"
-},  allowedHeaders = "*", allowCredentials = "true")
+}, allowCredentials = "true")
 public class MemberController {
     private final MemberService memberService;
     private final ImageService imageService;

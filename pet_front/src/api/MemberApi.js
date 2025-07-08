@@ -19,7 +19,7 @@ const MemberApi = {
   // },
   // 배포
   login: async (email, password) => {
-    const login = { email, password };
+    const login = { email: email, password: password };
     const result = await instance.post(`/auth/login`, login, {
       withCredentials: true,
     });

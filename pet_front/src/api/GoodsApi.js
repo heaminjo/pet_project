@@ -214,7 +214,7 @@ const GoodsApi = {
   // },
   // 배포
   getBest: async () => {
-    const result = await instance.get(`/goods/banner/list`);
+    const result = await instance.get(`/goods/best/list`);
     return result.data;
   },
 };

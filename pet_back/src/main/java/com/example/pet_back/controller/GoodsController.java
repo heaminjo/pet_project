@@ -32,8 +32,8 @@ import java.util.Map;
 @RequiredArgsConstructor // private final만
 @RequestMapping(value = "/goods")
 @RestController
-// @CrossOrigin(origins = "http://localhost:3000")
 @CrossOrigin(origins = {
+        "http://13.209.222.217",
         "http://13.209.222.217:3000",
         "http://13.209.222.217:8080",
         "http://localhost:3000",

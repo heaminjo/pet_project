@@ -1,0 +1,32 @@
+# application.properties 변경
+
+server:
+  port: 8080
+spring:
+  application:
+    name: pet_back
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://ls-75ac0cfe0d20aac1f759d345d76a656ef2602b0d.chqqcssmcms2.ap-northeast-2.rds.amazonaws.com:3306/pet?useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+    username: admin
+    password: mysql1958
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+  mybatis:
+    mapper-locations: classpath:/mappers/*Mapper.xml
+    type-aliases-package: com.example.pet_back.domain
+  web:
+    resources:
+      static-locations: classpath:/static/,file:/home/ubuntu/userImages/
+kakao:
+  client-id: f61e8c06e81e7134bf354ceb1c687438
+  redirect-uri: http://13.209.222.217:3000/login
+  token-host: https://kauth.kakao.com
+  user-host: https://kapi.kakao.com
+file:
+  upload:
+    path: /home/ubuntu/userImages
+    url: http://13.209.222.217:8080/userImages/

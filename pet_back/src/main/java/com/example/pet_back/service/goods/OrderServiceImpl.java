@@ -218,7 +218,9 @@ public class OrderServiceImpl implements OrderService {
                     .orElseThrow(() -> new RuntimeException("상품이 존재하지 않습니다."));
 
             // goods id 로 cart 조회후 삭제 (현재 장바구니 전체에서 삭제하도록 함)
-            cartRepository.deleteByGoodsId(goods.getGoodsId());
+            if(null != cartRepository.findByGoodsId(goods.getGoodsId())){
+                cartRepository.deleteByGoodsId(goods.getGoodsId());
+            }
         }
         System.out.println("OrderServiceImpl 의 payGoods() 끝");
         return ResponseEntity.status(HttpStatus.OK).body("결제가 정상적으로 완료되었습니다."); // orderDetail컴포넌트로 이동
@@ -255,7 +257,8 @@ public class OrderServiceImpl implements OrderService {
         // 이미지 로직
         // 1. 파일 저장 경로
         List<String> uploadedFileNames = new ArrayList<>();
-        String realPath = "C:/devv/pet_project/pet_back/src/main/resources/webapp/userImages/";
+        // String realPath = "C:/devv/pet_project/pet_back/src/main/resources/webapp/userImages/"; // 개발용
+        String realPath = fileUploadProperties.getPath(); // 배포용
 
         // 2. 업로드 이미지 처리
         if (imageFiles  != null && !imageFiles .isEmpty()) {

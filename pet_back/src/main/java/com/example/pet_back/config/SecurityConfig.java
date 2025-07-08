@@ -85,9 +85,10 @@ public class SecurityConfig {
                         //관리자와 회원의 경로가 나올때마다 즉시 추가
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasRole("USER")
-                        .requestMatchers("/goods/**").permitAll()
-                        .requestMatchers("/order/**").permitAll()
-                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/goods/banner/list", "/goods/category/list", "/goods/page/list", "/goods/best/list", "/goods/list").permitAll()
+                        .requestMatchers("/goods/**").authenticated()
+                        .requestMatchers("/order/**").authenticated()
+                        .requestMatchers("/auth/**").permitAll() // 회원가입, 로그인 등 비인가 사용자 접근페이지므로 열어둠
                         //OPTIONS 메서드로 들어오는 모든 요청을 인증없이 허용
                         //프론트엔드가 API 요청 전 보내는 CORS 사전 확인 요청을 막지 않기 위해
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
@@ -113,29 +114,8 @@ public class SecurityConfig {
         return builder.build();
     }
 
-    
-    // CORS 정책 : 둘 중 하나만 사용
-    // 택1
-//    @Bean
-//    public CorsConfigurationSource corsConfigurationSource() {
-//        CorsConfiguration configuration = new CorsConfiguration();
-//        configuration.setAllowedOrigins(List.of(
-//                "http://13.209.222.217",
-//                "http://13.209.222.217:3000",
-//                "http://13.209.222.217:8080",
-//                "http://localhost:3000"
-//        ));
-//        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-//        configuration.setAllowedHeaders(List.of("*"));
-//        configuration.setExposedHeaders(List.of("Authorization"));
-//        configuration.setAllowCredentials(true);
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", configuration);
-//        return source;
-//    }
-
+    // CORS 정책
     // 배포: corsFilter를 별도로 등록해 Spring Security보다 먼저 적용
-    // 택2 : 기본값
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();

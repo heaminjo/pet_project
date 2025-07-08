@@ -111,6 +111,8 @@ public class CartServiceImpl implements CartService {
                                        Long goodsId, int quantity) {
         System.out.println("** goodsRequestDTO goods_id : " + goodsId);
         log.info("** CartServiceImpl 실행됨 **");
+        log.info("userDetails: " + userDetails);
+
         // member 불러옴
         Member member = memberRepository.findById( //
                         userDetails.getMember().getId()) //

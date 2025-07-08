@@ -168,7 +168,8 @@ public class GoodsServiceImpl implements GoodsService {
 
         // 이미지 로직
         // 1. 파일 저장 경로
-        String realPath = "C:/devv/pet_project/pet_back/src/main/resources/webapp/userImages/";
+        // String realPath = "C:/devv/pet_project/pet_back/src/main/resources/webapp/userImages/"; // 개발용
+        String realPath = fileUploadProperties.getPath(); // 배포용
 
         // 2. 디렉터리 생성
         File path = new File(realPath); // 파일 또는 디렉토리를 참조하는 File 객체생성
@@ -177,7 +178,8 @@ public class GoodsServiceImpl implements GoodsService {
         // 3. 이미지가 제대로 넘어오지 않는 CASE 위한 방어 코드 (기본이미지 복사 저장)
         File defaultImg = new File(realPath + "basicimg.jpg");
         if (!defaultImg.exists()) {
-            String basicImg = "C:/devv/pet_project/pet_back/src/main/resources/webapp/userImages/basicimg.jpg";
+            // String basicImg = "C:/devv/pet_project/pet_back/src/main/resources/webapp/userImages/basicimg.jpg"; // 개발용
+            String basicImg = fileUploadProperties.getPath()+"/basicimg.jpg"; // 배포용
             FileInputStream fin = new FileInputStream(new File(basicImg)); // 읽어오기 위한 스트림
             FileOutputStream fout = new FileOutputStream(path); // 쓰기 위한 스트림
             FileCopyUtils.copy(fin, fout); // Spring이 제공하는 유틸리티클래스 (파일복사)
@@ -224,7 +226,8 @@ public class GoodsServiceImpl implements GoodsService {
 
         // 이미지 로직
         // 1. 파일 저장 경로
-        String realPath = "C:/devv/pet_project/pet_back/src/main/resources/webapp/userImages/";
+        // String realPath = "C:/devv/pet_project/pet_back/src/main/resources/webapp/userImages/"; // 개발용
+        String realPath = fileUploadProperties.getPath(); // 배포용
 
         // 2. 업로드 이미지 처리
         if (imageFile != null && !imageFile.isEmpty()) {
