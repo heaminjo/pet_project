@@ -118,7 +118,7 @@ public class OrderDetailServiceImpl implements OrderDetailService{
                             .price(goods.getPrice())
                             .description(goods.getDescription())
                             .goodsState(goods.getGoodsState())
-                            .imageFile(fileUploadProperties.getUrl() + od.getGoods().getImageFile()) // 백엔드 경로 설정
+                            .imageFile(fileUploadProperties.getStaticUrl() + od.getGoods().getImageFile()) // 백엔드 경로 설정
                             .rating(goods.getRating())
                             .views(goods.getViews())
                             .reviewNum(goods.getReviewNum())
@@ -144,7 +144,7 @@ public class OrderDetailServiceImpl implements OrderDetailService{
                             .price(goods.getPrice())
                             .description(goods.getDescription())
                             .goodsState(goods.getGoodsState())
-                            .imageFile(fileUploadProperties.getUrl() + od.getGoods().getImageFile()) // 백엔드 경로 설정
+                            .imageFile(fileUploadProperties.getStaticUrl() + od.getGoods().getImageFile()) // 백엔드 경로 설정
                             .totalPrice(order.getTotalPrice())
                             .totalQuantity(order.getTotalQuantity())
                             .regDate(order.getRegDate())
@@ -258,7 +258,7 @@ public class OrderDetailServiceImpl implements OrderDetailService{
                         .price(od.getGoods().getPrice())
                         .description(od.getGoods().getDescription())
                         .goodsState(od.getGoods().getGoodsState())
-                        .imageFile(fileUploadProperties.getUrl() + od.getGoods().getImageFile()) // 백엔드 경로 설정
+                        .imageFile(fileUploadProperties.getStaticUrl() + od.getGoods().getImageFile()) // 백엔드 경로 설정
                         // Orders
                         .totalPrice(od.getOrders().getTotalPrice())
                         .totalQuantity(od.getOrders().getTotalQuantity())
@@ -382,7 +382,6 @@ public class OrderDetailServiceImpl implements OrderDetailService{
     }
 
 
-
 //    // <OrderList /> : 리뷰 중복등록 검증
 //    // 리뷰 중복등록 검증
 //    @Override
@@ -402,8 +401,5 @@ public class OrderDetailServiceImpl implements OrderDetailService{
 //        }
 //        // return ResponseEntity.status(HttpStatus.OK).body(true);
 //    }
-
-
-
 
 }

@@ -9,7 +9,6 @@ import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
 import com.example.pet_back.entity.GoodsBest;
-import com.example.pet_back.entity.Goodsbanner;
 import com.example.pet_back.entity.Member;
 import com.example.pet_back.mapper.MemberMapper;
 import com.example.pet_back.repository.AddressRepository;
@@ -42,12 +41,15 @@ import java.util.stream.Collectors;
 public class AdminServiceImpl implements AdminService {
 
     private final MemberRepository memberRepository;
-    private final MemberMapper mapper;
     private final AddressRepository addressRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final FileUploadProperties fileUploadProperties;
     private final GoodsBannerRepository goodsBannerRepository;
     private final GoodsBestRepository goodsBestRepository;
+
+    private final FileUploadProperties fileUploadProperties;
+
+    private final PasswordEncoder passwordEncoder;
+    private final MemberMapper mapper;
+
     //관리자의 회원 조회
     @Override
     public ResponseEntity<?> adminUserDetail(Long id) {
@@ -59,7 +61,7 @@ public class AdminServiceImpl implements AdminService {
         //만약 카카오 회원이라면 이미지 경로가 다름
         if(member.getKakaoId() == null){
             //디렉토리에서 파일 가져오기
-            String realPath = fileUploadProperties.getUrl(); // http://localhost:8080/resources/webapp
+            String realPath = fileUploadProperties.getUserUrl(); // http://localhost:8080/resources/webapp
 
             //해당파일은 MvcConfig에 매핑되어 이미지를 매핑
             dto.setImageFile(realPath + member.getImageFile());
@@ -199,7 +201,7 @@ public class AdminServiceImpl implements AdminService {
 
         if(goodsBest.isPresent()){
             goodsBestRepository.deleteById(id);
-            return new ApiResponse(true,"배너가 삭제돼었습니다.");
+            return new ApiResponse(true,"배너가 삭제 되었습니다.");
         }else{
             return new ApiResponse(false,"존재하지 않는 상품입니다.");
 

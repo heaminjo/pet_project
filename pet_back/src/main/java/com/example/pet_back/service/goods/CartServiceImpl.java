@@ -89,7 +89,7 @@ public class CartServiceImpl implements CartService {
         for (GoodsResponseDTO dto : goodsResponseDTOList) {
             Integer quantity = goodsIdToQuantityMap.get(dto.getGoodsId());
             dto.setCartQuantity(quantity);
-            dto.setImageFile(fileUploadProperties.getUrl() + dto.getImageFile()); // 백엔드 이미지경로 지정
+            dto.setImageFile(fileUploadProperties.getStaticUrl() + dto.getImageFile()); // 백엔드 이미지경로 지정
         }
 
         // 6. 반환할 ResponseDTO 에 List 저장 (goodsResponseDTOList)

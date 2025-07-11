@@ -10,7 +10,7 @@ import com.example.pet_back.domain.goods.GoodsResponseDTO;
 import com.example.pet_back.domain.goods.GoodsSimpleDTO;
 import com.example.pet_back.entity.Category;
 import com.example.pet_back.entity.Goods;
-import com.example.pet_back.entity.Goodsbanner;
+import com.example.pet_back.entity.GoodsBanner;
 import com.example.pet_back.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Mapper;
@@ -43,7 +43,7 @@ public interface GoodsMapper {
 
     //배너 DTO 변환
     @Mapping(source = "imageFile" ,target = "imageFile",qualifiedByName = "imageFileUrl")
-    public BannerDTO bannerToDto(Goodsbanner goodsbanner);
+    public BannerDTO bannerToDto(GoodsBanner goodsbanner);
 
     //카테고리 DTO 변환
     public CategoryResponseDTO categoryToDto(Category category);
@@ -57,10 +57,10 @@ public interface GoodsMapper {
     @Named("imageFileUrl")
     public static String imageFileUrl(String imageFile) {
         // return "http://localhost:8080/resources/webapp/userImages/" + imageFile; // 개발용
-        return "http://13.209.222.217:8080/resources/webapp/userImages/" + imageFile; // 배포용
+        return "http://13.209.222.217:8080/userImages/" + imageFile; // 배포용
     }
     @Named("toCategoryName")
-    public static String imageFileUrl(Category category) {
+    public static String categoryToName(Category category) {
         return category.getCategoryName();
     }
 

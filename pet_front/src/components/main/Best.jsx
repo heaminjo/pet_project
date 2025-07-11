@@ -75,31 +75,31 @@ const BestComp = styled.div`
     gap: 20px;
     @keyframes best {
       0% {
-        transform: scale(0.7);
+        transform: scale(0.95);
       }
       50% {
-        transform: scale(1.05);
+        transform: scale(1);
       }
       100% {
-        transform: scale(0.7);
+        transform: scale(0.95);
       }
     }
     .title {
       width: 300px;
       margin: 0 auto;
-      padding: 20px 0;
-      border-radius: 10px;
-      background-color: pink;
-      border: 1px solid #fff;
+      padding: 10px 0;
+      // border-radius: 10px;
+      background-color: rgb(255, 255, 255);
+      // border: 1px solid rgb(196, 187, 187);
+      // box-shadow: 1px 1px 1px #555;
       height: 40px;
-      box-shadow: 1px 1px 1px #555;
+
       position: relative;
       h2 {
         position: absolute;
         right: 65px;
-        color: #fff;
+        color: rgb(133, 121, 121);
         text-shadow: 1px 1px 1px #000;
-
         animation: 1s best infinite;
       }
     }
@@ -115,7 +115,7 @@ const BestComp = styled.div`
         display: flex;
         li {
           cursor: pointer;
-          width: 220px;
+          width: 210px;
           height: 100%;
           border-right: 1px solid #ccc;
           padding: 10px 20px;

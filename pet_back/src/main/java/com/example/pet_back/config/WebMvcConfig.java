@@ -35,22 +35,31 @@ public class WebMvcConfig implements WebMvcConfigurer {
         ;
     }
 
-    // 파일 경로
+    // 파일 경로 : 정적 리소스URL -> 실제 경로 매핑
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        String basePath = fileUploadProperties.getPath();  // /home/ubuntu/userImages
+        String userPath = fileUploadProperties.getUserPath();  // /home/ubuntu/pet_back/uploads/userImages/
+        String reviewPath = fileUploadProperties.getReviewPath();  // /home/ubuntu/pet_back/uploads/userImages/
+        String boardPath = fileUploadProperties.getBoardPath();  // /home/ubuntu/pet_back/uploads/userImages/
+        String staticPath = fileUploadProperties.getStaticPath();  // /home/ubuntu/pet_back/uploads/userImages/
 
         //멤버 이미지 경로 설정
-        registry.addResourceHandler("/resources/webapp/userImages/**")
+        // registry.addResourceHandler("/resources/webapp/userImages/**")
+        registry.addResourceHandler("/userImages/**")
                 // .addResourceLocations("file:src/main/resources/webapp/userImages/"); // 개발용
-                .addResourceLocations("file:" + basePath + "/userImages/"); // 배포용
-        //상품 이미지 경로
-        registry.addResourceHandler("/resources/webapp/goodsImages/**")
+                .addResourceLocations("file:" + userPath ); // 배포용
+        //리뷰 이미지 경로
+        registry.addResourceHandler("/reviewImages/**")
                 // .addResourceLocations("file:src/main/resources/webapp/goodsImages/"); // 개발용
-                .addResourceLocations("file:" + basePath + "/goodsImages/"); // 배포용
+                .addResourceLocations("file:" + reviewPath); // 배포용
         //게시글 이미지 경로
-        registry.addResourceHandler("/resources/webapp/boardImages/**")
+        registry.addResourceHandler("/boardImages/**")
                 // .addResourceLocations("file:src/main/resources/webapp/boardImages/"); // 개발용
-                .addResourceLocations("file:" + basePath + "/boardImages/"); // 배포용
+                .addResourceLocations("file:" + boardPath); // 배포용
+        //정적 이미지 소스 경로
+        registry.addResourceHandler("/images/**")
+                // .addResourceLocations("file:src/main/resources/webapp/boardImages/"); // 개발용
+                .addResourceLocations("file:" + staticPath); // 배포용
+
     }
 }

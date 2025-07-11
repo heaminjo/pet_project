@@ -258,7 +258,7 @@ public class OrderServiceImpl implements OrderService {
         // 1. 파일 저장 경로
         List<String> uploadedFileNames = new ArrayList<>();
         // String realPath = "C:/devv/pet_project/pet_back/src/main/resources/webapp/userImages/"; // 개발용
-        String realPath = fileUploadProperties.getPath(); // 배포용
+        String realPath = fileUploadProperties.getReviewPath(); // 배포용
 
         // 2. 업로드 이미지 처리
         if (imageFiles  != null && !imageFiles .isEmpty()) {
@@ -447,13 +447,13 @@ public class OrderServiceImpl implements OrderService {
         // 이미지 리스트 백엔드 경로 지정
         dtoList.forEach(dto -> {
             if (dto.getGoods() != null) {
-                dto.getGoods().setImageFile(fileUploadProperties.getUrl() + dto.getGoods().getImageFile());
+                dto.getGoods().setImageFile(fileUploadProperties.getReviewUrl() + dto.getGoods().getImageFile());
             }
 
             if (dto.getImageFile() != null && !dto.getImageFile().isBlank()) {
                 String[] paths = dto.getImageFile().split(",");
                 for (int i = 0; i < paths.length; i++) {
-                    paths[i] = fileUploadProperties.getUrl() + paths[i].trim();
+                    paths[i] = fileUploadProperties.getReviewUrl() + paths[i].trim();
                 }
                 dto.setImageFile(String.join(",", paths));
             }
@@ -585,7 +585,7 @@ public class OrderServiceImpl implements OrderService {
             dto.setTotalGoods(list.size());  //총 상품 건 수 저장
             //만약 비어있지않다면
             if(!list.isEmpty()){
-                dto.setImageFile(fileUploadProperties.getUrl()+list.get(0).getGoods().getImageFile());
+                dto.setImageFile(fileUploadProperties.getStaticUrl()+list.get(0).getGoods().getImageFile());
                 dto.setGoodsName(list.get(0).getGoods().getGoodsName());
             }
             response.add(dto);

@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import styled from "styled-components";
-import AdminApi from "../../api/AdminApi";
-import GoodsApi from "../../api/GoodsApi";
+import React, { useEffect, useRef, useState } from 'react';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import styled from 'styled-components';
+import AdminApi from '../../api/AdminApi';
+import GoodsApi from '../../api/GoodsApi';
 function Banner() {
   const [banner, setBanner] = useState([]);
 
@@ -28,22 +28,22 @@ function Banner() {
     autoplay: true, //자동 재생
     speed: 700, //슬라이드 이동 속도
     autoplaySpeed: 3000, //슬라이드간 대기 시간
-    cssEase: "ease-in-out", //애니메이션 효과
+    cssEase: 'ease-in-out', //애니메이션 효과
     nextArrow: <NextArrow sliderRef={sliderRef} />,
     prevArrow: <PrevArrow sliderRef={sliderRef} />,
   };
   return (
     <BannerComp>
-      <div className="slider-container">
+      <div className='slider-container'>
         {banner.length == 1 ? (
-          <div className="item" id="item_1">
-            <img src={banner[0]?.imageFile} alt="배너 이미지" />
+          <div className='item' id='item_1'>
+            <img src={banner[0]?.imageFile} alt='배너 이미지' />
           </div>
         ) : (
           <Slider {...settings} ref={sliderRef}>
             {banner.map((b) => (
-              <div className="item" id="item_1">
-                <img src={b.imageFile} alt="배너 이미지" />
+              <div className='item' id='item_1'>
+                <img src={b.imageFile} alt='배너 이미지' />
               </div>
             ))}
           </Slider>
@@ -55,7 +55,7 @@ function Banner() {
 
 export default Banner;
 const BannerComp = styled.div`
-  height: calc(100vh - 200px);
+  height: calc(100vh - 400px);
   width: 100%;
   .slider-container {
     width: 100%;
@@ -64,7 +64,7 @@ const BannerComp = styled.div`
     .item {
       width: 100%;
       margin-bottom: 50px;
-      border: 2px solid #555;
+      border: 1px solid rgb(184, 173, 173);
 
       img {
         width: 100%;
@@ -75,7 +75,7 @@ const BannerComp = styled.div`
   }
   .slick-slide:focus,
   .slick-slider:focus,
-  [class*="sc-"]:focus {
+  [class*='sc-']:focus {
     outline: none !important;
     box-shadow: none !important;
   }
@@ -84,12 +84,12 @@ const BannerComp = styled.div`
 //다음 버튼 킄ㄹ릭시 자동재생 중지 더 빠르게게
 function NextArrow({ sliderRef }) {
   const clickNext = () => {
-    console.log("실행");
+    console.log('실행');
     sliderRef.current?.slickNext();
   };
   return (
     <ArrowComp>
-      <div className="custom-arrow next" onClick={clickNext}>
+      <div className='custom-arrow next' onClick={clickNext}>
         ▶
       </div>
     </ArrowComp>
@@ -103,7 +103,7 @@ function PrevArrow({ sliderRef }) {
   };
   return (
     <ArrowComp>
-      <div className="custom-arrow prev" onClick={clickPrev}>
+      <div className='custom-arrow prev' onClick={clickPrev}>
         ◀
       </div>
     </ArrowComp>
@@ -112,13 +112,13 @@ function PrevArrow({ sliderRef }) {
 const ArrowComp = styled.div`
   .custom-arrow {
     width: 50px;
-    height: 50px;
+    height: 100px;
     border-radius: 100%;
-    background-color: #000;
-    color: #fff;
+    // background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     text-align: center;
     line-height: 50px;
-    font-size: 30px;
+    font-size: 50px;
     opacity: 0.5;
     position: absolute;
     z-index: 100;

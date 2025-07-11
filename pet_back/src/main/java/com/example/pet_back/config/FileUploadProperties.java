@@ -10,6 +10,16 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "file.upload")
 public class FileUploadProperties {
 
-    private String path;
-    private String url;
+    private String userPath; // (멤버) 업로드 경로
+    private String userUrl; // (멤버) 업로드 이미지 URL
+
+    private String reviewPath; // (리뷰) 업로드 경로
+    private String reviewUrl; // (리뷰) 업로드 이미지 URL
+
+    private String boardPath; // (게시물) 업로드 경로
+    private String boardUrl; // (게시물) 업로드 이미지 URL
+
+    private String staticPath; // 정적 이미지 업로드 경로
+    private String staticUrl;  // 정적 이미지 URL
+
 }

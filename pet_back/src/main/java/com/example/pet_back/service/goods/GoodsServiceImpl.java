@@ -73,7 +73,7 @@ public class GoodsServiceImpl implements GoodsService {
         Goods goods = goodsRepository.findById(goodsId).get();
 
         //이미지 파일 수정 (조해민)
-        goods.setImageFile(fileUploadProperties.getUrl()+goods.getImageFile());
+        goods.setImageFile(fileUploadProperties.getStaticUrl()+goods.getImageFile());
         return ResponseEntity.status(HttpStatus.OK).body(goods);
     }
 
@@ -124,7 +124,7 @@ public class GoodsServiceImpl implements GoodsService {
                         .price(goods.getPrice())
                         .description(goods.getDescription())
                         .goodsState(goods.getGoodsState())
-                        .imageFile(fileUploadProperties.getUrl() + goods.getImageFile()) // 백엔드 경로 설정
+                        .imageFile(fileUploadProperties.getStaticUrl() + goods.getImageFile())
                         .rating(goods.getRating())
                         .views(goods.getViews())
                         .reviewNum(goods.getReviewNum())
@@ -169,7 +169,7 @@ public class GoodsServiceImpl implements GoodsService {
         // 이미지 로직
         // 1. 파일 저장 경로
         // String realPath = "C:/devv/pet_project/pet_back/src/main/resources/webapp/userImages/"; // 개발용
-        String realPath = fileUploadProperties.getPath(); // 배포용
+        String realPath = fileUploadProperties.getStaticPath(); // 배포용
 
         // 2. 디렉터리 생성
         File path = new File(realPath); // 파일 또는 디렉토리를 참조하는 File 객체생성
@@ -179,7 +179,7 @@ public class GoodsServiceImpl implements GoodsService {
         File defaultImg = new File(realPath + "basicimg.jpg");
         if (!defaultImg.exists()) {
             // String basicImg = "C:/devv/pet_project/pet_back/src/main/resources/webapp/userImages/basicimg.jpg"; // 개발용
-            String basicImg = fileUploadProperties.getPath()+"/basicimg.jpg"; // 배포용
+            String basicImg = fileUploadProperties.getStaticPath()+"/basicimg.jpg"; // 배포용
             FileInputStream fin = new FileInputStream(new File(basicImg)); // 읽어오기 위한 스트림
             FileOutputStream fout = new FileOutputStream(path); // 쓰기 위한 스트림
             FileCopyUtils.copy(fin, fout); // Spring이 제공하는 유틸리티클래스 (파일복사)
@@ -227,7 +227,7 @@ public class GoodsServiceImpl implements GoodsService {
         // 이미지 로직
         // 1. 파일 저장 경로
         // String realPath = "C:/devv/pet_project/pet_back/src/main/resources/webapp/userImages/"; // 개발용
-        String realPath = fileUploadProperties.getPath(); // 배포용
+        String realPath = fileUploadProperties.getStaticPath(); // 배포용
 
         // 2. 업로드 이미지 처리
         if (imageFile != null && !imageFile.isEmpty()) {
@@ -332,7 +332,7 @@ public class GoodsServiceImpl implements GoodsService {
                         .price(goods.getPrice())
                         .description(goods.getDescription())
                         .goodsState(goods.getGoodsState())
-                        .imageFile(fileUploadProperties.getUrl() + goods.getImageFile()) // 백엔드 경로 설정
+                        .imageFile(fileUploadProperties.getStaticUrl() + goods.getImageFile()) // 백엔드 경로 설정
                         .rating(goods.getRating())
                         .views(goods.getViews())
                         .reviewNum(goods.getReviewNum())
@@ -402,13 +402,13 @@ public class GoodsServiceImpl implements GoodsService {
     //배너 목록 가져오기
     @Override
     public List<BannerDTO> bannerList() {
-        List<Goodsbanner> bannerList = goodsBannerRepository.bannerListAll();
+        List<GoodsBanner> bannerList = goodsBannerRepository.bannerListAll();
         List<BannerDTO> response = new ArrayList<>();
 
         //수동으로 매핑
-        for(Goodsbanner g : bannerList){
-            String imagePath = fileUploadProperties.getUrl()+g.getImageFile();
-
+        for(GoodsBanner g : bannerList){
+            String imagePath = fileUploadProperties.getStaticUrl() + g.getImageFile();
+            log.info("~~~~~~~~~~~ bannerList : goodsBanner imagePath = "+imagePath);
             response.add(new BannerDTO(g.getBannerId(),imagePath,g.getPosition()));
         }
         return response;
@@ -455,7 +455,7 @@ public class GoodsServiceImpl implements GoodsService {
         List<BestDTO> response = new ArrayList<>();
         //수동으로 매핑
         for(GoodsBest g : list){
-            String imagePath = fileUploadProperties.getUrl()+g.getGoods().getImageFile();
+            String imagePath = fileUploadProperties.getStaticUrl()+g.getGoods().getImageFile();
             response.add(new BestDTO(   g.getBestId(),
                                         g.getGoods().getGoodsId(),
                                         g.getGoods().getGoodsName(),
@@ -478,7 +478,7 @@ public class GoodsServiceImpl implements GoodsService {
         goodsBest.setGoods(goods);
         goodsBest.setPosition(dto.getPosition());
         goodsBestRepository.save(goodsBest);
-        return new ApiResponse(true,dto.getPosition()+"번째 자리에 베스트 상품이 추가돼었습니다.");
+        return new ApiResponse(true,dto.getPosition()+"번째 자리에 베스트 상품이 추가되었습니다.");
     }
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 카 테 고 리 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -496,7 +496,7 @@ public class GoodsServiceImpl implements GoodsService {
             category.setCategoryName(categoryName);
 
             categoryRepository.save(category);
-            return new ApiResponse(true,"카테고리 ["+categoryName+"] 가 추가 돼었습니다.");
+            return new ApiResponse(true,"카테고리 ["+categoryName+"] 가 추가되었습니다.");
         }
 
     }

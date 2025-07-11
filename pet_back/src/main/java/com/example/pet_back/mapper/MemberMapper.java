@@ -11,7 +11,6 @@ import com.example.pet_back.domain.member.GradeResponseDTO;
 import com.example.pet_back.domain.member.MemberRequestDTO;
 import com.example.pet_back.domain.member.MemberResponseDTO;
 import com.example.pet_back.entity.Address;
-import com.example.pet_back.entity.Goodsbanner;
 import com.example.pet_back.entity.Member;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

@@ -182,10 +182,11 @@ const GoodsApi = {
   // 배포
   getBanner: async () => {
     const result = await instance.get(`/goods/banner/list`);
+    console.log(`getBanner => `, result);
     return result.data;
   },
 
-  // //카테고리 목록 가져오기
+  //카테고리 목록 가져오기
   // getCategoryList: async () => {
   //   const result = await axios.get(`${KH_DOMAIN}/goods/category/list`);
   //   return result.data;
@@ -196,7 +197,7 @@ const GoodsApi = {
     return result.data;
   },
 
-  // //상품 페이징 목록
+  //상품 페이징 목록
   // getGoodsList: async (pages) => {
   //   const result = await axios.post(`${KH_DOMAIN}/goods/page/list`, pages);
   //   return result.data;
@@ -207,7 +208,7 @@ const GoodsApi = {
     return result.data;
   },
 
-  // //베스트 상품 가져오기
+  //베스트 상품 가져오기
   // getBest: async () => {
   //   const result = await axios.get(`${KH_DOMAIN}/goods/best/list`);
   //   return result.data;

@@ -1,14 +1,14 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const FooterComp = styled.footer`
   max-width: 1920px;
   .footer {
-    background-color: #fef7ec;
+    background-color:rgb(255, 255, 255);
     padding: 40px 20px;
     color: #444;
     text-align: center;
-    font-family: "Pretendard", sans-serif;
-    border-top: 2px solid #f4d19b;
+    font-family: 'Pretendard', sans-serif;
+    border-top: 1px solidrgb(128, 123, 123);
   }
 
   .footer-content {
@@ -20,7 +20,7 @@ const FooterComp = styled.footer`
   .footer h3 {
     font-size: 24px;
     margin-bottom: 10px;
-    color: #d08543;
+    color: rgb(129, 118, 118);
   }
 
   .footer p {

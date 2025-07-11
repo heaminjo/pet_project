@@ -93,7 +93,9 @@ const GoodsListComp = styled.div`
           flex: 0 0 calc(23% - 10px); /* 한 줄에 5개 (100% / 5) */
           border: 1px solid rgb(185, 185, 185);
           text-align: center;
-
+          .description {
+            height: 80px;
+          }
           .img-container {
             height: 180px;
             display: flex;
@@ -121,6 +123,12 @@ const GoodsListComp = styled.div`
             text-align: center;
             margin: 4px 0;
             word-break: break-word;
+          }
+
+          // ⭐ 리뷰 개수
+          .review-count {
+            color: red;
+            font-size: 16px;
           }
         }
       }

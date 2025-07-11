@@ -1,4 +1,4 @@
-const { default: styled } = require("styled-components");
+const { default: styled } = require('styled-components');
 
 const boardListContainer = styled.div`
   margin-top: 150px;
@@ -11,6 +11,7 @@ const boardListContainer = styled.div`
     width: 100%;
     height: 100px;
     margin: 20px 0;
+
     .boardListMenu {
       list-style: none;
       padding: 0;
@@ -22,17 +23,24 @@ const boardListContainer = styled.div`
       li {
         margin: 0 20px;
         font-size: 20px;
-        font-family: "GmarketSansMedium";
+        font-family: 'GmarketSansMedium';
         cursor: pointer;
         padding: 8px 12px;
         transition: background-color 0.3s;
       }
       li:hover {
-        background-color: #E5DDD6;
-        border-radius: 4px;
+        font-size: 1.1em;
+        text-shadow: 1px 1px 1px rgb(202, 186, 180);
+        color: rgb(146, 129, 129);
       }
     } //boardListMenu
   } //boardListMenuContainer
+  .boardTitle {
+    margin-left: 400px;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+  }
 
   table {
     flex-grow: 1;
@@ -41,11 +49,15 @@ const boardListContainer = styled.div`
     margin-right: auto;
     border-collapse: collapse;
     thead {
-      tr {
+      
+        height: 60px;
+        border: 1px solid rgb(201, 192, 192);
+
         td {
+        gap: 10px;
           font-size: 20px;
           font-weight: bold;
-          font-family: "GmarketSansMedium";
+          font-family: 'GmarketSansMedium';
         }
       }
     } //thead
@@ -53,7 +65,7 @@ const boardListContainer = styled.div`
       tr {
         td {
           font-size: 18px;
-          font-family: "GmarketSansMedium";
+          font-family: 'GmarketSansMedium';
           border-bottom: 1px solid #ccc; /* 가로줄만 */
           border-left: none;
           border-right: none;
@@ -68,9 +80,8 @@ const boardListContainer = styled.div`
             width: 100px;
             height: 40px;
             border: none;
-            border-radius: 10px;
             cursor: pointer;
-            background-color: #E5DDD6;
+            border: 1px solid rgb(190, 190, 190);
             border-bottom: none;
           }
         }
@@ -90,7 +101,7 @@ const boardListContainer = styled.div`
     margin: 30px 0 0 0;
 
     select,
-    input[type="text"] {
+    input[type='text'] {
       height: 40px;
       width: 120px; /* 원하는 너비로 맞추세요 */
       font-size: 16px;
@@ -112,7 +123,7 @@ const boardListContainer = styled.div`
       text-align: center;
     }
 
-    input[type="text"] {
+    input[type='text'] {
       border-left: none;
       border-right: none;
       border-radius: 0;
@@ -134,7 +145,7 @@ const boardListContainer = styled.div`
       color: #222;
       transition: background 0.2s;
       &:hover {
-        background: #E5DDD6;
+        background: #e5ddd6;
       }
     }
   }

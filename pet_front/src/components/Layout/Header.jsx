@@ -8,7 +8,7 @@ import MemberApi from '../../api/MemberApi';
 export default function Header() {
   const navigate = useNavigate();
   const [role, setRole] = useState(sessionStorage.getItem('role'));
-  const logo = '/home/ubuntu/userImages/몽냥마켓로고.png';
+  const logo = 'http://13.209.222.217:8080/images/MongNyang.png';
 
   //로그아웃 클릭
   const clickLogout = async () => {
@@ -29,19 +29,25 @@ export default function Header() {
           {sessionStorage.getItem('loginName') != null ? (
             <>
               <li>
-                <span>{sessionStorage.getItem('loginName')}님 환영합니다</span>
+                <span className='text'>{sessionStorage.getItem('loginName')}님 환영합니다</span>
               </li>
               <li>
-                <span onClick={() => clickLogout()}>로그아웃</span>
+                <span onClick={() => clickLogout()} className='text'>
+                  로그아웃
+                </span>
               </li>
             </>
           ) : (
             <>
               <li>
-                <span onClick={() => navigate('/login')}>로그인</span>
+                <span onClick={() => navigate('/login')} className='text'>
+                  로그인
+                </span>
               </li>
               <li>
-                <span onClick={() => navigate('/join')}>회원가입</span>
+                <span onClick={() => navigate('/join')} className='text'>
+                  회원가입
+                </span>
               </li>
             </>
           )}

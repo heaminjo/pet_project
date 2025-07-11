@@ -1,10 +1,10 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const NavComp = styled.nav`
   width: 100%;
   height: 50px;
-  border-bottom: 2px solid #000;
-  background-color: #c1b7b3;
+  // border-bottom: 1px solid rgb(207, 192, 192);
+  background-color: rgb(255, 255, 255);
 
   .nav_inner {
     width: 1200px;
@@ -16,9 +16,8 @@ const NavComp = styled.nav`
       justify-content: space-between;
       li {
         width: 100%;
-
         font-weight: bold;
-        color: #444;
+        color: rgb(102, 85, 85);
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -30,9 +29,9 @@ const NavComp = styled.nav`
         }
       }
       li:hover {
-        font-size: 1.2em;
-        text-shadow: 1px 1px 1px #a1887f;
-        color: #fff;
+        font-size: 1.05em;
+        text-shadow: 1px 1px 1px rgb(202, 186, 180);
+        color: rgb(146, 129, 129);
       }
     }
   }

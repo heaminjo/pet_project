@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const HeaderComp = styled.header`
   width: 100%;
@@ -7,8 +7,7 @@ const HeaderComp = styled.header`
   position: fixed;
   z-index: 10000;
   top: 0;
-  /* background-color: rgb(245, 242, 219); */
-  background-color: #fffdf6;
+  background-color: rgb(255, 255, 255);
   .header_inner {
     width: 80%;
     margin: 0 auto;
@@ -27,6 +26,7 @@ const HeaderComp = styled.header`
       gap: 10px;
       li {
         span {
+          color: rgb(87, 75, 75);
           cursor: pointer;
           line-height: 150px;
         }

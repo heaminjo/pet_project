@@ -163,18 +163,19 @@ export default function GoodsList() {
                   <div className='img-container'>
                     <img src={`${item.imageFile}`} alt={item.goodsName} className='prodimg' />
                   </div>
-
                   <div>
                     <b>{item.goodsName} </b>
                   </div>
-                  <div>
-                    {item.description} {', '}
-                    {item.quantity} 개
+                  <div className='description'>
+                    {item.description}
+                    <br />
+                    {/* {', '}
+                    {item.quantity} 개 */}
+                    {item.price} 원
                   </div>
-                  <div>{item.price} 원</div>
                   <div>
                     <span>{renderStars(item.rating)}</span>
-                    <span style={{ color: 'red', fontSize: '12px' }}> {'( ' + item.reviewNum + ' )'} </span>
+                    <span className='review-count'> {'( ' + item.reviewNum + ' )'} </span>
                   </div>
                 </div>
               ))}

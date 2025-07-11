@@ -116,15 +116,13 @@ export default function BoardList() {
             <li onClick={() => navigate('/boardList/free')}>게시판</li>
           </ul>
         </div>
+        <div className='boardTitle'>
+          {/* 해당 게시판의 종류에 따라 게시판 이름 표시 */}
+          {categoryNameMap[category] || '자유게시판'}
+        </div>
         <table>
           <thead>
             <tr>
-              <td colSpan={5} height={50}>
-                {/* 해당 게시판의 종류에 따라 게시판 이름 표시 */}
-                {categoryNameMap[category] || '자유게시판'}
-              </td>
-            </tr>
-            <tr style={{ backgroundColor: ' #E5DDD6' }}>
               <th>NO</th>
               <th>제목</th>
               <th>작성자</th>

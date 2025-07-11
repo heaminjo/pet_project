@@ -1,5 +1,6 @@
 package com.example.pet_back.controller.board;
 
+import com.example.pet_back.config.FileUploadProperties;
 import com.example.pet_back.domain.board.BoardDTO;
 import com.example.pet_back.domain.page.PageRequestDTO;
 import com.example.pet_back.domain.page.PageResponseDTO;
@@ -7,6 +8,7 @@ import com.example.pet_back.jwt.TokenProvider;
 import com.example.pet_back.service.ImageServiceImpl;
 import com.example.pet_back.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +34,8 @@ public class BoardController {
     private final TokenProvider tokenProvider;
     private final ImageServiceImpl imageService;
 
+    @Autowired
+    private FileUploadProperties fileUploadProperties;
 
     // 토큰에서 member_id 추출하는 유틸 함수
     private Long extractMemberIdFromToken(String authorizationHeader) {
@@ -151,7 +155,7 @@ public class BoardController {
     public ResponseEntity<List<Map<String, String>>> uploadFile(@RequestParam("files") List<MultipartFile> files) {
 
         //1. 저장 경로 지정
-        String uploadDir = imageService.getRealPath();
+        String uploadDir = fileUploadProperties.getBoardPath();
 
         //2. 파일명 중복 방지 (UUID 등으로 랜덤 이름)
         List<Map<String, String>> savedFiles = new ArrayList<>();
