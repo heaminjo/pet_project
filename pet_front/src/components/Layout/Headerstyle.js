@@ -24,6 +24,53 @@ const HeaderComp = styled.header`
         font-size: 25px;
       }
     }
+
+    .popup {
+      position: fixed;
+      top: 300px;
+      left: 780px;
+      background-color: #cbcec7;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      border-radius: 20px;
+      .popup_btn {
+        display: flex;
+        justify-content: end;
+
+        svg {
+          font-size: 40px;
+          cursor: pointer;
+        }
+      }
+      .box {
+        padding: 10px;
+        width: 300px;
+        height: 110px;
+        border-radius: 10px;
+        background-color: #fffdf6;
+        text-align: center;
+        h3 {
+          margin: 10px 0;
+        }
+        table {
+          text-align: start;
+          padding: 10px;
+
+          tr {
+            th {
+              width: 100px;
+              text-align: start;
+            }
+            td {
+              font-weight: bold;
+            }
+          }
+        }
+      }
+    }
+
     h1 {
       margin: 0;
       line-height: 100px;
@@ -48,6 +95,12 @@ const HeaderComp = styled.header`
         line-height: 150px;
         @media (max-width: 767px) {
           display: none;
+        }
+        span {
+          cursor: pointer;
+        }
+        span:last-child {
+          font-size: 15px;
         }
       }
       .min_sign {
