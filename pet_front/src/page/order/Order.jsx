@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import OrderTab from './OrderTab.jsx';
 import ReviewList from './review/ReviewList.jsx';
-import GoodsApi from '../../../api/GoodsApi.js';
-import Modal from '../../../modal/Modal.jsx';
+import GoodsApi from '../../api/GoodsApi.js';
+import Modal from '../../modal/Modal.jsx';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 import { FaHeart } from 'react-icons/fa';
 

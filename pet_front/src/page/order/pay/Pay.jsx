@@ -2,8 +2,8 @@ import PayComp from './PayStyle';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Popup from './Popup';
-import OrderApi from '../../../../api/OrderApi';
-import MemberApi from '../../../../api/MemberApi';
+import OrderApi from '../../../api/OrderApi';
+import MemberApi from '../../../api/MemberApi';
 
 export default function Pay() {
   const location = useLocation();

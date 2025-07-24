@@ -1,9 +1,9 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import CartComp from './CartStyle';
 import { useEffect, useRef, useState } from 'react';
-import PageNumber from '../../../util/PageNumber';
-import GoodsApi from '../../../../api/GoodsApi';
-import MemberApi from '../../../../api/MemberApi';
+import PageNumber from '../../../components/util/PageNumber';
+import GoodsApi from '../../../api/GoodsApi';
+import MemberApi from '../../../api/MemberApi';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 
 export default function Cart() {

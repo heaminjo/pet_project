@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const UserListComp = styled.div`
   width: 100%;
@@ -60,7 +60,7 @@ const UserListComp = styled.div`
         width: 100%;
         border-collapse: collapse;
         th {
-          background-color: rgb(255, 221, 0);
+          background-color: rgb(231, 226, 226);
           color: rgb(52, 45, 1);
           padding: 5px 0;
           text-align: start;

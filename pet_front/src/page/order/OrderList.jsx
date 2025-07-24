@@ -1,10 +1,10 @@
 import OrderListComp from './OrderListStyle';
-import GoodsApi from '../../../api/GoodsApi';
-import OrderApi from '../../../api/OrderApi';
+import GoodsApi from '../../api/GoodsApi';
+import OrderApi from '../../api/OrderApi';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import PageNumber from '../../util/PageNumber';
-import Modal from '../../../modal/Modal';
+import PageNumber from '../../components/util/PageNumber';
+import Modal from '../../modal/Modal';
 import Popup from './pay/Popup';
 
 export default function OrderDetail() {

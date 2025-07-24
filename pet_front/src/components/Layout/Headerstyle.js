@@ -13,12 +13,23 @@ const HeaderComp = styled.header`
     margin: 0 auto;
     height: 100%;
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    h1 {
-      margin: 0;
-      line-height: 100px;
-      cursor: pointer;
+    position: relative;
+
+    .left {
+      flex: 1;
     }
+    .center {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      img {
+        height: 80px;
+        cursor: pointer;
+      }
+    }
+
     .member_menu {
       display: flex;
       font-size: 13px;

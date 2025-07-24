@@ -2,8 +2,10 @@ import styled from 'styled-components';
 
 const FooterComp = styled.footer`
   max-width: 1920px;
+
   .footer {
-    background-color:rgb(255, 255, 255);
+    background-color: rgb(241, 236, 236);
+    border-top: 1px solid rgb(180, 169, 169);
     padding: 40px 20px;
     color: #444;
     text-align: center;
@@ -13,8 +15,21 @@ const FooterComp = styled.footer`
 
   .footer-content {
     max-width: 800px;
-    text-align: center;
     margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        height: 60px;
+        cursor: pointer;
+      }
+    }
   }
 
   .footer h3 {

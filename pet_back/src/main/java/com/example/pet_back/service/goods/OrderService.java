@@ -19,29 +19,9 @@ import java.util.Map;
 
 public interface OrderService {
 
-    // 결제페이지 - 고객 주소 가져오기
-    public ResponseEntity<?> findMemberAddress(CustomUserDetails userDetails);
-
-    // 결제시 할인율 계산, 결제금액 Preview (백엔드 일괄)
-    PaymentPreviewDTO calculatePaymentPreview(List<Map<String, Object>> goodsList, CustomUserDetails userDetails);
-
-    // 상품 결제
-    ResponseEntity<?> payGoods(CustomUserDetails userDetails, PayRequestDTO dto);
 
     // 배송조회
     ORDERSTATE deliveryStatus(CustomUserDetails userDetails, Long orderDetailId);
-
-    // 리뷰 작성
-    ResponseEntity<?> regReview(CustomUserDetails userDetails, ReviewUploadDTO dto) throws IOException;
-
-    // 리뷰 수정
-//    ResponseEntity<?> updateReview(CustomUserDetails userDetails, //
-//                                          ReviewUploadDTO reviewUploadDTO) throws IOException;
-    // 리뷰 삭제
-    ResponseEntity<?> deleteReview(Long reviewId);
-    
-    // 내 리뷰 목록 출력
-    ResponseEntity<?> showMyReviews(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO);
 
     //주문 통계
     OrderStatisticsDTO orderStatistics (String date);

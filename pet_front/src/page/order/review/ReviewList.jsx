@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import GoodsApi from '../../../../api/GoodsApi';
-import PageNumber from '../../../util/PageNumber';
+import GoodsApi from '../../../api/GoodsApi';
+import PageNumber from '../../../components/util/PageNumber';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 
 // 리뷰 페이지

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import MemberApi from '../../../../api/MemberApi';
+import MemberApi from '../../../api/MemberApi';
 import DeliveryComp from './DeliveryStyle';
-import GoodsApi from '../../../../api/GoodsApi';
-import OrderApi from '../../../../api/OrderApi';
+import GoodsApi from '../../../api/GoodsApi';
+import OrderApi from '../../../api/OrderApi';
 import { useLocation } from 'react-router-dom';
 // import './delivery.css';
 

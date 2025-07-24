@@ -40,6 +40,7 @@ public class OrderDetailResponseDTO {
     // Review
     private ReviewResponseDTO reviewResponseDTO;
     private String score; // 별점
+    private String scoreNew; // 별점
     private boolean reviewed;
 
 }

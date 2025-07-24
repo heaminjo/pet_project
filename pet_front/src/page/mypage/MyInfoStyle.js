@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 const MyInfoComp = styled.div`
   .main_container {
     width: 90%;
@@ -235,7 +235,7 @@ const MyInfoComp = styled.div`
                 cursor: pointer;
                 width: 100px;
                 height: 40px;
-                background-color: #f8e776;
+                background-color: rgb(255, 228, 228);
               }
             }
           }
@@ -246,7 +246,7 @@ const MyInfoComp = styled.div`
         height: 200px;
         padding: 20px;
         border: 1px solid #ccc;
-        background-color: #eee;
+        background-color: rgb(248, 244, 244);
         box-shadow: 2px 2px 2px #ccc;
         display: flex;
         align-items: center;
@@ -262,9 +262,13 @@ const MyInfoComp = styled.div`
           margin-top: 10px;
           width: 200px;
           height: 30px;
-          background-color: #f8e776;
+          background-color: rgb(184, 173, 173);
+          border: 1px solid rgb(129, 120, 120);
           border: none;
           cursor: pointer;
+        }
+        button:hover {
+          background-color: rgb(224, 212, 212);
         }
       }
     }

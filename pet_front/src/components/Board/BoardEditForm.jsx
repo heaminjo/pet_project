@@ -5,8 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import instance from '../../api/axiosInstance';
 
 import { API_BASE_URL } from '../../services/app-config';
-// const KH_DOMAIN = 'http://localhost:8080'; // 개발용
-const KH_DOMAIN = `${API_BASE_URL}`; // 배포용
+const KH_DOMAIN = `${API_BASE_URL}`;
 
 export default function BoardEditForm() {
   const { category, board_id } = useParams(); // URL에서 게시글 id 추출

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import PageNumber from '../../../util/PageNumber';
-import GoodsApi from '../../../../api/GoodsApi';
-import OrderApi from '../../../../api/OrderApi';
-import Modal from '../../../../modal/Modal';
+import PageNumber from '../../../components/util/PageNumber';
+import GoodsApi from '../../../api/GoodsApi';
+import OrderApi from '../../../api/OrderApi';
+import Modal from '../../../modal/Modal';
 
 export default function WithDrawList() {
   window.scrollTo({ top: 0, behavior: 'smooth' });

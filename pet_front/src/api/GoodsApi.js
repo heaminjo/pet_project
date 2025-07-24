@@ -1,11 +1,8 @@
 import axios from 'axios';
 import instance from '../api/axiosInstance'; // 인스턴스 불러오기
-import { useNavigate } from 'react-router-dom';
-import ModifyGoods from '../components/Layout/goods/ModifyGoods';
 
 import { API_BASE_URL } from '../services/app-config';
-// const KH_DOMAIN = 'http://localhost:8080'; // 개발용
-const KH_DOMAIN = `${API_BASE_URL}`; // 배포용
+const KH_DOMAIN = `${API_BASE_URL}`;
 
 const GoodsApi = {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 장 바 구 니 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -52,14 +49,12 @@ const GoodsApi = {
 
   // 현재 상품의 찜 상태 불러오기
   favoriteInfo: async (goodsId) => {
-    try {
-      const result = await instance.post(`/goods/favoriteinfo/${goodsId}`);
-      if (result.data != null) {
-        // alert(`찜 상태 가져오기 => ${JSON.stringify(result.data)}`);
-        console.log(`찜 상태 가져오기 => ${JSON.stringify(result.data)}`);
-        return result;
-      }
-    } catch (err) {}
+    const result = await instance.post(`/goods/favoriteinfo/${goodsId}`);
+    if (result.data != null) {
+      // alert(`찜 상태 가져오기 => ${JSON.stringify(result.data)}`);
+      console.log(`찜 상태 가져오기 => ${JSON.stringify(result.data)}`);
+      return result.data;
+    }
   },
 
   // 찜 리스트 출력
@@ -71,6 +66,23 @@ const GoodsApi = {
         return result.data;
       }
     } catch (err) {}
+  },
+
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 리  뷰 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // 리뷰목록 (상품)
+  getReviewsPageList: async (pages, goodsId) => {
+    console.log(`getPageList() 호출됨, goodsId = ${JSON.stringify(goodsId)}`);
+    const result = await instance.get(`/review/${goodsId}`, {
+      params: pages,
+    });
+
+    if (result.data != null) {
+      console.log('getReviewsPageList 응답 결과:', result.data);
+      return result.data;
+    } else {
+      console.log('getReviewsPageList 호출 중 오류 발생:', result.data);
+      return result.data;
+    }
   },
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상  품 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -87,28 +99,7 @@ const GoodsApi = {
     } catch (err) {}
   },
 
-  // 현재 상품의 찜 상태 불러오기
-  favoriteInfo: async (goodsId) => {
-    const result = await instance.post(`/goods/favoriteinfo/${goodsId}`);
-    if (result.data != null) {
-      // alert(`찜 상태 가져오기 => ${JSON.stringify(result.data)}`);
-      console.log(`찜 상태 가져오기 => ${JSON.stringify(result.data)}`);
-      return result.data;
-    }
-  },
-
-  getFavoritePageList: async (pages) => {
-    // alert(`getGoodsPageList() 호출됨, pages = ${JSON.stringify(pages)}`);
-    try {
-      const result = await instance.post(`/goods/favorite`, pages);
-      if (result.data != null) {
-        console.log(' getGoodsPageList 응답 결과:', result.data);
-        // alert(`getGoodsPageList() 호출됨`);
-        return result.data;
-      }
-    } catch (err) {}
-  },
-
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 관 리 자 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   // <AddGoods /> : 상품등록
   regGoods: async (formData) => {
     try {
@@ -157,67 +148,63 @@ const GoodsApi = {
     return result.data;
   },
 
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 리  뷰 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // 리뷰목록 (상품)
-  getReviewsPageList: async (pages, goodsId) => {
-    console.log(`getPageList() 호출됨, goodsId = ${JSON.stringify(goodsId)}`);
-    const result = await instance.get(`/goods/reviews/${goodsId}`, {
-      params: pages,
-    });
-
-    if (result.data != null) {
-      console.log('getReviewsPageList 응답 결과:', result.data);
-      return result.data;
-    } else {
-      console.log('getReviewsPageList 호출 중 오류 발생:', result.data);
-      return result.data;
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 공  통 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // 광고 상품 가져오기
+  getAdvertise: async (type) => {
+    console.log('type: ' + type);
+    try {
+      const result = await axios.get(`/goods/advertise/list/${type}`);
+      if (result != null) return result.data;
+    } catch (err) {
+      console.error('광고 상품 불러오기 실패:', err);
     }
   },
 
   //배너 가져오기
-  // getBanner: async () => {
-  //   const result = await axios.get(`${KH_DOMAIN}/goods/banner/list`);
-  //   return result.data;
-  // },
-  // 배포
   getBanner: async () => {
-    const result = await instance.get(`/goods/banner/list`);
-    console.log(`getBanner => `, result);
+    const result = await axios.get(`${KH_DOMAIN}/goods/banner/list`);
     return result.data;
   },
+
+  // 배포
+  // getBanner: async () => {
+  //   const result = await instance.get(`/goods/banner/list`);
+  //   console.log(`getBanner => `, result);
+  //   return result.data;
+  // },
 
   //카테고리 목록 가져오기
-  // getCategoryList: async () => {
-  //   const result = await axios.get(`${KH_DOMAIN}/goods/category/list`);
-  //   return result.data;
-  // },
-  // 배포
   getCategoryList: async () => {
-    const result = await instance.get(`/goods/category/list`);
+    const result = await axios.get(`${KH_DOMAIN}/goods/category/list`);
     return result.data;
   },
+  // 배포
+  // getCategoryList: async () => {
+  //   const result = await instance.get(`/goods/category/list`);
+  //   return result.data;
+  // },
 
   //상품 페이징 목록
-  // getGoodsList: async (pages) => {
-  //   const result = await axios.post(`${KH_DOMAIN}/goods/page/list`, pages);
-  //   return result.data;
-  // },
-  // 배포
   getGoodsList: async (pages) => {
-    const result = await instance.post(`/goods/page/list`, pages);
+    const result = await axios.post(`${KH_DOMAIN}/goods/page/list`, pages);
     return result.data;
   },
+  // 배포
+  // getGoodsList: async (pages) => {
+  //   const result = await instance.post(`/goods/page/list`, pages);
+  //   return result.data;
+  // },
 
   //베스트 상품 가져오기
-  // getBest: async () => {
-  //   const result = await axios.get(`${KH_DOMAIN}/goods/best/list`);
-  //   return result.data;
-  // },
-  // 배포
   getBest: async () => {
-    const result = await instance.get(`/goods/best/list`);
+    const result = await axios.get(`${KH_DOMAIN}/goods/best/list`);
     return result.data;
   },
+  // 배포
+  // getBest: async () => {
+  //   const result = await instance.get(`/goods/best/list`);
+  //   return result.data;
+  // },
 };
 
 export default GoodsApi;

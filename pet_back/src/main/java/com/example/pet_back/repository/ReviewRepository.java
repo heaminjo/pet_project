@@ -34,7 +34,7 @@ public interface ReviewRepository  extends JpaRepository<Review, Long> {
 //    Optional<Review> findReviews(@Param("memberId") Long memberId, @Param("orderDetailId") Long orderDetailId);
     // Optional → List로 변경
     @Query("SELECT r FROM Review r WHERE r.member.id = :memberId AND r.orderDetail.orderDetailId = :orderDetailId")
-    List<Review> findReviews(@Param("memberId") Long memberId, @Param("orderDetailId") Long orderDetailId);
+    Optional<Review> findReviews(@Param("memberId") Long memberId, @Param("orderDetailId") Long orderDetailId);
 
 
     // 리뷰 목록

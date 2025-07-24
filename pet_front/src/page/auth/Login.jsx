@@ -7,6 +7,10 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
 import { PetContext } from '../../App';
 import kakao from '../../images/kakao_login_large_wide.png';
+import { API_BASE_URL } from '../../services/app-config';
+import { KAKAO_REDIRECT_URI } from '../../services/app-config';
+const KH_DOMAIN = `${API_BASE_URL}`;
+
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -101,8 +105,7 @@ export default function Login() {
     setValue('email', '');
     setValue('password', '');
     window.Kakao.Auth.authorize({
-      // redirectUri: "http://localhost:3000/login", // 개발용
-      redirectUri: 'http://13.209.222.217:3000/login', // 배포용
+      redirectUri: KAKAO_REDIRECT_URI,
     });
   };
 

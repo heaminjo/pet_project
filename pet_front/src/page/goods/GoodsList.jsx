@@ -1,8 +1,8 @@
 import GoodsListComp from './GoodsListStyle.js';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import GoodsApi from '../../../api/GoodsApi';
-import PageNumber from '../../util/PageNumber.jsx';
+import GoodsApi from '../../api/GoodsApi';
+import PageNumber from '../../components/util/PageNumber.jsx';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 import { FaSearch } from 'react-icons/fa';
 

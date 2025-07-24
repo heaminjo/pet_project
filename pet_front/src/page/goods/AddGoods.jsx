@@ -1,12 +1,11 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import AddGoodsComp from './AddGoodsStyle';
 import { useEffect, useState } from 'react';
-import GoodsApi from '../../../api/GoodsApi';
+import GoodsApi from '../../api/GoodsApi';
 import GoodsComp from './AddGoodsStyle';
 
-import { API_BASE_URL } from '../../../services/app-config';
-// const KH_DOMAIN = 'http://localhost:8080'; // 개발용
-const KH_DOMAIN = `${API_BASE_URL}`; // 배포용
+import { API_BASE_URL } from '../../services/app-config';
+const KH_DOMAIN = `${API_BASE_URL}`;
 
 export default function AddGoods({ onClose, refreshList, mode = 'create', targetGoods = null }) {
   const navigate = useNavigate();

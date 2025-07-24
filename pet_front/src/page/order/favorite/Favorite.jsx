@@ -1,23 +1,23 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import { FaStar, FaRegStar } from "react-icons/fa";
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { FaStar, FaRegStar } from 'react-icons/fa';
 
-import FavoriteComp from "./FavoriteStyle";
-import PageNumber from "../../../util/PageNumber";
-import GoodsApi from "../../../../api/GoodsApi";
+import FavoriteComp from './FavoriteStyle';
+import PageNumber from '../../../components/util/PageNumber';
+import GoodsApi from '../../../api/GoodsApi';
 
 export default function Favorite() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
   const navigate = useNavigate();
   const location = useLocation();
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상 태 변 수 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  const seller = process.env.PUBLIC_URL + "/images/avatar.png";
+  const seller = process.env.PUBLIC_URL + '/images/avatar.png';
 
   // 페이징 관련 상태변수
-  const [type, setType] = useState("all");
-  const [keyword, setKeyword] = useState("");
-  const [sort, setSort] = useState("desc");
+  const [type, setType] = useState('all');
+  const [keyword, setKeyword] = useState('');
+  const [sort, setSort] = useState('desc');
   const [page, setPage] = useState(0); // 1 페이지, 2 페이지, ...
   const [goods, setGoods] = useState([]); // 페이지에 사용되는 goods
   const [stars, setStars] = useState(); // ⭐
@@ -34,7 +34,7 @@ export default function Favorite() {
 
   // 상품1개 클릭시
   const clickProd = (item) => {
-    navigate("/goods/order", { state: { goods: item } });
+    navigate('/goods/order', { state: { goods: item } });
   };
 
   // 별점 (배열)
@@ -44,10 +44,10 @@ export default function Favorite() {
     const fullStars = Math.floor(rating); // 채운 별 수
     const emptyStars = 5 - fullStars; // 빈 별 수
     for (let i = 0; i < fullStars; i++) {
-      stars.push(<FaStar key={`full-${i}`} color="gold" size={20} />);
+      stars.push(<FaStar key={`full-${i}`} color='gold' size={20} />);
     }
     for (let i = 0; i < emptyStars; i++) {
-      stars.push(<FaRegStar key={`empty-${i}`} color="lightgray" size={20} />);
+      stars.push(<FaRegStar key={`empty-${i}`} color='lightgray' size={20} />);
     }
     return stars;
   };
@@ -77,7 +77,7 @@ export default function Favorite() {
         totalPages: result.totalPages,
       });
     } catch (err) {
-      console.error("getPageList 실패: ", err);
+      console.error('getPageList 실패: ', err);
     }
   };
 
@@ -87,24 +87,20 @@ export default function Favorite() {
 
   return (
     <FavoriteComp>
-      <div className="favorite-container">
-        <div className="top">
+      <div className='favorite-container'>
+        <div className='top'>
           <h2>찜 목록 리스트</h2>
         </div>
-        <div className="body">
+        <div className='body'>
           {goods.length === 0 ? (
             <p>찜한 상품이 없습니다.</p>
           ) : (
             goods.map((item) => (
-              <div
-                key={item.goodsId}
-                className="prod"
-                onClick={() => clickProd(item)}
-              >
-                <div className="prod-left">
+              <div key={item.goodsId} className='prod' onClick={() => clickProd(item)}>
+                <div className='prod-left'>
                   <img src={item.imageFile} alt={item.goodsName} width={150} />
                 </div>
-                <div className="prod-right">
+                <div className='prod-right'>
                   <h4>{item.goodsName}</h4>
                   <p>{item.description}</p>
                   <p>가격: {item.price.toLocaleString()}원</p>

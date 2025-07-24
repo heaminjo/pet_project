@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
-import OrderApi from '../../../../api/OrderApi';
-import PageNumber from '../../../util/PageNumber';
-import GoodsApi from '../../../../api/GoodsApi';
+import OrderApi from '../../../api/OrderApi';
+import PageNumber from '../../../components/util/PageNumber';
+import GoodsApi from '../../../api/GoodsApi';
 import { FaStar, FaRegStar } from 'react-icons/fa';
-import Modal from '../../../../modal/Modal';
+import Modal from '../../../modal/Modal';
 
 // 리뷰 페이지
 export default function MyReview() {

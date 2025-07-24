@@ -5,6 +5,7 @@ const NavComp = styled.nav`
   height: 50px;
   // border-bottom: 1px solid rgb(207, 192, 192);
   background-color: rgb(255, 255, 255);
+  border-bottom: 1px solid rgb(150, 140, 140);
 
   .nav_inner {
     width: 1200px;
@@ -14,6 +15,7 @@ const NavComp = styled.nav`
       line-height: 50px;
       display: flex;
       justify-content: space-between;
+
       li {
         width: 100%;
         font-weight: bold;

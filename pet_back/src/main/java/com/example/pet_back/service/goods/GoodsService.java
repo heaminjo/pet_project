@@ -1,5 +1,6 @@
 package com.example.pet_back.service.goods;
 
+import com.example.pet_back.domain.admin.AdvertiseDTO;
 import com.example.pet_back.domain.admin.BannerDTO;
 import com.example.pet_back.domain.admin.BestDTO;
 import com.example.pet_back.domain.admin.BestInsertDTO;
@@ -33,11 +34,6 @@ public interface GoodsService {
     // 찜 목록
     ResponseEntity<?> favorite(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO);
 
-    // 리뷰 리스트 출력 (상품)
-    ResponseEntity<?> goodsReviewList(Long goodsId, PageRequestDTO pageRequestDTO);
-
-//    // 리뷰 리스트 출력 (상품에 대한 전체 리뷰)
-//    ResponseEntity<?> showReviewList( Long goodsId,  PageRequestDTO pageRequestDTO);
 
     // 상품 리스트 출력 (메인)
     ResponseEntity<?> showGoodsList(PageRequestDTO pageRequestDTO);
@@ -53,6 +49,8 @@ public interface GoodsService {
         
     // 상품 삭제
     void deleteGoods(Long goodsId);
+
+    List<AdvertiseDTO>  getAdvertiseList(String type);
 
     //배너 가져오기(조해민)
     public List<BannerDTO> bannerList();

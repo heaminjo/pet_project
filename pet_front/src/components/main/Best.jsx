@@ -39,21 +39,21 @@ export default function Best() {
   return (
     <BestComp>
       <div className='best_inner'>
-        <div className='title'>
+        <div className='best_title'>
           <h2>오늘의 추천 상품</h2>
         </div>
         <div className='best_container'>
           <ul>
             {best?.map((b) => (
               <li onClick={() => navigate('/goods/order', { state: { goods: b } })}>
-                <div className='goods_image'>
+                <div className='best_goods_image'>
                   <img src={b.imageFile} alt='베스트 상품 이미지' />
                 </div>
-                <div className='goods_text'>
+                <div className='best_goods_text'>
                   <h4>{b.goodsName}</h4>
                   <p>{b.description}</p>
                 </div>
-                <div className='goods_rating'>
+                <div className='best_goods_rating'>
                   <span style={{ textAlign: 'center' }}>{renderStars(b.rating)}</span>
                   <span style={{ color: 'red', fontSize: '12px' }}>{'( ' + b.reviewNum + ' )'} </span>
                 </div>
@@ -84,14 +84,11 @@ const BestComp = styled.div`
         transform: scale(0.95);
       }
     }
-    .title {
+    .best_title {
       width: 300px;
       margin: 0 auto;
       padding: 10px 0;
-      // border-radius: 10px;
       background-color: rgb(255, 255, 255);
-      // border: 1px solid rgb(196, 187, 187);
-      // box-shadow: 1px 1px 1px #555;
       height: 40px;
 
       position: relative;
@@ -110,7 +107,7 @@ const BestComp = styled.div`
       box-shadow: 3px 3px 3px #ccc;
       background-color: #fff;
       padding: 20px;
-      border-radius: 10px;
+      border-radius: 5px;
       ul {
         display: flex;
         li {
@@ -122,7 +119,7 @@ const BestComp = styled.div`
           display: flex;
           flex-direction: column;
           gap: 10px;
-          .goods_image {
+          .best_goods_image {
             width: 100%;
             height: 200px;
             img {
@@ -134,7 +131,7 @@ const BestComp = styled.div`
               transform: scale(1.1);
             }
           }
-          .goods_text {
+          .best_goods_text {
             height: 70px;
           }
         }

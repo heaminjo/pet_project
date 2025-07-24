@@ -1,38 +1,38 @@
-import { useEffect } from "react";
-import { FaMedal } from "react-icons/fa";
-import { PiDogFill, PiSneakerMoveFill } from "react-icons/pi";
-import { useLocation, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import { useEffect } from 'react';
+import { FaMedal } from 'react-icons/fa';
+import { PiDogFill, PiSneakerMoveFill } from 'react-icons/pi';
+import { useLocation, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 export default function Upgrade() {
   const location = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
   const grades = [
-    { name: "새싹회원", color: "#f2fdff" },
-    { name: "초급회원", color: "#cfe7f0" },
-    { name: "중급회원", color: "#f0d5ce" },
-    { name: "상급회원", color: "#ecbfb1" },
-    { name: "프리미엄 회원", color: "#de9d91" },
+    { name: '새싹회원', color: '#f2fdff' },
+    { name: '초급회원', color: '#cfe7f0' },
+    { name: '중급회원', color: '#f0d5ce' },
+    { name: '상급회원', color: '#ecbfb1' },
+    { name: '프리미엄 회원', color: '#de9d91' },
   ];
   const grade = grades?.find((g) => g.name === location.state?.nextGrade);
 
   return (
     <UpgradeComp>
-      <div className="upgrade_inner">
+      <div className='upgrade_inner'>
         <h1>
           축하드립니다 ! <br />
           등급이 업그레이드 되었습니다
         </h1>
-        <div className="grade_">
+        <div className='grade_'>
           <h2>
-            <FaMedal style={{ color: grade.color }} />
+            <FaMedal style={{ color: grade?.color || 'gray' }} />
           </h2>
           <h3>{location.state?.nextGrade}</h3>
-          <div className="move">
-            <p onClick={() => navigate("/user/mypage/mygrade")}>
+          <div className='move'>
+            <p onClick={() => navigate('/user/mypage/mygrade')}>
               내 등급 확인하러가기
               <span>
                 <PiSneakerMoveFill />

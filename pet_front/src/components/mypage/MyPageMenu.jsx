@@ -6,28 +6,52 @@ export default function MypageMenu() {
   const MyPageMenuComp = styled.div`
     .side_menu {
       width: 250px;
-      padding: 15px 10px;
-      background-color: #e1e1e1;
+      padding: 50px 10px;
+      background-color: rgb(255, 255, 255);
+      border: 1px solid rgb(226, 220, 220);
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      box-shadow: 3px 3px 3px #ccc;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 1px 2px 4px rgb(204, 194, 194);
+
       .sub_menu {
+        width: 150px;
+        margin-top: 10px;
         background-color: #fff;
+        display: flex;
+        flex-direction: column;
+
         .menu_title {
-          background-color: #a89e9a;
-          font-size: 17px;
+          font-size: 20px;
           font-weight: bold;
-          padding: 5px;
-          color: rgb(69, 66, 47);
+          text-align: center;
+          padding: 10px;
+          color: rgb(88, 80, 80);
+          border-top: 2px solid rgb(124, 110, 110);
         }
         ul {
-          padding: 10px;
+          padding: 10px 15px;
           li {
+            text-align: center;
+            height: 20px;
+            line-height: 20px;
+            margin: 3px;
+
             span {
               font-size: 14px;
               cursor: pointer;
+              font-weight: bold;
+              color: rgb(92, 77, 77);
             }
+            &:hover {
+              font-weight: bold;
+            }
+          }
+          li:hover {
+            font-size: 1.05em;
+            text-shadow: 1px 1px 1px rgb(122, 110, 110);
+            color: rgb(88, 83, 83);
           }
         }
       }

@@ -2,9 +2,7 @@ import axios from 'axios';
 import instance from '../api/axiosInstance'; // 인스턴스 불러오기
 
 import { API_BASE_URL } from '../services/app-config';
-// const KH_DOMAIN = 'http://localhost:8080'; // 개발용
-const KH_DOMAIN = `${API_BASE_URL}`; // 배포용
-
+const KH_DOMAIN = `${API_BASE_URL}`;
 
 const OrderApi = {
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 주  문 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -78,12 +76,29 @@ const OrderApi = {
     console.log(`OrderApi.deliveryStatus`);
     // alert(`OrderApi.deliveryStatus`);
     try {
-      const result = await instance.post(`/order/delivery?orderDetailId=${orderDetailId}`); // ORDERSTATE 반환
+      const result = await instance.post(`/delivery/status?orderDetailId=${orderDetailId}`); // ORDERSTATE 반환
       return result?.data;
     } catch (err) {
       alert('오류 발생');
       console.error('오류 발생:', err);
     }
+  },
+
+  // 배송지 주소
+  findAddress: async () => {
+    const result = await instance.get(`/delivery/findAddress`);
+    try {
+      if (result != null) {
+        console.log(`findAddress 결과: ${result}`);
+        return result.data;
+      } else {
+        //alert(`OrderApi.findAddress() null`);
+        console.log(`OrderApi.findAddress() null`);
+      }
+    } catch (err) {
+      console.error('오류 발생:', err);
+    }
+    return result.data;
   },
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 결  제 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -93,7 +108,7 @@ const OrderApi = {
       console.log(`결제 시도 => 상품 ID: ${item.goodsId}, 상품 수량: ${item.quantity}`);
     });
     try {
-      const result = await instance.post(`/order/pay`, payload);
+      const result = await instance.post(`/pay`, payload);
       if (result != null) {
         return result.data;
       } else {
@@ -111,43 +126,27 @@ const OrderApi = {
   getPayPrice: async (goods) => {
     try {
       console.log('goodsList:', goods);
-      const result = await instance.post(`/order/pay/preview`, goods);
+      const result = await instance.post(`/pay/preview`, goods);
       if (result != null) {
-        console.log(`findAddress 결과: ${result}`);
+        console.log(`getPayPrice 결과: ${result}`);
         return result.data;
       } else {
         //alert(`OrderApi.findAddress() null`);
-        console.log(`OrderApi.findAddress() null`);
+        console.log(`OrderApi.getPayPrice() null`);
       }
     } catch (err) {
       console.error('오류 발생:', err);
     }
   },
 
-  // 배송지 주소
-  findAddress: async () => {
-    const result = await instance.get(`/order/findaddress`);
-    try {
-      if (result != null) {
-        console.log(`findAddress 결과: ${result}`);
-        return result.data;
-      } else {
-        //alert(`OrderApi.findAddress() null`);
-        console.log(`OrderApi.findAddress() null`);
-      }
-    } catch (err) {
-      console.error('오류 발생:', err);
-    }
-    return result.data;
-  },
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 리 뷰  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //
-  // 리뷰 목록 출력 (나의 리뷰)
+  // 리뷰 목록 출력 (나의 리뷰)s
   // <MyReview /> 페이징
   getReviewsPageList: async (pages) => {
     // alert(`GoodsApi.getReviewPageList`);
     console.log(`GoodsApi.getReviewPageList`);
-    const result = await instance.post(`/order/review/my`, pages);
+    const result = await instance.post(`/review/my`, pages);
     console.log('응답 결과:', result);
     return result.data;
   },
@@ -155,27 +154,27 @@ const OrderApi = {
   // 리뷰 중복등록 방지 검증
   getReviewState: async (orderDetailId) => {
     // 리턴: reviewId
-    const result = await instance.get(`/order/review/state/${orderDetailId}`);
+    const result = await instance.get(`/review/state/${orderDetailId}`);
     return result.data;
   },
 
   // 리뷰 등록 (사진 포함)
   // <Review />
   registerReview: async (formData) => {
-    const result = await instance.post(`/order/review/register`, formData);
+    const result = await instance.post(`/review/register`, formData);
     return result.data;
   },
 
   // 리뷰 수정 (사진 포함)
   // <Review />
   updateReview: async (formData) => {
-    const result = await instance.post(`/order/review/update`, formData);
+    const result = await instance.post(`/review/update`, formData);
     return result.data;
   },
 
   // 리뷰삭제
   deleteReview: async (reviewId) => {
-    const result = await instance.get(`/order/review/delete/${reviewId}`);
+    const result = await instance.get(`/review/delete/${reviewId}`);
     return result.data;
   },
 };

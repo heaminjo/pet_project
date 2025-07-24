@@ -145,7 +145,7 @@ public class AuthServiceImpl implements AuthService {
     //사용자 정보로 Authentication 생성 후 accessToken만 생성한다.
     @Override
     @Transactional
-    public ResponseEntity<?> getRefresh(String refreshToken,HttpServletResponse response) {
+    public ResponseEntity<?> getRefresh(String refreshToken, HttpServletResponse response) {
         //db 조회를 통해 리프레쉬 토큰의 유효성을 다시 검증
         Optional<RefreshToken> rToken = refreshTokenRepository.findByToken(refreshToken);
 
@@ -170,7 +170,6 @@ public class AuthServiceImpl implements AuthService {
         } catch (ExpiredJwtException e) {
             log.info("만료된 RefreshToken입니다.");
 
-
             //쿠키 삭제
             Cookie refreshCookie = new Cookie("refreshToken", null);
             refreshCookie.setPath("/");             // 쿠키 경로 설정 (생성할 때와 같아야 함)
@@ -178,7 +177,6 @@ public class AuthServiceImpl implements AuthService {
             refreshCookie.setHttpOnly(true);        // 보안 옵션
             refreshCookie.setSecure(true);          // HTTPS만 전달 (필요시)
             response.addCookie(refreshCookie);
-
 
             //만료되었다면 db에서 삭제
             refreshTokenRepository.deleteByToken(refreshToken);

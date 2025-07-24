@@ -1,20 +1,10 @@
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-import AdminApi from "../../api/AdminApi";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  CartesianGrid,
-  ResponsiveContainer,
-  Legend,
-  Rectangle,
-} from "recharts";
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import AdminApi from '../../api/AdminApi';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Legend, Rectangle } from 'recharts';
 
 export default function OrderStatistics() {
-  const [date, setDate] = useState("ALL");
+  const [date, setDate] = useState('ALL');
   const [orderData, setOrderData] = useState([]);
   const [chartData, setChartData] = useState([]);
   //기간 클릭
@@ -33,11 +23,11 @@ export default function OrderStatistics() {
 
     setChartData([
       {
-        name: "목표",
+        name: '목표',
         uv: 10000000,
       },
       {
-        name: "총 매출액",
+        name: '총 매출액',
         uv: result.totalPurchasePrice,
       },
     ]);
@@ -45,58 +35,43 @@ export default function OrderStatistics() {
   return (
     <OrderStatisticsComp>
       <h2>매출 분석</h2>
-      <div className="order_statistics_inner">
-        <div className="date_statis">
+      <div className='order_statistics_inner'>
+        <div className='date_statis'>
           <h3>기간 별 매출 분석</h3>
-          <div className="inner_">
-            <div className="date_">
-              <div className="input_">
-                <div className="input_title">
+          <div className='inner_'>
+            <div className='date_'>
+              <div className='input_'>
+                <div className='input_title'>
                   <p>조회 기간</p>
                 </div>
-                <div className="radio_">
-                  <label
-                    className={date == "ALL" ? "select" : "not"}
-                    onClick={(e) => dateClick(e)}
-                  >
-                    <input type="radio" name="date" value="ALL" />
+                <div className='radio_'>
+                  <label className={date == 'ALL' ? 'select' : 'not'} onClick={(e) => dateClick(e)}>
+                    <input type='radio' name='date' value='ALL' />
                     전체
                   </label>
-                  <label
-                    className={date == "1D" ? "select" : "not"}
-                    onClick={(e) => dateClick(e)}
-                  >
-                    <input type="radio" name="date" value="1D" />
+                  <label className={date == '1D' ? 'select' : 'not'} onClick={(e) => dateClick(e)}>
+                    <input type='radio' name='date' value='1D' />
                     오늘
                   </label>
-                  <label
-                    className={date == "7D" ? "select" : "not"}
-                    onClick={(e) => dateClick(e)}
-                  >
-                    <input type="radio" name="date" value="7D" />
+                  <label className={date == '7D' ? 'select' : 'not'} onClick={(e) => dateClick(e)}>
+                    <input type='radio' name='date' value='7D' />
                     최근 7일
                   </label>
-                  <label
-                    className={date == "1M" ? "select" : "not"}
-                    onClick={(e) => dateClick(e)}
-                  >
-                    <input type="radio" name="date" value="1M" />
+                  <label className={date == '1M' ? 'select' : 'not'} onClick={(e) => dateClick(e)}>
+                    <input type='radio' name='date' value='1M' />
                     최근 1개월
                   </label>
-                  <label
-                    className={date == "6M" ? "select" : "not"}
-                    onClick={(e) => dateClick(e)}
-                  >
-                    <input type="radio" name="date" value="6M" />
+                  <label className={date == '6M' ? 'select' : 'not'} onClick={(e) => dateClick(e)}>
+                    <input type='radio' name='date' value='6M' />
                     최근 6개월
                   </label>
                 </div>
-                <div className="btn_">
+                <div className='btn_'>
                   <button onClick={() => getOrderStatistics()}>조회</button>
                 </div>
               </div>
 
-              <div className="table_">
+              <div className='table_'>
                 <table border={1}>
                   <tr>
                     <th>총 매출액</th>
@@ -105,9 +80,7 @@ export default function OrderStatistics() {
                   </tr>
                   <tr>
                     <td>
-                      <span>
-                        {orderData.totalPurchasePrice?.toLocaleString()}
-                      </span>
+                      <span>{orderData.totalPurchasePrice?.toLocaleString()}</span>
                     </td>
                     <td>
                       <span>{orderData.avgPrice?.toLocaleString()}</span>
@@ -119,8 +92,8 @@ export default function OrderStatistics() {
                 </table>
               </div>
             </div>
-            <div className="chart_">
-              <ResponsiveContainer width="100%" height="100%">
+            <div className='chart_'>
+              <ResponsiveContainer width='100%' height='100%'>
                 <BarChart
                   width={500}
                   height={300}
@@ -130,23 +103,14 @@ export default function OrderStatistics() {
                     right: 30,
                     left: 20,
                     bottom: 5,
-                  }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
+                  }}>
+                  <CartesianGrid strokeDasharray='3 3' />
+                  <XAxis dataKey='name' />
                   <YAxis />
                   <Tooltip />
 
-                  <Bar
-                    dataKey="pv"
-                    fill="#8884d8"
-                    activeBar={<Rectangle fill="pink" stroke="blue" />}
-                  />
-                  <Bar
-                    dataKey="uv"
-                    fill="#036e2c"
-                    activeBar={<Rectangle fill="gold" stroke="purple" />}
-                  />
+                  <Bar dataKey='pv' fill='#8884d8' activeBar={<Rectangle fill='pink' stroke='blue' />} />
+                  <Bar dataKey='uv' fill='#036e2c' activeBar={<Rectangle fill='gold' stroke='purple' />} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -166,10 +130,9 @@ const OrderStatisticsComp = styled.div`
     width: 100%;
     .date_statis {
       width: 100%;
-
-      border: 1px solid #ccc;
+      border: 1px solid rgb(158, 141, 141);
       padding: 20px;
-      box-shadow: 3px 3px 3px #ccc;
+      box-shadow: 2px 2px 3px #ccc;
       .inner_ {
         display: flex;
         width: 90%;
@@ -182,7 +145,7 @@ const OrderStatisticsComp = styled.div`
             gap: 20px;
             align-items: center;
             height: 80px;
-            border: 1px solid #888;
+            border: 1px solid rgb(158, 141, 141);
             .input_title {
               width: 120px;
               line-height: 80px;
@@ -197,7 +160,7 @@ const OrderStatisticsComp = styled.div`
                 width: 70px;
                 height: 30px;
                 line-height: 30px;
-                border: 1px solid #555;
+                border: 1px solid rgb(158, 141, 141);
                 text-align: center;
                 cursor: pointer;
                 input {
@@ -229,9 +192,11 @@ const OrderStatisticsComp = styled.div`
             border-collapse: collapse;
             text-align: center;
             tr {
+              border: 1px solid rgb(182, 174, 174);
               th {
                 height: 30px;
-                background-color: rgb(255, 251, 223);
+                background-color: rgb(233, 228, 228);
+                border: 1px solid rgb(182, 174, 174);
               }
             }
           }

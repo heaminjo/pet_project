@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useLocation, useNavigate } from 'react-router-dom';
-import OrderApi from '../../../../api/OrderApi';
+import OrderApi from '../../../api/OrderApi';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 
 // 리뷰 페이지

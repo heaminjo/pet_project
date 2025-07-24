@@ -15,7 +15,6 @@ function Banner() {
   //배너 상품 가져오기
   const getBanner = async () => {
     const result = await GoodsApi.getBanner();
-
     setBanner(result);
   };
   const sliderRef = useRef(null);
@@ -32,6 +31,7 @@ function Banner() {
     nextArrow: <NextArrow sliderRef={sliderRef} />,
     prevArrow: <PrevArrow sliderRef={sliderRef} />,
   };
+
   return (
     <BannerComp>
       <div className='slider-container'>
@@ -81,7 +81,7 @@ const BannerComp = styled.div`
   }
 `;
 
-//다음 버튼 킄ㄹ릭시 자동재생 중지 더 빠르게게
+//다음 버튼 클릭시 자동재생 중지 더 빠르게게
 function NextArrow({ sliderRef }) {
   const clickNext = () => {
     console.log('실행');

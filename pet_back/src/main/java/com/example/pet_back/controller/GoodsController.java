@@ -1,6 +1,7 @@
 package com.example.pet_back.controller;
 
 
+import com.example.pet_back.domain.admin.AdvertiseDTO;
 import com.example.pet_back.domain.admin.BannerDTO;
 import com.example.pet_back.domain.admin.BestDTO;
 import com.example.pet_back.domain.admin.BestInsertDTO;
@@ -69,13 +70,7 @@ public class GoodsController {
         return goodsService.favorite(userDetails, pageRequestDTO);
     }
 
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 리 뷰 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // 리뷰 리스트 출력 (상품)
-    @GetMapping("/reviews/{goodsId}")
-    public ResponseEntity<?> goodsReviewList(@PathVariable Long goodsId, @ModelAttribute PageRequestDTO pageRequestDTO) {
-        log.info("** GoodsController => goodsReviewList() 실행됨 **");
-        return goodsService.goodsReviewList(goodsId, pageRequestDTO);
-    }
+
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 상 품 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     // 상품 상세정보
@@ -135,6 +130,18 @@ public class GoodsController {
         }
         return ResponseEntity.status(HttpStatus.OK).body("성공");
     }
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 공 통 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//    @GetMapping("/detail/{goods_id}")
+//    public ResponseEntity<?> selectOne(@PathVariable("goods_id") Long goods_id) {
+    // 광고 상품 불러오기
+    @GetMapping("/advertise/list/{type}")
+    public ResponseEntity<?> adList(@PathVariable("type") String type) {
+    // public ResponseEntity<List<AdvertiseDTO>> adList(@RequestParam String type) {
+        log.info("** GoodsController => adList() 실행됨 **");
+        List<AdvertiseDTO> list = goodsService.getAdvertiseList(type);
+        return ResponseEntity.ok(list);
+    }
+
 
     //배너 리스트 불러오기(조해민)
     @GetMapping("/banner/list")

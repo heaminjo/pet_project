@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export default function PageNumber({ page, setPage, paging }) {
   const PageNumberComp = styled.div`
@@ -65,11 +65,11 @@ export default function PageNumber({ page, setPage, paging }) {
 
   return (
     <PageNumberComp>
-      <div className="select_page">
-        <ul className="curr_page">
+      <div className='select_page'>
+        <ul className='curr_page'>
           {paging.start != 0 && (
             <li>
-              <span id="first_page" onClick={() => setPage(0)}>
+              <span id='first_page' onClick={() => setPage(0)}>
                 1 . . .
               </span>
             </li>
@@ -78,56 +78,31 @@ export default function PageNumber({ page, setPage, paging }) {
             const pageNumber = paging.start + index;
             return (
               <li onClick={() => setPage(pageNumber)}>
-                <span className={page == pageNumber ? "current" : ""}>
-                  {pageNumber + 1}
-                </span>
+                <span className={page == pageNumber ? 'current' : ''}>{pageNumber + 1}</span>
               </li>
             );
           })}
           {paging.end != paging.totalPages && (
             <li>
-              <span
-                id="last_page"
-                onClick={() => setPage(paging.totalPages - 1)}
-              >
-                {" "}
-                . . . {paging.totalPages}
+              <span id='last_page' onClick={() => setPage(paging.totalPages - 1)}>
+                {' '}
+                {/* . . . {paging.totalPages} */}
               </span>
             </li>
           )}
         </ul>
-        <div className="page_btn">
-          <button
-            disabled={!paging.start != 0}
-            className="move"
-            id="first"
-            onClick={() => setPage(0)}
-          >
+        <div className='page_btn'>
+          <button disabled={!paging.start != 0} className='move' id='first' onClick={() => setPage(0)}>
             ◀◀
           </button>
-          <button
-            disabled={!paging.isPrev}
-            className="move"
-            id="prev"
-            onClick={() => setPage(page - 1)}
-          >
+          <button disabled={!paging.isPrev} className='move' id='prev' onClick={() => setPage(page - 1)}>
             ◀
           </button>
 
-          <button
-            disabled={!paging.isNext}
-            className="move"
-            id="next"
-            onClick={() => setPage(page + 1)}
-          >
+          <button disabled={!paging.isNext} className='move' id='next' onClick={() => setPage(page + 1)}>
             ▶
           </button>
-          <button
-            disabled={!(paging.end != paging.totalPages)}
-            className="move"
-            id="last"
-            onClick={() => setPage(paging.totalPages - 1)}
-          >
+          <button disabled={!(paging.end != paging.totalPages)} className='move' id='last' onClick={() => setPage(paging.totalPages - 1)}>
             ▶▶
           </button>
         </div>

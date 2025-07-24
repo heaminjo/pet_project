@@ -2,6 +2,7 @@ package com.example.pet_back.service.goods;
 
 import com.example.pet_back.config.FileUploadProperties;
 import com.example.pet_back.constant.GOODSSTATE;
+import com.example.pet_back.domain.admin.AdvertiseDTO;
 import com.example.pet_back.domain.admin.BannerDTO;
 import com.example.pet_back.domain.admin.BestDTO;
 import com.example.pet_back.domain.admin.BestInsertDTO;
@@ -307,7 +308,7 @@ public class GoodsServiceImpl implements GoodsService {
     // 찜 목록
     @Override
     public ResponseEntity<?> favorite(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO){
-        log.info("** GoodsServiceImpl 실행됨 **");
+        log.info("** GoodsServiceImpl favorite() 실행됨 **");
         Member member = memberRepository.findById(userDetails.getMember().getId()) //
                 .orElseThrow(() //
                         -> new UsernameNotFoundException("존재하지 않는 회원입니다."));
@@ -350,45 +351,6 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
 
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 리 뷰 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // 리뷰 리스트 출력 (상품)
-    @Override
-    @Transactional
-    public ResponseEntity<?> goodsReviewList(Long goodsId, PageRequestDTO pageRequestDTO){
-        log.info("** GoodsServiceImpl 실행됨 **");
-        // 페이징
-        // 1. 정렬 조건 설정 :  (최신)
-        Sort sort = pageRequestDTO.getSortBy().equals("desc") ? // desc라면
-                Sort.by("regDate").descending() // regDate 필드 기준으로 desc
-                : Sort.by("regDate").ascending();
-
-        // 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬
-        Pageable pageable = PageRequest.of(pageRequestDTO.getPage(), pageRequestDTO.getSize(), sort);
-        log.info("** 2. Pageable 객체: 요청페이지 & 출력 라인 수 & 정렬 **");
-
-        // 3. Page<Review> 의 content (DTO에 SET)
-        Page<Review> reviewPage = reviewRepository.findAllByGoodsId(goodsId, pageable); // Review List
-
-        List<ReviewResponseDTO> dtoList = reviewPage.getContent().stream()
-                .map(reviewMapper::toDTO)
-                .toList();
-
-        log.info("** 3. Page<Review> 의 content (DTO에 SET) **");
-        log.info("getContent: "+reviewPage.getContent());
-
-         // 4. PageResponseDTO
-        PageResponseDTO<ReviewResponseDTO> response = new PageResponseDTO<>(
-                dtoList,
-                pageRequestDTO.getPage(),
-                pageRequestDTO.getSize(),
-                reviewPage.getTotalElements(),
-                reviewPage.getTotalPages(),
-                reviewPage.hasNext(),
-                reviewPage.hasPrevious()
-        );
-        log.info("** 4. PageResponseDTO **");
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
 
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 결 제 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -397,6 +359,34 @@ public class GoodsServiceImpl implements GoodsService {
     public ResponseEntity<?> findMemberAddress(CustomUserDetails userDetails){
         return ResponseEntity.status(HttpStatus.OK).body("구현중");
     }
+
+    @Override
+    public List<AdvertiseDTO> getAdvertiseList(String type){
+        log.info("** GoodsServiceImpl getAdvertiseList() 실행됨 **");
+        List<Goods> goodsList = switch (type.toLowerCase()) {
+            case "best" -> // 기준: 전체 상품중 별점 높은 순
+                    goodsRepository.findTop12ByGoodsStateOrderByRatingDesc(GOODSSTATE.SALE);
+            case "sale" -> // 기준: view, 별점 높은 순
+                    goodsRepository.findTop12ByGoodsStateOrderByRatingDescViewsDesc(GOODSSTATE.SALE);
+            case "recent" -> // 기준: 최근 추가된 상품
+                    goodsRepository.findTop12ByGoodsStateOrderByRegDateDesc(GOODSSTATE.SALE);
+            default -> throw new IllegalArgumentException("존재하지 않는 타입입니다: " + type);
+        };
+        return goodsList.stream()
+                .map(g -> new AdvertiseDTO(
+                        g.getGoodsId(),
+                        g.getGoodsName(),
+                        g.getRating(),
+                        g.getReviewNum(),
+                        g.getDescription(),
+                        fileUploadProperties.getStaticUrl() + g.getImageFile(),
+                        0
+                ))
+                .collect(Collectors.toList());
+    }
+
+
+
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 배 너 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     //배너 목록 가져오기

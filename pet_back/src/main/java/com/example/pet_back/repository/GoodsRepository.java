@@ -96,6 +96,13 @@ public interface GoodsRepository extends JpaRepository<Goods, Long> {
                                @Param("state") GOODSSTATE state,
                                Pageable pageable);
 
+    List<Goods> findTop12ByGoodsStateOrderByRatingDesc(GOODSSTATE goodsState);
+
+    List<Goods> findTop12ByGoodsStateOrderByRatingDescViewsDesc(GOODSSTATE goodsState);
+
+    List<Goods> findTop12ByGoodsStateOrderByRegDateDesc(GOODSSTATE state);
+
+
 
     //카테고리에 상품이있는지 확인
     public boolean existsByCategory(Category category);

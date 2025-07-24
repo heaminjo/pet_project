@@ -2,8 +2,7 @@ import axios from 'axios';
 import instance from './axiosInstance';
 
 import { API_BASE_URL } from '../services/app-config';
-// const KH_DOMAIN = 'http://localhost:8080'; // 개발용
-const KH_DOMAIN = `${API_BASE_URL}`; // 배포용
+const KH_DOMAIN = `${API_BASE_URL}`;
 
 const MemberApi = {
   // //로그인

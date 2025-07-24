@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import PageNumber from '../../util/PageNumber';
-import OrderApi from '../../../api/OrderApi';
-import OrdersSearch from '../../util/OrdersSearch';
-import MemberApi from '../../../api/MemberApi';
+import PageNumber from '../../components/util/PageNumber';
+import OrderApi from '../../api/OrderApi';
+import OrdersSearch from '../../components/util/OrdersSearch';
+import MemberApi from '../../api/MemberApi';
 
 export default function OrderListAll() {
   // 페이징 관련 상태변수 (검색기능 포함)

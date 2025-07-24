@@ -1,12 +1,12 @@
 import axios from 'axios';
 import MemberApi from './MemberApi';
+import { API_BASE_URL } from '../services/app-config';
+const KH_DOMAIN = `${API_BASE_URL}`;
 
 //공통 설정을 갖는 axios 인스턴스
 const instance = axios.create({
-  // baseURL: "http://localhost:8080", // 개발용
-  baseURL: 'http://13.209.222.217:8080', // 배포용
-  // baseURL: 'http://13.209.222.217', // 배포용
-  withCredentials: true, // 배포용
+  baseURL: KH_DOMAIN,
+  withCredentials: true,
 });
 
 //요청 인터셉터
@@ -29,17 +29,14 @@ export const setNavigate = (navFn) => {
 
 //응답 인터셉터
 instance.interceptors.response.use(
-  //성공한 응답일 경우 그대로 넘기지만
-  //에러 일 경우 asycn 함수가 호출
-  (response) => response,
+  (response) => response, //성공한 응답일 경우 그대로 넘기지만
+  //에러 일 경우 async 함수 호출 -> 토큰 갱신 시도
   async (error) => {
-    //error.config는 에러가 난 객체의 설정 정보
-
-    const originalRequest = error.config;
+    const originalRequest = error.config; //error.config는 에러가 난 객체의 설정 정보
 
     //토큰이 만료되었을 경우
     if (error.response.status == 401 && !originalRequest._retry) {
-      //계속 401 에러가 날경우 무한 요청 에러를 방지지
+      //계속 401 에러(UnAuthorized) 가 날경우 무한 요청 에러를 방지
       originalRequest._retry = true;
 
       //만약 현재 상태(리프레시 요청중인 상태)에서 isRefreshing이 false일 경우 true로 바꾼다.
@@ -65,6 +62,7 @@ instance.interceptors.response.use(
           requestQueue = [];
           //원래 실패했던 요청에 토큰를 다시 갱신 후 다시 요청청
           return instance(originalRequest);
+          
         } catch (error) {
           requestQueue = []; // 실패한 경우도 큐는 초기화해야 함
           //리프레쉬 토큰 401 시 로그아웃 처리하고 다시 로그인 요청하도록 하게 에러 객체 전달

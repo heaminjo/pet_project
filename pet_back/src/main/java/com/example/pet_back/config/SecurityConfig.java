@@ -61,7 +61,6 @@ public class SecurityConfig {
         //2. 그 다음 UsernamePasswordAuthenticationFilter 가 실행 되어 로그인을 처리
         //3. 만약 JWT 토큰이 유효할 경우 이 후 필터는 이미 인증된 상태로 요청 처리(로그인 유지의 경우)
 
-
         //http의 기본 설정들 비활성화
         // httpBasic: 요청마다 사용자 아이디와 비밀번호를 헤더에 담아 보내느 방식. jwt는 해당 방식을 안쓴다.
         // formLogin : 기본 로그인 폼을 비활성화 jwt는 토큰을 헤더에 담아 보내므로 스프링이 제공하는 폼 로그인 UI가 필요없다.
@@ -85,7 +84,7 @@ public class SecurityConfig {
                         //관리자와 회원의 경로가 나올때마다 즉시 추가
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasRole("USER")
-                        .requestMatchers("/goods/banner/list", "/goods/category/list", "/goods/page/list", "/goods/best/list", "/goods/list").permitAll()
+                        .requestMatchers("/goods/banner/list", "/goods/category/list", "/goods/page/list", "/goods/best/list", "/goods/list", "/goods/advertise/**").permitAll()
                         .requestMatchers("/goods/**").authenticated()
                         .requestMatchers("/order/**").authenticated()
                         .requestMatchers("/auth/**").permitAll() // 회원가입, 로그인 등 비인가 사용자 접근페이지므로 열어둠
@@ -121,6 +120,8 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.setAllowedOrigins(List.of(
+                "http://dongseong.net",
+                "http://www.dongseong.net",
                 "http://13.209.222.217",
                 "http://13.209.222.217:3000",
                 "http://localhost:3000"

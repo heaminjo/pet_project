@@ -1,11 +1,11 @@
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import AddGoods from './AddGoods';
 import React, { useEffect, useState } from 'react';
-import GoodsApi from '../../../api/GoodsApi';
+import GoodsApi from '../../api/GoodsApi';
 import styled from 'styled-components';
-import PageNumber from '../../util/PageNumber';
+import PageNumber from '../../components/util/PageNumber';
 import { FaStar, FaRegStar } from 'react-icons/fa';
-import Modal from '../../../modal/Modal';
+import Modal from '../../modal/Modal.jsx';
 
 export default function ModifyGoods() {
   const navigate = useNavigate();

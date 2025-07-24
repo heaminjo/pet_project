@@ -40,7 +40,6 @@ const OrderListComp = styled.div`
   .ordertitle {
     font-weight: bold;
     font-size: 1.1rem;
-    background-color: rgb(248, 246, 246);
     padding: 12px 16px;
     margin: 0 auto;
     border: 1px solid #ddd;

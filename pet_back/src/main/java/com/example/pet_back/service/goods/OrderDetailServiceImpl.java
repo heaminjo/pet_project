@@ -59,7 +59,7 @@ public class OrderDetailServiceImpl implements OrderDetailService{
     // 취소 / 교환 / 환불 내역
     @Override
     public ResponseEntity<?> withDrawList(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO){
-        log.info("** GoodsServiceImpl orderList 실행됨 **");
+        log.info("** OrderDetailServiceImpl orderList 실행됨 **");
 
         // 페이징 + 정렬 ★★★★★
         Sort sort = pageRequestDTO.getSortBy().equals("desc") ? //
@@ -86,11 +86,11 @@ public class OrderDetailServiceImpl implements OrderDetailService{
             Long orderId = orders.getOrderId();
             orderIdList.add(orderId);
         }
-        log.info("** GoodsServiceImpl Orders ID List **");
+        log.info("** OrderDetailServiceImpl Orders ID List **");
 
         // 페이징된 OrderDetail 목록 조회 ★★★★★
         Page<OrderDetail> orderDetailPage = orderDetailRepository.findAllByOrderIdList(orderIdList, pageable);
-        log.info("** GoodsServiceImpl withDrawList => orderDetailPage 조회완료 **");
+        log.info("** OrderDetailServiceImpl withDrawList => orderDetailPage 조회완료 **");
 
         // 5. Map (goodsId/GOODS) & (orderId/ORDERS) & (reviewId/REVIEW)
         Map<Long, Goods> goodsMap = goodsList.stream().collect(Collectors.toMap(Goods::getGoodsId, g-> g));
@@ -168,7 +168,7 @@ public class OrderDetailServiceImpl implements OrderDetailService{
                             .orderDetailResponseDTO(orderDetailDTO)
                             .build();
                 }).collect(Collectors.toList());
-        log.info("** GoodsServiceImpl withDrawList => dto 리스트 생성 **");
+        log.info("** OrderDetailServiceImpl withDrawList => dto 리스트 생성 **");
 
         // PageResponseDTO  생성 ★★★★★
         PageResponseDTO<WithdrawResponseDTO> response = new PageResponseDTO<>(
@@ -188,7 +188,7 @@ public class OrderDetailServiceImpl implements OrderDetailService{
     // 주문 / 배송내역 : status(BEFOREPAY, AFTERPAY, READY, DELIVERY, END)
     @Override
     public ResponseEntity<?> orderList(CustomUserDetails userDetails, PageRequestDTO pageRequestDTO) {
-         log.info("** GoodsServiceImpl orderList 실행됨 **");
+         log.info("** OrderDetailServiceImpl orderList 실행됨 **");
 
         // 페이징 + 정렬 ★★★★★
         Sort sort = pageRequestDTO.getSortBy().equals("desc") ? //
@@ -237,10 +237,14 @@ public class OrderDetailServiceImpl implements OrderDetailService{
         List<Long> orderDetailIdList = orderDetailPage.stream()
                 .map(OrderDetail::getOrderDetailId)
                 .collect(Collectors.toList());
+        log.info("List<Review> reviewList =");
         List<Review> reviewList = reviewRepository.findByOrderDetailIdIn(orderDetailIdList);
+        log.info("Map<Long, Review> reviewMap =");
+        // OrderDetailId, Review객체
         Map<Long, Review> reviewMap = reviewList.stream()
                 .collect(Collectors.toMap(r -> r.getOrderDetail().getOrderDetailId(), r -> r));
 
+        log.info("DTO리스트 생성");
         // DTO 리스트 생성
         List<OrderDetailResponseDTO> dtoList = orderDetailPage.stream() //
                 .map(od ->  {

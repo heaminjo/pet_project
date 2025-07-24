@@ -37,6 +37,9 @@ public class Review {
 
     @Column(name = "score", nullable = false)
     private int score;
+    
+    @Column(name = "score_new")
+    private int scoreNew;
 
     @Column(name = "title", nullable = false, length = 100)
     private String title;

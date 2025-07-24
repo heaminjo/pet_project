@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const StatisticsComp = styled.div`
   width: 100%;
@@ -38,7 +38,7 @@ const StatisticsComp = styled.div`
         display: flex;
         border: 1px solid #ccc;
         box-shadow: 4px 4px 3px #ccc;
-        padding: 20px;
+        padding: 50px;
         width: 80%;
         .re_chart {
           width: 100%;

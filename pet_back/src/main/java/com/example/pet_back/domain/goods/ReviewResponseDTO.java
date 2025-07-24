@@ -21,6 +21,7 @@ public class ReviewResponseDTO {
     private Long goodsId;
 
     private int score;
+    private int scoreNew;
     private String title;
     private String content;
     private String imageFile;

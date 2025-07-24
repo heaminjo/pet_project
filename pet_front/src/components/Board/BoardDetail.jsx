@@ -6,9 +6,8 @@ import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 import instance from '../../api/axiosInstance';
 
-import { API_BASE_URL } from '../../services/app-config'
-// const KH_DOMAIN = 'http://localhost:8080'; // 개발용
-const KH_DOMAIN = `${API_BASE_URL}`; // 배포용
+import { API_BASE_URL } from '../../services/app-config';
+const KH_DOMAIN = `${API_BASE_URL}`;
 
 // jwt 토큰에서 로그인한 회원의 ID를 가져옴
 function getMemberIdFromToken(token) {
