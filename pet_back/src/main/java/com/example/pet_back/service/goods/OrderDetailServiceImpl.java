@@ -239,6 +239,11 @@ public class OrderDetailServiceImpl implements OrderDetailService{
                 .collect(Collectors.toList());
         log.info("List<Review> reviewList =");
         List<Review> reviewList = reviewRepository.findByOrderDetailIdIn(orderDetailIdList);
+        // 디버깅용
+        System.out.println("orderDetailIdList: " + orderDetailIdList);
+        System.out.println("reviewList.size(): " + reviewList.size());
+        reviewList.forEach(r -> System.out.println("리뷰 orderDetailId: " + r.getOrderDetail().getOrderDetailId()));
+
         log.info("Map<Long, Review> reviewMap =");
         // OrderDetailId, Review객체
         Map<Long, Review> reviewMap = reviewList.stream()
@@ -250,7 +255,11 @@ public class OrderDetailServiceImpl implements OrderDetailService{
                 .map(od ->  {
                     Review review = reviewMap.get(od.getOrderDetailId());
                     int score = review != null ? review.getScore() : 0;
-                    return OrderDetailResponseDTO.builder() //
+                    // 디버깅용
+                    System.out.println("DTO ID = " + od.getOrderDetailId().getClass());
+                    System.out.println("Map Key = " + reviewMap.keySet());
+
+                    OrderDetailResponseDTO.OrderDetailResponseDTOBuilder builder = OrderDetailResponseDTO.builder() //
                         // OrderDetail
                         .orderDetailId(od.getOrderDetailId())
                         .goodsId(od.getGoods().getGoodsId())
@@ -270,8 +279,14 @@ public class OrderDetailServiceImpl implements OrderDetailService{
                         .status(od.getOrders().getStatus().getOrderName())
                         // Review
                         .score(String.valueOf(score))
-                        .reviewed(od.getReviewed())
-                        .build();
+                        .reviewed(od.getReviewed());
+
+                        // review가 있을 경우에만 reviewId 설정
+                        if (review != null) {
+                            builder.reviewId(review.getReviewId());
+                        }
+
+                    return builder.build();
                 }).collect(Collectors.toList());
 
         // PageResponseDTO  생성 ★★★★★
@@ -286,8 +301,6 @@ public class OrderDetailServiceImpl implements OrderDetailService{
         );
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-
-    
 
     @Override
     public List<GoodsRankDTO> goodsRank() {

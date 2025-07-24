@@ -53,6 +53,7 @@ public class ReviewServiceImpl implements ReviewService{
     // 이미지 위치 백엔드 경로 지정
     @Autowired
     private FileUploadProperties fileUploadProperties;
+
     // 리뷰 작성
     @Override
     @Transactional
