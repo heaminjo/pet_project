@@ -149,12 +149,23 @@ const GoodsApi = {
   },
 
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 공  통 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // StickyBanner - Right
+  getStickyBanner: async (type) => {
+    console.log('type: ' + type);
+    try {
+      const result = await axios.get(`${KH_DOMAIN}/goods/advertise/stickyright`);
+      return result.data;
+    } catch (err) {
+      console.error('광고 상품 불러오기 실패:', err);
+    }
+  },
+
   // 광고 상품 가져오기
   getAdvertise: async (type) => {
     console.log('type: ' + type);
     try {
-      const result = await axios.get(`/goods/advertise/list/${type}`);
-      if (result != null) return result.data;
+      const result = await axios.get(`${KH_DOMAIN}/goods/advertise/list/${type}`);
+      return result.data;
     } catch (err) {
       console.error('광고 상품 불러오기 실패:', err);
     }

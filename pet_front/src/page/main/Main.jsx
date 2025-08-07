@@ -3,12 +3,13 @@ import Banner from '../../components/main/Banner';
 import styled from 'styled-components';
 import Best from '../../components/main/Best';
 import Advertise from '../../components/main/Advertise';
+import StickyBanner from '../../components/main/StickyBanner';
 
 export default function Main() {
   const sections = [
-    { type: 'best', title: '오늘의 베스트 상품', description: '평점 BEST! TOP 12' },
-    { type: 'sale', title: '특가 상품', description: '평점 BEST ! 조회수 BEST! TOP 12' },
-    { type: 'recent', title: '신규 상품', description: '새롭게 등록되었어요! 가장 최근에 등록된 신상품 TOP 12' },
+    { type: 'best', title: '오늘의 베스트 상품', description: '★★★ 평점 BEST! TOP 12 ★★★' },
+    { type: 'sale', title: '특가 상품', description: '★★★ 평점 BEST ! 조회수 BEST! TOP 12 ★★★' },
+    { type: 'recent', title: '신규 상품', description: '★★★ 새롭게 등록되었어요! 가장 최근에 등록된 신상품 TOP 12 ★★★' },
     // 최근 추가된 상품, 카테고리별 판매량 BEST
   ];
 
@@ -17,6 +18,7 @@ export default function Main() {
   }, []);
   return (
     <MainComp>
+      <StickyBanner />
       <div className='main_inner'>
         <Banner />
         <Best />

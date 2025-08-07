@@ -41,10 +41,10 @@ export default function Advertise({ type, title, description }) {
     const fullStars = Math.floor(rating); // 채운 별 수
     const emptyStars = 5 - fullStars; // 빈 별 수
     for (let i = 0; i < fullStars; i++) {
-      stars.push(<FaStar key={`full-${i}`} color='gold' size={24} />);
+      stars.push(<FaStar key={`full-${i}`} color='gold' size={16} />);
     }
     for (let i = 0; i < emptyStars; i++) {
-      stars.push(<FaRegStar key={`empty-${i}`} color='lightgray' size={24} />);
+      stars.push(<FaRegStar key={`empty-${i}`} color='lightgray' size={16} />);
     }
     return stars;
   };
@@ -113,7 +113,7 @@ const AdvertiseComp = styled.div`
       }
     }
     .advertise_title {
-      width: 500px;
+      width: 800px;
       margin: 0 auto;
       margin-top: 50px;
       padding: 10px 0;
