@@ -24,15 +24,31 @@ export default function StickyBanner() {
 
   return (
     <StickyWrapper>
-      <a href='#'>
-        <img src='/images/banner1.png' alt='광고1' />
+      <div style={{ border: '1px solid rgb(161, 154, 154)', padding: '50px 20px', background: 'rgb(247, 242, 242)' }}>
+        <b>[테스트용] 관리자 ID</b>
+        <br />
+        aa@naver.com
+        <br />
+        <b>[테스트용] 관리자 PW</b> <br />
+        MongNyang12345!
+        <br />
+        <br />
+        <b>[테스트용] 일반유저 ID</b>
+        <br />
+        cc@naver.com
+        <br />
+        <b>[테스트용] 일반유저 PW</b>
+        <br />
+        MongNyang12345!
+        <br />
+      </div>
+
+      {/* <a href='#'>
+        <img src='/images/banner1.png' alt='광고추가' />
       </a>
       <a href='#'>
-        <img src='/images/banner2.png' alt='광고2' />
-      </a>
-      <a href='#'>
-        <img src='/images/banner3.png' alt='광고3' />
-      </a>
+        <img src='/images/banner2.png' alt='광고추가' />
+      </a> */}
     </StickyWrapper>
   );
 }
